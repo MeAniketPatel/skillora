@@ -1,0 +1,400 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============ USERS & AUTH ============
+
+enum Role {
+  STUDENT
+  TEACHER
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  role          Role      @default(STUDENT)
+  bio           String?   @db.Text
+  headline      String?
+  socialLinks   Json?     // e.g. { "twitter": "...", "linkedin": "..." }
+  stripeCustomerId    String?
+  stripeConnectId     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // NextAuth
+  accounts      Account[]
+  sessions      Session[]
+
+  // Relations
+  courses       Course[]        // taught courses
+  enrollments   Enrollment[]
+  reviews       Review[]
+  purchases     Purchase[]
+  notifications Notification[]
+  notes         Note[]
+  questions     Question[]
+  answers       Answer[]
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+// ============ COURSES ============
+
+enum CourseLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  ALL_LEVELS
+}
+
+enum CourseStatus {
+  DRAFT
+  UNDER_REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+model Course {
+  id               String       @id @default(cuid())
+  title            String
+  slug             String       @unique
+  description      String?      @db.Text
+  shortDescription String?
+  thumbnail        String?
+  promoVideo       String?
+  price            Float?
+  currency         String       @default("USD")
+  level            CourseLevel  @default(BEGINNER)
+  status           CourseStatus @default(DRAFT)
+  language         String       @default("en")
+  duration         Int?         // estimated minutes
+  learningOutcomes String[]
+  requirements     String[]
+  targetAudience   String[]
+  isFeatured       Boolean      @default(false)
+  publishedAt      DateTime?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  // Relations
+  teacherId     String
+  teacher       User         @relation(fields: [teacherId], references: [id])
+  categoryId    String?
+  category      Category?    @relation(fields: [categoryId], references: [id])
+  sections      Section[]
+  enrollments   Enrollment[]
+  reviews       Review[]
+  coupons       Coupon[]
+  tags          Tag[]
+}
+
+model Section {
+  id        String   @id @default(cuid())
+  title     String
+  position  Int
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons   Lesson[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum LessonType {
+  VIDEO
+  ARTICLE
+  QUIZ
+  ASSIGNMENT
+}
+
+model Lesson {
+  id            String     @id @default(cuid())
+  title         String
+  type          LessonType @default(VIDEO)
+  content       String?    @db.Text   // rich text for ARTICLE type
+  videoUrl      String?
+  videoDuration Int?       // seconds
+  position      Int
+  isFree        Boolean    @default(false)
+  isPublished   Boolean    @default(false)
+  sectionId     String
+  section       Section    @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+
+  attachments Attachment[]
+  progress    LessonProgress[]
+  quiz        Quiz?
+  notes       Note[]
+  questions   Question[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Attachment {
+  id        String   @id @default(cuid())
+  name      String
+  url       String
+  size      Int?
+  type      String?
+  lessonId  String
+  lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+// ============ ENROLLMENT & PROGRESS ============
+
+model Enrollment {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id])
+  progress    Float    @default(0) // 0-100
+  completedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  lessonProgress LessonProgress[]
+  certificate    Certificate?
+  purchase       Purchase?
+
+  @@unique([userId, courseId])
+}
+
+model LessonProgress {
+  id            String     @id @default(cuid())
+  isCompleted   Boolean    @default(false)
+  completedAt   DateTime?
+  videoPosition Int?       // seconds — resume position
+  enrollmentId  String
+  enrollment    Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  lessonId      String
+  lesson        Lesson     @relation(fields: [lessonId], references: [id])
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@unique([enrollmentId, lessonId])
+}
+
+// ============ PAYMENTS ============
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+model Purchase {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  enrollmentId    String   @unique
+  enrollment      Enrollment @relation(fields: [enrollmentId], references: [id])
+  amount          Float
+  currency        String   @default("USD")
+  stripePaymentId String?  @unique
+  status          PaymentStatus @default(PENDING)
+  couponId        String?
+  coupon          Coupon?  @relation(fields: [couponId], references: [id])
+  createdAt       DateTime @default(now())
+}
+
+// ============ ASSESSMENTS ============
+
+model Quiz {
+  id           String         @id @default(cuid())
+  title        String
+  timeLimit    Int?           // minutes
+  passingScore Int            @default(70)
+  maxAttempts  Int?
+  lessonId     String         @unique
+  lesson       Lesson         @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  questions    QuizQuestion[]
+  attempts     QuizAttempt[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  MULTI_SELECT
+  TRUE_FALSE
+  SHORT_ANSWER
+}
+
+model QuizQuestion {
+  id           String   @id @default(cuid())
+  question     String   @db.Text
+  type         QuestionType @default(MULTIPLE_CHOICE)
+  options      Json     // array of { text, isCorrect }
+  explanation  String?  @db.Text
+  points       Int      @default(1)
+  position     Int
+  quizId       String
+  quiz         Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+}
+
+model QuizAttempt {
+  id          String   @id @default(cuid())
+  score       Float
+  passed      Boolean
+  answers     Json     // student answers
+  quizId      String
+  quiz        Quiz     @relation(fields: [quizId], references: [id])
+  userId      String
+  startedAt   DateTime @default(now())
+  submittedAt DateTime?
+}
+
+// ============ SOCIAL & COMMUNITY ============
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int      // 1-5
+  comment   String?  @db.Text
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, courseId])
+}
+
+model Question {
+  id         String   @id @default(cuid())
+  title      String
+  body       String   @db.Text
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  lessonId   String
+  lesson     Lesson     @relation(fields: [lessonId], references: [id])
+  answers    Answer[]
+  isResolved Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  body       String   @db.Text
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id])
+  isAccepted Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  timestamp Int?     // video timestamp in seconds
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  lessonId  String
+  lesson    Lesson   @relation(fields: [lessonId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============ MISC ============
+
+model Category {
+  id      String   @id @default(cuid())
+  name    String   @unique
+  slug    String   @unique
+  icon    String?
+  courses Course[]
+}
+
+model Tag {
+  id      String   @id @default(cuid())
+  name    String   @unique
+  courses Course[]
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED
+}
+
+model Coupon {
+  id        String      @id @default(cuid())
+  code      String      @unique
+  discount  Float       // percentage or fixed amount
+  type      DiscountType @default(PERCENTAGE)
+  maxUses   Int?
+  usedCount Int         @default(0)
+  expiresAt DateTime?
+  courseId  String?
+  course    Course?     @relation(fields: [courseId], references: [id])
+  purchases Purchase[]
+  createdAt DateTime    @default(now())
+}
+
+model Certificate {
+  id            String     @id @default(cuid())
+  certificateId String     @unique // public verification ID
+  enrollmentId  String     @unique
+  enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
+  issuedAt      DateTime   @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  type      String
+  title     String
+  message   String
+  link      String?
+  isRead    Boolean  @default(false)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
