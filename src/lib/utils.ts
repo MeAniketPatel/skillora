@@ -1,6 +1,9 @@
-/**
- * Shared utility functions for the Skillora platform.
- */
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
 
 /**
  * Format a price in cents to a currency string.
