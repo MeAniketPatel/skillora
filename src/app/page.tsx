@@ -29,15 +29,11 @@ export default function HomePage() {
             </p>
             
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <Button size="lg" asChild className="rounded-full shadow-lg hover:shadow-xl transition-all">
-                <Link href="/courses">
-                  Browse Courses <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
+              <Button size="lg" render={<Link href="/courses" />} className="rounded-full shadow-lg hover:shadow-xl transition-all">
+                Browse Courses <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button size="lg" variant="outline" asChild className="rounded-full">
-                <Link href="/register?role=teacher">
-                  Become an Instructor
-                </Link>
+              <Button size="lg" variant="outline" render={<Link href="/register?role=teacher" />} className="rounded-full">
+                Become an Instructor
               </Button>
             </div>
           </div>

@@ -39,11 +39,11 @@ export function Navbar() {
         {/* Actions */}
         <div className="hidden md:flex md:items-center md:gap-4">
           <ThemeToggle />
-          <Button variant="ghost" asChild>
-            <Link href="/login">Login</Link>
+          <Button variant="ghost" render={<Link href="/login" />}>
+            Login
           </Button>
-          <Button asChild>
-            <Link href="/register">Join Free</Link>
+          <Button render={<Link href="/register" />}>
+            Join Free
           </Button>
         </div>
 
@@ -96,15 +96,11 @@ export function Navbar() {
             </Link>
             <hr className="border-border" />
             <div className="flex flex-col gap-2">
-              <Button variant="outline" asChild className="w-full">
-                <Link href="/login" onClick={() => setIsOpen(false)}>
-                  Login
-                </Link>
+              <Button variant="outline" render={<Link href="/login" onClick={() => setIsOpen(false)} />} className="w-full">
+                Login
               </Button>
-              <Button asChild className="w-full">
-                <Link href="/register" onClick={() => setIsOpen(false)}>
-                  Join Free
-                </Link>
+              <Button render={<Link href="/register" onClick={() => setIsOpen(false)} />} className="w-full">
+                Join Free
               </Button>
             </div>
           </div>
