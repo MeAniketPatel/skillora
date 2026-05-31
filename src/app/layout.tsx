@@ -1,13 +1,26 @@
 import type { Metadata } from "next";
+import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
-import { Geist } from "next/font/google";
-import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/theme-provider";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+});
+
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
-  title: "Skillora — Learn Without Limits",
-  description: "Modern e-learning platform",
+  title: {
+    default: "Skillora — Learn Without Limits",
+    template: "%s | Skillora",
+  },
+  description:
+    "Skillora is a modern e-learning platform where expert teachers create world-class courses and students learn at their own pace.",
+  keywords: ["e-learning", "online courses", "education", "skillora", "teaching platform"],
 };
 
 export default function RootLayout({
@@ -16,9 +29,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
-      <body className="antialiased">
-        {children}
+    <html lang="en" className={`${inter.variable} ${outfit.variable}`} suppressHydrationWarning>
+      <body className="font-sans antialiased bg-background text-foreground">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
