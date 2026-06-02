@@ -29,8 +29,10 @@ export default async function LearnPage({ params }: LearnPageProps) {
     },
     include: {
       lessonProgress: {
-        where: { isCompleted: true },
-        select: { lessonId: true },
+        select: { 
+          lessonId: true,
+          isCompleted: true,
+        },
       },
     },
   });
@@ -61,11 +63,26 @@ export default async function LearnPage({ params }: LearnPageProps) {
 
   const lesson = await db.lesson.findFirst({
     where: { id: lessonId, section: { courseId } },
+    include: {
+      attachments: {
+        orderBy: { createdAt: "desc" },
+      },
+    },
   });
 
   if (!lesson || !lesson.isPublished) {
     redirect(`/student/courses`);
   }
+
+  // Find user's progress for this specific lesson
+  const currentProgress = await db.lessonProgress.findUnique({
+    where: {
+      enrollmentId_lessonId: {
+        enrollmentId: enrollment.id,
+        lessonId,
+      },
+    },
+  });
 
   // Flatten lessons to calculate next/prev
   const allLessons = course.sections.flatMap((s) => s.lessons);
@@ -73,13 +90,24 @@ export default async function LearnPage({ params }: LearnPageProps) {
   const prevLessonId = currentIdx > 0 ? allLessons[currentIdx - 1].id : null;
   const nextLessonId = currentIdx < allLessons.length - 1 ? allLessons[currentIdx + 1].id : null;
 
-  const completedLessonIds = enrollment.lessonProgress.map((lp) => lp.lessonId);
+  const completedLessonIds = enrollment.lessonProgress
+    .filter((lp) => lp.isCompleted)
+    .map((lp) => lp.lessonId);
 
   return (
     <LessonPlayer
       courseId={courseId}
       courseTitle={course.title}
-      lesson={lesson}
+      lesson={{
+        id: lesson.id,
+        title: lesson.title,
+        type: lesson.type,
+        content: lesson.content,
+        videoUrl: lesson.videoUrl,
+        videoDuration: lesson.videoDuration,
+        initialPosition: currentProgress?.videoPosition || 0,
+        attachments: lesson.attachments,
+      }}
       sections={course.sections as any}
       completedLessonIds={completedLessonIds}
       prevLessonId={prevLessonId}
@@ -87,3 +115,4 @@ export default async function LearnPage({ params }: LearnPageProps) {
     />
   );
 }
+

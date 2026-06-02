@@ -16,6 +16,7 @@ const courseUpdateSchema = z.object({
   title: z.string().min(1).optional(),
   description: z.string().optional(),
   thumbnail: z.string().url().optional().or(z.literal("")),
+  promoVideo: z.string().url().optional().or(z.literal("")).or(z.null()),
   price: z.number().min(0).optional(),
   categoryId: z.string().optional(),
   level: z.enum(["BEGINNER", "INTERMEDIATE", "ADVANCED", "ALL_LEVELS"]).optional(),
@@ -270,6 +271,9 @@ export async function updateLesson(
     content?: string;
     isFree?: boolean;
     isPublished?: boolean;
+    videoUrl?: string | null;
+    videoDuration?: number | null;
+    type?: "VIDEO" | "ARTICLE" | "QUIZ" | "ASSIGNMENT";
   }
 ) {
   try {
@@ -374,6 +378,71 @@ export async function reorderLessons(
     return { success: true };
   } catch (error: any) {
     console.error("[REORDER_LESSONS_ERROR]", error);
+    return { error: error.message || "Something went wrong" };
+  }
+}
+
+export async function createAttachment(
+  courseId: string,
+  lessonId: string,
+  name: string,
+  url: string,
+  size?: number,
+  type?: string
+) {
+  try {
+    const user = await requireTeacher();
+
+    const courseOwner = await db.course.findUnique({
+      where: { id: courseId, teacherId: user.id },
+    });
+
+    if (!courseOwner) {
+      return { error: "Unauthorized" };
+    }
+
+    const attachment = await db.attachment.create({
+      data: {
+        name,
+        url,
+        size,
+        type,
+        lessonId,
+      },
+    });
+
+    revalidatePath(`/teacher/courses/${courseId}/curriculum`);
+    return { success: true, data: attachment };
+  } catch (error: any) {
+    console.error("[CREATE_ATTACHMENT_ERROR]", error);
+    return { error: error.message || "Something went wrong" };
+  }
+}
+
+export async function deleteAttachment(
+  courseId: string,
+  lessonId: string,
+  attachmentId: string
+) {
+  try {
+    const user = await requireTeacher();
+
+    const courseOwner = await db.course.findUnique({
+      where: { id: courseId, teacherId: user.id },
+    });
+
+    if (!courseOwner) {
+      return { error: "Unauthorized" };
+    }
+
+    await db.attachment.delete({
+      where: { id: attachmentId, lessonId },
+    });
+
+    revalidatePath(`/teacher/courses/${courseId}/curriculum`);
+    return { success: true };
+  } catch (error: any) {
+    console.error("[DELETE_ATTACHMENT_ERROR]", error);
     return { error: error.message || "Something went wrong" };
   }
 }

@@ -20,6 +20,7 @@ const courseSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().optional(),
   thumbnail: z.string().url().optional().or(z.literal("")),
+  promoVideo: z.string().url().nullable().optional().or(z.literal("")),
   price: z.number().min(0, "Price must be positive"),
   categoryId: z.string().min(1, "Category is required"),
   level: z.enum(["BEGINNER", "INTERMEDIATE", "ADVANCED", "ALL_LEVELS"]),
@@ -33,6 +34,7 @@ interface CourseEditorProps {
     title: string;
     description: string | null;
     thumbnail: string | null;
+    promoVideo: string | null;
     price: number | null;
     categoryId: string | null;
     level: string;
@@ -59,6 +61,7 @@ export default function CourseEditor({ course, categories }: CourseEditorProps) 
       title: course.title,
       description: course.description || "",
       thumbnail: course.thumbnail || "",
+      promoVideo: course.promoVideo || "",
       price: course.price || 0,
       categoryId: course.categoryId || "",
       level: course.level as any,
@@ -66,6 +69,7 @@ export default function CourseEditor({ course, categories }: CourseEditorProps) 
   });
 
   const thumbnailVal = watch("thumbnail");
+  const promoVideoVal = watch("promoVideo");
   const descriptionVal = watch("description");
 
   const onSubmit = (values: CourseValues) => {
@@ -239,6 +243,49 @@ export default function CourseEditor({ course, categories }: CourseEditorProps) 
                       if (res?.[0]?.url) {
                         setValue("thumbnail", res[0].url);
                         setSuccess("Thumbnail uploaded successfully!");
+                      }
+                    }}
+                    onUploadError={(error: Error) => {
+                      setError(`Upload failed: ${error.message}`);
+                    }}
+                  />
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50">
+            <CardHeader>
+              <CardTitle>Course Promo Video</CardTitle>
+              <CardDescription>Upload a short video to introduce your course.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {promoVideoVal ? (
+                <div className="space-y-4">
+                  <div className="aspect-video w-full relative rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-black">
+                    <video src={promoVideoVal} controls className="w-full h-full object-contain" />
+                  </div>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => {
+                      setValue("promoVideo", "");
+                      onSubmit(watch());
+                    }}
+                    disabled={isPending}
+                  >
+                    Remove Video
+                  </Button>
+                </div>
+              ) : (
+                <div className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg p-6 flex flex-col items-center justify-center min-h-[200px] bg-neutral-50/50 dark:bg-neutral-950/20">
+                  <UploadDropzone
+                    endpoint="courseVideo"
+                    onClientUploadComplete={(res) => {
+                      if (res?.[0]?.url) {
+                        setValue("promoVideo", res[0].url);
+                        setSuccess("Promo video uploaded successfully!");
+                        onSubmit({ ...watch(), promoVideo: res[0].url });
                       }
                     }}
                     onUploadError={(error: Error) => {

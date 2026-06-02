@@ -10,12 +10,15 @@ import {
   ArrowRight, 
   Layers, 
   BookOpen,
-  Menu
+  Menu,
+  File,
+  Download
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toggleLessonCompletion } from "@/actions/enrollment.actions";
+import { VideoPlayer } from "@/components/shared/video-player";
 
 interface Lesson {
   id: string;
@@ -30,13 +33,26 @@ interface Section {
   lessons: Lesson[];
 }
 
+interface Attachment {
+  id: string;
+  name: string;
+  url: string;
+  size: number | null;
+  type: string | null;
+}
+
 interface LessonPlayerProps {
   courseId: string;
   courseTitle: string;
   lesson: {
     id: string;
     title: string;
+    type: "VIDEO" | "ARTICLE" | "QUIZ" | "ASSIGNMENT";
     content: string | null;
+    videoUrl: string | null;
+    videoDuration: number | null;
+    initialPosition: number;
+    attachments: Attachment[];
   };
   sections: Section[];
   completedLessonIds: string[];
@@ -65,11 +81,15 @@ export default function LessonPlayer({
       if (res.success) {
         router.refresh();
         if (!isCompleted && nextLessonId) {
-          // Auto navigate to next lesson on completion
           router.push(`/learn/${courseId}/${nextLessonId}`);
         }
       }
     });
+  };
+
+  const handleVideoComplete = () => {
+    // Refresh player progress state
+    router.refresh();
   };
 
   return (
@@ -145,15 +165,58 @@ export default function LessonPlayer({
           </div>
         </div>
 
+        {/* Video Player Header (if lesson is video type) */}
+        {lesson.type === "VIDEO" && lesson.videoUrl && (
+          <div className="bg-black w-full flex justify-center border-b border-neutral-200 dark:border-neutral-800">
+            <div className="w-full max-w-5xl p-4 md:p-6">
+              <VideoPlayer
+                courseId={courseId}
+                lessonId={lesson.id}
+                videoUrl={lesson.videoUrl}
+                initialPosition={lesson.initialPosition}
+                onComplete={handleVideoComplete}
+              />
+            </div>
+          </div>
+        )}
+
         {/* Lesson Body Content */}
         <div className="flex-1 p-6 md:p-10 max-w-3xl mx-auto w-full space-y-6">
           <h1 className="text-3xl font-extrabold tracking-tight">{lesson.title}</h1>
           
-          <Card className="bg-white dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50 shadow-sm">
-            <CardContent className="p-6 prose dark:prose-invert max-w-none text-neutral-700 dark:text-neutral-300">
-              <div dangerouslySetInnerHTML={{ __html: lesson.content || "<p>This lesson has no written content.</p>" }} />
-            </CardContent>
-          </Card>
+          {lesson.type === "ARTICLE" && (
+            <Card className="bg-white dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50 shadow-sm">
+              <CardContent className="p-6 prose dark:prose-invert max-w-none text-neutral-700 dark:text-neutral-300">
+                <div dangerouslySetInnerHTML={{ __html: lesson.content || "<p>This lesson has no written content.</p>" }} />
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Attachments Section */}
+          {lesson.attachments && lesson.attachments.length > 0 && (
+            <div className="space-y-3 pt-4 border-t border-neutral-200 dark:border-neutral-800">
+              <h3 className="font-bold text-sm text-neutral-700 dark:text-neutral-300">Resources & Materials</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {lesson.attachments.map((file) => (
+                  <a
+                    key={file.id}
+                    href={file.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between p-3 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800/40 transition-colors group"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <File className="h-5 w-5 text-primary shrink-0" />
+                      <span className="text-sm font-medium truncate text-neutral-700 dark:text-neutral-300">
+                        {file.name}
+                      </span>
+                    </div>
+                    <Download className="h-4 w-4 text-neutral-400 group-hover:text-primary transition-colors shrink-0 ml-2" />
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Completion controls */}
           <div className="flex justify-end pt-4 border-t border-neutral-200 dark:border-neutral-800">

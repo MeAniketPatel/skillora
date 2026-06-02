@@ -358,6 +358,14 @@ export default function CurriculumBuilder({ courseId, initialSections }: Curricu
                       <Button 
                         variant="ghost" 
                         size="icon" 
+                        className="h-7 w-7"
+                        render={<Link href={`/teacher/courses/${courseId}/lessons/${lesson.id}`} />}
+                      >
+                        <Settings className="h-4 w-4" />
+                      </Button>
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
                         className="h-7 w-7" 
                         onClick={() => moveLesson(section.id, lIdx, "up")} 
                         disabled={lIdx === 0 || isPending}

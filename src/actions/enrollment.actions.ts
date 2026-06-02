@@ -153,3 +153,52 @@ export async function toggleLessonCompletion(
     return { error: error.message || "Something went wrong" };
   }
 }
+
+export async function updateVideoProgress(
+  courseId: string,
+  lessonId: string,
+  videoPosition: number
+) {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      return { error: "Unauthorized" };
+    }
+
+    const enrollment = await db.enrollment.findUnique({
+      where: {
+        userId_courseId: {
+          userId: session.user.id,
+          courseId,
+        },
+      },
+    });
+
+    if (!enrollment) {
+      return { error: "Enrollment not found." };
+    }
+
+    await db.lessonProgress.upsert({
+      where: {
+        enrollmentId_lessonId: {
+          enrollmentId: enrollment.id,
+          lessonId,
+        },
+      },
+      update: {
+        videoPosition,
+      },
+      create: {
+        enrollmentId: enrollment.id,
+        lessonId,
+        videoPosition,
+      },
+    });
+
+    return { success: true };
+  } catch (error: any) {
+    console.error("[UPDATE_VIDEO_PROGRESS_ERROR]", error);
+    return { error: error.message || "Something went wrong" };
+  }
+}
+
