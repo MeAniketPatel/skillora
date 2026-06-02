@@ -54,6 +54,7 @@ interface LessonPlayerProps {
     videoDuration: number | null;
     initialPosition: number;
     attachments: Attachment[];
+    quiz: any;
   };
   sections: Section[];
   completedLessonIds: string[];
