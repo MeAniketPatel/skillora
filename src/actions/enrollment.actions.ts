@@ -145,6 +145,18 @@ export async function toggleLessonCompletion(
       },
     });
 
+    if (progress === 100) {
+      const certId = Math.random().toString(36).substring(2, 12).toUpperCase();
+      await db.certificate.upsert({
+        where: { enrollmentId: enrollment.id },
+        update: {},
+        create: {
+          certificateId: certId,
+          enrollmentId: enrollment.id,
+        },
+      });
+    }
+
     revalidatePath(`/student/courses`);
     revalidatePath(`/learn/${courseId}/${lessonId}`);
     return { success: true, progress };

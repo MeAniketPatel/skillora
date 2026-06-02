@@ -4,7 +4,7 @@ import { stripe } from "@/lib/stripe";
 import db from "@/lib/prisma";
 import { auth } from "@/auth";
 
-export async function createCheckoutSession(courseId: string) {
+export async function createCheckoutSession(courseId: string, couponCode?: string) {
   try {
     const session = await auth();
     if (!session?.user) {
@@ -17,6 +17,37 @@ export async function createCheckoutSession(courseId: string) {
 
     if (!course || course.price === null || course.price <= 0) {
       return { error: "Invalid course or course is free" };
+    }
+
+    let finalPrice = course.price;
+    let couponRecord = null;
+
+    if (couponCode) {
+      couponRecord = await db.coupon.findUnique({
+        where: { code: couponCode },
+      });
+
+      if (!couponRecord) {
+        return { error: "Invalid coupon code" };
+      }
+
+      if (couponRecord.expiresAt && new Date(couponRecord.expiresAt) < new Date()) {
+        return { error: "Coupon code has expired" };
+      }
+
+      if (couponRecord.maxUses && couponRecord.usedCount >= couponRecord.maxUses) {
+        return { error: "Coupon code has reached maximum usage limit" };
+      }
+
+      if (couponRecord.courseId && couponRecord.courseId !== courseId) {
+        return { error: "Coupon code is not applicable to this course" };
+      }
+
+      if (couponRecord.type === "PERCENTAGE") {
+        finalPrice = course.price * (1 - couponRecord.discount / 100);
+      } else {
+        finalPrice = Math.max(0, course.price - couponRecord.discount);
+      }
     }
 
     const existingEnrollment = await db.enrollment.findUnique({
@@ -42,7 +73,7 @@ export async function createCheckoutSession(courseId: string) {
               name: course.title,
               description: course.shortDescription || undefined,
             },
-            unit_amount: Math.round(course.price * 100),
+            unit_amount: Math.round(finalPrice * 100),
           },
           quantity: 1,
         },
@@ -53,6 +84,7 @@ export async function createCheckoutSession(courseId: string) {
       metadata: {
         userId: session.user.id,
         courseId: course.id,
+        couponId: couponRecord?.id || "",
       },
     });
 

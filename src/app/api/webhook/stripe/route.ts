@@ -93,6 +93,17 @@ export async function POST(req: Request) {
           stripePaymentId: session.id,
         },
       });
+
+      if (session.metadata?.couponId) {
+        await tx.coupon.update({
+          where: { id: session.metadata.couponId },
+          data: {
+            usedCount: {
+              increment: 1,
+            },
+          },
+        });
+      }
     });
   }
 
