@@ -184,7 +184,7 @@ export default function QuizView({ courseId, lessonId, quiz }: QuizViewProps) {
             }`}>
               {lastAttempt?.passed 
                 ? `Passed! Score: ${Math.round(lastAttempt.score)}%` 
-                : `Failed. Score: ${Math.round(lastAttempt.score)}%`}
+                : `Failed. Score: ${Math.round(lastAttempt?.score || 0)}%`}
             </div>
             <Button onClick={resetQuiz} variant="outline" className="w-full">
               Retake Quiz
