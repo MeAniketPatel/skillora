@@ -62,7 +62,7 @@ export async function POST(req: Request) {
         },
       });
 
-      const lessons = course.sections.flatMap((s) => s.lessons);
+      const lessons = course?.sections.flatMap((s) => s.lessons) || [];
       if (lessons.length > 0) {
         const existingProgress = await tx.lessonProgress.findMany({
           where: { enrollmentId: enrollment.id },
@@ -115,7 +115,7 @@ export async function POST(req: Request) {
           userId,
           type: "PURCHASE",
           title: "Course Purchased! 💳",
-          message: `Thank you! You have successfully purchased and enrolled in "${course.title}".`,
+          message: `Thank you! You have successfully purchased and enrolled in "${course?.title || ""}".`,
           link: `/learn/${courseId}/${lessons[0]?.id || ""}`,
         },
       });
@@ -127,7 +127,7 @@ export async function POST(req: Request) {
       await sendPurchaseConfirmation(
         user.email,
         user.name || user.email,
-        course.title,
+        course?.title || "",
         session.amount_total ? session.amount_total / 100 : 0
       );
     } catch (err) {
