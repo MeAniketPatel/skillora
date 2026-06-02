@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 import { z } from "zod";
 
-import { signIn } from "@/auth";
+import { signIn, auth } from "@/auth";
 import db from "@/lib/prisma";
 
 const registerSchema = z.object({
@@ -96,3 +96,47 @@ export async function loginUser(values: z.infer<typeof loginSchema>) {
     throw error;
   }
 }
+
+export async function updateUserSettings(values: {
+  name?: string;
+  email?: string;
+  password?: string;
+}) {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return { error: "Unauthorized" };
+    }
+
+    const { name, email, password } = values;
+    const updateData: { name?: string; email?: string; password?: string } = {};
+
+    if (name) updateData.name = name;
+
+    if (email && email !== session.user.email) {
+      const existingUser = await db.user.findUnique({ where: { email } });
+      if (existingUser) {
+        return { error: "Email already in use." };
+      }
+      updateData.email = email;
+    }
+
+    if (password) {
+      if (password.length < 6) {
+        return { error: "Password must be at least 6 characters." };
+      }
+      updateData.password = await bcrypt.hash(password, 10);
+    }
+
+    await db.user.update({
+      where: { id: session.user.id },
+      data: updateData,
+    });
+
+    return { success: "Settings updated successfully!" };
+  } catch (error) {
+    console.error("[SETTINGS_UPDATE_ERROR]", error);
+    return { error: "Failed to update settings." };
+  }
+}
+

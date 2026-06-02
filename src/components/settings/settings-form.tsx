@@ -1,0 +1,193 @@
+"use client";
+
+import * as React from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { User, Mail, ShieldAlert, KeyRound, Save } from "lucide-react";
+import { useRouter } from "next/navigation";
+
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { updateUserSettings } from "@/actions/auth.actions";
+import SignOutButton from "@/components/auth/signout-button";
+
+const settingsSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  password: z.string().optional().or(z.literal("")),
+});
+
+type SettingsValues = z.infer<typeof settingsSchema>;
+
+interface SettingsClientFormProps {
+  user: {
+    name: string | null;
+    email: string | null;
+    role: string | null;
+  };
+}
+
+export default function SettingsClientForm({ user }: SettingsClientFormProps) {
+  const router = useRouter();
+  const [isPending, startTransition] = React.useTransition();
+  const [error, setError] = React.useState<string | null>(null);
+  const [success, setSuccess] = React.useState<string | null>(null);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SettingsValues>({
+    resolver: zodResolver(settingsSchema),
+    defaultValues: {
+      name: user.name || "",
+      email: user.email || "",
+      password: "",
+    },
+  });
+
+  const onSubmit = (values: SettingsValues) => {
+    setError(null);
+    setSuccess(null);
+
+    startTransition(async () => {
+      const payload: { name?: string; email?: string; password?: string } = {
+        name: values.name,
+        email: values.email,
+      };
+      if (values.password && values.password.trim() !== "") {
+        payload.password = values.password;
+      }
+
+      const res = await updateUserSettings(payload);
+      if (res?.error) {
+        setError(res.error);
+      } else {
+        setSuccess("Profile settings updated successfully!");
+        router.refresh();
+      }
+    });
+  };
+
+  return (
+    <div className="space-y-6 max-w-4xl mx-auto">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
+        <p className="text-sm text-neutral-500 mt-1">
+          Manage your account details, security preferences, and view your profile information.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Left Card: Quick Profile Info Card */}
+        <Card className="bg-white dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50 h-fit md:col-span-1">
+          <CardHeader className="text-center pb-4">
+            <div className="mx-auto h-20 w-20 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center border border-neutral-200 dark:border-neutral-700">
+              <User className="h-10 w-10 text-neutral-500" />
+            </div>
+            <CardTitle className="mt-4 truncate">{user.name || "User Profile"}</CardTitle>
+            <CardDescription className="uppercase text-[10px] tracking-widest font-semibold px-2 py-0.5 bg-neutral-100 dark:bg-neutral-800 rounded-md w-fit mx-auto mt-2 text-neutral-600 dark:text-neutral-300">
+              {user.role}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="border-t border-neutral-100 dark:border-neutral-800/50 pt-4 space-y-3">
+            <div className="text-xs text-neutral-500 flex items-center gap-2">
+              <Mail className="h-3.5 w-3.5" />
+              <span className="truncate">{user.email}</span>
+            </div>
+            <div className="pt-2 border-t border-neutral-100 dark:border-neutral-800/50">
+              <SignOutButton />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Right Card: Settings Update Form */}
+        <Card className="bg-white dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50 md:col-span-2">
+          <CardHeader>
+            <CardTitle>Profile Details</CardTitle>
+            <CardDescription>
+              Update your account name, email address, or update your password.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Full Name</Label>
+                <div className="relative">
+                  <User className="absolute left-3 top-2.5 h-4 w-4 text-neutral-400" />
+                  <Input
+                    id="name"
+                    {...register("name")}
+                    disabled={isPending}
+                    className="pl-10 bg-white/50 dark:bg-neutral-950/50 h-9"
+                  />
+                </div>
+                {errors.name && (
+                  <p className="text-xs text-red-500 font-medium">{errors.name.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="email">Email Address</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-2.5 h-4 w-4 text-neutral-400" />
+                  <Input
+                    id="email"
+                    type="email"
+                    {...register("email")}
+                    disabled={isPending}
+                    className="pl-10 bg-white/50 dark:bg-neutral-950/50 h-9"
+                  />
+                </div>
+                {errors.email && (
+                  <p className="text-xs text-red-500 font-medium">{errors.email.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="password">New Password (leave blank to keep current)</Label>
+                <div className="relative">
+                  <KeyRound className="absolute left-3 top-2.5 h-4 w-4 text-neutral-400" />
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    {...register("password")}
+                    disabled={isPending}
+                    className="pl-10 bg-white/50 dark:bg-neutral-950/50 h-9"
+                  />
+                </div>
+                {errors.password && (
+                  <p className="text-xs text-red-500 font-medium">{errors.password.message}</p>
+                )}
+              </div>
+
+              {error && (
+                <div className="p-3 text-sm text-red-600 bg-red-50 dark:bg-red-950/30 dark:text-red-400 rounded-lg flex items-start gap-2 border border-red-200/50">
+                  <ShieldAlert className="h-4 w-4 mt-0.5 shrink-0" />
+                  <span>{error}</span>
+                </div>
+              )}
+
+              {success && (
+                <div className="p-3 text-sm text-green-600 bg-green-50 dark:bg-green-950/30 dark:text-green-400 rounded-lg border border-green-200/50">
+                  {success}
+                </div>
+              )}
+
+              <div className="flex justify-end pt-2">
+                <Button type="submit" disabled={isPending} className="h-9 gap-2">
+                  <Save className="h-4 w-4" />
+                  {isPending ? "Saving..." : "Save Settings"}
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
