@@ -134,7 +134,7 @@ export default function CourseEditor({ course, categories }: CourseEditorProps) 
       {/* Header section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-x-2">
-          <Button variant="ghost" size="icon" render={<Link href="/teacher/courses" />}>
+          <Button variant="ghost" size="icon" nativeButton={false} render={<Link href="/teacher/courses" />}>
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>
@@ -144,7 +144,7 @@ export default function CourseEditor({ course, categories }: CourseEditorProps) 
         </div>
 
         <div className="flex items-center gap-x-2">
-          <Button variant="outline" render={<Link href={`/teacher/courses/${course.id}/curriculum`} />}>
+          <Button variant="outline" nativeButton={false} render={<Link href={`/teacher/courses/${course.id}/curriculum`} />}>
             <LayoutGrid className="mr-2 h-4 w-4" />
             Curriculum
           </Button>

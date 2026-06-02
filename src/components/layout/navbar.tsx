@@ -39,10 +39,10 @@ export function Navbar() {
         {/* Actions */}
         <div className="hidden md:flex md:items-center md:gap-4">
           <ThemeToggle />
-          <Button variant="ghost" render={<Link href="/login" />}>
+          <Button variant="ghost" nativeButton={false} render={<Link href="/login" />}>
             Login
           </Button>
-          <Button render={<Link href="/register" />}>
+          <Button nativeButton={false} render={<Link href="/register" />}>
             Join Free
           </Button>
         </div>
@@ -96,10 +96,10 @@ export function Navbar() {
             </Link>
             <hr className="border-border" />
             <div className="flex flex-col gap-2">
-              <Button variant="outline" render={<Link href="/login" onClick={() => setIsOpen(false)} />} className="w-full">
+              <Button variant="outline" nativeButton={false} render={<Link href="/login" onClick={() => setIsOpen(false)} />} className="w-full">
                 Login
               </Button>
-              <Button render={<Link href="/register" onClick={() => setIsOpen(false)} />} className="w-full">
+              <Button nativeButton={false} render={<Link href="/register" onClick={() => setIsOpen(false)} />} className="w-full">
                 Join Free
               </Button>
             </div>

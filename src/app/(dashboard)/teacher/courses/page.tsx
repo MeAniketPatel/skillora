@@ -30,7 +30,7 @@ export default async function TeacherCoursesPage() {
           <h1 className="text-3xl font-bold tracking-tight">My Courses</h1>
           <p className="text-neutral-500">Manage your course catalog, content, and curriculum.</p>
         </div>
-        <Button render={<Link href="/teacher/courses/new" />}>
+        <Button nativeButton={false} render={<Link href="/teacher/courses/new" />}>
           <Plus className="mr-2 h-4 w-4" />
           Create Course
         </Button>
@@ -43,7 +43,7 @@ export default async function TeacherCoursesPage() {
           <CardDescription className="max-w-sm mt-2">
             Get started by creating your first course and setting up the modules and lessons.
           </CardDescription>
-          <Button render={<Link href="/teacher/courses/new" />} className="mt-6">
+          <Button nativeButton={false} render={<Link href="/teacher/courses/new" />} className="mt-6">
             Create First Course
           </Button>
         </Card>
@@ -70,7 +70,7 @@ export default async function TeacherCoursesPage() {
                 <span className="font-bold text-sm">
                   {course.price === 0 || !course.price ? "Free" : `$${course.price}`}
                 </span>
-                <Button variant="outline" size="sm" render={<Link href={`/teacher/courses/${course.id}`} />}>
+                <Button variant="outline" size="sm" nativeButton={false} render={<Link href={`/teacher/courses/${course.id}`} />}>
                   Manage
                 </Button>
               </CardContent>

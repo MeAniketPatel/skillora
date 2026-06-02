@@ -126,7 +126,7 @@ export default function CreateCourseForm({ categories }: CreateCourseFormProps) 
           )}
 
           <div className="flex items-center gap-x-2 pt-4">
-            <Button variant="ghost" type="button" disabled={isPending} render={<Link href="/teacher/courses" />}>
+            <Button variant="ghost" type="button" disabled={isPending} nativeButton={false} render={<Link href="/teacher/courses" />}>
               Cancel
             </Button>
             <Button type="submit" disabled={isPending}>

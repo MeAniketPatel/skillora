@@ -142,7 +142,7 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-x-2">
-        <Button variant="ghost" size="icon" render={<Link href={`/teacher/courses/${courseId}/curriculum`} />}>
+        <Button variant="ghost" size="icon" nativeButton={false} render={<Link href={`/teacher/courses/${courseId}/curriculum`} />}>
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div>

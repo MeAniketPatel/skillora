@@ -29,10 +29,10 @@ export default function HomePage() {
             </p>
             
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <Button size="lg" render={<Link href="/courses" />} className="rounded-full shadow-lg hover:shadow-xl transition-all">
+              <Button size="lg" nativeButton={false} render={<Link href="/courses" />} className="rounded-full shadow-lg hover:shadow-xl transition-all">
                 Browse Courses <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button size="lg" variant="outline" render={<Link href="/register?role=teacher" />} className="rounded-full">
+              <Button size="lg" variant="outline" nativeButton={false} render={<Link href="/register?role=teacher" />} className="rounded-full">
                 Become an Instructor
               </Button>
             </div>

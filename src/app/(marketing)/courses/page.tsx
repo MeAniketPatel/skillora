@@ -129,7 +129,7 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
                       <span className="font-bold text-base">
                         {course.price === 0 || !course.price ? "Free" : `$${course.price}`}
                       </span>
-                      <Button size="sm" render={<Link href={`/courses/${course.slug}`} />}>
+                      <Button size="sm" nativeButton={false} render={<Link href={`/courses/${course.slug}`} />}>
                         View Details
                       </Button>
                     </CardContent>

@@ -43,7 +43,7 @@ export default async function StudentCertificatesPage() {
             <p className="text-sm text-neutral-500 mt-1 max-w-sm">
               Complete a course syllabus with 100% progress and assessments to earn your first certified credential.
             </p>
-            <Button className="mt-6 font-semibold" render={<Link href="/courses" />}>
+            <Button className="mt-6 font-semibold" nativeButton={false} render={<Link href="/courses" />}>
               Explore Courses <ArrowRight className="h-4 w-4 ml-1" />
             </Button>
           </CardContent>
@@ -61,7 +61,7 @@ export default async function StudentCertificatesPage() {
               </CardHeader>
               <CardContent className="flex justify-between items-center pt-2">
                 <span className="text-[10px] text-neutral-400 font-mono tracking-tight">ID: {cert.certificateId}</span>
-                <Button variant="outline" size="sm" render={<Link href={`/certificates/${cert.certificateId}`} target="_blank" />}>
+                <Button variant="outline" size="sm" nativeButton={false} render={<Link href={`/certificates/${cert.certificateId}`} target="_blank" />}>
                   <ExternalLink className="h-3.5 w-3.5 mr-1" /> Verify Credential
                 </Button>
               </CardContent>

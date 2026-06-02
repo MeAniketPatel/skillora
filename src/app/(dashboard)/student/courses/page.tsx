@@ -52,7 +52,7 @@ export default async function StudentCoursesPage() {
           <CardDescription className="max-w-sm mt-2">
             You haven&apos;t enrolled in any courses yet. Visit the catalog to find free learning content!
           </CardDescription>
-          <Button render={<Link href="/courses" />} className="mt-6">
+          <Button nativeButton={false} render={<Link href="/courses" />} className="mt-6">
             Browse Courses
           </Button>
         </Card>
@@ -98,8 +98,7 @@ export default async function StudentCoursesPage() {
 
                   {firstLessonId ? (
                     <Button 
-                      className="w-full justify-between"
-                      render={<Link href={`/learn/${course.id}/${firstLessonId}`} />}
+                      className="w-full justify-between" nativeButton={false} render={<Link href={`/learn/${course.id}/${firstLessonId}`} />}
                     >
                       <span>Resume Study</span>
                       <ArrowRight className="h-4 w-4" />

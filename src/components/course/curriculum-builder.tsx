@@ -239,7 +239,7 @@ export default function CurriculumBuilder({ courseId, initialSections }: Curricu
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-x-2">
-        <Button variant="ghost" size="icon" render={<Link href={`/teacher/courses/${courseId}`} />}>
+        <Button variant="ghost" size="icon" nativeButton={false} render={<Link href={`/teacher/courses/${courseId}`} />}>
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div>
@@ -358,8 +358,7 @@ export default function CurriculumBuilder({ courseId, initialSections }: Curricu
                       <Button 
                         variant="ghost" 
                         size="icon" 
-                        className="h-7 w-7"
-                        render={<Link href={`/teacher/courses/${courseId}/lessons/${lesson.id}`} />}
+                        className="h-7 w-7" nativeButton={false} render={<Link href={`/teacher/courses/${courseId}/lessons/${lesson.id}`} />}
                       >
                         <Settings className="h-4 w-4" />
                       </Button>
