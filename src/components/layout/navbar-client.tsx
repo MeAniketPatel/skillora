@@ -14,9 +14,37 @@ type Session = {
 export default function NavbarClient({ session }: { session: Session }) {
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const isLoggedIn = !!session?.user;
+  // Keep a client-side session state so the navbar updates after client
+  // navigation (home page may be statically rendered without a session).
+  const [clientSession, setClientSession] = React.useState<Session>(session);
+
+  React.useEffect(() => {
+    if (!clientSession) {
+      let mounted = true;
+      (async () => {
+        try {
+          const res = await fetch("/api/auth/session");
+          if (!mounted) return;
+          if (res.ok) {
+            const json = await res.json();
+            // NextAuth returns the session object or null
+            if (json) setClientSession(json);
+          }
+        } catch (e) {
+          // ignore
+        }
+      })();
+      return () => {
+        mounted = false;
+      };
+    }
+    return;
+  }, [clientSession]);
+
+  const isLoggedIn = !!clientSession?.user;
   const isTeacher =
-    session?.user?.role === "TEACHER" || session?.user?.role === "ADMIN";
+    clientSession?.user?.role === "TEACHER" ||
+    clientSession?.user?.role === "ADMIN";
 
   const handleLogout = async () => {
     try {
