@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState, useTransition, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { GraduationCap, School } from "lucide-react";
 
@@ -54,18 +54,18 @@ export default function RegisterForm() {
 
   const selectedRole = watch("role");
 
+  const searchParams = useSearchParams();
+
   useEffect(() => {
-    // Use window.location.search to avoid SSR/suspense issues with useSearchParams
     try {
-      const params = new URLSearchParams(window.location.search);
-      const roleParam = params.get("role");
+      const roleParam = searchParams?.get("role") ?? new URLSearchParams(window.location.search).get("role");
       if (roleParam && roleParam.toLowerCase() === "teacher") {
         setValue("role", "TEACHER");
       }
     } catch (e) {
       // ignore
     }
-  }, [setValue]);
+  }, [searchParams, setValue]);
 
   const onSubmit = (values: RegisterValues) => {
     setError(null);
