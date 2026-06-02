@@ -65,6 +65,21 @@ export async function enrollInFreeCourse(courseId: string) {
       });
     }
 
+    // Create notification
+    try {
+      await db.notification.create({
+        data: {
+          userId: session.user.id,
+          type: "ENROLLMENT",
+          title: "Successfully Enrolled! 🎓",
+          message: `You have successfully enrolled in "${course.title}". Start learning now!`,
+          link: `/learn/${courseId}/${lessons[0]?.id || ""}`,
+        },
+      });
+    } catch (err) {
+      console.error("Failed to create enrollment notification:", err);
+    }
+
     revalidatePath(`/student/courses`);
     revalidatePath(`/courses/${course.slug}`);
     return { success: true, data: enrollment };
@@ -155,6 +170,42 @@ export async function toggleLessonCompletion(
           enrollmentId: enrollment.id,
         },
       });
+
+      const fullEnrollment = await db.enrollment.findUnique({
+        where: { id: enrollment.id },
+        include: {
+          user: true,
+          course: true,
+        },
+      });
+
+      if (fullEnrollment) {
+        try {
+          await db.notification.create({
+            data: {
+              userId: fullEnrollment.userId,
+              type: "CERTIFICATE",
+              title: "Certificate Earned! 🎉",
+              message: `Congratulations! You have completed "${fullEnrollment.course.title}" and earned a certificate.`,
+              link: `/certificates/${certId}`,
+            },
+          });
+        } catch (err) {
+          console.error("Failed to create certificate notification:", err);
+        }
+
+        try {
+          const { sendCertificateEmail } = await import("@/lib/mail");
+          await sendCertificateEmail(
+            fullEnrollment.user.email,
+            fullEnrollment.user.name || fullEnrollment.user.email,
+            fullEnrollment.course.title,
+            certId
+          );
+        } catch (err) {
+          console.error("Failed to send certificate email:", err);
+        }
+      }
     }
 
     revalidatePath(`/student/courses`);

@@ -37,7 +37,7 @@ export async function registerUser(values: z.infer<typeof registerSchema>) {
       return { error: "Email already registered." };
     }
 
-    await db.user.create({
+    const user = await db.user.create({
       data: {
         name,
         email,
@@ -45,6 +45,14 @@ export async function registerUser(values: z.infer<typeof registerSchema>) {
         role,
       },
     });
+
+    // Send onboarding welcome email
+    try {
+      const { sendWelcomeEmail } = await import("@/lib/mail");
+      await sendWelcomeEmail(email, name);
+    } catch (err) {
+      console.error("Failed to send welcome email:", err);
+    }
 
     return { success: "Account created successfully!" };
   } catch (error) {

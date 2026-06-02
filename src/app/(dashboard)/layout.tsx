@@ -15,6 +15,7 @@ import { auth, signOut } from "@/auth";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { NotificationsMenu } from "@/components/shared/notifications-menu";
 
 export default async function DashboardLayout({
   children,
@@ -76,15 +77,18 @@ export default async function DashboardLayout({
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <span className="text-xs font-semibold truncate max-w-[120px]">
+              <span className="text-xs font-semibold truncate max-w-[100px]">
                 {session.user.name || "User"}
               </span>
-              <span className="text-[10px] text-neutral-500 truncate max-w-[120px]">
+              <span className="text-[10px] text-neutral-500 truncate max-w-[100px]">
                 {role}
               </span>
             </div>
           </div>
-          <ThemeToggle />
+          <div className="flex items-center gap-1">
+            <NotificationsMenu />
+            <ThemeToggle />
+          </div>
         </div>
       </aside>
 
@@ -98,6 +102,7 @@ export default async function DashboardLayout({
           </Link>
 
           <div className="flex items-center gap-3">
+            <NotificationsMenu />
             <ThemeToggle />
             <Avatar className="h-8 w-8">
               <AvatarImage src={session.user.image || ""} />

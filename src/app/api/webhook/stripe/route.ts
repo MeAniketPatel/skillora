@@ -42,8 +42,12 @@ export async function POST(req: Request) {
       },
     });
 
-    if (!course) {
-      return new NextResponse("Course not found", { status: 404 });
+    const user = await db.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      return new NextResponse("User not found", { status: 404 });
     }
 
     await db.$transaction(async (tx) => {
@@ -104,7 +108,31 @@ export async function POST(req: Request) {
           },
         });
       }
+
+      // Create in-app notification
+      await tx.notification.create({
+        data: {
+          userId,
+          type: "PURCHASE",
+          title: "Course Purchased! 💳",
+          message: `Thank you! You have successfully purchased and enrolled in "${course.title}".`,
+          link: `/learn/${courseId}/${lessons[0]?.id || ""}`,
+        },
+      });
     });
+
+    // Send purchase email
+    try {
+      const { sendPurchaseConfirmation } = await import("@/lib/mail");
+      await sendPurchaseConfirmation(
+        user.email,
+        user.name || user.email,
+        course.title,
+        session.amount_total ? session.amount_total / 100 : 0
+      );
+    } catch (err) {
+      console.error("Failed to send purchase email:", err);
+    }
   }
 
   return new NextResponse(null, { status: 200 });
