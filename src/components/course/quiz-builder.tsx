@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useTransition, useEffect } from "react";
-import { Plus, Trash2, CheckCircle2, Circle } from "lucide-react";
+import { Plus, Trash2, CheckCircle2, Circle, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createQuiz, updateQuiz } from "@/actions/quiz.actions";
+import { generateAIQuizQuestions } from "@/actions/ai.actions";
 
 interface QuestionOption {
   text: string;
@@ -38,6 +39,22 @@ export default function QuizBuilder({ lessonId, initialQuiz }: QuizBuilderProps)
   const [quizId, setQuizId] = useState<string | null>(initialQuiz?.id || null);
   const [title, setTitle] = useState(initialQuiz?.title || "Lesson Quiz");
   const [passingScore, setPassingScore] = useState(initialQuiz?.passingScore || 70);
+  const [isGeneratingAI, setIsGeneratingAI] = useState(false);
+
+  const handleAIQuestions = async () => {
+    if (!title || !title.trim()) return;
+    setIsGeneratingAI(true);
+    try {
+      const res = await generateAIQuizQuestions(title);
+      if (res.success && res.questions) {
+        setQuestions([...questions, ...res.questions]);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsGeneratingAI(false);
+    }
+  };
   
   const [questions, setQuestions] = useState<Question[]>(
     initialQuiz?.questions.map((q) => ({
@@ -188,7 +205,19 @@ export default function QuizBuilder({ lessonId, initialQuiz }: QuizBuilderProps)
           </div>
 
           <div className="space-y-4">
-            <h4 className="font-semibold text-sm">Questions</h4>
+            <div className="flex items-center justify-between">
+              <h4 className="font-semibold text-sm">Questions</h4>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={handleAIQuestions}
+                disabled={isPending || isGeneratingAI}
+                className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center gap-1 h-7 font-bold px-2 hover:bg-indigo-50/20"
+              >
+                <Sparkles className="h-3 w-3" /> {isGeneratingAI ? "Generating..." : "Generate AI Questions"}
+              </Button>
+            </div>
             {questions.map((q, qIdx) => (
               <div
                 key={qIdx}

@@ -6,7 +6,7 @@ import { z } from "zod";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Eye, GraduationCap, ArrowLeft, LayoutGrid } from "lucide-react";
+import { Eye, GraduationCap, ArrowLeft, LayoutGrid, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +15,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import RichTextEditor from "@/components/shared/rich-text-editor";
 import { UploadDropzone } from "@/lib/uploadthing";
 import { updateCourse, publishCourse, unpublishCourse } from "@/actions/course.actions";
+import { generateAICourseDescription } from "@/actions/ai.actions";
 
 const courseSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -48,6 +49,31 @@ export default function CourseEditor({ course, categories }: CourseEditorProps) 
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [isGeneratingAI, setIsGeneratingAI] = useState(false);
+
+  const handleAIDescription = async () => {
+    const titleVal = watch("title");
+    if (!titleVal || !titleVal.trim()) {
+      setError("Please fill in the course title first.");
+      return;
+    }
+    setIsGeneratingAI(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      const res = await generateAICourseDescription(titleVal);
+      if (res.error) {
+        setError(res.error);
+      } else if (res.description) {
+        setValue("description", res.description);
+        setSuccess("AI Description generated successfully! Save your changes below.");
+      }
+    } catch (err) {
+      setError("AI generation failed.");
+    } finally {
+      setIsGeneratingAI(false);
+    }
+  };
 
   const {
     register,
@@ -157,7 +183,19 @@ export default function CourseEditor({ course, categories }: CourseEditorProps) 
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Description</Label>
+                  <div className="flex items-center justify-between">
+                    <Label>Description</Label>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleAIDescription}
+                      disabled={isPending || isGeneratingAI}
+                      className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center gap-1 h-7 font-bold px-2 hover:bg-indigo-50/20"
+                    >
+                      <Sparkles className="h-3 w-3" /> {isGeneratingAI ? "Generating..." : "Generate AI Description"}
+                    </Button>
+                  </div>
                   <RichTextEditor
                     value={descriptionVal || ""}
                     onChange={(val) => setValue("description", val)}
