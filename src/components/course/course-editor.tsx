@@ -165,6 +165,21 @@ export default function CourseEditor({
               message: "This field is required",
             }),
           );
+
+          // Focus and scroll to first missing field
+          const first = missing[0];
+          try {
+            const el = document.getElementById(first);
+            if (el) {
+              el.focus();
+              el.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+          } catch (e) {
+            // ignore
+          }
+
+          setError("Please fill in all required fields.");
+          return;
         }
 
         const res = await publishCourse(course.id);
@@ -392,9 +407,14 @@ export default function CourseEditor({
                   </Button>
                 </div>
               ) : (
-                <div className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg p-6 flex flex-col items-center justify-center min-h-[200px] bg-neutral-50/50 dark:bg-neutral-950/20">
+                <div 
+                  id="thumbnail"
+                  aria-invalid={!!errors.thumbnail}
+                  className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg p-6 flex flex-col items-center justify-center min-h-[200px] bg-neutral-50/50 dark:bg-neutral-950/20 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20"
+                >
                   <UploadDropzone
                     endpoint="courseThumbnail"
+                    config={{ mode: "manual" }}
                     onClientUploadComplete={(res) => {
                       if (res?.[0]?.url) {
                         setValue("thumbnail", res[0].url);
@@ -406,6 +426,11 @@ export default function CourseEditor({
                     }}
                   />
                 </div>
+              )}
+              {errors.thumbnail && (
+                <p className="text-sm text-red-500 font-medium">
+                  {errors.thumbnail.message}
+                </p>
               )}
             </CardContent>
           </Card>
@@ -443,6 +468,7 @@ export default function CourseEditor({
                 <div className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg p-6 flex flex-col items-center justify-center min-h-[200px] bg-neutral-50/50 dark:bg-neutral-950/20">
                   <UploadDropzone
                     endpoint="courseVideo"
+                    config={{ mode: "manual" }}
                     onClientUploadComplete={(res) => {
                       if (res?.[0]?.url) {
                         setValue("promoVideo", res[0].url);
