@@ -178,6 +178,18 @@ export default function CourseEditor({
                 message: "This field is required",
               }),
             );
+
+            // Focus the first missing field if present
+            const first = (res as any).missingFields[0];
+            try {
+              const el = document.getElementById(first);
+              if (el) {
+                el.focus();
+                el.scrollIntoView({ behavior: "smooth", block: "center" });
+              }
+            } catch (e) {
+              // ignore
+            }
           }
           setError(res.error);
         } else {
@@ -250,6 +262,7 @@ export default function CourseEditor({
                   <Label htmlFor="title">Course Title</Label>
                   <Input
                     id="title"
+                    aria-invalid={!!errors.title}
                     {...register("title")}
                     disabled={isPending}
                   />
@@ -277,11 +290,16 @@ export default function CourseEditor({
                         : "Generate AI Description"}
                     </Button>
                   </div>
-                  <RichTextEditor
-                    value={descriptionVal || ""}
-                    onChange={(val) => setValue("description", val)}
-                    disabled={isPending}
-                  />
+                  <div id="description" aria-invalid={!!errors.description}>
+                    <RichTextEditor
+                      value={descriptionVal || ""}
+                      onChange={(val) => setValue("description", val)}
+                      disabled={isPending}
+                    />
+                  </div>
+                  {errors.description && (
+                    <p className="text-sm text-red-500">{errors.description.message}</p>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -289,9 +307,10 @@ export default function CourseEditor({
                     <Label htmlFor="categoryId">Category</Label>
                     <select
                       id="categoryId"
+                      aria-invalid={!!errors.categoryId}
                       {...register("categoryId")}
                       disabled={isPending}
-                      className="w-full h-10 px-3 rounded-md border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 text-sm"
+                      className="w-full h-10 px-3 rounded-md border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 text-sm aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20"
                     >
                       <option value="">Select a category</option>
                       {categories.map((c) => (
@@ -300,6 +319,9 @@ export default function CourseEditor({
                         </option>
                       ))}
                     </select>
+                    {errors.categoryId && (
+                      <p className="text-sm text-red-500">{errors.categoryId.message}</p>
+                    )}
                   </div>
 
                   <div className="space-y-2">
@@ -323,6 +345,7 @@ export default function CourseEditor({
                   <Input
                     id="price"
                     type="number"
+                    aria-invalid={!!errors.price}
                     step="0.01"
                     {...register("price", { valueAsNumber: true })}
                     disabled={isPending}

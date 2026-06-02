@@ -79,6 +79,7 @@ export default function CreateCourseForm({
             <Label htmlFor="title">Course Title</Label>
             <Input
               id="title"
+              aria-invalid={!!errors.title}
               placeholder="e.g. 'Advanced Web Development'"
               {...register("title")}
               disabled={isPending}
@@ -96,9 +97,10 @@ export default function CreateCourseForm({
               <Label htmlFor="categoryId">Category</Label>
               <select
                 id="categoryId"
+                aria-invalid={!!errors.categoryId}
                 {...register("categoryId")}
                 disabled={isPending}
-                className="w-full h-10 px-3 rounded-md border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-950 dark:focus:ring-neutral-50"
+                className="w-full h-10 px-3 rounded-md border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-950 dark:focus:ring-neutral-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20"
               >
                 <option value="">Select a category</option>
                 {categories.map((c) => (
@@ -118,9 +120,10 @@ export default function CreateCourseForm({
               <Label htmlFor="level">Course Level</Label>
               <select
                 id="level"
+                aria-invalid={!!errors.level}
                 {...register("level")}
                 disabled={isPending}
-                className="w-full h-10 px-3 rounded-md border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-950 dark:focus:ring-neutral-50"
+                className="w-full h-10 px-3 rounded-md border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-950 dark:focus:ring-neutral-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20"
               >
                 <option value="BEGINNER">Beginner</option>
                 <option value="INTERMEDIATE">Intermediate</option>
