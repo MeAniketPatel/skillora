@@ -95,6 +95,17 @@ export default async function LearnPage({ params }: LearnPageProps) {
     },
   });
 
+  const assignmentSubmission = lesson.type === "ASSIGNMENT"
+    ? await db.assignmentSubmission.findUnique({
+        where: {
+          userId_lessonId: {
+            userId: session.user.id,
+            lessonId,
+          },
+        },
+      })
+    : null;
+
   // Flatten lessons to calculate next/prev
   const allLessons = course.sections.flatMap((s) => s.lessons);
   const currentIdx = allLessons.findIndex((l) => l.id === lessonId);
@@ -119,6 +130,7 @@ export default async function LearnPage({ params }: LearnPageProps) {
         initialPosition: currentProgress?.videoPosition || 0,
         attachments: lesson.attachments,
         quiz: lesson.quiz,
+        submission: assignmentSubmission,
       }}
       sections={course.sections as any}
       completedLessonIds={completedLessonIds}

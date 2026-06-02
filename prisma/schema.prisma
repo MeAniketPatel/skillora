@@ -43,6 +43,7 @@ model User {
   notes         Note[]
   questions     Question[]
   answers       Answer[]
+  submissions   AssignmentSubmission[]
 }
 
 model Account {
@@ -170,6 +171,7 @@ model Lesson {
   quiz        Quiz?
   notes       Note[]
   questions   Question[]
+  submissions AssignmentSubmission[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -397,4 +399,20 @@ model Notification {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
+}
+
+model AssignmentSubmission {
+  id           String   @id @default(cuid())
+  content      String   @db.Text
+  score        Float?
+  feedback     String?  @db.Text
+  status       String   @default("SUBMITTED")
+  lessonId     String
+  lesson       Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  submittedAt  DateTime @default(now())
+  gradedAt     DateTime?
+
+  @@unique([userId, lessonId])
 }

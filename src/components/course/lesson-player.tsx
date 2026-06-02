@@ -20,6 +20,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toggleLessonCompletion } from "@/actions/enrollment.actions";
 import { VideoPlayer } from "@/components/shared/video-player";
 import QuizView from "@/components/course/quiz-view";
+import AssignmentView from "@/components/course/assignment-view";
 
 interface Lesson {
   id: string;
@@ -55,6 +56,7 @@ interface LessonPlayerProps {
     initialPosition: number;
     attachments: Attachment[];
     quiz: any;
+    submission: any;
   };
   sections: Section[];
   completedLessonIds: string[];
@@ -202,6 +204,13 @@ export default function LessonPlayer({
             />
           )}
 
+          {lesson.type === "ASSIGNMENT" && (
+            <AssignmentView
+              lessonId={lesson.id}
+              initialSubmission={lesson.submission}
+            />
+          )}
+
           {/* Attachments Section */}
           {lesson.attachments && lesson.attachments.length > 0 && (
             <div className="space-y-3 pt-4 border-t border-neutral-200 dark:border-neutral-800">
@@ -229,7 +238,7 @@ export default function LessonPlayer({
           )}
 
           {/* Completion controls */}
-          {lesson.type !== "QUIZ" && (
+          {lesson.type !== "QUIZ" && lesson.type !== "ASSIGNMENT" && (
             <div className="flex justify-end pt-4 border-t border-neutral-200 dark:border-neutral-800">
               <Button
                 onClick={handleToggleCompletion}
