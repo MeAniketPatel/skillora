@@ -54,6 +54,13 @@ export async function registerUser(values: z.infer<typeof registerSchema>) {
       console.error("Failed to send welcome email:", err);
     }
 
+    // Auto-login after registration
+    await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
     return { success: "Account created successfully!" };
   } catch (error) {
     console.error("[REGISTER_ERROR]", error);

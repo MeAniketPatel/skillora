@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import LinkButton from "@/components/ui/link-button";
@@ -10,7 +12,13 @@ import {
 import Link from "next/link";
 import { ArrowRight, BookOpen, ShieldCheck, Zap } from "lucide-react";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const session = await auth();
+
+  if (session?.user) {
+    redirect("/dashboard");
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />

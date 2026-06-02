@@ -76,9 +76,10 @@ export default function RegisterForm() {
       if (res?.error) {
         setError(res.error);
       } else {
-        setSuccess("Account created! Redirecting to login...");
+        setSuccess("Account created! Redirecting to dashboard...");
         setTimeout(() => {
-          router.push("/login");
+          router.push("/dashboard");
+          router.refresh();
         }, 1500);
       }
     });
