@@ -1,6 +1,6 @@
 # Skillora
 
-> **The modern e-learning platform where teachers create, students thrive.**
+> **The modern e-learning platform where teachers create, students thrive..**
 
 Skillora is a full-stack, production-grade e-learning platform built with modern web technologies. Teachers can create and sell courses with rich content (video, text, quizzes), and students can discover, enroll, learn, and earn certificates.
 
