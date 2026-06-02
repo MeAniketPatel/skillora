@@ -4,15 +4,17 @@ import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { enrollInFreeCourse } from "@/actions/enrollment.actions";
+import { createCheckoutSession } from "@/actions/payment.actions";
 
 interface EnrollButtonProps {
   courseId: string;
   isLoggedIn: boolean;
   isEnrolled: boolean;
   firstLessonId: string | null;
+  price: number | null;
 }
 
-export default function EnrollButton({ courseId, isLoggedIn, isEnrolled, firstLessonId }: EnrollButtonProps) {
+export default function EnrollButton({ courseId, isLoggedIn, isEnrolled, firstLessonId, price }: EnrollButtonProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +30,7 @@ export default function EnrollButton({ courseId, isLoggedIn, isEnrolled, firstLe
     );
   }
 
-  const handleEnroll = () => {
+  const handleEnrollOrBuy = () => {
     if (!isLoggedIn) {
       router.push("/login");
       return;
@@ -36,24 +38,37 @@ export default function EnrollButton({ courseId, isLoggedIn, isEnrolled, firstLe
 
     setError(null);
     startTransition(async () => {
-      const res = await enrollInFreeCourse(courseId);
-      if (res.error) {
-        setError(res.error);
-      } else if (firstLessonId) {
-        router.refresh();
-        router.push(`/learn/${courseId}/${firstLessonId}`);
+      if (price !== null && price > 0) {
+        const res = await createCheckoutSession(courseId);
+        if (res.error) {
+          setError(res.error);
+        } else if (res.url) {
+          window.location.href = res.url;
+        }
+      } else {
+        const res = await enrollInFreeCourse(courseId);
+        if (res.error) {
+          setError(res.error);
+        } else if (firstLessonId) {
+          router.refresh();
+          router.push(`/learn/${courseId}/${firstLessonId}`);
+        }
       }
     });
   };
 
+  const buttonText = price !== null && price > 0 
+    ? `Buy Now ($${price})` 
+    : "Enroll Now (Free)";
+
   return (
     <div className="w-full space-y-2">
       <Button 
-        onClick={handleEnroll} 
+        onClick={handleEnrollOrBuy} 
         disabled={isPending} 
         className="w-full font-semibold"
       >
-        {isPending ? "Enrolling..." : "Enroll Now (Free)"}
+        {isPending ? "Processing..." : buttonText}
       </Button>
       {error && (
         <p className="text-xs text-red-500 text-center font-medium">{error}</p>
@@ -61,3 +76,4 @@ export default function EnrollButton({ courseId, isLoggedIn, isEnrolled, firstLe
     </div>
   );
 }
+

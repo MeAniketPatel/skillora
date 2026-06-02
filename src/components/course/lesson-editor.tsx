@@ -15,10 +15,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import RichTextEditor from "@/components/shared/rich-text-editor";
 import { UploadDropzone } from "@/lib/uploadthing";
 import { updateLesson, createAttachment, deleteAttachment } from "@/actions/course.actions";
+import QuizBuilder from "@/components/course/quiz-builder";
 
 const lessonSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  type: z.enum(["VIDEO", "ARTICLE"]),
+  type: z.enum(["VIDEO", "ARTICLE", "QUIZ"]),
   content: z.string().optional(),
   videoUrl: z.string().url().nullable().optional().or(z.literal("")),
   videoDuration: z.number().nullable().optional(),
@@ -45,6 +46,7 @@ interface LessonEditorProps {
     videoUrl: string | null;
     videoDuration: number | null;
     attachments: Attachment[];
+    quiz?: any;
   };
 }
 
@@ -65,7 +67,7 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
     resolver: zodResolver(lessonSchema),
     defaultValues: {
       title: lesson.title,
-      type: lesson.type === "VIDEO" ? "VIDEO" : "ARTICLE",
+      type: lesson.type === "VIDEO" ? "VIDEO" : lesson.type === "QUIZ" ? "QUIZ" : "ARTICLE",
       content: lesson.content || "",
       videoUrl: lesson.videoUrl || "",
       videoDuration: lesson.videoDuration || null,
@@ -95,6 +97,10 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
         router.refresh();
       }
     });
+  };
+
+  const handleUpdate = () => {
+    onSubmit(watch());
   };
 
   const handleAddAttachment = (file: { name: string; url: string; size: number }) => {
@@ -178,15 +184,20 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
                   <select
                     id="type"
                     {...register("type")}
+                    onChange={(e) => {
+                      setValue("type", e.target.value as any);
+                      handleUpdate();
+                    }}
                     disabled={isPending}
                     className="w-full h-10 px-3 rounded-md border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 text-sm"
                   >
                     <option value="ARTICLE">Article (Rich Text)</option>
                     <option value="VIDEO">Video</option>
+                    <option value="QUIZ">Quiz</option>
                   </select>
                 </div>
 
-                {watchType === "ARTICLE" ? (
+                {watchType === "ARTICLE" && (
                   <div className="space-y-2">
                     <Label>Article Content</Label>
                     <RichTextEditor
@@ -195,7 +206,9 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
                       disabled={isPending}
                     />
                   </div>
-                ) : (
+                )}
+
+                {watchType === "VIDEO" && (
                   <div className="space-y-4">
                     <Label>Lesson Video</Label>
                     {watchVideoUrl ? (
@@ -222,8 +235,6 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
                           onClientUploadComplete={(res) => {
                             if (res?.[0]?.url) {
                               setValue("videoUrl", res[0].url);
-                              // We can estimate the duration or set a placeholder duration. 
-                              // Video files usually load metadata on client to get duration.
                               setValue("videoDuration", 0);
                               setSuccess("Video uploaded successfully! Make sure to save details.");
                             }
@@ -235,6 +246,13 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
                       </div>
                     )}
                   </div>
+                )}
+
+                {watchType === "QUIZ" && (
+                  <QuizBuilder
+                    lessonId={lesson.id}
+                    initialQuiz={lesson.quiz}
+                  />
                 )}
 
                 <Button type="submit" disabled={isPending} className="w-full lg:w-auto">

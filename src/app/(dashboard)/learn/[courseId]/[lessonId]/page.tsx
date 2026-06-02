@@ -67,6 +67,17 @@ export default async function LearnPage({ params }: LearnPageProps) {
       attachments: {
         orderBy: { createdAt: "desc" },
       },
+      quiz: {
+        include: {
+          questions: {
+            orderBy: { position: "asc" },
+          },
+          attempts: {
+            where: { userId: session.user.id },
+            orderBy: { startedAt: "desc" },
+          },
+        },
+      },
     },
   });
 
@@ -107,6 +118,7 @@ export default async function LearnPage({ params }: LearnPageProps) {
         videoDuration: lesson.videoDuration,
         initialPosition: currentProgress?.videoPosition || 0,
         attachments: lesson.attachments,
+        quiz: lesson.quiz,
       }}
       sections={course.sections as any}
       completedLessonIds={completedLessonIds}

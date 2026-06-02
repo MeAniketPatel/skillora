@@ -156,6 +156,7 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
                   isLoggedIn={!!session?.user}
                   isEnrolled={isEnrolled}
                   firstLessonId={firstLessonId}
+                  price={course.price}
                 />
               </CardContent>
             </Card>

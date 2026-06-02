@@ -42,6 +42,15 @@ export default async function LessonPage({ params }: LessonPageProps) {
           createdAt: "desc",
         },
       },
+      quiz: {
+        include: {
+          questions: {
+            orderBy: {
+              position: "asc",
+            },
+          },
+        },
+      },
     },
   });
 

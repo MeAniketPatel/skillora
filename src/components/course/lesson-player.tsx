@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toggleLessonCompletion } from "@/actions/enrollment.actions";
 import { VideoPlayer } from "@/components/shared/video-player";
+import QuizView from "@/components/course/quiz-view";
 
 interface Lesson {
   id: string;
@@ -192,6 +193,14 @@ export default function LessonPlayer({
             </Card>
           )}
 
+          {lesson.type === "QUIZ" && lesson.quiz && (
+            <QuizView
+              courseId={courseId}
+              lessonId={lesson.id}
+              quiz={lesson.quiz}
+            />
+          )}
+
           {/* Attachments Section */}
           {lesson.attachments && lesson.attachments.length > 0 && (
             <div className="space-y-3 pt-4 border-t border-neutral-200 dark:border-neutral-800">
@@ -219,15 +228,17 @@ export default function LessonPlayer({
           )}
 
           {/* Completion controls */}
-          <div className="flex justify-end pt-4 border-t border-neutral-200 dark:border-neutral-800">
-            <Button
-              onClick={handleToggleCompletion}
-              disabled={isPending}
-              className={`font-semibold ${isCompleted ? "bg-green-600 hover:bg-green-700" : ""}`}
-            >
-              {isCompleted ? "Completed" : "Mark as Complete"}
-            </Button>
-          </div>
+          {lesson.type !== "QUIZ" && (
+            <div className="flex justify-end pt-4 border-t border-neutral-200 dark:border-neutral-800">
+              <Button
+                onClick={handleToggleCompletion}
+                disabled={isPending}
+                className={`font-semibold ${isCompleted ? "bg-green-600 hover:bg-green-700" : ""}`}
+              >
+                {isCompleted ? "Completed" : "Mark as Complete"}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>
