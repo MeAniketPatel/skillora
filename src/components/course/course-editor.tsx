@@ -6,15 +6,32 @@ import { z } from "zod";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Eye, GraduationCap, ArrowLeft, LayoutGrid, Sparkles } from "lucide-react";
+import {
+  Eye,
+  GraduationCap,
+  ArrowLeft,
+  LayoutGrid,
+  Sparkles,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import LinkButton from "@/components/ui/link-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import RichTextEditor from "@/components/shared/rich-text-editor";
 import { UploadDropzone } from "@/lib/uploadthing";
-import { updateCourse, publishCourse, unpublishCourse } from "@/actions/course.actions";
+import {
+  updateCourse,
+  publishCourse,
+  unpublishCourse,
+} from "@/actions/course.actions";
 import { generateAICourseDescription } from "@/actions/ai.actions";
 
 const courseSchema = z.object({
@@ -44,7 +61,10 @@ interface CourseEditorProps {
   categories: { id: string; name: string }[];
 }
 
-export default function CourseEditor({ course, categories }: CourseEditorProps) {
+export default function CourseEditor({
+  course,
+  categories,
+}: CourseEditorProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -66,7 +86,9 @@ export default function CourseEditor({ course, categories }: CourseEditorProps) 
         setError(res.error);
       } else if (res.description) {
         setValue("description", res.description);
-        setSuccess("AI Description generated successfully! Save your changes below.");
+        setSuccess(
+          "AI Description generated successfully! Save your changes below.",
+        );
       }
     } catch (err) {
       setError("AI generation failed.");
@@ -134,21 +156,30 @@ export default function CourseEditor({ course, categories }: CourseEditorProps) 
       {/* Header section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-x-2">
-          <Button variant="ghost" size="icon" nativeButton={false} render={<Link href="/teacher/courses" />}>
+          <LinkButton variant="ghost" size="icon" href="/teacher/courses">
             <ArrowLeft className="h-4 w-4" />
-          </Button>
+          </LinkButton>
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Course Setup</h1>
-            <p className="text-sm text-neutral-500">Edit course details, thumbnail, pricing, and curriculum.</p>
+            <p className="text-sm text-neutral-500">
+              Edit course details, thumbnail, pricing, and curriculum.
+            </p>
           </div>
         </div>
 
         <div className="flex items-center gap-x-2">
-          <Button variant="outline" nativeButton={false} render={<Link href={`/teacher/courses/${course.id}/curriculum`} />}>
+          <LinkButton
+            variant="outline"
+            href={`/teacher/courses/${course.id}/curriculum`}
+          >
             <LayoutGrid className="mr-2 h-4 w-4" />
             Curriculum
-          </Button>
-          <Button variant={course.status === "PUBLISHED" ? "outline" : "default"} onClick={togglePublish} disabled={isPending}>
+          </LinkButton>
+          <Button
+            variant={course.status === "PUBLISHED" ? "outline" : "default"}
+            onClick={togglePublish}
+            disabled={isPending}
+          >
             {course.status === "PUBLISHED" ? "Unpublish" : "Publish"}
           </Button>
         </div>
@@ -172,14 +203,24 @@ export default function CourseEditor({ course, categories }: CourseEditorProps) 
           <Card className="bg-white dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50">
             <CardHeader>
               <CardTitle>Course Details</CardTitle>
-              <CardDescription>Configure basic course properties.</CardDescription>
+              <CardDescription>
+                Configure basic course properties.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="title">Course Title</Label>
-                  <Input id="title" {...register("title")} disabled={isPending} />
-                  {errors.title && <p className="text-sm text-red-500">{errors.title.message}</p>}
+                  <Input
+                    id="title"
+                    {...register("title")}
+                    disabled={isPending}
+                  />
+                  {errors.title && (
+                    <p className="text-sm text-red-500">
+                      {errors.title.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
@@ -193,7 +234,10 @@ export default function CourseEditor({ course, categories }: CourseEditorProps) 
                       disabled={isPending || isGeneratingAI}
                       className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center gap-1 h-7 font-bold px-2 hover:bg-indigo-50/20"
                     >
-                      <Sparkles className="h-3 w-3" /> {isGeneratingAI ? "Generating..." : "Generate AI Description"}
+                      <Sparkles className="h-3 w-3" />{" "}
+                      {isGeneratingAI
+                        ? "Generating..."
+                        : "Generate AI Description"}
                     </Button>
                   </div>
                   <RichTextEditor
@@ -239,8 +283,18 @@ export default function CourseEditor({ course, categories }: CourseEditorProps) 
 
                 <div className="space-y-2">
                   <Label htmlFor="price">Price ($)</Label>
-                  <Input id="price" type="number" step="0.01" {...register("price", { valueAsNumber: true })} disabled={isPending} />
-                  {errors.price && <p className="text-sm text-red-500">{errors.price.message}</p>}
+                  <Input
+                    id="price"
+                    type="number"
+                    step="0.01"
+                    {...register("price", { valueAsNumber: true })}
+                    disabled={isPending}
+                  />
+                  {errors.price && (
+                    <p className="text-sm text-red-500">
+                      {errors.price.message}
+                    </p>
+                  )}
                 </div>
 
                 <Button type="submit" disabled={isPending} className="mt-4">
@@ -262,7 +316,11 @@ export default function CourseEditor({ course, categories }: CourseEditorProps) 
               {thumbnailVal ? (
                 <div className="aspect-video w-full relative rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={thumbnailVal} alt="Thumbnail" className="w-full h-full object-cover" />
+                  <img
+                    src={thumbnailVal}
+                    alt="Thumbnail"
+                    className="w-full h-full object-cover"
+                  />
                   <Button
                     variant="destructive"
                     size="sm"
@@ -295,13 +353,19 @@ export default function CourseEditor({ course, categories }: CourseEditorProps) 
           <Card className="bg-white dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50">
             <CardHeader>
               <CardTitle>Course Promo Video</CardTitle>
-              <CardDescription>Upload a short video to introduce your course.</CardDescription>
+              <CardDescription>
+                Upload a short video to introduce your course.
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {promoVideoVal ? (
                 <div className="space-y-4">
                   <div className="aspect-video w-full relative rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800 bg-black">
-                    <video src={promoVideoVal} controls className="w-full h-full object-contain" />
+                    <video
+                      src={promoVideoVal}
+                      controls
+                      className="w-full h-full object-contain"
+                    />
                   </div>
                   <Button
                     variant="destructive"

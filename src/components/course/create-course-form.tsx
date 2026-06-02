@@ -8,9 +8,16 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import LinkButton from "@/components/ui/link-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { createCourse } from "@/actions/course.actions";
 
 const createSchema = z.object({
@@ -25,7 +32,9 @@ interface CreateCourseFormProps {
   categories: { id: string; name: string }[];
 }
 
-export default function CreateCourseForm({ categories }: CreateCourseFormProps) {
+export default function CreateCourseForm({
+  categories,
+}: CreateCourseFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -60,7 +69,8 @@ export default function CreateCourseForm({ categories }: CreateCourseFormProps) 
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Name your course</CardTitle>
         <CardDescription>
-          What would you like to name your course? Don&apos;t worry, you can change this later.
+          What would you like to name your course? Don&apos;t worry, you can
+          change this later.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -75,7 +85,9 @@ export default function CreateCourseForm({ categories }: CreateCourseFormProps) 
               className="bg-white/50 dark:bg-neutral-950/50"
             />
             {errors.title && (
-              <p className="text-sm text-red-500 font-medium">{errors.title.message}</p>
+              <p className="text-sm text-red-500 font-medium">
+                {errors.title.message}
+              </p>
             )}
           </div>
 
@@ -96,7 +108,9 @@ export default function CreateCourseForm({ categories }: CreateCourseFormProps) 
                 ))}
               </select>
               {errors.categoryId && (
-                <p className="text-sm text-red-500 font-medium">{errors.categoryId.message}</p>
+                <p className="text-sm text-red-500 font-medium">
+                  {errors.categoryId.message}
+                </p>
               )}
             </div>
 
@@ -114,7 +128,9 @@ export default function CreateCourseForm({ categories }: CreateCourseFormProps) 
                 <option value="ALL_LEVELS">All Levels</option>
               </select>
               {errors.level && (
-                <p className="text-sm text-red-500 font-medium">{errors.level.message}</p>
+                <p className="text-sm text-red-500 font-medium">
+                  {errors.level.message}
+                </p>
               )}
             </div>
           </div>
@@ -126,9 +142,13 @@ export default function CreateCourseForm({ categories }: CreateCourseFormProps) 
           )}
 
           <div className="flex items-center gap-x-2 pt-4">
-            <Button variant="ghost" type="button" disabled={isPending} nativeButton={false} render={<Link href="/teacher/courses" />}>
+            <LinkButton
+              variant="ghost"
+              href="/teacher/courses"
+              className={isPending ? "opacity-50 pointer-events-none" : ""}
+            >
               Cancel
-            </Button>
+            </LinkButton>
             <Button type="submit" disabled={isPending}>
               {isPending ? "Creating..." : "Continue"}
             </Button>

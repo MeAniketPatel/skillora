@@ -68,27 +68,41 @@ export default async function DashboardLayout({
           ))}
         </nav>
 
-        <div className="p-4 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="p-4 border-t border-neutral-200 dark:border-neutral-800">
+          <div className="flex items-center gap-3 mb-3">
             <Avatar className="h-9 w-9">
               <AvatarImage src={session.user.image || ""} />
               <AvatarFallback className="bg-neutral-100 dark:bg-neutral-800">
                 <User className="h-4 w-4" />
               </AvatarFallback>
             </Avatar>
-            <div className="flex flex-col">
-              <span className="text-xs font-semibold truncate max-w-[100px]">
+            <div className="flex flex-col min-w-0 flex-1">
+              <span className="text-xs font-semibold truncate">
                 {session.user.name || "User"}
               </span>
-              <span className="text-[10px] text-neutral-500 truncate max-w-[100px]">
+              <span className="text-[10px] text-neutral-500 truncate">
                 {role}
               </span>
             </div>
+            <div className="flex items-center gap-1 shrink-0">
+              <NotificationsMenu />
+              <ThemeToggle />
+            </div>
           </div>
-          <div className="flex items-center gap-1">
-            <NotificationsMenu />
-            <ThemeToggle />
-          </div>
+          <form
+            action={async () => {
+              "use server";
+              await signOut({ redirectTo: "/" });
+            }}
+          >
+            <button
+              type="submit"
+              className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-neutral-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 dark:hover:text-red-400 transition-colors"
+            >
+              <LogOut className="h-4 w-4" />
+              Sign out
+            </button>
+          </form>
         </div>
       </aside>
 

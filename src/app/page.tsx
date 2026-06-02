@@ -1,7 +1,12 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import LinkButton from "@/components/ui/link-button";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import Link from "next/link";
 import { ArrowRight, BookOpen, ShieldCheck, Zap } from "lucide-react";
 
@@ -9,13 +14,13 @@ export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      
+
       {/* Hero Section */}
       <main className="flex-grow">
         <section className="relative px-4 py-20 md:py-32 overflow-hidden bg-background text-foreground">
           {/* Subtle Background Gradient Overlay */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--color-primary)/10,_transparent_50%)]" />
-          
+
           <div className="relative mx-auto max-w-5xl text-center">
             <h1 className="font-heading text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl text-foreground">
               Learn Without Limits. <br />
@@ -23,18 +28,29 @@ export default function HomePage() {
                 Teach Without Boundaries.
               </span>
             </h1>
-            
+
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed sm:text-xl">
-              Skillora is a modern e-learning marketplace built for modern creators and curious minds. Build, sell, and learn courses in minutes.
+              Skillora is a modern e-learning marketplace built for modern
+              creators and curious minds. Build, sell, and learn courses in
+              minutes.
             </p>
-            
+
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-              <Button size="lg" nativeButton={false} render={<Link href="/courses" />} className="rounded-full shadow-lg hover:shadow-xl transition-all">
+              <LinkButton
+                size="lg"
+                href="/courses"
+                className="rounded-full shadow-lg hover:shadow-xl transition-all"
+              >
                 Browse Courses <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button size="lg" variant="outline" nativeButton={false} render={<Link href="/register?role=teacher" />} className="rounded-full">
+              </LinkButton>
+              <LinkButton
+                size="lg"
+                variant="outline"
+                href="/register?role=teacher"
+                className="rounded-full"
+              >
                 Become an Instructor
-              </Button>
+              </LinkButton>
             </div>
           </div>
         </section>
@@ -46,9 +62,12 @@ export default function HomePage() {
               <Card className="border-border/50 bg-background/50 backdrop-blur">
                 <CardHeader>
                   <Zap className="h-10 w-10 text-primary mb-2" />
-                  <CardTitle className="font-heading text-xl">LMS Platform</CardTitle>
+                  <CardTitle className="font-heading text-xl">
+                    LMS Platform
+                  </CardTitle>
                   <CardDescription>
-                    Rich curriculum builder with high-speed video streaming, text articles, and quizzes.
+                    Rich curriculum builder with high-speed video streaming,
+                    text articles, and quizzes.
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -56,9 +75,12 @@ export default function HomePage() {
               <Card className="border-border/50 bg-background/50 backdrop-blur">
                 <CardHeader>
                   <ShieldCheck className="h-10 w-10 text-primary mb-2" />
-                  <CardTitle className="font-heading text-xl">Secure Payments</CardTitle>
+                  <CardTitle className="font-heading text-xl">
+                    Secure Payments
+                  </CardTitle>
                   <CardDescription>
-                    Stripe Checkout for instant student enrollment and Stripe Connect for direct payouts to teachers.
+                    Stripe Checkout for instant student enrollment and Stripe
+                    Connect for direct payouts to teachers.
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -66,9 +88,12 @@ export default function HomePage() {
               <Card className="border-border/50 bg-background/50 backdrop-blur">
                 <CardHeader>
                   <BookOpen className="h-10 w-10 text-primary mb-2" />
-                  <CardTitle className="font-heading text-xl">Certificates</CardTitle>
+                  <CardTitle className="font-heading text-xl">
+                    Certificates
+                  </CardTitle>
                   <CardDescription>
-                    Automatically generate downloadable and verifiable PDF completion certificates for your students.
+                    Automatically generate downloadable and verifiable PDF
+                    completion certificates for your students.
                   </CardDescription>
                 </CardHeader>
               </Card>

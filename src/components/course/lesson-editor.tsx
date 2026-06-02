@@ -3,18 +3,38 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Trash2, Video, FileText, File, Download, Loader2 } from "lucide-react";
+import {
+  ArrowLeft,
+  Trash2,
+  Video,
+  FileText,
+  File,
+  Download,
+  Loader2,
+} from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
+import LinkButton from "@/components/ui/link-button";
+import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import RichTextEditor from "@/components/shared/rich-text-editor";
 import { UploadDropzone } from "@/lib/uploadthing";
-import { updateLesson, createAttachment, deleteAttachment } from "@/actions/course.actions";
+import {
+  updateLesson,
+  createAttachment,
+  deleteAttachment,
+} from "@/actions/course.actions";
 import QuizBuilder from "@/components/course/quiz-builder";
 
 const lessonSchema = z.object({
@@ -55,7 +75,9 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  const [attachments, setAttachments] = useState<Attachment[]>(lesson.attachments);
+  const [attachments, setAttachments] = useState<Attachment[]>(
+    lesson.attachments,
+  );
 
   const {
     register,
@@ -67,7 +89,12 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
     resolver: zodResolver(lessonSchema),
     defaultValues: {
       title: lesson.title,
-      type: lesson.type === "VIDEO" ? "VIDEO" : lesson.type === "QUIZ" ? "QUIZ" : "ARTICLE",
+      type:
+        lesson.type === "VIDEO"
+          ? "VIDEO"
+          : lesson.type === "QUIZ"
+            ? "QUIZ"
+            : "ARTICLE",
       content: lesson.content || "",
       videoUrl: lesson.videoUrl || "",
       videoDuration: lesson.videoDuration || null,
@@ -103,7 +130,11 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
     onSubmit(watch());
   };
 
-  const handleAddAttachment = (file: { name: string; url: string; size: number }) => {
+  const handleAddAttachment = (file: {
+    name: string;
+    url: string;
+    size: number;
+  }) => {
     setError(null);
     startTransition(async () => {
       const res = await createAttachment(
@@ -112,7 +143,7 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
         file.name,
         file.url,
         file.size,
-        file.name.split(".").pop() || "unknown"
+        file.name.split(".").pop() || "unknown",
       );
 
       if (res.error) {
@@ -142,12 +173,18 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-x-2">
-        <Button variant="ghost" size="icon" nativeButton={false} render={<Link href={`/teacher/courses/${courseId}/curriculum`} />}>
+        <LinkButton
+          variant="ghost"
+          size="icon"
+          href={`/teacher/courses/${courseId}/curriculum`}
+        >
           <ArrowLeft className="h-4 w-4" />
-        </Button>
+        </LinkButton>
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Lesson Setup</h1>
-          <p className="text-sm text-neutral-500">Configure content, media, and attachments for this lesson.</p>
+          <p className="text-sm text-neutral-500">
+            Configure content, media, and attachments for this lesson.
+          </p>
         </div>
       </div>
 
@@ -169,14 +206,24 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
           <Card className="bg-white dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50">
             <CardHeader>
               <CardTitle>Lesson Details</CardTitle>
-              <CardDescription>Edit lesson type and main body content.</CardDescription>
+              <CardDescription>
+                Edit lesson type and main body content.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="title">Lesson Title</Label>
-                  <Input id="title" {...register("title")} disabled={isPending} />
-                  {errors.title && <p className="text-sm text-red-500">{errors.title.message}</p>}
+                  <Input
+                    id="title"
+                    {...register("title")}
+                    disabled={isPending}
+                  />
+                  {errors.title && (
+                    <p className="text-sm text-red-500">
+                      {errors.title.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
@@ -214,7 +261,11 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
                     {watchVideoUrl ? (
                       <div className="space-y-4">
                         <div className="relative aspect-video rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800">
-                          <video src={watchVideoUrl} controls className="w-full h-full object-contain" />
+                          <video
+                            src={watchVideoUrl}
+                            controls
+                            className="w-full h-full object-contain"
+                          />
                         </div>
                         <Button
                           variant="destructive"
@@ -236,7 +287,9 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
                             if (res?.[0]?.url) {
                               setValue("videoUrl", res[0].url);
                               setValue("videoDuration", 0);
-                              setSuccess("Video uploaded successfully! Make sure to save details.");
+                              setSuccess(
+                                "Video uploaded successfully! Make sure to save details.",
+                              );
                             }
                           }}
                           onUploadError={(error: Error) => {
@@ -249,14 +302,17 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
                 )}
 
                 {watchType === "QUIZ" && (
-                  <QuizBuilder
-                    lessonId={lesson.id}
-                    initialQuiz={lesson.quiz}
-                  />
+                  <QuizBuilder lessonId={lesson.id} initialQuiz={lesson.quiz} />
                 )}
 
-                <Button type="submit" disabled={isPending} className="w-full lg:w-auto">
-                  {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                <Button
+                  type="submit"
+                  disabled={isPending}
+                  className="w-full lg:w-auto"
+                >
+                  {isPending && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
                   Save Details
                 </Button>
               </form>
@@ -269,7 +325,9 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
           <Card className="bg-white dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50">
             <CardHeader>
               <CardTitle>Lesson Resources</CardTitle>
-              <CardDescription>Upload files (PDF, code files, zip) for students to download.</CardDescription>
+              <CardDescription>
+                Upload files (PDF, code files, zip) for students to download.
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg p-4 flex flex-col items-center justify-center bg-neutral-50/50 dark:bg-neutral-950/20">
@@ -293,9 +351,13 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
               </div>
 
               <div className="space-y-2">
-                <h4 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">Uploaded Files</h4>
+                <h4 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+                  Uploaded Files
+                </h4>
                 {attachments.length === 0 ? (
-                  <p className="text-xs text-neutral-500 italic">No attachments uploaded yet.</p>
+                  <p className="text-xs text-neutral-500 italic">
+                    No attachments uploaded yet.
+                  </p>
                 ) : (
                   <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
                     {attachments.map((file) => (
@@ -310,14 +372,21 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
                           </span>
                         </div>
                         <div className="flex items-center gap-1 shrink-0 ml-2">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-6 w-6"
-                            render={<a href={file.url} download target="_blank" rel="noreferrer" />}
+                          <a
+                            href={file.url}
+                            download
+                            target="_blank"
+                            rel="noreferrer"
+                            className={cn(
+                              buttonVariants({
+                                variant: "ghost",
+                                size: "icon",
+                              }),
+                              "h-6 w-6",
+                            )}
                           >
                             <Download className="h-3 w-3" />
-                          </Button>
+                          </a>
                           <Button
                             variant="ghost"
                             size="icon"

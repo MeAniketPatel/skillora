@@ -2,8 +2,15 @@ import Link from "next/link";
 import { GraduationCap, Search, Filter } from "lucide-react";
 import db from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
+import LinkButton from "@/components/ui/link-button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
@@ -53,12 +60,20 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
         <div className="space-y-6">
           {/* Header */}
           <div>
-            <h1 className="text-4xl font-bold tracking-tight">Explore Courses</h1>
-            <p className="text-neutral-500 mt-2">Discover professional courses taught by industry leaders.</p>
+            <h1 className="text-4xl font-bold tracking-tight">
+              Explore Courses
+            </h1>
+            <p className="text-neutral-500 mt-2">
+              Discover professional courses taught by industry leaders.
+            </p>
           </div>
 
           {/* Search and Filters */}
-          <form method="GET" action="/courses" className="flex flex-col md:flex-row gap-4 items-center">
+          <form
+            method="GET"
+            action="/courses"
+            className="flex flex-col md:flex-row gap-4 items-center"
+          >
             <div className="relative w-full md:max-w-md">
               <Search className="absolute left-3 top-3 h-4 w-4 text-neutral-400" />
               <Input
@@ -70,17 +85,24 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
             </div>
 
             <div className="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
-              <Link href="/courses">
-                <Button variant={!categoryId ? "default" : "outline"} size="sm" type="button">
-                  All
-                </Button>
-              </Link>
+              <LinkButton
+                href="/courses"
+                variant={!categoryId ? "default" : "outline"}
+                size="sm"
+                className="!px-3"
+              >
+                All
+              </LinkButton>
               {categories.map((cat) => (
-                <Link key={cat.id} href={`/courses?categoryId=${cat.id}${title ? `&title=${title}` : ""}`}>
-                  <Button variant={categoryId === cat.id ? "default" : "outline"} size="sm" type="button">
-                    {cat.name}
-                  </Button>
-                </Link>
+                <LinkButton
+                  key={cat.id}
+                  href={`/courses?categoryId=${cat.id}${title ? `&title=${title}` : ""}`}
+                  variant={categoryId === cat.id ? "default" : "outline"}
+                  size="sm"
+                  className="!px-3"
+                >
+                  {cat.name}
+                </LinkButton>
               ))}
             </div>
           </form>
@@ -89,22 +111,35 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
           {courses.length === 0 ? (
             <Card className="flex flex-col items-center justify-center p-12 text-center bg-white dark:bg-neutral-900">
               <GraduationCap className="h-12 w-12 text-neutral-400 mb-4" />
-              <CardTitle className="text-xl font-bold">No courses found</CardTitle>
+              <CardTitle className="text-xl font-bold">
+                No courses found
+              </CardTitle>
               <CardDescription className="max-w-sm mt-2">
-                Try adjusting your search queries or select a different category to explore.
+                Try adjusting your search queries or select a different category
+                to explore.
               </CardDescription>
             </Card>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {courses.map((course) => {
-                const totalLessons = course.sections.reduce((acc, s) => acc + s.lessons.length, 0);
+                const totalLessons = course.sections.reduce(
+                  (acc, s) => acc + s.lessons.length,
+                  0,
+                );
 
                 return (
-                  <Card key={course.id} className="overflow-hidden hover:shadow-lg transition-shadow bg-white dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50 flex flex-col justify-between">
+                  <Card
+                    key={course.id}
+                    className="overflow-hidden hover:shadow-lg transition-shadow bg-white dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50 flex flex-col justify-between"
+                  >
                     <div className="aspect-video w-full bg-neutral-100 dark:bg-neutral-800 relative flex items-center justify-center">
                       {course.thumbnail ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={course.thumbnail} alt={course.title} className="w-full h-full object-cover" />
+                        <img
+                          src={course.thumbnail}
+                          alt={course.title}
+                          className="w-full h-full object-cover"
+                        />
                       ) : (
                         <GraduationCap className="h-10 w-10 text-neutral-400" />
                       )}
@@ -127,11 +162,13 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
                     </CardHeader>
                     <CardContent className="p-4 pt-0 border-t border-neutral-100 dark:border-neutral-800/50 flex justify-between items-center bg-white dark:bg-neutral-900">
                       <span className="font-bold text-base">
-                        {course.price === 0 || !course.price ? "Free" : `$${course.price}`}
+                        {course.price === 0 || !course.price
+                          ? "Free"
+                          : `$${course.price}`}
                       </span>
-                      <Button size="sm" nativeButton={false} render={<Link href={`/courses/${course.slug}`} />}>
+                      <LinkButton size="sm" href={`/courses/${course.slug}`}>
                         View Details
-                      </Button>
+                      </LinkButton>
                     </CardContent>
                   </Card>
                 );

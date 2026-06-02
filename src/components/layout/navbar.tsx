@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { Menu, X, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import LinkButton from "@/components/ui/link-button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useRouter } from "next/navigation";
 
@@ -61,16 +62,10 @@ export function Navbar() {
           >
             Settings
           </Link>
-          <Button
-            variant="ghost"
-            nativeButton={false}
-            render={<Link href="/login" />}
-          >
+          <LinkButton variant="ghost" href="/login">
             Login
-          </Button>
-          <Button nativeButton={false} render={<Link href="/register" />}>
-            Join Free
-          </Button>
+          </LinkButton>
+          <LinkButton href="/register">Join Free</LinkButton>
           <Button
             variant="ghost"
             onClick={async () => {
@@ -136,23 +131,21 @@ export function Navbar() {
             </Link>
             <hr className="border-border" />
             <div className="flex flex-col gap-2">
-              <Button
+              <LinkButton
+                href="/login"
                 variant="outline"
-                nativeButton={false}
-                render={<Link href="/login" onClick={() => setIsOpen(false)} />}
                 className="w-full"
+                onClick={() => setIsOpen(false)}
               >
                 Login
-              </Button>
-              <Button
-                nativeButton={false}
-                render={
-                  <Link href="/register" onClick={() => setIsOpen(false)} />
-                }
+              </LinkButton>
+              <LinkButton
+                href="/register"
                 className="w-full"
+                onClick={() => setIsOpen(false)}
               >
                 Join Free
-              </Button>
+              </LinkButton>
             </div>
           </div>
         </div>
