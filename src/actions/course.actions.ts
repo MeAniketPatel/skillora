@@ -19,13 +19,18 @@ const courseUpdateSchema = z.object({
   promoVideo: z.string().url().optional().or(z.literal("")).or(z.null()),
   price: z.number().min(0).optional(),
   categoryId: z.string().optional(),
-  level: z.enum(["BEGINNER", "INTERMEDIATE", "ADVANCED", "ALL_LEVELS"]).optional(),
+  level: z
+    .enum(["BEGINNER", "INTERMEDIATE", "ADVANCED", "ALL_LEVELS"])
+    .optional(),
 });
 
 // Helper to verify teacher auth
 async function requireTeacher() {
   const session = await auth();
-  if (!session?.user || (session.user.role !== "TEACHER" && session.user.role !== "ADMIN")) {
+  if (
+    !session?.user ||
+    (session.user.role !== "TEACHER" && session.user.role !== "ADMIN")
+  ) {
     throw new Error("Unauthorized");
   }
   return session.user;
@@ -59,7 +64,10 @@ export async function createCourse(values: z.infer<typeof courseCreateSchema>) {
   }
 }
 
-export async function updateCourse(courseId: string, values: z.infer<typeof courseUpdateSchema>) {
+export async function updateCourse(
+  courseId: string,
+  values: z.infer<typeof courseUpdateSchema>,
+) {
   try {
     const user = await requireTeacher();
     const validated = courseUpdateSchema.parse(values);
@@ -105,11 +113,22 @@ export async function publishCourse(courseId: string) {
     }
 
     const hasPublishedLessons = course.sections.some((s) =>
-      s.lessons.some((l) => l.isPublished)
+      s.lessons.some((l) => l.isPublished),
     );
 
-    if (!course.title || !course.description || !course.thumbnail || !course.categoryId || !hasPublishedLessons) {
-      return { error: "Missing required fields or published lessons." };
+    const missingFields: string[] = [];
+    if (!course.title) missingFields.push("title");
+    if (!course.description) missingFields.push("description");
+    if (!course.thumbnail) missingFields.push("thumbnail");
+    if (!course.categoryId) missingFields.push("categoryId");
+
+    const parts: string[] = [];
+    if (missingFields.length)
+      parts.push(`Missing fields: ${missingFields.join(", ")}`);
+    if (!hasPublishedLessons) parts.push("No published lessons");
+
+    if (parts.length) {
+      return { error: parts.join("; "), missingFields };
     }
 
     const updated = await db.course.update({
@@ -177,7 +196,11 @@ export async function createSection(courseId: string, title: string) {
   }
 }
 
-export async function updateSection(courseId: string, sectionId: string, title: string) {
+export async function updateSection(
+  courseId: string,
+  sectionId: string,
+  title: string,
+) {
   try {
     const user = await requireTeacher();
 
@@ -226,7 +249,11 @@ export async function deleteSection(courseId: string, sectionId: string) {
   }
 }
 
-export async function createLesson(courseId: string, sectionId: string, title: string) {
+export async function createLesson(
+  courseId: string,
+  sectionId: string,
+  title: string,
+) {
   try {
     const user = await requireTeacher();
 
@@ -274,7 +301,7 @@ export async function updateLesson(
     videoUrl?: string | null;
     videoDuration?: number | null;
     type?: "VIDEO" | "ARTICLE" | "QUIZ" | "ASSIGNMENT";
-  }
+  },
 ) {
   try {
     const user = await requireTeacher();
@@ -300,7 +327,11 @@ export async function updateLesson(
   }
 }
 
-export async function deleteLesson(courseId: string, sectionId: string, lessonId: string) {
+export async function deleteLesson(
+  courseId: string,
+  sectionId: string,
+  lessonId: string,
+) {
   try {
     const user = await requireTeacher();
 
@@ -324,7 +355,10 @@ export async function deleteLesson(courseId: string, sectionId: string, lessonId
   }
 }
 
-export async function reorderSections(courseId: string, items: { id: string; position: number }[]) {
+export async function reorderSections(
+  courseId: string,
+  items: { id: string; position: number }[],
+) {
   try {
     const user = await requireTeacher();
 
@@ -354,7 +388,7 @@ export async function reorderSections(courseId: string, items: { id: string; pos
 export async function reorderLessons(
   courseId: string,
   sectionId: string,
-  items: { id: string; position: number }[]
+  items: { id: string; position: number }[],
 ) {
   try {
     const user = await requireTeacher();
@@ -388,7 +422,7 @@ export async function createAttachment(
   name: string,
   url: string,
   size?: number,
-  type?: string
+  type?: string,
 ) {
   try {
     const user = await requireTeacher();
@@ -422,7 +456,7 @@ export async function createAttachment(
 export async function deleteAttachment(
   courseId: string,
   lessonId: string,
-  attachmentId: string
+  attachmentId: string,
 ) {
   try {
     const user = await requireTeacher();

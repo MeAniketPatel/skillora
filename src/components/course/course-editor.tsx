@@ -102,6 +102,7 @@ export default function CourseEditor({
     handleSubmit,
     setValue,
     watch,
+    setError: setFormError,
     formState: { errors },
   } = useForm<CourseValues>({
     resolver: zodResolver(courseSchema),
@@ -143,9 +144,45 @@ export default function CourseEditor({
         if (res.error) setError(res.error);
         else setSuccess("Course unpublished!");
       } else {
+        // Clear any previous form errors
+        // Client-side quick checks (title/description/thumbnail/category)
+        const missing: string[] = [];
+        const titleVal = watch("title");
+        const descriptionVal = watch("description");
+        const thumbnailVal = watch("thumbnail");
+        const categoryVal = watch("categoryId");
+        if (!titleVal || !titleVal.trim()) missing.push("title");
+        if (!descriptionVal || !descriptionVal.trim())
+          missing.push("description");
+        if (!thumbnailVal) missing.push("thumbnail");
+        if (!categoryVal) missing.push("categoryId");
+
+        // If we found missing locally, mark form fields before server call
+        if (missing.length) {
+          missing.forEach((f) =>
+            setFormError(f as any, {
+              type: "manual",
+              message: "This field is required",
+            }),
+          );
+        }
+
         const res = await publishCourse(course.id);
-        if (res.error) setError(res.error);
-        else setSuccess("Course published successfully!");
+        if (res.error) {
+          // If server returned missingFields, set those on the form as well
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          if ((res as any).missingFields) {
+            (res as any).missingFields.forEach((f: string) =>
+              setFormError(f as any, {
+                type: "server",
+                message: "This field is required",
+              }),
+            );
+          }
+          setError(res.error);
+        } else {
+          setSuccess("Course published successfully!");
+        }
       }
       router.refresh();
     });
