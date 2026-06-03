@@ -105,3 +105,41 @@ export async function sendCertificateEmail(to: string, name: string, courseTitle
     return { error };
   }
 }
+
+export async function sendPasswordResetEmail(
+  to: string,
+  name: string,
+  resetUrl: string,
+  expiresInMinutes: number
+) {
+  if (!process.env.RESEND_API_KEY) {
+    console.log(
+      `[MAIL MOCK] Password reset email sent to ${to} (Name: ${name}, URL: ${resetUrl})`
+    );
+    return { success: true, mocked: true };
+  }
+
+  try {
+    const data = await resend.emails.send({
+      from: fromAddress,
+      to,
+      subject: "Reset your Skillora password",
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 8px;">
+          <h2 style="color: #6366f1;">Reset your password</h2>
+          <p>Hi ${name},</p>
+          <p>We received a request to reset the password for your Skillora account.</p>
+          <div style="margin: 30px 0;">
+            <a href="${resetUrl}" style="background-color: #6366f1; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">Reset Password</a>
+          </div>
+          <p>This link expires in ${expiresInMinutes} minutes. If you did not request this, you can safely ignore this email.</p>
+          <p style="color: #71717a; font-size: 14px;">For your security, completing a password reset signs out all active sessions.</p>
+        </div>
+      `,
+    });
+    return { success: true, data };
+  } catch (error) {
+    console.error("Failed to send password reset email:", error);
+    return { error };
+  }
+}

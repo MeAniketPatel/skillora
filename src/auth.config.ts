@@ -10,7 +10,9 @@ export const authConfig = {
       const isLoggedIn = !!auth?.user;
       const isAuthPage =
         nextUrl.pathname.startsWith("/login") ||
-        nextUrl.pathname.startsWith("/register");
+        nextUrl.pathname.startsWith("/register") ||
+        nextUrl.pathname.startsWith("/forgot-password") ||
+        nextUrl.pathname.startsWith("/reset-password");
       const isDashboardPage =
         nextUrl.pathname.startsWith("/dashboard") ||
         nextUrl.pathname.startsWith("/teacher") ||

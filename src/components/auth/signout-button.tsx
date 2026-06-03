@@ -1,6 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { LogOut } from "lucide-react";
+
+import { logoutCurrentSession } from "@/actions/auth.actions";
 import { Button } from "@/components/ui/button";
 
 export default function SignOutButton() {
@@ -8,23 +11,14 @@ export default function SignOutButton() {
 
   const handleLogout = async () => {
     setPending(true);
-    try {
-      await fetch("/api/auth/signout", { method: "POST" });
-    } catch (e) {
-      try {
-        window.location.href = "/api/auth/signout";
-      } catch (err) {
-        // ignore
-      }
-    } finally {
-      setPending(false);
-      window.location.reload();
-    }
+    await logoutCurrentSession();
+    setPending(false);
   };
 
   return (
-    <Button variant="ghost" onClick={handleLogout} disabled={isPending}>
-      Sign out
+    <Button variant="ghost" onClick={handleLogout} disabled={isPending} className="gap-2">
+      <LogOut className="h-4 w-4" />
+      {isPending ? "Signing out..." : "Sign out"}
     </Button>
   );
 }

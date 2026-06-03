@@ -3,8 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
 }
 
 // ============ USERS & AUTH ============
@@ -15,28 +14,62 @@ enum Role {
   ADMIN
 }
 
+enum AuthAuditAction {
+  REGISTER
+  LOGIN_SUCCESS
+  LOGIN_FAILED
+  LOGOUT_SESSION
+  LOGOUT_ALL_SESSIONS
+  PASSWORD_RESET_REQUESTED
+  PASSWORD_RESET_COMPLETED
+  PASSWORD_CHANGED
+  PROFILE_UPDATED
+  SESSION_REVOKED
+  SESSION_BLACKLISTED
+  USER_BANNED
+  USER_UNBANNED
+  COURSE_APPROVED
+  COURSE_REJECTED
+  ROLE_CHANGED
+}
+
+enum AuthSessionRevocationReason {
+  LOGOUT
+  LOGOUT_ALL
+  PASSWORD_RESET
+  PASSWORD_CHANGE
+  SECURITY
+}
+
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  password      String?
-  role          Role      @default(STUDENT)
-  bio           String?   @db.Text
-  headline      String?
-  socialLinks   Json?     // e.g. { "twitter": "...", "linkedin": "..." }
-  stripeCustomerId    String?
-  stripeConnectId     String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id               String    @id @default(cuid())
+  name             String?
+  email            String    @unique
+  emailVerified    DateTime?
+  image            String?
+  password         String?
+  role             Role      @default(STUDENT)
+  bio              String?   @db.Text
+  headline         String?
+  socialLinks      Json? // e.g. { "twitter": "...", "linkedin": "..." }
+  stripeCustomerId String?
+  stripeConnectId  String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  isBanned         Boolean   @default(false)
+  bannedAt         DateTime?
+  bannedReason     String?
 
   // NextAuth
-  accounts      Account[]
-  sessions      Session[]
+  accounts            Account[]
+  sessions            Session[]
+  authSessions        AuthSession[]
+  authTokenBlacklist  AuthTokenBlacklist[]
+  authAuditLogs       AuthAuditLog[]
+  passwordResetTokens PasswordResetToken[]
 
   // Relations
-  courses       Course[]        // taught courses
+  courses       Course[] // taught courses
   enrollments   Enrollment[]
   reviews       Review[]
   purchases     Purchase[]
@@ -45,6 +78,7 @@ model User {
   questions     Question[]
   answers       Answer[]
   submissions   AssignmentSubmission[]
+  wishlist      Wishlist[]
 }
 
 model Account {
@@ -86,6 +120,69 @@ model VerificationToken {
   @@id([identifier, token])
 }
 
+model AuthSession {
+  id           String                       @id @default(cuid())
+  sessionId    String                       @unique
+  userId       String
+  user         User                         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider     String?
+  ipAddress    String?
+  userAgent    String?                      @db.Text
+  expiresAt    DateTime
+  lastSeenAt   DateTime                     @default(now())
+  revokedAt    DateTime?
+  revokeReason AuthSessionRevocationReason?
+  createdAt    DateTime                     @default(now())
+  updatedAt    DateTime                     @updatedAt
+
+  @@index([userId, revokedAt])
+  @@index([expiresAt])
+}
+
+model AuthTokenBlacklist {
+  id        String                      @id @default(cuid())
+  sessionId String                      @unique
+  userId    String
+  user      User                        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reason    AuthSessionRevocationReason
+  expiresAt DateTime
+  createdAt DateTime                    @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  usedAt    DateTime?
+  ipAddress String?
+  userAgent String?   @db.Text
+  createdAt DateTime  @default(now())
+
+  @@index([userId, usedAt])
+  @@index([expiresAt])
+}
+
+model AuthAuditLog {
+  id        String          @id @default(cuid())
+  action    AuthAuditAction
+  userId    String?
+  user      User?           @relation(fields: [userId], references: [id], onDelete: SetNull)
+  email     String?
+  ipAddress String?
+  userAgent String?         @db.Text
+  metadata  Json?
+  createdAt DateTime        @default(now())
+
+  @@index([userId, createdAt])
+  @@index([action, createdAt])
+  @@index([email])
+}
+
 // ============ COURSES ============
 
 enum CourseLevel {
@@ -115,7 +212,7 @@ model Course {
   level            CourseLevel  @default(BEGINNER)
   status           CourseStatus @default(DRAFT)
   language         String       @default("en")
-  duration         Int?         // estimated minutes
+  duration         Int? // estimated minutes
   learningOutcomes String[]
   requirements     String[]
   targetAudience   String[]
@@ -125,15 +222,16 @@ model Course {
   updatedAt        DateTime     @updatedAt
 
   // Relations
-  teacherId     String
-  teacher       User         @relation(fields: [teacherId], references: [id])
-  categoryId    String?
-  category      Category?    @relation(fields: [categoryId], references: [id])
-  sections      Section[]
-  enrollments   Enrollment[]
-  reviews       Review[]
-  coupons       Coupon[]
-  tags          Tag[]
+  teacherId    String
+  teacher      User         @relation(fields: [teacherId], references: [id])
+  categoryId   String?
+  category     Category?    @relation(fields: [categoryId], references: [id])
+  sections     Section[]
+  enrollments  Enrollment[]
+  reviews      Review[]
+  coupons      Coupon[]
+  tags         Tag[]
+  wishlistedBy Wishlist[]
 }
 
 model Section {
@@ -158,9 +256,9 @@ model Lesson {
   id            String     @id @default(cuid())
   title         String
   type          LessonType @default(VIDEO)
-  content       String?    @db.Text   // rich text for ARTICLE type
+  content       String?    @db.Text // rich text for ARTICLE type
   videoUrl      String?
-  videoDuration Int?       // seconds
+  videoDuration Int? // seconds
   position      Int
   isFree        Boolean    @default(false)
   isPublished   Boolean    @default(false)
@@ -173,8 +271,8 @@ model Lesson {
   notes       Note[]
   questions   Question[]
   submissions AssignmentSubmission[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @updatedAt
 }
 
 model Attachment {
@@ -191,15 +289,15 @@ model Attachment {
 // ============ ENROLLMENT & PROGRESS ============
 
 model Enrollment {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   userId      String
-  user        User     @relation(fields: [userId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
   courseId    String
-  course      Course   @relation(fields: [courseId], references: [id])
-  progress    Float    @default(0) // 0-100
+  course      Course    @relation(fields: [courseId], references: [id])
+  progress    Float     @default(0) // 0-100
   completedAt DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   lessonProgress LessonProgress[]
   certificate    Certificate?
@@ -212,7 +310,7 @@ model LessonProgress {
   id            String     @id @default(cuid())
   isCompleted   Boolean    @default(false)
   completedAt   DateTime?
-  videoPosition Int?       // seconds — resume position
+  videoPosition Int? // seconds — resume position
   enrollmentId  String
   enrollment    Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
   lessonId      String
@@ -233,18 +331,18 @@ enum PaymentStatus {
 }
 
 model Purchase {
-  id              String   @id @default(cuid())
+  id              String        @id @default(cuid())
   userId          String
-  user            User     @relation(fields: [userId], references: [id])
-  enrollmentId    String   @unique
-  enrollment      Enrollment @relation(fields: [enrollmentId], references: [id])
+  user            User          @relation(fields: [userId], references: [id])
+  enrollmentId    String        @unique
+  enrollment      Enrollment    @relation(fields: [enrollmentId], references: [id])
   amount          Float
-  currency        String   @default("USD")
-  stripePaymentId String?  @unique
+  currency        String        @default("USD")
+  stripePaymentId String?       @unique
   status          PaymentStatus @default(PENDING)
   couponId        String?
-  coupon          Coupon?  @relation(fields: [couponId], references: [id])
-  createdAt       DateTime @default(now())
+  coupon          Coupon?       @relation(fields: [couponId], references: [id])
+  createdAt       DateTime      @default(now())
 }
 
 // ============ ASSESSMENTS ============
@@ -252,7 +350,7 @@ model Purchase {
 model Quiz {
   id           String         @id @default(cuid())
   title        String
-  timeLimit    Int?           // minutes
+  timeLimit    Int? // minutes
   passingScore Int            @default(70)
   maxAttempts  Int?
   lessonId     String         @unique
@@ -271,26 +369,26 @@ enum QuestionType {
 }
 
 model QuizQuestion {
-  id           String   @id @default(cuid())
-  question     String   @db.Text
-  type         QuestionType @default(MULTIPLE_CHOICE)
-  options      Json     // array of { text, isCorrect }
-  explanation  String?  @db.Text
-  points       Int      @default(1)
-  position     Int
-  quizId       String
-  quiz         Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  id          String       @id @default(cuid())
+  question    String       @db.Text
+  type        QuestionType @default(MULTIPLE_CHOICE)
+  options     Json // array of { text, isCorrect }
+  explanation String?      @db.Text
+  points      Int          @default(1)
+  position    Int
+  quizId      String
+  quiz        Quiz         @relation(fields: [quizId], references: [id], onDelete: Cascade)
 }
 
 model QuizAttempt {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   score       Float
   passed      Boolean
-  answers     Json     // student answers
+  answers     Json // student answers
   quizId      String
-  quiz        Quiz     @relation(fields: [quizId], references: [id])
+  quiz        Quiz      @relation(fields: [quizId], references: [id])
   userId      String
-  startedAt   DateTime @default(now())
+  startedAt   DateTime  @default(now())
   submittedAt DateTime?
 }
 
@@ -298,7 +396,7 @@ model QuizAttempt {
 
 model Review {
   id        String   @id @default(cuid())
-  rating    Int      // 1-5
+  rating    Int // 1-5
   comment   String?  @db.Text
   userId    String
   user      User     @relation(fields: [userId], references: [id])
@@ -317,7 +415,7 @@ model Question {
   userId     String
   user       User     @relation(fields: [userId], references: [id])
   lessonId   String
-  lesson     Lesson     @relation(fields: [lessonId], references: [id])
+  lesson     Lesson   @relation(fields: [lessonId], references: [id])
   answers    Answer[]
   isResolved Boolean  @default(false)
   createdAt  DateTime @default(now())
@@ -338,7 +436,7 @@ model Answer {
 model Note {
   id        String   @id @default(cuid())
   content   String   @db.Text
-  timestamp Int?     // video timestamp in seconds
+  timestamp Int? // video timestamp in seconds
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   lessonId  String
@@ -369,17 +467,17 @@ enum DiscountType {
 }
 
 model Coupon {
-  id        String      @id @default(cuid())
-  code      String      @unique
-  discount  Float       // percentage or fixed amount
+  id        String       @id @default(cuid())
+  code      String       @unique
+  discount  Float // percentage or fixed amount
   type      DiscountType @default(PERCENTAGE)
   maxUses   Int?
-  usedCount Int         @default(0)
+  usedCount Int          @default(0)
   expiresAt DateTime?
   courseId  String?
-  course    Course?     @relation(fields: [courseId], references: [id])
+  course    Course?      @relation(fields: [courseId], references: [id])
   purchases Purchase[]
-  createdAt DateTime    @default(now())
+  createdAt DateTime     @default(now())
 }
 
 model Certificate {
@@ -403,17 +501,52 @@ model Notification {
 }
 
 model AssignmentSubmission {
-  id           String   @id @default(cuid())
-  content      String   @db.Text
-  score        Float?
-  feedback     String?  @db.Text
-  status       String   @default("SUBMITTED")
-  lessonId     String
-  lesson       Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  submittedAt  DateTime @default(now())
-  gradedAt     DateTime?
+  id            String    @id @default(cuid())
+  content       String    @db.Text
+  attachmentUrl String?
+  score         Float?
+  feedback      String?   @db.Text
+  status        String    @default("SUBMITTED")
+  lessonId      String
+  lesson        Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  submittedAt   DateTime  @default(now())
+  gradedAt      DateTime?
 
   @@unique([userId, lessonId])
+}
+
+model Wishlist {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, courseId])
+  @@index([userId])
+}
+
+model ContactMessage {
+  id        String    @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String    @db.Text
+  isReplied Boolean   @default(false)
+  repliedAt DateTime?
+  repliedBy String?
+  createdAt DateTime  @default(now())
+
+  @@index([isReplied])
+  @@index([createdAt])
+}
+
+model PlatformSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
 }

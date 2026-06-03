@@ -1,0 +1,7 @@
+export * from "./auth.schema";
+export * from "./course.schema";
+export * from "./quiz.schema";
+export * from "./review.schema";
+export * from "./qa.schema";
+export * from "./admin.schema";
+export * from "./note.schema";
