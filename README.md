@@ -6,21 +6,22 @@ Skillora is a full-stack, production-grade e-learning platform built with modern
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|------------|
-| **Framework** | Next.js 15 (App Router) |
-| **Language** | TypeScript (strict mode) |
-| **Styling** | Tailwind CSS + shadcn/ui |
-| **Database** | PostgreSQL + Prisma ORM |
-| **Auth** | NextAuth.js v5 |
-| **Payments** | Stripe (Checkout + Connect) |
-| **File Storage** | UploadThing / S3 |
-| **Email** | Resend |
-| **Deployment** | Vercel |
+| Layer            | Technology                  |
+| ---------------- | --------------------------- |
+| **Framework**    | Next.js 15 (App Router)     |
+| **Language**     | TypeScript (strict mode)    |
+| **Styling**      | Tailwind CSS + shadcn/ui    |
+| **Database**     | PostgreSQL + Prisma ORM     |
+| **Auth**         | NextAuth.js v5              |
+| **Payments**     | Stripe (Checkout + Connect) |
+| **File Storage** | UploadThing / S3            |
+| **Email**        | Resend                      |
+| **Deployment**   | Vercel                      |
 
 ## Features
 
 ### For Teachers
+
 - Course creation with rich text editor
 - Video lesson uploads with streaming
 - Quiz and assessment builder
@@ -28,6 +29,7 @@ Skillora is a full-stack, production-grade e-learning platform built with modern
 - Revenue dashboard & payouts
 
 ### For Students
+
 - Course discovery with search & filters
 - Video player with progress tracking
 - Quiz taking with instant grading
@@ -35,6 +37,7 @@ Skillora is a full-stack, production-grade e-learning platform built with modern
 - Personal notes & bookmarks
 
 ### Platform
+
 - Role-based access (Student / Teacher / Admin)
 - Stripe payments with teacher payouts
 - SEO-optimized public pages
@@ -44,6 +47,7 @@ Skillora is a full-stack, production-grade e-learning platform built with modern
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js 18+
 - PostgreSQL (or use Docker)
 - npm
@@ -61,6 +65,9 @@ npm install
 # Set up environment variables
 cp .env.example .env.local
 # Edit .env.local with your values
+
+# Run prisma generate
+npm run prisma:generate
 
 # Start the development server
 npm run dev
