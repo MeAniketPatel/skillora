@@ -11,9 +11,9 @@ import {
   LayoutDashboard
 } from "lucide-react";
 
-import { auth, signOut } from "@/auth";
+import { logoutCurrentSession } from "@/actions/auth.actions";
+import { auth } from "@/auth";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { NotificationsMenu } from "@/components/shared/notifications-menu";
 
@@ -92,7 +92,7 @@ export default async function DashboardLayout({
           <form
             action={async () => {
               "use server";
-              await signOut({ redirectTo: "/" });
+              await logoutCurrentSession();
             }}
           >
             <button

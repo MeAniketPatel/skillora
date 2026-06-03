@@ -6,6 +6,7 @@ import { Menu, X, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import LinkButton from "@/components/ui/link-button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { logoutCurrentSession } from "@/actions/auth.actions";
 
 type Session = {
   user?: { id?: string; role?: string; name?: string | null } | null;
@@ -30,7 +31,7 @@ export default function NavbarClient({ session }: { session: Session }) {
             // NextAuth returns the session object or null
             if (json) setClientSession(json);
           }
-        } catch (e) {
+        } catch {
           // ignore
         }
       })();
@@ -47,13 +48,7 @@ export default function NavbarClient({ session }: { session: Session }) {
     clientSession?.user?.role === "ADMIN";
 
   const handleLogout = async () => {
-    try {
-      await fetch("/api/auth/signout", { method: "POST" });
-    } catch (e) {
-      // fallback to redirect
-      window.location.href = "/api/auth/signout";
-    }
-    window.location.reload();
+    await logoutCurrentSession();
   };
 
   return (
