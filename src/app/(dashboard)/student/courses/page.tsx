@@ -4,6 +4,7 @@ import { DataTable } from "@/components/shared/data-table";
 import { ActionButton } from "@/components/shared/action-button";
 import Link from "next/link";
 import { GraduationCap } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default async function StudentCoursesPage() {
   const user = await requireAuth();
@@ -61,6 +62,11 @@ export default async function StudentCoursesPage() {
         emptyIcon={GraduationCap}
         emptyTitle="No courses yet"
         emptyDescription="You haven't enrolled in any courses yet. Browse our catalog to start learning."
+        emptyAction={
+          <Link href="/courses">
+            <Button>Browse Courses</Button>
+          </Link>
+        }
       />
     </div>
   );

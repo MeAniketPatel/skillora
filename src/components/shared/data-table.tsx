@@ -23,6 +23,7 @@ interface DataTableProps<T> {
   emptyTitle?: string;
   emptyDescription?: string;
   emptyIcon?: LucideIcon;
+  emptyAction?: React.ReactNode;
 }
 
 export function DataTable<T>({
@@ -31,6 +32,7 @@ export function DataTable<T>({
   emptyTitle = "No data found",
   emptyDescription = "There is no data to display here yet.",
   emptyIcon = Inbox,
+  emptyAction,
 }: DataTableProps<T>) {
   if (!data || data.length === 0) {
     return (
@@ -38,6 +40,7 @@ export function DataTable<T>({
         icon={emptyIcon}
         title={emptyTitle}
         description={emptyDescription}
+        action={emptyAction}
       />
     );
   }

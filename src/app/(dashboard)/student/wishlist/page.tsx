@@ -63,6 +63,11 @@ export default async function StudentWishlistPage() {
         emptyIcon={Heart}
         emptyTitle="Wishlist is empty"
         emptyDescription="You haven't saved any courses yet."
+        emptyAction={
+          <Link href="/courses">
+            <Button>Browse Courses</Button>
+          </Link>
+        }
       />
     </div>
   );
