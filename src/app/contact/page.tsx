@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Mail, MessageSquare, MapPin } from "lucide-react";
 
 const contactSchema = z.object({
@@ -19,7 +19,7 @@ const contactSchema = z.object({
 });
 
 export default function ContactPage() {
-  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof contactSchema>>({
     resolver: zodResolver(contactSchema),
     defaultValues: { name: "", email: "", subject: "", message: "" },
@@ -29,13 +29,13 @@ export default function ContactPage() {
     try {
       const res = await submitContactForm(values);
       if (res && res.error) {
-        toast({ title: "Error", description: res.error, variant: "destructive" });
+        toast.error(res.error);
       } else {
-        toast({ title: "Message Sent", description: "We've received your message and will get back to you shortly." });
+        toast.success("We've received your message and will get back to you shortly.");
         form.reset();
       }
     } catch (err: any) {
-      toast({ title: "Error", description: "Failed to send message.", variant: "destructive" });
+      toast.error("Failed to send message.");
     }
   };
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button, ButtonProps } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 interface ActionButtonProps extends ButtonProps {
   action: () => Promise<{ success?: boolean; error?: string; data?: any } | any>;
@@ -22,7 +22,7 @@ export function ActionButton({
   ...props
 }: ActionButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
+
 
   const handleClick = async () => {
     try {
@@ -31,17 +31,17 @@ export function ActionButton({
       
       // If our actionHandler format
       if (res && res.error) {
-        toast({ title: "Error", description: res.error, variant: "destructive" });
+        toast.error(res.error);
         onError?.(res.error);
       } else if (res && res.success === false) {
-        toast({ title: "Error", description: res.error || errorMessage, variant: "destructive" });
+        toast.error(res.error || errorMessage);
         onError?.(res.error || errorMessage);
       } else {
-        toast({ title: "Success", description: res?.success || successMessage });
+        toast.success(res?.success || successMessage);
         onSuccess?.(res?.data || res);
       }
     } catch (err: any) {
-      toast({ title: "Error", description: err.message || errorMessage, variant: "destructive" });
+      toast.error(err.message || errorMessage);
       onError?.(err.message || errorMessage);
     } finally {
       setIsLoading(false);

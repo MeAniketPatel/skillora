@@ -9,12 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useState, useEffect } from "react";
 
 export default function NewCoursePage() {
   const router = useRouter();
-  const { toast } = useToast();
+
   const [categories, setCategories] = useState<{id: string, name: string}[]>([]);
 
   const form = useForm<CourseCreateInput>({
@@ -43,13 +43,13 @@ export default function NewCoursePage() {
     try {
       const res = await createCourse(values);
       if (res && res.error) {
-        toast({ title: "Error", description: res.error, variant: "destructive" });
+        toast.error(res.error);
       } else if (res && res.success && res.data) {
-        toast({ title: "Success", description: "Course created!" });
+        toast.success("Course created!");
         router.push(`/teacher/courses/${res.data.id}`);
       }
     } catch (err: any) {
-      toast({ title: "Error", description: "Something went wrong", variant: "destructive" });
+      toast.error("Something went wrong");
     }
   };
 

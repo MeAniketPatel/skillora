@@ -109,7 +109,9 @@ export async function loginUser(values: LoginInput) {
 
     return { success: "Logged in successfully!" };
   } catch (error) {
+    console.error("[LOGIN_ACTION_ERROR]", error);
     if (error instanceof AuthError) {
+      console.error("[LOGIN_ACTION_AUTHERROR_TYPE]", error.type);
       switch (error.type) {
         case "CredentialsSignin":
           return { error: "Invalid email or password." };
