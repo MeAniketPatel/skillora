@@ -1,0 +1,77 @@
+import db from "@/lib/prisma";
+
+export async function getEnrollment(userId: string, courseId: string) {
+  return db.enrollment.findUnique({
+    where: {
+      userId_courseId: { userId, courseId },
+    },
+  });
+}
+
+export async function createEnrollment(userId: string, courseId: string) {
+  return db.enrollment.create({
+    data: { userId, courseId },
+  });
+}
+
+export async function getUserEnrollments(userId: string, params: { status?: "active" | "completed" }) {
+  const where: any = { userId };
+  if (params.status === "active") where.progress = { lt: 100 };
+  if (params.status === "completed") where.progress = 100;
+
+  return db.enrollment.findMany({
+    where,
+    include: {
+      course: {
+        include: {
+          teacher: { select: { name: true } },
+        },
+      },
+    },
+    orderBy: { updatedAt: "desc" },
+  });
+}
+
+export async function getCourseEnrollments(courseId: string, params: { page?: number; limit?: number }) {
+  const page = params.page || 1;
+  const limit = params.limit || 12;
+  const skip = (page - 1) * limit;
+
+  const [enrollments, total] = await Promise.all([
+    db.enrollment.findMany({
+      where: { courseId },
+      skip,
+      take: limit,
+      orderBy: { createdAt: "desc" },
+      include: {
+        user: { select: { name: true, email: true, image: true } },
+      },
+    }),
+    db.enrollment.count({ where: { courseId } }),
+  ]);
+
+  return { enrollments, total, pages: Math.ceil(total / limit) };
+}
+
+export async function getEnrollmentWithProgress(userId: string, courseId: string) {
+  return db.enrollment.findUnique({
+    where: { userId_courseId: { userId, courseId } },
+    include: {
+      lessonProgress: true,
+    },
+  });
+}
+
+export async function updateEnrollmentProgress(enrollmentId: string, progress: number, completedAt?: Date) {
+  return db.enrollment.update({
+    where: { id: enrollmentId },
+    data: {
+      progress,
+      completedAt,
+    },
+  });
+}
+
+export async function getEnrollmentCount(courseId: string) {
+  return db.enrollment.count({ where: { courseId } });
+}
