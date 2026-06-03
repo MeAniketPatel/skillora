@@ -51,19 +51,21 @@ export default async function TeacherCourseDashboard({
             {completedFields}/{totalFields} fields completed
           </span>
           {course.status === "PUBLISHED" ? (
-            <form action={async () => {
-              "use server";
-              await unpublishCourse(courseId);
-            }}>
-              <ActionButton action={async () => {}} variant="outline">Unpublish</ActionButton>
-            </form>
+            <ActionButton 
+              action={unpublishCourse.bind(null, courseId)} 
+              variant="outline"
+              successMessage="Course unpublished"
+            >
+              Unpublish
+            </ActionButton>
           ) : (
-            <form action={async () => {
-              "use server";
-              await publishCourse(courseId);
-            }}>
-              <ActionButton action={async () => {}} disabled={!isComplete}>Publish</ActionButton>
-            </form>
+            <ActionButton 
+              action={publishCourse.bind(null, courseId)} 
+              disabled={!isComplete}
+              successMessage="Course published"
+            >
+              Publish
+            </ActionButton>
           )}
         </div>
       </div>
