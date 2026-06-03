@@ -38,11 +38,11 @@ export default async function TeacherCourseDashboard({
   return (
     <div className="p-6 max-w-5xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" asChild>
-          <Link href="/teacher/courses">
+        <Link href="/teacher/courses">
+          <Button variant="ghost" size="icon">
             <ArrowLeft className="h-4 w-4" />
-          </Link>
-        </Button>
+          </Button>
+        </Link>
         <h1 className="text-2xl font-bold tracking-tight flex-1 truncate">
           Course Setup: {course.title}
         </h1>
@@ -101,11 +101,11 @@ export default async function TeacherCourseDashboard({
                 {course.sections.length} sections, {course.sections.reduce((acc, s) => acc + s.lessons.length, 0)} lessons
               </span>
             </div>
-            <Button asChild className="w-full">
-              <Link href={`/teacher/courses/${courseId}/curriculum`}>
+            <Link href={`/teacher/courses/${courseId}/curriculum`}>
+              <Button className="w-full">
                 Open Curriculum Builder
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>

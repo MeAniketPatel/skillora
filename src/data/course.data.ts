@@ -18,6 +18,11 @@ export async function getCourseBySlug(slug: string) {
 export async function getCourseByIdForOwner(courseId: string, teacherId: string) {
   const course = await db.course.findUnique({
     where: { id: courseId, teacherId },
+    include: {
+      sections: {
+        include: { lessons: true }
+      }
+    }
   });
   if (!course) throw new NotFoundError("Course");
   return course;
