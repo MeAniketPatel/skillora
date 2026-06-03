@@ -6,7 +6,7 @@ import { z } from "zod";
 import { useState, useTransition, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { GraduationCap, School, Eye, EyeOff } from "lucide-react";
+import { GraduationCap, School, Eye, EyeOff, CheckCircle2, Circle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,7 +25,11 @@ const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
+  confirmPassword: z.string(),
   role: z.enum(["STUDENT", "TEACHER"]),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
 });
 
 type RegisterValues = z.infer<typeof registerSchema>;
@@ -46,6 +50,7 @@ export default function RegisterForm() {
     formState: { errors },
   } = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
+    mode: "onChange",
     defaultValues: {
       name: "",
       email: "",
@@ -56,6 +61,15 @@ export default function RegisterForm() {
   });
 
   const selectedRole = watch("role");
+  const passwordValue = watch("password") || "";
+  
+  const strengthChecks = [
+    { label: "At least 6 characters", met: passwordValue.length >= 6 },
+    { label: "Contains a number", met: /\d/.test(passwordValue) },
+    { label: "Contains a special character", met: /[^A-Za-z0-9]/.test(passwordValue) },
+  ];
+  
+  const strengthScore = strengthChecks.filter(c => c.met).length;
 
   const searchParams = useSearchParams();
 
@@ -194,6 +208,28 @@ export default function RegisterForm() {
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
+            
+            {/* Password Strength Indicator */}
+            {passwordValue.length > 0 && (
+              <div className="space-y-2 mt-2 pt-1">
+                <div className="flex gap-1 h-1 w-full rounded-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
+                  <div className={`h-full transition-all duration-500 ${strengthScore >= 1 ? (strengthScore === 1 ? 'bg-red-500 w-1/3' : strengthScore === 2 ? 'bg-yellow-500 w-2/3' : 'bg-green-500 w-full') : 'w-0'}`} />
+                </div>
+                <div className="grid grid-cols-1 gap-1 text-xs text-neutral-500">
+                  {strengthChecks.map((check, idx) => (
+                    <div key={idx} className="flex items-center gap-1.5 transition-colors duration-300">
+                      {check.met ? (
+                        <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
+                      ) : (
+                        <Circle className="h-3.5 w-3.5 opacity-40" />
+                      )}
+                      <span className={check.met ? "text-neutral-700 dark:text-neutral-300" : ""}>{check.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
             {errors.password && (
               <p className="text-sm text-red-500 font-medium">
                 {errors.password.message}
