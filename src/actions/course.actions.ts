@@ -1,47 +1,34 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
-import db from "@/lib/prisma";
-import { auth } from "@/auth";
+import { actionHandler } from "@/lib/action-utils";
+import { requireTeacher } from "@/lib/auth-helpers";
+import {
+  courseCreateSchema,
+  courseUpdateSchema,
+  CourseCreateInput,
+  CourseUpdateInput,
+} from "@/validations/course.schema";
+import {
+  createCourse as createCourseData,
+  updateCourse as updateCourseData,
+  getCourseByIdForOwner,
+  createSection as createSectionData,
+  updateSection as updateSectionData,
+  deleteSection as deleteSectionData,
+  createLesson as createLessonData,
+  updateLesson as updateLessonData,
+  deleteLesson as deleteLessonData,
+  reorderSections as reorderSectionsData,
+  reorderLessons as reorderLessonsData,
+} from "@/data";
+import db from "@/lib/prisma"; // for attachments since we didn't make a DAL for attachment yet
 
-// Schema validations
-const courseCreateSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  categoryId: z.string().min(1, "Category is required"),
-  level: z.enum(["BEGINNER", "INTERMEDIATE", "ADVANCED", "ALL_LEVELS"]),
-});
-
-const courseUpdateSchema = z.object({
-  title: z.string().min(1).optional(),
-  description: z.string().optional(),
-  thumbnail: z.string().url().optional().or(z.literal("")),
-  promoVideo: z.string().url().optional().or(z.literal("")).or(z.null()),
-  price: z.number().min(0).optional(),
-  categoryId: z.string().optional(),
-  level: z
-    .enum(["BEGINNER", "INTERMEDIATE", "ADVANCED", "ALL_LEVELS"])
-    .optional(),
-});
-
-// Helper to verify teacher auth
-async function requireTeacher() {
-  const session = await auth();
-  if (
-    !session?.user ||
-    (session.user.role !== "TEACHER" && session.user.role !== "ADMIN")
-  ) {
-    throw new Error("Unauthorized");
-  }
-  return session.user;
-}
-
-export async function createCourse(values: z.infer<typeof courseCreateSchema>) {
-  try {
+export async function createCourse(values: CourseCreateInput) {
+  return actionHandler(async () => {
     const user = await requireTeacher();
     const validated = courseCreateSchema.parse(values);
 
-    // Create unique slug
     const baseSlug = validated.title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
@@ -49,71 +36,42 @@ export async function createCourse(values: z.infer<typeof courseCreateSchema>) {
     const randomSuffix = Math.random().toString(36).substring(2, 7);
     const slug = `${baseSlug}-${randomSuffix}`;
 
-    const course = await db.course.create({
-      data: {
-        ...validated,
-        slug,
-        teacherId: user.id,
-      },
+    const course = await createCourseData({
+      ...validated,
+      slug,
+      teacherId: user.id,
     });
 
-    return { success: true, data: course };
-  } catch (error: any) {
-    console.error("[CREATE_COURSE_ERROR]", error);
-    return { error: error.message || "Something went wrong" };
-  }
+    return course;
+  });
 }
 
-export async function updateCourse(
-  courseId: string,
-  values: z.infer<typeof courseUpdateSchema>,
-) {
-  try {
+export async function updateCourse(courseId: string, values: CourseUpdateInput) {
+  return actionHandler(async () => {
     const user = await requireTeacher();
     const validated = courseUpdateSchema.parse(values);
 
-    const course = await db.course.findUnique({
-      where: { id: courseId, teacherId: user.id },
-    });
+    await getCourseByIdForOwner(courseId, user.id);
 
-    if (!course) {
-      return { error: "Course not found" };
-    }
-
-    const updated = await db.course.update({
-      where: { id: courseId },
-      data: validated,
-    });
+    const updated = await updateCourseData(courseId, validated);
 
     revalidatePath(`/teacher/courses/${courseId}`);
-    return { success: true, data: updated };
-  } catch (error: any) {
-    console.error("[UPDATE_COURSE_ERROR]", error);
-    return { error: error.message || "Something went wrong" };
-  }
+    return updated;
+  });
 }
 
 export async function publishCourse(courseId: string) {
-  try {
+  return actionHandler(async () => {
     const user = await requireTeacher();
-
     const course = await db.course.findUnique({
       where: { id: courseId, teacherId: user.id },
-      include: {
-        sections: {
-          include: {
-            lessons: true,
-          },
-        },
-      },
+      include: { sections: { include: { lessons: true } } },
     });
 
-    if (!course) {
-      return { error: "Course not found" };
-    }
+    if (!course) throw new Error("Course not found");
 
     const hasPublishedLessons = course.sections.some((s) =>
-      s.lessons.some((l) => l.isPublished),
+      s.lessons.some((l) => l.isPublished)
     );
 
     const missingFields: string[] = [];
@@ -122,361 +80,142 @@ export async function publishCourse(courseId: string) {
     if (!course.thumbnail) missingFields.push("thumbnail");
     if (!course.categoryId) missingFields.push("categoryId");
 
-    const parts: string[] = [];
-    if (missingFields.length)
-      parts.push(`Missing fields: ${missingFields.join(", ")}`);
-    if (!hasPublishedLessons) parts.push("No published lessons");
-
-    if (parts.length) {
-      return { error: parts.join("; "), missingFields };
+    if (missingFields.length || !hasPublishedLessons) {
+      throw new Error(`Cannot publish: Missing ${missingFields.join(", ")} or published lessons`);
     }
 
-    const updated = await db.course.update({
-      where: { id: courseId },
-      data: { status: "PUBLISHED", publishedAt: new Date() },
-    });
-
+    const updated = await updateCourseData(courseId, { status: "PUBLISHED", publishedAt: new Date() });
     revalidatePath(`/teacher/courses/${courseId}`);
-    return { success: true, data: updated };
-  } catch (error: any) {
-    console.error("[PUBLISH_COURSE_ERROR]", error);
-    return { error: error.message || "Something went wrong" };
-  }
+    return updated;
+  });
 }
 
 export async function unpublishCourse(courseId: string) {
-  try {
+  return actionHandler(async () => {
     const user = await requireTeacher();
+    await getCourseByIdForOwner(courseId, user.id);
 
-    const updated = await db.course.update({
-      where: { id: courseId, teacherId: user.id },
-      data: { status: "DRAFT" },
-    });
-
+    const updated = await updateCourseData(courseId, { status: "DRAFT" });
     revalidatePath(`/teacher/courses/${courseId}`);
-    return { success: true, data: updated };
-  } catch (error: any) {
-    console.error("[UNPUBLISH_COURSE_ERROR]", error);
-    return { error: error.message || "Something went wrong" };
-  }
+    return updated;
+  });
 }
 
 export async function createSection(courseId: string, title: string) {
-  try {
+  return actionHandler(async () => {
     const user = await requireTeacher();
+    await getCourseByIdForOwner(courseId, user.id);
 
-    const courseOwner = await db.course.findUnique({
-      where: { id: courseId, teacherId: user.id },
-    });
-
-    if (!courseOwner) {
-      return { error: "Unauthorized" };
-    }
-
-    const lastSection = await db.section.findFirst({
-      where: { courseId },
-      orderBy: { position: "desc" },
-    });
-
-    const newPosition = lastSection ? lastSection.position + 1 : 1;
-
-    const section = await db.section.create({
-      data: {
-        title,
-        courseId,
-        position: newPosition,
-      },
-    });
-
+    const section = await createSectionData(courseId, title);
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
-    return { success: true, data: section };
-  } catch (error: any) {
-    console.error("[CREATE_SECTION_ERROR]", error);
-    return { error: error.message || "Something went wrong" };
-  }
+    return section;
+  });
 }
 
-export async function updateSection(
-  courseId: string,
-  sectionId: string,
-  title: string,
-) {
-  try {
+export async function updateSection(courseId: string, sectionId: string, title: string) {
+  return actionHandler(async () => {
     const user = await requireTeacher();
+    await getCourseByIdForOwner(courseId, user.id);
 
-    const courseOwner = await db.course.findUnique({
-      where: { id: courseId, teacherId: user.id },
-    });
-
-    if (!courseOwner) {
-      return { error: "Unauthorized" };
-    }
-
-    const section = await db.section.update({
-      where: { id: sectionId, courseId },
-      data: { title },
-    });
-
+    const section = await updateSectionData(sectionId, courseId, { title });
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
-    return { success: true, data: section };
-  } catch (error: any) {
-    console.error("[UPDATE_SECTION_ERROR]", error);
-    return { error: error.message || "Something went wrong" };
-  }
+    return section;
+  });
 }
 
 export async function deleteSection(courseId: string, sectionId: string) {
-  try {
+  return actionHandler(async () => {
     const user = await requireTeacher();
+    await getCourseByIdForOwner(courseId, user.id);
 
-    const courseOwner = await db.course.findUnique({
-      where: { id: courseId, teacherId: user.id },
-    });
-
-    if (!courseOwner) {
-      return { error: "Unauthorized" };
-    }
-
-    await db.section.delete({
-      where: { id: sectionId, courseId },
-    });
-
+    await deleteSectionData(sectionId, courseId);
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
-    return { success: true };
-  } catch (error: any) {
-    console.error("[DELETE_SECTION_ERROR]", error);
-    return { error: error.message || "Something went wrong" };
-  }
+    return true;
+  });
 }
 
-export async function createLesson(
-  courseId: string,
-  sectionId: string,
-  title: string,
-) {
-  try {
+export async function createLesson(courseId: string, sectionId: string, title: string) {
+  return actionHandler(async () => {
     const user = await requireTeacher();
+    await getCourseByIdForOwner(courseId, user.id);
 
-    const courseOwner = await db.course.findUnique({
-      where: { id: courseId, teacherId: user.id },
-    });
-
-    if (!courseOwner) {
-      return { error: "Unauthorized" };
-    }
-
-    const lastLesson = await db.lesson.findFirst({
-      where: { sectionId },
-      orderBy: { position: "desc" },
-    });
-
-    const newPosition = lastLesson ? lastLesson.position + 1 : 1;
-
-    const lesson = await db.lesson.create({
-      data: {
-        title,
-        sectionId,
-        position: newPosition,
-        type: "ARTICLE",
-      },
-    });
-
+    const lesson = await createLessonData(sectionId, title);
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
-    return { success: true, data: lesson };
-  } catch (error: any) {
-    console.error("[CREATE_LESSON_ERROR]", error);
-    return { error: error.message || "Something went wrong" };
-  }
+    return lesson;
+  });
 }
 
 export async function updateLesson(
   courseId: string,
   sectionId: string,
   lessonId: string,
-  values: {
-    title?: string;
-    content?: string;
-    isFree?: boolean;
-    isPublished?: boolean;
-    videoUrl?: string | null;
-    videoDuration?: number | null;
-    type?: "VIDEO" | "ARTICLE" | "QUIZ" | "ASSIGNMENT";
-  },
+  values: any
 ) {
-  try {
+  return actionHandler(async () => {
     const user = await requireTeacher();
+    await getCourseByIdForOwner(courseId, user.id);
 
-    const courseOwner = await db.course.findUnique({
-      where: { id: courseId, teacherId: user.id },
-    });
-
-    if (!courseOwner) {
-      return { error: "Unauthorized" };
-    }
-
-    const updated = await db.lesson.update({
-      where: { id: lessonId, sectionId },
-      data: values,
-    });
-
+    const updated = await updateLessonData(lessonId, sectionId, values);
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
-    return { success: true, data: updated };
-  } catch (error: any) {
-    console.error("[UPDATE_LESSON_ERROR]", error);
-    return { error: error.message || "Something went wrong" };
-  }
+    return updated;
+  });
 }
 
-export async function deleteLesson(
-  courseId: string,
-  sectionId: string,
-  lessonId: string,
-) {
-  try {
+export async function deleteLesson(courseId: string, sectionId: string, lessonId: string) {
+  return actionHandler(async () => {
     const user = await requireTeacher();
+    await getCourseByIdForOwner(courseId, user.id);
 
-    const courseOwner = await db.course.findUnique({
-      where: { id: courseId, teacherId: user.id },
-    });
-
-    if (!courseOwner) {
-      return { error: "Unauthorized" };
-    }
-
-    await db.lesson.delete({
-      where: { id: lessonId, sectionId },
-    });
-
+    await deleteLessonData(lessonId, sectionId);
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
-    return { success: true };
-  } catch (error: any) {
-    console.error("[DELETE_LESSON_ERROR]", error);
-    return { error: error.message || "Something went wrong" };
-  }
+    return true;
+  });
 }
 
-export async function reorderSections(
-  courseId: string,
-  items: { id: string; position: number }[],
-) {
-  try {
+export async function reorderSections(courseId: string, items: { id: string; position: number }[]) {
+  return actionHandler(async () => {
     const user = await requireTeacher();
+    await getCourseByIdForOwner(courseId, user.id);
 
-    const courseOwner = await db.course.findUnique({
-      where: { id: courseId, teacherId: user.id },
-    });
-
-    if (!courseOwner) {
-      return { error: "Unauthorized" };
-    }
-
-    for (const item of items) {
-      await db.section.update({
-        where: { id: item.id, courseId },
-        data: { position: item.position },
-      });
-    }
-
+    await reorderSectionsData(courseId, items);
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
-    return { success: true };
-  } catch (error: any) {
-    console.error("[REORDER_SECTIONS_ERROR]", error);
-    return { error: error.message || "Something went wrong" };
-  }
+    return true;
+  });
 }
 
-export async function reorderLessons(
-  courseId: string,
-  sectionId: string,
-  items: { id: string; position: number }[],
-) {
-  try {
+export async function reorderLessons(courseId: string, sectionId: string, items: { id: string; position: number }[]) {
+  return actionHandler(async () => {
     const user = await requireTeacher();
+    await getCourseByIdForOwner(courseId, user.id);
 
-    const courseOwner = await db.course.findUnique({
-      where: { id: courseId, teacherId: user.id },
-    });
-
-    if (!courseOwner) {
-      return { error: "Unauthorized" };
-    }
-
-    for (const item of items) {
-      await db.lesson.update({
-        where: { id: item.id, sectionId },
-        data: { position: item.position },
-      });
-    }
-
+    await reorderLessonsData(sectionId, items);
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
-    return { success: true };
-  } catch (error: any) {
-    console.error("[REORDER_LESSONS_ERROR]", error);
-    return { error: error.message || "Something went wrong" };
-  }
+    return true;
+  });
 }
 
-export async function createAttachment(
-  courseId: string,
-  lessonId: string,
-  name: string,
-  url: string,
-  size?: number,
-  type?: string,
-) {
-  try {
+export async function createAttachment(courseId: string, lessonId: string, name: string, url: string, size?: number, type?: string) {
+  return actionHandler(async () => {
     const user = await requireTeacher();
-
-    const courseOwner = await db.course.findUnique({
-      where: { id: courseId, teacherId: user.id },
-    });
-
-    if (!courseOwner) {
-      return { error: "Unauthorized" };
-    }
+    await getCourseByIdForOwner(courseId, user.id);
 
     const attachment = await db.attachment.create({
-      data: {
-        name,
-        url,
-        size,
-        type,
-        lessonId,
-      },
+      data: { name, url, size, type, lessonId },
     });
-
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
-    return { success: true, data: attachment };
-  } catch (error: any) {
-    console.error("[CREATE_ATTACHMENT_ERROR]", error);
-    return { error: error.message || "Something went wrong" };
-  }
+    return attachment;
+  });
 }
 
-export async function deleteAttachment(
-  courseId: string,
-  lessonId: string,
-  attachmentId: string,
-) {
-  try {
+export async function deleteAttachment(courseId: string, lessonId: string, attachmentId: string) {
+  return actionHandler(async () => {
     const user = await requireTeacher();
-
-    const courseOwner = await db.course.findUnique({
-      where: { id: courseId, teacherId: user.id },
-    });
-
-    if (!courseOwner) {
-      return { error: "Unauthorized" };
-    }
+    await getCourseByIdForOwner(courseId, user.id);
 
     await db.attachment.delete({
       where: { id: attachmentId, lessonId },
     });
-
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
-    return { success: true };
-  } catch (error: any) {
-    console.error("[DELETE_ATTACHMENT_ERROR]", error);
-    return { error: error.message || "Something went wrong" };
-  }
+    return true;
+  });
 }

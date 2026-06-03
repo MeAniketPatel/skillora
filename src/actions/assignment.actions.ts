@@ -1,134 +1,64 @@
 "use server";
 
-import db from "@/lib/prisma";
-import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
+import { actionHandler } from "@/lib/action-utils";
+import { requireAuth, requireTeacher } from "@/lib/auth-helpers";
+import { NotFoundError, ValidationError } from "@/lib/errors";
+import {
+  submitAssignment as submitAssignmentData,
+  getSubmissionsForLesson,
+  gradeSubmission as gradeSubmissionData,
+  getLessonWithContent,
+  getEnrollment,
+  upsertLessonProgress,
+  createNotification
+} from "@/data";
+import db from "@/lib/prisma";
 
 export async function submitAssignment(lessonId: string, content: string) {
-  try {
-    const session = await auth();
-    if (!session?.user?.id) {
-      return { error: "Unauthorized" };
-    }
+  return actionHandler(async () => {
+    const user = await requireAuth();
 
     const lesson = await db.lesson.findUnique({
       where: { id: lessonId },
-      include: {
-        section: {
-          include: {
-            course: true,
-          },
-        },
-      },
+      include: { section: { include: { course: true } } },
     });
 
-    if (!lesson) {
-      return { error: "Lesson not found" };
-    }
+    if (!lesson) throw new NotFoundError("Lesson");
 
-    const enrollment = await db.enrollment.findUnique({
-      where: {
-        userId_courseId: {
-          userId: session.user.id,
-          courseId: lesson.section.courseId,
-        },
-      },
+    const enrollment = await getEnrollment(user.id, lesson.section.courseId);
+    if (!enrollment) throw new ValidationError("You are not enrolled in this course");
+
+    const submission = await submitAssignmentData(user.id, lessonId, content);
+
+    await upsertLessonProgress(enrollment.id, lessonId, {
+      isCompleted: true,
+      completedAt: new Date(),
     });
 
-    if (!enrollment) {
-      return { error: "You are not enrolled in this course" };
-    }
-
-    // Upsert assignment submission
-    const submission = await db.assignmentSubmission.upsert({
-      where: {
-        userId_lessonId: {
-          userId: session.user.id,
-          lessonId,
-        },
-      },
-      update: {
-        content,
-        status: "SUBMITTED",
-        submittedAt: new Date(),
-      },
-      create: {
-        userId: session.user.id,
-        lessonId,
-        content,
-        status: "SUBMITTED",
-      },
-    });
-
-    // Auto mark lesson completion
-    await db.lessonProgress.upsert({
-      where: {
-        enrollmentId_lessonId: {
-          enrollmentId: enrollment.id,
-          lessonId,
-        },
-      },
-      update: {
-        isCompleted: true,
-        completedAt: new Date(),
-      },
-      create: {
-        enrollmentId: enrollment.id,
-        lessonId,
-        isCompleted: true,
-        completedAt: new Date(),
-      },
-    });
-
-    // Notify teacher
     try {
-      await db.notification.create({
-        data: {
-          userId: lesson.section.course.teacherId,
-          type: "ASSIGNMENT_SUBMISSION",
-          title: "New Assignment Submission 📝",
-          message: `${session.user.name || session.user.email} submitted an assignment for "${lesson.title}"`,
-          link: `/teacher/courses/${lesson.section.courseId}/assignments`,
-        },
-      });
+      await createNotification(
+        lesson.section.course.teacherId,
+        "ASSIGNMENT_SUBMISSION",
+        "New Assignment Submission 📝",
+        `${user.name || user.email} submitted an assignment for "${lesson.title}"`,
+        `/teacher/courses/${lesson.section.courseId}/assignments`
+      );
     } catch (err) {
       console.error("Failed to notify teacher:", err);
     }
 
     revalidatePath(`/learn/${lesson.section.courseId}/${lessonId}`);
-    return { success: true, submission };
-  } catch (error) {
-    console.error("Failed to submit assignment:", error);
-    return { error: "Something went wrong" };
-  }
+    return submission;
+  });
 }
 
 export async function getLessonSubmissions(lessonId: string) {
-  try {
-    const session = await auth();
-    if (!session?.user?.id || (session.user.role !== "TEACHER" && session.user.role !== "ADMIN")) {
-      return { error: "Unauthorized" };
-    }
-
-    const submissions = await db.assignmentSubmission.findMany({
-      where: { lessonId },
-      include: {
-        user: {
-          select: {
-            name: true,
-            email: true,
-            image: true,
-          },
-        },
-      },
-      orderBy: { submittedAt: "desc" },
-    });
-
-    return { submissions };
-  } catch (error) {
-    console.error("Failed to fetch submissions:", error);
-    return { error: "Something went wrong" };
-  }
+  return actionHandler(async () => {
+    await requireTeacher();
+    const submissions = await getSubmissionsForLesson(lessonId);
+    return submissions;
+  });
 }
 
 export async function gradeSubmission(
@@ -136,48 +66,24 @@ export async function gradeSubmission(
   score: number,
   feedback?: string
 ) {
-  try {
-    const session = await auth();
-    if (!session?.user?.id || (session.user.role !== "TEACHER" && session.user.role !== "ADMIN")) {
-      return { error: "Unauthorized" };
-    }
+  return actionHandler(async () => {
+    await requireTeacher();
 
-    const submission = await db.assignmentSubmission.update({
-      where: { id: submissionId },
-      data: {
-        score,
-        feedback,
-        status: "GRADED",
-        gradedAt: new Date(),
-      },
-      include: {
-        lesson: {
-          include: {
-            section: true,
-          },
-        },
-      },
-    });
+    const submission = await gradeSubmissionData(submissionId, score, feedback);
 
-    // Notify student
     try {
-      await db.notification.create({
-        data: {
-          userId: submission.userId,
-          type: "ASSIGNMENT_GRADED",
-          title: "Assignment Graded! 📝",
-          message: `Your submission for "${submission.lesson.title}" was graded: ${score}/100.`,
-          link: `/learn/${submission.lesson.section.courseId}/${submission.lessonId}`,
-        },
-      });
+      await createNotification(
+        submission.userId,
+        "ASSIGNMENT_GRADED",
+        "Assignment Graded! 📝",
+        `Your submission for "${submission.lesson.title}" was graded: ${score}/100.`,
+        `/learn/${submission.lesson.section.courseId}/${submission.lessonId}`
+      );
     } catch (err) {
       console.error("Failed to notify student:", err);
     }
 
     revalidatePath(`/learn/${submission.lesson.section.courseId}/${submission.lessonId}`);
-    return { success: true, submission };
-  } catch (error) {
-    console.error("Failed to grade submission:", error);
-    return { error: "Something went wrong" };
-  }
+    return submission;
+  });
 }

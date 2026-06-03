@@ -1,80 +1,39 @@
 "use server";
 
-import db from "@/lib/prisma";
-import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
+import { actionHandler } from "@/lib/action-utils";
+import { requireAuth } from "@/lib/auth-helpers";
+import {
+  getUserNotifications,
+  markAsRead,
+  markAllAsRead,
+  createNotification as createNotificationData
+} from "@/data";
 
 export async function getNotifications() {
-  try {
-    const session = await auth();
-    if (!session?.user?.id) {
-      return { error: "Unauthorized" };
-    }
-
-    const notifications = await db.notification.findMany({
-      where: {
-        userId: session.user.id,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-
-    return { notifications };
-  } catch (error) {
-    console.error("Failed to fetch notifications:", error);
-    return { error: "Something went wrong" };
-  }
+  return actionHandler(async () => {
+    const user = await requireAuth();
+    const notifications = await getUserNotifications(user.id, {});
+    return notifications;
+  });
 }
 
 export async function markNotificationAsRead(id: string) {
-  try {
-    const session = await auth();
-    if (!session?.user?.id) {
-      return { error: "Unauthorized" };
-    }
-
-    await db.notification.update({
-      where: {
-        id,
-        userId: session.user.id,
-      },
-      data: {
-        isRead: true,
-      },
-    });
-
+  return actionHandler(async () => {
+    const user = await requireAuth();
+    await markAsRead(id, user.id);
     revalidatePath("/dashboard");
-    return { success: true };
-  } catch (error) {
-    console.error("Failed to mark notification as read:", error);
-    return { error: "Something went wrong" };
-  }
+    return true;
+  });
 }
 
 export async function markAllNotificationsAsRead() {
-  try {
-    const session = await auth();
-    if (!session?.user?.id) {
-      return { error: "Unauthorized" };
-    }
-
-    await db.notification.updateMany({
-      where: {
-        userId: session.user.id,
-        isRead: false,
-      },
-      data: {
-        isRead: true,
-      },
-    });
-
+  return actionHandler(async () => {
+    const user = await requireAuth();
+    await markAllAsRead(user.id);
     revalidatePath("/dashboard");
-    return { success: true };
-  } catch (error) {
-    console.error("Failed to mark all notifications as read:", error);
-    return { error: "Something went wrong" };
-  }
+    return true;
+  });
 }
 
 export async function createNotification(
@@ -84,19 +43,8 @@ export async function createNotification(
   message: string,
   link?: string
 ) {
-  try {
-    const notification = await db.notification.create({
-      data: {
-        userId,
-        type,
-        title,
-        message,
-        link,
-      },
-    });
-    return { success: true, notification };
-  } catch (error) {
-    console.error("Failed to create notification:", error);
-    return { error: "Something went wrong" };
-  }
+  return actionHandler(async () => {
+    const notification = await createNotificationData(userId, type, title, message, link);
+    return notification;
+  });
 }

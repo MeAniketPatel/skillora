@@ -1,46 +1,35 @@
 "use server";
 
 import { stripe } from "@/lib/stripe";
-import db from "@/lib/prisma";
-import { auth } from "@/auth";
+import { actionHandler } from "@/lib/action-utils";
+import { requireAuth } from "@/lib/auth-helpers";
+import { NotFoundError, ValidationError, ConflictError } from "@/lib/errors";
+import { getCourseById, getCouponByCode, getEnrollment } from "@/data";
 
 export async function createCheckoutSession(courseId: string, couponCode?: string) {
-  try {
-    const session = await auth();
-    if (!session?.user) {
-      return { error: "Unauthorized" };
-    }
+  return actionHandler(async () => {
+    const user = await requireAuth();
 
-    const course = await db.course.findUnique({
-      where: { id: courseId },
-    });
-
+    const course = await getCourseById(courseId);
     if (!course || course.price === null || course.price <= 0) {
-      return { error: "Invalid course or course is free" };
+      throw new ValidationError("Invalid course or course is free");
     }
 
     let finalPrice = course.price;
     let couponRecord = null;
 
     if (couponCode) {
-      couponRecord = await db.coupon.findUnique({
-        where: { code: couponCode },
-      });
+      couponRecord = await getCouponByCode(couponCode);
 
-      if (!couponRecord) {
-        return { error: "Invalid coupon code" };
-      }
-
+      if (!couponRecord) throw new ValidationError("Invalid coupon code");
       if (couponRecord.expiresAt && new Date(couponRecord.expiresAt) < new Date()) {
-        return { error: "Coupon code has expired" };
+        throw new ValidationError("Coupon code has expired");
       }
-
       if (couponRecord.maxUses && couponRecord.usedCount >= couponRecord.maxUses) {
-        return { error: "Coupon code has reached maximum usage limit" };
+        throw new ValidationError("Coupon code has reached maximum usage limit");
       }
-
       if (couponRecord.courseId && couponRecord.courseId !== courseId) {
-        return { error: "Coupon code is not applicable to this course" };
+        throw new ValidationError("Coupon code is not applicable to this course");
       }
 
       if (couponRecord.type === "PERCENTAGE") {
@@ -50,17 +39,9 @@ export async function createCheckoutSession(courseId: string, couponCode?: strin
       }
     }
 
-    const existingEnrollment = await db.enrollment.findUnique({
-      where: {
-        userId_courseId: {
-          userId: session.user.id,
-          courseId,
-        },
-      },
-    });
-
+    const existingEnrollment = await getEnrollment(user.id, courseId);
     if (existingEnrollment) {
-      return { error: "Already enrolled in this course" };
+      throw new ConflictError("Already enrolled in this course");
     }
 
     const stripeSession = await stripe.checkout.sessions.create({
@@ -82,15 +63,12 @@ export async function createCheckoutSession(courseId: string, couponCode?: strin
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/learn/${course.id}`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.slug}`,
       metadata: {
-        userId: session.user.id,
+        userId: user.id,
         courseId: course.id,
         couponId: couponRecord?.id || "",
       },
     });
 
-    return { success: true, url: stripeSession.url };
-  } catch (error: any) {
-    console.error("[CREATE_CHECKOUT_SESSION]", error);
-    return { error: error.message || "Something went wrong" };
-  }
+    return { url: stripeSession.url };
+  });
 }

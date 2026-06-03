@@ -1,36 +1,25 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import db from "@/lib/prisma";
-import { auth } from "@/auth";
-
-async function requireTeacher() {
-  const session = await auth();
-  if (!session?.user || (session.user.role !== "TEACHER" && session.user.role !== "ADMIN")) {
-    throw new Error("Unauthorized");
-  }
-  return session.user;
-}
+import { actionHandler } from "@/lib/action-utils";
+import { requireAuth, requireTeacher } from "@/lib/auth-helpers";
+import { ConflictError, NotFoundError } from "@/lib/errors";
+import {
+  createQuiz as createQuizData,
+  updateQuizWithQuestions,
+  createQuizAttempt,
+  getQuizByLessonId
+} from "@/data";
 
 export async function createQuiz(lessonId: string, title: string, passingScore = 70) {
-  try {
+  return actionHandler(async () => {
     await requireTeacher();
 
-    const existing = await db.quiz.findUnique({ where: { lessonId } });
-    if (existing) return { error: "Quiz already exists for this lesson" };
+    const existing = await getQuizByLessonId(lessonId);
+    if (existing) throw new ConflictError("Quiz already exists for this lesson");
 
-    const quiz = await db.quiz.create({
-      data: {
-        lessonId,
-        title,
-        passingScore,
-      },
-    });
-
-    return { success: true, data: quiz };
-  } catch (error: any) {
-    return { error: error.message || "Failed to create quiz" };
-  }
+    const quiz = await createQuizData(lessonId, { title, passingScore });
+    return quiz;
+  });
 }
 
 export async function updateQuiz(
@@ -43,60 +32,37 @@ export async function updateQuiz(
     explanation?: string;
   }[]
 ) {
-  try {
+  return actionHandler(async () => {
     await requireTeacher();
 
-    // Start a transaction to replace questions
-    const quiz = await db.$transaction(async (tx) => {
-      // 1. Update quiz title & score
-      const q = await tx.quiz.update({
-        where: { id: quizId },
-        data: { title, passingScore },
-      });
+    const quiz = await updateQuizWithQuestions(
+      quizId,
+      { title, passingScore },
+      questions
+    );
 
-      // 2. Delete existing questions
-      await tx.quizQuestion.deleteMany({
-        where: { quizId },
-      });
-
-      // 3. Insert new questions
-      if (questions.length > 0) {
-        await tx.quizQuestion.createMany({
-          data: questions.map((item, index) => ({
-            quizId,
-            question: item.question,
-            options: item.options as any,
-            explanation: item.explanation || "",
-            position: index + 1,
-          })),
-        });
-      }
-
-      return q;
-    });
-
-    return { success: true, data: quiz };
-  } catch (error: any) {
-    return { error: error.message || "Failed to update quiz" };
-  }
+    return quiz;
+  });
 }
 
 export async function submitQuizAttempt(
   quizId: string,
   answers: Record<string, string> // maps questionId -> selectedOptionText
 ) {
-  try {
-    const session = await auth();
-    if (!session?.user) return { error: "Unauthorized" };
+  return actionHandler(async () => {
+    const user = await requireAuth();
 
+    // Since getQuizByLessonId is what we have, we might need a getQuizById, 
+    // but we can just use prisma here if needed or add a new DAL function.
+    // For simplicity I will just import db directly if the DAL is missing it
+    const db = (await import("@/lib/prisma")).default;
+    
     const quiz = await db.quiz.findUnique({
       where: { id: quizId },
-      include: {
-        questions: true,
-      },
+      include: { questions: true },
     });
 
-    if (!quiz) return { error: "Quiz not found" };
+    if (!quiz) throw new NotFoundError("Quiz");
 
     let totalPoints = 0;
     let earnedPoints = 0;
@@ -115,18 +81,14 @@ export async function submitQuizAttempt(
     const score = totalPoints > 0 ? (earnedPoints / totalPoints) * 100 : 0;
     const passed = score >= quiz.passingScore;
 
-    const attempt = await db.quizAttempt.create({
-      data: {
-        quizId,
-        userId: session.user.id,
-        score,
-        passed,
-        answers: answers as any,
-      },
+    const attempt = await createQuizAttempt({
+      quizId,
+      userId: user.id,
+      score,
+      passed,
+      answers: answers as any,
     });
 
-    return { success: true, attempt };
-  } catch (error: any) {
-    return { error: error.message || "Failed to submit attempt" };
-  }
+    return attempt;
+  });
 }

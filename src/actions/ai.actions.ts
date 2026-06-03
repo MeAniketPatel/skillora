@@ -1,16 +1,15 @@
 "use server";
 
-import { auth } from "@/auth";
+import { actionHandler } from "@/lib/action-utils";
+import { requireTeacher } from "@/lib/auth-helpers";
+import { ValidationError } from "@/lib/errors";
 
 export async function generateAICourseDescription(title: string) {
-  try {
-    const session = await auth();
-    if (!session?.user?.id || (session.user.role !== "TEACHER" && session.user.role !== "ADMIN")) {
-      return { error: "Unauthorized" };
-    }
+  return actionHandler(async () => {
+    await requireTeacher();
 
     if (!title || !title.trim()) {
-      return { error: "Course title is required to generate description" };
+      throw new ValidationError("Course title is required to generate description");
     }
 
     if (process.env.OPENAI_API_KEY) {
@@ -41,14 +40,13 @@ export async function generateAICourseDescription(title: string) {
         const data = await response.json();
         const htmlDescription = data.choices?.[0]?.message?.content;
         if (htmlDescription) {
-          return { success: true, description: htmlDescription.trim() };
+          return { description: htmlDescription.trim() };
         }
       } catch (err) {
         console.error("OpenAI request failed, falling back to mock generator:", err);
       }
     }
 
-    // High-quality mock fallback templates based on title keyword matching
     const fallbackHTML = `
       <p>Welcome to <strong>${title}</strong>! This comprehensive curriculum program has been carefully structured to take you from a baseline understanding to an advanced operational proficiency.</p>
       <p>Through interactive modules and structured labs, you will master the core foundations, design principles, and optimization strategies required in industry environments today.</p>
@@ -62,22 +60,16 @@ export async function generateAICourseDescription(title: string) {
       <p>No prior specialist expertise is required, though basic literacy in the technology stack is highly recommended. Join us and upgrade your skill profile!</p>
     `;
 
-    return { success: true, description: fallbackHTML.trim() };
-  } catch (error) {
-    console.error("Failed to generate description:", error);
-    return { error: "Something went wrong" };
-  }
+    return { description: fallbackHTML.trim() };
+  });
 }
 
 export async function generateAIQuizQuestions(topic: string) {
-  try {
-    const session = await auth();
-    if (!session?.user?.id || (session.user.role !== "TEACHER" && session.user.role !== "ADMIN")) {
-      return { error: "Unauthorized" };
-    }
+  return actionHandler(async () => {
+    await requireTeacher();
 
     if (!topic || !topic.trim()) {
-      return { error: "Quiz topic is required to generate questions" };
+      throw new ValidationError("Quiz topic is required to generate questions");
     }
 
     if (process.env.OPENAI_API_KEY) {
@@ -111,7 +103,7 @@ export async function generateAIQuizQuestions(topic: string) {
           const parsed = JSON.parse(jsonStr);
           const questions = parsed.questions || parsed;
           if (Array.isArray(questions)) {
-            return { success: true, questions };
+            return { questions };
           }
         }
       } catch (err) {
@@ -119,7 +111,6 @@ export async function generateAIQuizQuestions(topic: string) {
       }
     }
 
-    // High quality mock fallback quiz questions based on topic
     const fallbackQuestions = [
       {
         question: `What is the primary architectural concept when learning ${topic}?`,
@@ -153,9 +144,6 @@ export async function generateAIQuizQuestions(topic: string) {
       },
     ];
 
-    return { success: true, questions: fallbackQuestions };
-  } catch (error) {
-    console.error("Failed to generate quiz questions:", error);
-    return { error: "Something went wrong" };
-  }
+    return { questions: fallbackQuestions };
+  });
 }
