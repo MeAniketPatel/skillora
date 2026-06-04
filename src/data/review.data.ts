@@ -88,3 +88,14 @@ export async function getTeacherReviews(teacherId: string, params: { page?: numb
 
   return { reviews, total, pages: Math.ceil(total / limit) };
 }
+
+export async function getTeacherAverageRating(teacherId: string) {
+  const reviews = await db.review.findMany({
+    where: { course: { teacherId } },
+    select: { rating: true },
+  });
+
+  const count = reviews.length;
+  const average = count > 0 ? reviews.reduce((acc, r) => acc + r.rating, 0) / count : 5.0;
+  return average;
+}

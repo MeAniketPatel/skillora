@@ -46,3 +46,11 @@ export async function getCertificateByEnrollment(enrollmentId: string) {
     where: { enrollmentId },
   });
 }
+
+export async function getUserCertificatesCount(userId: string) {
+  return db.certificate.count({
+    where: {
+      enrollment: { userId },
+    },
+  });
+}

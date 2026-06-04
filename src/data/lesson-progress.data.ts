@@ -52,3 +52,12 @@ export async function getLessonProgress(enrollmentId: string, lessonId: string) 
     },
   });
 }
+
+export async function getUserCompletedLessonsCount(userId: string) {
+  return db.lessonProgress.count({
+    where: {
+      enrollment: { userId },
+      isCompleted: true,
+    },
+  });
+}

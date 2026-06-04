@@ -79,3 +79,70 @@ export async function getEnrollmentCount(courseId: string) {
 export async function getTotalEnrollmentCount() {
   return db.enrollment.count();
 }
+
+export async function getUserEnrollmentCount(userId: string) {
+  return db.enrollment.count({
+    where: { userId },
+  });
+}
+
+export async function getResumeLessonId(userId: string, courseId: string) {
+  const enrollment = await db.enrollment.findUnique({
+    where: { userId_courseId: { userId, courseId } },
+    include: {
+      lessonProgress: {
+        where: { isCompleted: true },
+        select: { lessonId: true },
+      },
+    },
+  });
+
+  if (!enrollment) return null;
+
+  const lessons = await db.lesson.findMany({
+    where: {
+      section: { courseId },
+      isPublished: true,
+    },
+    orderBy: [
+      { section: { position: "asc" } },
+      { position: "asc" },
+    ],
+    select: { id: true },
+  });
+
+  if (lessons.length === 0) return null;
+
+  const completedLessonIds = new Set(enrollment.lessonProgress.map((p) => p.lessonId));
+  const nextLesson = lessons.find((l) => !completedLessonIds.has(l.id));
+
+  return nextLesson ? nextLesson.id : lessons[0].id;
+}
+
+export async function getTeacherRecentEnrollments(teacherId: string, limit: number = 5) {
+  return db.enrollment.findMany({
+    where: { course: { teacherId } },
+    orderBy: { createdAt: "desc" },
+    take: limit,
+    include: {
+      user: {
+        select: {
+          name: true,
+          email: true,
+          image: true,
+        },
+      },
+      course: {
+        select: {
+          title: true,
+        },
+      },
+    },
+  });
+}
+
+export async function getTeacherStudentCount(teacherId: string) {
+  return db.enrollment.count({
+    where: { course: { teacherId } },
+  });
+}
