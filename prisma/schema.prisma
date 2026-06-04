@@ -80,11 +80,17 @@ model User {
   answers       Answer[]
   submissions   AssignmentSubmission[]
   wishlist      Wishlist[]
-  studyStreak   StudyStreak?
-  studySessions StudySession[]
-  bookmarks     Bookmark[]
-  learningGoals LearningGoal[]
-  courseCollections CourseCollection[]
+  studyStreak          StudyStreak?
+  studySessions        StudySession[]
+  bookmarks            Bookmark[]
+  learningGoals        LearningGoal[]
+  courseCollections     CourseCollection[]
+  announcements        Announcement[]
+  payoutRequests       PayoutRequest[]
+  peerReviewsGiven     PeerReview[]            @relation("ReviewerReviews")
+  peerReviewsReceived  PeerReview[]            @relation("RevieweeReviews")
+  pollsCreated         Poll[]
+  pollVotes            PollVote[]
 }
 
 model Account {
@@ -239,6 +245,8 @@ model Course {
   tags         Tag[]
   wishlistedBy Wishlist[]
   collections  CollectionCourse[]
+  announcements Announcement[]
+  polls         Poll[]
 }
 
 model Section {
@@ -279,6 +287,7 @@ model Lesson {
   questions   Question[]
   submissions AssignmentSubmission[]
   bookmarks   Bookmark[]
+  peerReviewConfig PeerReviewAssignment?
   createdAt   DateTime               @default(now())
   updatedAt   DateTime               @updatedAt
 }
@@ -521,6 +530,7 @@ model AssignmentSubmission {
   user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   submittedAt   DateTime  @default(now())
   gradedAt      DateTime?
+  peerReviews   PeerReview[]
 
   @@unique([userId, lessonId])
 }
@@ -625,4 +635,80 @@ model CollectionCourse {
   createdAt    DateTime         @default(now())
 
   @@unique([collectionId, courseId])
+}
+
+// ============ TEACHER PORTAL (PHASE 3) ============
+
+model Announcement {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   @db.Text
+  courseId  String?
+  course    Course?  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model PayoutRequest {
+  id          String    @id @default(cuid())
+  amount      Float
+  status      String    @default("PENDING") // PENDING, PAID, REJECTED
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  processedAt DateTime?
+}
+
+model PeerReview {
+  id           String               @id @default(cuid())
+  submissionId String
+  submission   AssignmentSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  reviewerId   String
+  reviewer     User                 @relation("ReviewerReviews", fields: [reviewerId], references: [id], onDelete: Cascade)
+  revieweeId   String
+  reviewee     User                 @relation("RevieweeReviews", fields: [revieweeId], references: [id], onDelete: Cascade)
+  score        Float
+  feedback     String               @db.Text
+  createdAt    DateTime             @default(now())
+}
+
+model PeerReviewAssignment {
+  id              String   @id @default(cuid())
+  lessonId        String   @unique
+  lesson          Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  requiredReviews Int      @default(3)
+  dueDate         DateTime
+  createdAt       DateTime @default(now())
+}
+
+model Poll {
+  id        String       @id @default(cuid())
+  question  String
+  courseId  String
+  course    Course       @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  options   PollOption[]
+  createdAt DateTime     @default(now())
+  closedAt  DateTime?
+}
+
+model PollOption {
+  id     String     @id @default(cuid())
+  text   String
+  pollId String
+  poll   Poll       @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  votes  PollVote[]
+}
+
+model PollVote {
+  id       String     @id @default(cuid())
+  optionId String
+  option   PollOption @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  userId   String
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime   @default(now())
+
+  @@unique([userId, optionId])
 }
