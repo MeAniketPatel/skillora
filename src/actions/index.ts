@@ -16,4 +16,6 @@ export * from "./contact.actions";
 export * from "./wishlist.actions";
 export * from "./settings.actions";
 export * from "./streak.actions";
+export * from "./bookmark.actions";
+
 
