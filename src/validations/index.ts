@@ -12,6 +12,10 @@ export * from "./bookmark.schema";
 export * from "./learning-goal.schema";
 export * from "./collection.schema";
 export * from "./announcement.schema";
+export * from "./payout.schema";
+export * from "./peer-review.schema";
+
+
 
 
 

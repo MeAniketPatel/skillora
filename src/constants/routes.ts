@@ -42,7 +42,9 @@ export const ROUTES = {
   TEACHER_REVIEWS: "/teacher/reviews",
   TEACHER_QA: "/teacher/qa",
   TEACHER_COUPONS: "/teacher/coupons",
+  TEACHER_PAYOUTS: "/teacher/payouts",
   TEACHER_ASSIGNMENTS: (courseId: string) =>
+
     `/teacher/courses/${courseId}/assignments` as const,
 
   // Admin

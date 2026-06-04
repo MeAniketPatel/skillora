@@ -10,7 +10,8 @@ import {
   Settings, 
   LogOut,
   User,
-  LayoutDashboard
+  LayoutDashboard,
+  Coins
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
@@ -42,6 +43,7 @@ export function Sidebar({ session }: SidebarProps) {
         { name: "Dashboard", href: ROUTES.DASHBOARD, icon: LayoutDashboard },
         { name: "My Courses", href: ROUTES.TEACHER_COURSES, icon: BookOpen },
         { name: "Analytics", href: ROUTES.TEACHER_ANALYTICS, icon: BarChart },
+        { name: "Payouts", href: ROUTES.TEACHER_PAYOUTS, icon: Coins },
         { name: "Settings", href: ROUTES.SETTINGS, icon: Settings },
       ]
     : [

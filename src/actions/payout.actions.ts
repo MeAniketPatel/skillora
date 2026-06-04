@@ -1,0 +1,32 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { actionHandler } from "@/lib/action-utils";
+import { requireTeacher } from "@/lib/auth-helpers";
+import { ValidationError } from "@/lib/errors";
+import { payoutSchema } from "@/validations/payout.schema";
+import { getPayoutBalance, createPayoutRequest } from "@/data";
+import { z } from "zod";
+
+export async function requestPayoutAction(values: z.infer<typeof payoutSchema>) {
+  return actionHandler(async () => {
+    const user = await requireTeacher();
+    const validated = payoutSchema.parse(values);
+
+    // Get current balance status
+    const { availableBalance } = await getPayoutBalance(user.id);
+
+    if (validated.amount > availableBalance) {
+      throw new ValidationError(
+        `Insufficient balance. You requested $${validated.amount.toFixed(
+          2
+        )} but only have $${availableBalance.toFixed(2)} available.`
+      );
+    }
+
+    const payout = await createPayoutRequest(user.id, validated.amount);
+
+    revalidatePath("/teacher/payouts");
+    return payout;
+  });
+}

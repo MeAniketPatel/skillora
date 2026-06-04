@@ -1,8 +1,9 @@
 import { requireTeacher } from "@/lib/auth-helpers";
-import { getCourseByIdForOwner } from "@/data";
+import { getCourseByIdForOwner, getPeerReviewConfig } from "@/data";
 import { getLessonWithContent } from "@/data/lesson.data";
 import { redirect } from "next/navigation";
 import LessonEditor from "@/components/course/lesson-editor";
+import { PeerReviewConfig } from "@/components/teacher/peer-review-config";
 
 export default async function LessonEditPage({
   params,
@@ -33,9 +34,18 @@ export default async function LessonEditPage({
     redirect(`/teacher/courses/${courseId}/curriculum`);
   }
 
+  const peerReviewConfig = lesson.type === "ASSIGNMENT" 
+    ? await getPeerReviewConfig(lessonId) 
+    : null;
+
   return (
-    <div className="max-w-7xl mx-auto py-2">
+    <div className="max-w-7xl mx-auto py-2 space-y-6">
       <LessonEditor courseId={courseId} lesson={lesson} />
+      {lesson.type === "ASSIGNMENT" && (
+        <div className="max-w-xl">
+          <PeerReviewConfig lessonId={lessonId} initialConfig={peerReviewConfig} />
+        </div>
+      )}
     </div>
   );
 }

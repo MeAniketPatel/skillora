@@ -7,7 +7,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Trash2, User, Calendar, Megaphone } from "lucide-react";
-import { useToast } from "@/hooks/use-toast"; // Wait! Let's check if toast or sonner is installed
 
 interface Announcement {
   id: string;

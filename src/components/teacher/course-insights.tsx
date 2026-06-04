@@ -26,7 +26,7 @@ export function CourseInsights({ courseId }: CourseInsightsProps) {
   useEffect(() => {
     async function loadInsights() {
       const res = await getCourseInsightsAction(courseId);
-      if (res.success && res.data) {
+      if (res.success) {
         setData(res.data);
       } else {
         setError(res.error || "Failed to load course insights.");
