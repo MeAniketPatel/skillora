@@ -12,6 +12,9 @@ import {
   ArrowLeft,
   LayoutGrid,
   Sparkles,
+  CheckCircle,
+  Check,
+  X,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -57,6 +60,7 @@ interface CourseEditorProps {
     categoryId: string | null;
     level: string;
     status: string;
+    sections?: any[];
   };
   categories: { id: string; name: string }[];
 }
@@ -120,6 +124,25 @@ export default function CourseEditor({
   const thumbnailVal = watch("thumbnail");
   const promoVideoVal = watch("promoVideo");
   const descriptionVal = watch("description");
+  const titleVal = watch("title");
+  const categoryIdVal = watch("categoryId");
+
+  const sections = course.sections || [];
+  const hasPublishedLesson = sections.some((s: any) =>
+    s.lessons?.some((l: any) => l.isPublished)
+  );
+
+  const checklistItems = [
+    { label: "Course Title", completed: !!titleVal?.trim() },
+    { label: "Description", completed: !!descriptionVal && descriptionVal.replace(/<[^>]*>/g, '').trim().length > 0 },
+    { label: "Category Selected", completed: !!categoryIdVal },
+    { label: "Course Thumbnail", completed: !!thumbnailVal },
+    { label: "At least one published lesson", completed: hasPublishedLesson },
+  ];
+
+  const totalFields = checklistItems.length;
+  const completedFields = checklistItems.filter(item => item.completed).length;
+  const isComplete = checklistItems.every(item => item.completed);
 
   const onSubmit = (values: CourseValues) => {
     setError(null);
@@ -147,15 +170,11 @@ export default function CourseEditor({
         // Clear any previous form errors
         // Client-side quick checks (title/description/thumbnail/category)
         const missing: string[] = [];
-        const titleVal = watch("title");
-        const descriptionVal = watch("description");
-        const thumbnailVal = watch("thumbnail");
-        const categoryVal = watch("categoryId");
         if (!titleVal || !titleVal.trim()) missing.push("title");
-        if (!descriptionVal || !descriptionVal.trim())
-          missing.push("description");
+        const textOnlyDesc = descriptionVal ? descriptionVal.replace(/<[^>]*>/g, '').trim() : "";
+        if (!textOnlyDesc) missing.push("description");
         if (!thumbnailVal) missing.push("thumbnail");
-        if (!categoryVal) missing.push("categoryId");
+        if (!categoryIdVal) missing.push("categoryId");
 
         // If we found missing locally, mark form fields before server call
         if (missing.length) {
@@ -179,6 +198,11 @@ export default function CourseEditor({
           }
 
           setError("Please fill in all required fields.");
+          return;
+        }
+
+        if (!hasPublishedLesson) {
+          setError("You must publish at least one lesson in the curriculum before publishing the course.");
           return;
         }
 
@@ -224,7 +248,12 @@ export default function CourseEditor({
             <ArrowLeft className="h-4 w-4" />
           </LinkButton>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Course Setup</h1>
+            <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
+              Course Setup
+              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400">
+                {completedFields}/{totalFields} fields completed
+              </span>
+            </h1>
             <p className="text-sm text-neutral-500">
               Edit course details, thumbnail, pricing, and curriculum.
             </p>
@@ -242,7 +271,7 @@ export default function CourseEditor({
           <Button
             variant={course.status === "PUBLISHED" ? "outline" : "default"}
             onClick={togglePublish}
-            disabled={isPending}
+            disabled={isPending || (course.status !== "PUBLISHED" && !isComplete)}
           >
             {course.status === "PUBLISHED" ? "Unpublish" : "Publish"}
           </Button>
@@ -382,6 +411,62 @@ export default function CourseEditor({
 
         {/* Right column - Thumbnail and Media */}
         <div className="space-y-6">
+          <Card className="bg-white dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-neutral-800 dark:text-neutral-100">
+                <CheckCircle className="h-5 w-5 text-indigo-500" />
+                Publishing Checklist
+              </CardTitle>
+              <CardDescription>
+                Complete all required fields to publish your course. ({completedFields}/{totalFields} completed)
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Progress bar */}
+              <div className="space-y-2">
+                <div className="flex justify-between text-xs text-neutral-500">
+                  <span>Progress</span>
+                  <span className="font-semibold">{Math.round((completedFields / totalFields) * 100)}%</span>
+                </div>
+                <div className="w-full bg-neutral-100 dark:bg-neutral-800 rounded-full h-2">
+                  <div 
+                    className="bg-indigo-600 dark:bg-indigo-500 h-2 rounded-full transition-all duration-300" 
+                    style={{ width: `${(completedFields / totalFields) * 100}%` }}
+                  />
+                </div>
+              </div>
+
+              <ul className="space-y-2.5 pt-2">
+                {checklistItems.map((item, idx) => (
+                  <li key={idx} className="flex items-start gap-2.5 text-sm text-neutral-600 dark:text-neutral-300">
+                    {item.completed ? (
+                      <span className="p-0.5 rounded-full bg-green-50 dark:bg-green-950/40 text-green-600 dark:text-green-400 mt-0.5">
+                        <Check className="h-3.5 w-3.5 stroke-[3px]" />
+                      </span>
+                    ) : (
+                      <span className="p-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-600 mt-0.5">
+                        <X className="h-3.5 w-3.5 stroke-[3px]" />
+                      </span>
+                    )}
+                    <div className="flex flex-col">
+                      <span className={item.completed ? "line-through text-neutral-400 dark:text-neutral-600 font-medium" : "font-medium text-neutral-700 dark:text-neutral-200"}>
+                        {item.label}
+                      </span>
+                      {!item.completed && item.label === "At least one published lesson" && (
+                        <Link 
+                          href={`/teacher/courses/${course.id}/curriculum`}
+                          className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline mt-0.5 font-semibold"
+                        >
+                          Go to Curriculum Builder &rarr;
+                        </Link>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+
           <Card className="bg-white dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50">
             <CardHeader>
               <CardTitle>Course Thumbnail</CardTitle>
