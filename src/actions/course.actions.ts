@@ -21,12 +21,11 @@ import {
   deleteLesson as deleteLessonData,
   reorderSections as reorderSectionsData,
   reorderLessons as reorderLessonsData,
-} from "@/data";
-import { getCourseForPublishing } from "@/data/course.data";
-import {
   createAttachment as createAttachmentData,
   deleteAttachment as deleteAttachmentData,
-} from "@/data/lesson.data";
+} from "@/data";
+import { getCourseForPublishing } from "@/data/course.data";
+
 
 export async function createCourse(values: CourseCreateInput) {
   return actionHandler(async () => {

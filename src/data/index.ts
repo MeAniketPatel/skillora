@@ -18,3 +18,5 @@ export * from "./audit.data";
 export * from "./contact.data";
 export * from "./wishlist.data";
 export * from "./settings.data";
+export * from "./attachment.data";
+
