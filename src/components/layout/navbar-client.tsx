@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Menu, X, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import LinkButton from "@/components/ui/link-button";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { logoutCurrentSession } from "@/actions/auth.actions";
 import { ROUTES } from "@/constants/routes";
 
