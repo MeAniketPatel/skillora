@@ -9,5 +9,7 @@ export * from "./settings.schema";
 export * from "./contact.schema";
 export * from "./streak.schema";
 export * from "./bookmark.schema";
+export * from "./learning-goal.schema";
+
 
 

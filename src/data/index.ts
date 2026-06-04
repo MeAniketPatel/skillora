@@ -21,6 +21,8 @@ export * from "./settings.data";
 export * from "./attachment.data";
 export * from "./streak.data";
 export * from "./bookmark.data";
+export * from "./learning-goal.data";
+
 
 
 
