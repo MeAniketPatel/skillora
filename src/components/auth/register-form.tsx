@@ -19,7 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { registerUser } from "@/actions/auth.actions";
+import { registerUser, loginUser } from "@/actions/auth.actions";
 
 const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -93,11 +93,23 @@ export default function RegisterForm() {
       if (!res.success) {
         setError(res.error);
       } else {
-        setSuccess("Account created! Redirecting to dashboard...");
-        setTimeout(() => {
-          router.push("/dashboard");
-          router.refresh();
-        }, 1500);
+        setSuccess("Account created! Logging you in...");
+        const loginRes = await loginUser({
+          email: values.email,
+          password: values.password,
+        });
+
+        if (loginRes?.error) {
+          setError("Account created, but automatic sign-in failed. Please sign in manually.");
+          setTimeout(() => {
+            router.push("/login");
+          }, 2000);
+        } else {
+          setTimeout(() => {
+            router.push("/dashboard");
+            router.refresh();
+          }, 1500);
+        }
       }
     });
   };
