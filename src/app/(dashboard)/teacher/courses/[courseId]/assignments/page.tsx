@@ -1,30 +1,30 @@
+import React from "react";
+import { redirect } from "next/navigation";
 import { requireTeacher } from "@/lib/auth-helpers";
 import { getCourseByIdForOwner } from "@/data/course.data";
 import { getCourseSubmissions } from "@/data/assignment.data";
 import { PageHeader } from "@/components/shared/page-header";
 import { SubmissionTable } from "@/components/teacher/submission-table";
-import LinkButton from "@/components/ui/link-button";
 
-interface CourseAssignmentsPageProps {
-  params: Promise<{
-    courseId: string;
-  }>;
+interface PageProps {
+  params: Promise<{ courseId: string }>;
 }
 
-export default async function CourseAssignmentsPage({
-  params,
-}: CourseAssignmentsPageProps) {
+export default async function CourseAssignmentsPage({ params }: PageProps) {
   const user = await requireTeacher();
   const { courseId } = await params;
 
-  // Validate ownership
-  const course = await getCourseByIdForOwner(courseId, user.id);
+  let course;
+  try {
+    course = await getCourseByIdForOwner(courseId, user.id);
+  } catch {
+    redirect("/teacher/courses");
+  }
 
-  // Fetch submissions
   const submissions = await getCourseSubmissions(courseId);
 
-  // Map database submissions to component Submission structure
-  const mappedSubmissions = submissions.map((s) => ({
+  // Map Date to Date and other fields to match Submission interface in SubmissionTable
+  const formattedSubmissions = submissions.map((s) => ({
     id: s.id,
     content: s.content,
     attachmentUrl: s.attachmentUrl,
@@ -44,26 +44,13 @@ export default async function CourseAssignmentsPage({
   }));
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <PageHeader
-          title="Deliverables & Grading"
-          description={`Grade assignments and provide feedback for course: ${course.title}`}
-        />
-        <LinkButton
-          href={`/teacher/courses/${courseId}`}
-          variant="outline"
-          size="sm"
-          className="rounded-xl shrink-0 h-9"
-        >
-          Back to Course
-        </LinkButton>
-      </div>
-
-      <SubmissionTable
-        initialSubmissions={mappedSubmissions}
-        courseId={courseId}
+    <div className="p-6 max-w-5xl mx-auto space-y-6">
+      <PageHeader
+        title={`Assignments — ${course.title}`}
+        description="Grade assignment submissions and provide feedback to your students."
       />
+
+      <SubmissionTable initialSubmissions={formattedSubmissions} courseId={courseId} />
     </div>
   );
 }
