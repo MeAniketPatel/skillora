@@ -74,6 +74,10 @@ export default function CourseEditor({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isGeneratingAI, setIsGeneratingAI] = useState(false);
+  const [isUploadingThumbnail, setIsUploadingThumbnail] = useState(false);
+  const [isUploadingVideo, setIsUploadingVideo] = useState(false);
+  const [isDraggingThumbnail, setIsDraggingThumbnail] = useState(false);
+  const [isDraggingVideo, setIsDraggingVideo] = useState(false);
 
   const handleAIDescription = async () => {
     const titleVal = watch("title");
@@ -495,18 +499,45 @@ export default function CourseEditor({
                 <div 
                   id="thumbnail"
                   aria-invalid={!!errors.thumbnail}
-                  className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg p-6 flex flex-col items-center justify-center min-h-[200px] bg-neutral-50/50 dark:bg-neutral-950/20 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20"
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setIsDraggingThumbnail(true);
+                  }}
+                  onDragLeave={() => setIsDraggingThumbnail(false)}
+                  onDrop={() => setIsDraggingThumbnail(false)}
+                  className={`relative border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center min-h-[200px] transition-all duration-200 overflow-hidden ${
+                    isDraggingThumbnail 
+                      ? "border-indigo-500 bg-indigo-50/10 dark:bg-indigo-950/10 scale-[1.02]" 
+                      : "border-neutral-300 dark:border-neutral-700 bg-neutral-50/50 dark:bg-neutral-950/20"
+                  } aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20`}
                 >
+                  {isDraggingThumbnail && (
+                    <div className="absolute inset-0 bg-indigo-500/10 dark:bg-indigo-950/20 z-20 flex flex-col items-center justify-center pointer-events-none border-2 border-indigo-500 rounded-lg animate-pulse">
+                      <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
+                        Drop to upload cover image!
+                      </span>
+                    </div>
+                  )}
+                  {isUploadingThumbnail && (
+                    <div className="absolute inset-0 bg-white/80 dark:bg-neutral-950/80 z-10 flex flex-col items-center justify-center gap-2">
+                      <div className="animate-spin rounded-full h-8 w-8 border-2 border-indigo-600 border-t-transparent" />
+                      <span className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">Uploading cover image...</span>
+                    </div>
+                  )}
                   <UploadDropzone
                     endpoint="courseThumbnail"
-                    config={{ mode: "manual" }}
+                    config={{ mode: "auto" }}
+                    onUploadBegin={() => setIsUploadingThumbnail(true)}
                     onClientUploadComplete={(res) => {
+                      setIsUploadingThumbnail(false);
                       if (res?.[0]?.url) {
                         setValue("thumbnail", res[0].url);
                         setSuccess("Thumbnail uploaded successfully!");
+                        onSubmit({ ...watch(), thumbnail: res[0].url });
                       }
                     }}
                     onUploadError={(error: Error) => {
+                      setIsUploadingThumbnail(false);
                       setError(`Upload failed: ${error.message}`);
                     }}
                   />
@@ -550,11 +581,38 @@ export default function CourseEditor({
                   </Button>
                 </div>
               ) : (
-                <div className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg p-6 flex flex-col items-center justify-center min-h-[200px] bg-neutral-50/50 dark:bg-neutral-950/20">
+                <div 
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setIsDraggingVideo(true);
+                  }}
+                  onDragLeave={() => setIsDraggingVideo(false)}
+                  onDrop={() => setIsDraggingVideo(false)}
+                  className={`relative border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center min-h-[200px] transition-all duration-200 overflow-hidden ${
+                    isDraggingVideo 
+                      ? "border-indigo-500 bg-indigo-50/10 dark:bg-indigo-950/10 scale-[1.02]" 
+                      : "border-neutral-300 dark:border-neutral-700 bg-neutral-50/50 dark:bg-neutral-950/20"
+                  }`}
+                >
+                  {isDraggingVideo && (
+                    <div className="absolute inset-0 bg-indigo-500/10 dark:bg-indigo-950/20 z-20 flex flex-col items-center justify-center pointer-events-none border-2 border-indigo-500 rounded-lg animate-pulse">
+                      <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
+                        Drop to upload promo video!
+                      </span>
+                    </div>
+                  )}
+                  {isUploadingVideo && (
+                    <div className="absolute inset-0 bg-white/80 dark:bg-neutral-950/80 z-10 flex flex-col items-center justify-center gap-2">
+                      <div className="animate-spin rounded-full h-8 w-8 border-2 border-indigo-600 border-t-transparent" />
+                      <span className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">Uploading promo video...</span>
+                    </div>
+                  )}
                   <UploadDropzone
                     endpoint="courseVideo"
-                    config={{ mode: "manual" }}
+                    config={{ mode: "auto" }}
+                    onUploadBegin={() => setIsUploadingVideo(true)}
                     onClientUploadComplete={(res) => {
+                      setIsUploadingVideo(false);
                       if (res?.[0]?.url) {
                         setValue("promoVideo", res[0].url);
                         setSuccess("Promo video uploaded successfully!");
@@ -562,6 +620,7 @@ export default function CourseEditor({
                       }
                     }}
                     onUploadError={(error: Error) => {
+                      setIsUploadingVideo(false);
                       setError(`Upload failed: ${error.message}`);
                     }}
                   />
