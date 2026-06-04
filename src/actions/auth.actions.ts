@@ -28,17 +28,15 @@ import {
   loginSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
+  revokeSessionSchema,
   RegisterInput,
   LoginInput,
   ForgotPasswordInput,
-  ResetPasswordInput
+  ResetPasswordInput,
+  RevokeSessionInput
 } from "@/validations/auth.schema";
 
-import { z } from "zod";
 
-const revokeSessionSchema = z.object({
-  sessionId: z.string().min(1, "Session id is required"),
-});
 
 async function getActionRequestMetadata() {
   const requestHeaders = await headers();
@@ -268,7 +266,7 @@ export async function getSessionSecurityOverview() {
   });
 }
 
-export async function logoutSession(values: z.infer<typeof revokeSessionSchema>) {
+export async function logoutSession(values: RevokeSessionInput) {
   return actionHandler(async () => {
     const requestMetadata = await getActionRequestMetadata();
     const validated = revokeSessionSchema.parse(values);

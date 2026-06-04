@@ -4,12 +4,7 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/lib/action-utils";
 import { requireAdmin } from "@/lib/auth-helpers";
 import { setSetting } from "@/data";
-import { z } from "zod";
-
-const settingSchema = z.object({
-  key: z.string().min(1),
-  value: z.string(),
-});
+import { settingSchema } from "@/validations";
 
 export async function updateSetting(values: any) {
   return actionHandler(async () => {
