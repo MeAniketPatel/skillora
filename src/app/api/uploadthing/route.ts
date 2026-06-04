@@ -12,7 +12,7 @@ const f = createUploadthing();
 
 const checkAuth = async () => {
   const session = await auth();
-  if (!session?.user || session.user.role !== "TEACHER") {
+  if (!session?.user || (session.user.role !== "TEACHER" && session.user.role !== "ADMIN")) {
     throw new Error("Unauthorized");
   }
   return { userId: session.user.id };
