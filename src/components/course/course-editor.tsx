@@ -530,10 +530,11 @@ export default function CourseEditor({
                     onUploadBegin={() => setIsUploadingThumbnail(true)}
                     onClientUploadComplete={(res) => {
                       setIsUploadingThumbnail(false);
-                      if (res?.[0]?.url) {
-                        setValue("thumbnail", res[0].url);
+                      const fileUrl = res?.[0]?.ufsUrl || res?.[0]?.url;
+                      if (fileUrl) {
+                        setValue("thumbnail", fileUrl);
                         setSuccess("Thumbnail uploaded successfully!");
-                        onSubmit({ ...watch(), thumbnail: res[0].url });
+                        onSubmit({ ...watch(), thumbnail: fileUrl });
                       }
                     }}
                     onUploadError={(error: Error) => {
@@ -613,10 +614,11 @@ export default function CourseEditor({
                     onUploadBegin={() => setIsUploadingVideo(true)}
                     onClientUploadComplete={(res) => {
                       setIsUploadingVideo(false);
-                      if (res?.[0]?.url) {
-                        setValue("promoVideo", res[0].url);
+                      const fileUrl = res?.[0]?.ufsUrl || res?.[0]?.url;
+                      if (fileUrl) {
+                        setValue("promoVideo", fileUrl);
                         setSuccess("Promo video uploaded successfully!");
-                        onSubmit({ ...watch(), promoVideo: res[0].url });
+                        onSubmit({ ...watch(), promoVideo: fileUrl });
                       }
                     }}
                     onUploadError={(error: Error) => {

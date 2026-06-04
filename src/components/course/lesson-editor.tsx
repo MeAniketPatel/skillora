@@ -284,8 +284,9 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
                         <UploadDropzone
                           endpoint="lessonVideo"
                           onClientUploadComplete={(res) => {
-                            if (res?.[0]?.url) {
-                              setValue("videoUrl", res[0].url);
+                            const fileUrl = res?.[0]?.ufsUrl || res?.[0]?.url;
+                            if (fileUrl) {
+                              setValue("videoUrl", fileUrl);
                               setValue("videoDuration", 0);
                               setSuccess(
                                 "Video uploaded successfully! Make sure to save details.",
