@@ -35,8 +35,13 @@ export const updateSettingsSchema = z.object({
   image: z.string().url().optional().or(z.literal("")),
 });
 
+export const revokeSessionSchema = z.object({
+  sessionId: z.string().min(1, "Session id is required"),
+});
+
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
 export type UpdateSettingsInput = z.infer<typeof updateSettingsSchema>;
+export type RevokeSessionInput = z.infer<typeof revokeSessionSchema>;
