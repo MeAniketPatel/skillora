@@ -36,6 +36,7 @@ import {
   unpublishCourse,
 } from "@/actions/course.actions";
 import { generateAICourseDescription } from "@/actions/ai.actions";
+import { CourseInsights } from "@/components/teacher/course-insights";
 
 const courseSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -293,6 +294,8 @@ export default function CourseEditor({
           {error}
         </div>
       )}
+
+      <CourseInsights courseId={course.id} />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left column - Metadata */}

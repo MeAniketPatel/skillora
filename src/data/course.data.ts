@@ -282,3 +282,56 @@ export async function getTeacherPublishedCourses(teacherId: string) {
     },
   });
 }
+
+export async function getCourseInsights(courseId: string) {
+  const [totalEnrolled, completedCount, avgRating, revenueData, enrollmentsByDay] = await Promise.all([
+    db.enrollment.count({ where: { courseId } }),
+    db.enrollment.count({ where: { courseId, progress: { gte: 100 } } }),
+    db.review.aggregate({ where: { courseId }, _avg: { rating: true } }),
+    db.purchase.aggregate({
+      where: {
+        enrollment: { courseId },
+        status: "COMPLETED",
+      },
+      _sum: { amount: true },
+    }),
+    db.enrollment.findMany({
+      where: {
+        courseId,
+        createdAt: { gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) },
+      },
+      select: { createdAt: true },
+    }),
+  ]);
+
+  const completionRate = totalEnrolled > 0 ? (completedCount / totalEnrolled) * 100 : 0;
+  const rating = avgRating._avg.rating || 0;
+  const revenue = revenueData._sum.amount || 0;
+
+  // Group enrollments by day for sparkline (last 7 days)
+  const sparklineData = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }).reverse().map((date) => {
+    const count = enrollmentsByDay.filter((e) => {
+      const ec = new Date(e.createdAt);
+      ec.setHours(0, 0, 0, 0);
+      return ec.getTime() === date.getTime();
+    }).length;
+    return {
+      date: date.toLocaleDateString(undefined, { month: "short", day: "numeric" }),
+      students: count,
+    };
+  });
+
+  return {
+    totalEnrolled,
+    completionRate,
+    rating,
+    revenue,
+    sparklineData,
+  };
+}
+

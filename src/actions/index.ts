@@ -20,6 +20,8 @@ export * from "./bookmark.actions";
 export * from "./learning-goal.actions";
 export * from "./collection.actions";
 export * from "./announcement.actions";
+export * from "./course-insights.actions";
+
 
 
 
