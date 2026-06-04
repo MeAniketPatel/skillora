@@ -26,6 +26,8 @@ export * from "./collection.data";
 export * from "./announcement.data";
 export * from "./payout.data";
 export * from "./peer-review.data";
+export * from "./poll.data";
+
 
 
 
