@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import db from "@/lib/prisma";
+import { getTeacherAnalyticsCourses } from "@/data/course.data";
+import { getAllTeacherSubmissions } from "@/data/assignment.data";
 import { AnalyticsClient } from "@/components/teacher/analytics-client";
 
 export default async function TeacherAnalyticsPage() {
@@ -10,31 +11,7 @@ export default async function TeacherAnalyticsPage() {
   }
 
   // Get teacher's courses
-  const courses = await db.course.findMany({
-    where: { teacherId: session.user.id },
-    include: {
-      enrollments: {
-        include: {
-          user: {
-            select: {
-              id: true,
-              name: true,
-              email: true,
-              image: true,
-            },
-          },
-        },
-      },
-      sections: {
-        include: {
-          lessons: {
-            where: { type: "ASSIGNMENT" },
-          },
-        },
-      },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+  const courses = await getTeacherAnalyticsCourses(session.user.id);
 
   // Get all assignment submissions for this teacher's courses
   const lessonIds = courses
@@ -42,34 +19,7 @@ export default async function TeacherAnalyticsPage() {
     .flatMap((s) => s.lessons)
     .map((l) => l.id);
 
-  const submissions = await db.assignmentSubmission.findMany({
-    where: {
-      lessonId: { in: lessonIds },
-    },
-    include: {
-      user: {
-        select: {
-          name: true,
-          email: true,
-        },
-      },
-      lesson: {
-        select: {
-          title: true,
-          section: {
-            select: {
-              course: {
-                select: {
-                  title: true,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-    orderBy: { submittedAt: "desc" },
-  });
+  const submissions = await getAllTeacherSubmissions(lessonIds);
 
   return (
     <div className="space-y-6">

@@ -3,7 +3,7 @@ import { getTeacherCourses } from "@/data";
 import { DataTable } from "@/components/shared/data-table";
 import { BookOpen, Plus } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 export default async function TeacherCoursesPage() {
   const user = await requireTeacher();
@@ -50,9 +50,9 @@ export default async function TeacherCoursesPage() {
     {
       header: "Actions",
       cell: (item: any) => (
-        <Button variant="outline" size="sm" asChild>
-          <Link href={`/teacher/courses/${item.id}`}>Manage</Link>
-        </Button>
+        <Link href={`/teacher/courses/${item.id}`} className={buttonVariants({ variant: "outline", size: "sm" })}>
+          Manage
+        </Link>
       ),
     },
   ];
@@ -64,12 +64,10 @@ export default async function TeacherCoursesPage() {
           <h1 className="text-2xl font-bold tracking-tight">My Courses</h1>
           <p className="text-muted-foreground">Manage your existing courses or create a new one.</p>
         </div>
-        <Button asChild>
-          <Link href="/teacher/courses/new">
-            <Plus className="h-4 w-4 mr-2" />
-            New Course
-          </Link>
-        </Button>
+        <Link href="/teacher/courses/new" className={buttonVariants()}>
+          <Plus className="h-4 w-4 mr-2" />
+          New Course
+        </Link>
       </div>
       <DataTable 
         data={courses} 

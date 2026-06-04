@@ -1,7 +1,7 @@
 import { requireTeacher } from "@/lib/auth-helpers";
 import { getCourseByIdForOwner } from "@/data";
 import { redirect } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft, Plus } from "lucide-react";
 import { createSection } from "@/actions";
@@ -24,11 +24,9 @@ export default async function CurriculumBuilderPage({
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" asChild>
-          <Link href={`/teacher/courses/${courseId}`}>
-            <ArrowLeft className="h-4 w-4" />
-          </Link>
-        </Button>
+        <Link href={`/teacher/courses/${courseId}`} className={buttonVariants({ variant: "ghost", size: "icon" })}>
+          <ArrowLeft className="h-4 w-4" />
+        </Link>
         <h1 className="text-2xl font-bold tracking-tight flex-1">
           Curriculum
         </h1>
@@ -66,11 +64,9 @@ export default async function CurriculumBuilderPage({
                   section.lessons.map((lesson) => (
                     <div key={lesson.id} className="flex items-center justify-between p-2 border rounded bg-background">
                       <span className="text-sm">{lesson.title}</span>
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link href={`/teacher/courses/${courseId}/lessons/${lesson.id}`}>
-                          Edit
-                        </Link>
-                      </Button>
+                      <Link href={`/teacher/courses/${courseId}/lessons/${lesson.id}`} className={buttonVariants({ variant: "ghost", size: "sm" })}>
+                        Edit
+                      </Link>
                     </div>
                   ))
                 )}

@@ -117,7 +117,7 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
         videoDuration: values.type === "VIDEO" ? values.videoDuration : null,
       });
 
-      if (res.error) {
+      if (!res.success) {
         setError(res.error);
       } else {
         setSuccess("Lesson updated successfully!");
@@ -146,9 +146,9 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
         file.name.split(".").pop() || "unknown",
       );
 
-      if (res.error) {
+      if (!res.success) {
         setError(res.error);
-      } else if (res.data) {
+      } else {
         setAttachments([res.data, ...attachments]);
         setSuccess("Attachment added successfully!");
         router.refresh();
@@ -160,7 +160,7 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
     setError(null);
     startTransition(async () => {
       const res = await deleteAttachment(courseId, lesson.id, attachmentId);
-      if (res.error) {
+      if (!res.success) {
         setError(res.error);
       } else {
         setAttachments(attachments.filter((a) => a.id !== attachmentId));

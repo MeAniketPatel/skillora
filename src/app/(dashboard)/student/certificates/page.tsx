@@ -4,7 +4,7 @@ import { DataTable } from "@/components/shared/data-table";
 import { Award } from "lucide-react";
 import { format } from "date-fns";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 export default async function StudentCertificatesPage() {
   const user = await requireAuth();
@@ -26,11 +26,9 @@ export default async function StudentCertificatesPage() {
     {
       header: "Action",
       cell: (item: any) => (
-        <Button variant="outline" size="sm" asChild>
-          <Link href={`/certificates/${item.certificateId}`} target="_blank">
-            View Certificate
-          </Link>
-        </Button>
+        <Link href={`/certificates/${item.certificateId}`} target="_blank" className={buttonVariants({ variant: "outline", size: "sm" })}>
+          View Certificate
+        </Link>
       ),
     },
   ];

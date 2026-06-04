@@ -59,13 +59,14 @@ export default function QuizView({ courseId, lessonId, quiz }: QuizViewProps) {
 
     startTransition(async () => {
       const res = await submitQuizAttempt(quiz.id, answers);
-      if (res.error) {
+      if (!res.success) {
         alert(res.error);
-      } else if (res.attempt) {
-        setLastAttempt(res.attempt as any);
+      } else {
+        const attempt = res.data;
+        setLastAttempt(attempt as any);
         setShowResults(true);
         // Automatically mark lesson complete if quiz is passed!
-        if (res.attempt.passed) {
+        if (attempt.passed) {
           await toggleLessonCompletion(courseId, lessonId, true);
         }
         router.refresh();

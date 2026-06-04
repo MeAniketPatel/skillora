@@ -15,8 +15,8 @@ export function NotificationsMenu() {
   const fetchNotifications = async () => {
     try {
       const res = await getNotifications();
-      if (res.notifications) {
-        setNotifications(res.notifications);
+      if (res.success) {
+        setNotifications(res.data);
       }
     } catch (err) {
       console.error(err);
@@ -37,7 +37,7 @@ export function NotificationsMenu() {
       prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
     );
     const res = await markNotificationAsRead(id);
-    if (res.error) {
+    if (!res.success) {
       setNotifications(prev);
     }
   };
@@ -46,7 +46,7 @@ export function NotificationsMenu() {
     const prev = notifications;
     setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
     const res = await markAllNotificationsAsRead();
-    if (res.error) {
+    if (!res.success) {
       setNotifications(prev);
     }
   };

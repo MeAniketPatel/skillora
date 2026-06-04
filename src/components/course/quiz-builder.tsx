@@ -46,8 +46,8 @@ export default function QuizBuilder({ lessonId, initialQuiz }: QuizBuilderProps)
     setIsGeneratingAI(true);
     try {
       const res = await generateAIQuizQuestions(title);
-      if (res.success && res.questions) {
-        setQuestions([...questions, ...res.questions]);
+      if (res.success && res.data.questions) {
+        setQuestions([...questions, ...res.data.questions]);
       }
     } catch (err) {
       console.error(err);
@@ -164,8 +164,12 @@ export default function QuizBuilder({ lessonId, initialQuiz }: QuizBuilderProps)
   const handleSave = () => {
     if (!quizId) return;
     startTransition(async () => {
-      await updateQuiz(quizId, title, passingScore, questions);
-      alert("Quiz saved successfully!");
+      const res = await updateQuiz(quizId, title, passingScore, questions);
+      if (res.success) {
+        alert("Quiz saved successfully!");
+      } else {
+        alert(res.error || "Failed to save quiz.");
+      }
     });
   };
 

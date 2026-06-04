@@ -16,6 +16,7 @@ import { auth } from "@/auth";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { NotificationsMenu } from "@/components/shared/notifications-menu";
+import { ROUTES } from "@/constants/routes";
 
 export default async function DashboardLayout({
   children,
@@ -33,15 +34,15 @@ export default async function DashboardLayout({
 
   const navigation = isTeacher
     ? [
-        { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-        { name: "My Courses", href: "/teacher/courses", icon: BookOpen },
-        { name: "Analytics", href: "/teacher/analytics", icon: BarChart },
-        { name: "Settings", href: "/settings", icon: Settings },
+        { name: "Dashboard", href: ROUTES.DASHBOARD, icon: LayoutDashboard },
+        { name: "My Courses", href: ROUTES.TEACHER_COURSES, icon: BookOpen },
+        { name: "Analytics", href: ROUTES.TEACHER_ANALYTICS, icon: BarChart },
+        { name: "Settings", href: ROUTES.SETTINGS, icon: Settings },
       ]
     : [
-        { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-        { name: "My Learning", href: "/student/courses", icon: BookOpen },
-        { name: "Settings", href: "/settings", icon: Settings },
+        { name: "Dashboard", href: ROUTES.DASHBOARD, icon: LayoutDashboard },
+        { name: "My Learning", href: ROUTES.STUDENT_COURSES, icon: BookOpen },
+        { name: "Settings", href: ROUTES.SETTINGS, icon: Settings },
       ];
 
   return (

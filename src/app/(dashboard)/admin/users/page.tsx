@@ -5,10 +5,11 @@ import { Users } from "lucide-react";
 import { format } from "date-fns";
 import { updateUserRole, banUser, unbanUser } from "@/actions";
 import { ActionButton } from "@/components/shared/action-button";
+import { Button } from "@/components/ui/button";
 
 export default async function AdminUsersPage() {
   await requireAdmin();
-  const users = await getAllUsers({});
+  const { users } = await getAllUsers({});
 
   const columns = [
     {
@@ -63,18 +64,18 @@ export default async function AdminUsersPage() {
             "use server";
             await updateUserRole({ userId: item.id, role: item.role === "TEACHER" ? "STUDENT" : "TEACHER" });
           }}>
-            <ActionButton action={async () => {}} variant="outline" size="sm">
-              Toggle Teacher
-            </ActionButton>
+            <Button type="submit" variant="outline" size="sm">
+              {item.role === "ADMIN" ? "Remove Admin" : "Make Admin"}
+            </Button>
           </form>
           <form action={async () => {
             "use server";
             if (item.isBanned) await unbanUser(item.id);
             else await banUser(item.id, "Admin action");
           }}>
-            <ActionButton action={async () => {}} variant={item.isBanned ? "outline" : "destructive"} size="sm">
+            <Button type="submit" variant={item.isBanned ? "outline" : "destructive"} size="sm">
               {item.isBanned ? "Unban" : "Ban"}
-            </ActionButton>
+            </Button>
           </form>
         </div>
       ),

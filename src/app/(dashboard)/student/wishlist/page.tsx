@@ -3,7 +3,7 @@ import { getUserWishlist } from "@/data";
 import { DataTable } from "@/components/shared/data-table";
 import { Heart } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { toggleWishlist } from "@/actions";
 
 export default async function StudentWishlistPage() {
@@ -37,9 +37,9 @@ export default async function StudentWishlistPage() {
       header: "Actions",
       cell: (item: any) => (
         <div className="flex gap-2">
-          <Button size="sm" asChild>
-            <Link href={`/courses/${item.course.slug}`}>View</Link>
-          </Button>
+          <Link href={`/courses/${item.course.id}`} className={buttonVariants({ size: "sm" })}>
+            View Course
+          </Link>
           <form action={async () => {
             "use server";
             await toggleWishlist(item.course.id);

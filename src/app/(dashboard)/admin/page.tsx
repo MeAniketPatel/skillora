@@ -1,44 +1,26 @@
-import { redirect } from "next/navigation";
-import { auth } from "@/auth";
-import db from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth-helpers";
+import { getUserCount } from "@/data/user.data";
+import { getCourseCount } from "@/data/course.data";
+import { getTotalEnrollmentCount } from "@/data/enrollment.data";
+import { getPlatformRevenue, getRecentPurchases } from "@/data/payment.data";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatPrice } from "@/lib/utils";
+import { APP } from "@/constants/app";
 
 export default async function AdminDashboardPage() {
-  const session = await auth();
-  if (!session?.user || session.user.role !== "ADMIN") {
-    redirect("/login");
-  }
+  await requireAdmin();
 
   // Fetch counts
-  const usersCount = await db.user.count();
-  const coursesCount = await db.course.count();
-  const enrollmentsCount = await db.enrollment.count();
+  const usersCount = await getUserCount();
+  const coursesCount = await getCourseCount();
+  const enrollmentsCount = await getTotalEnrollmentCount();
 
-  // Fetch all transactions
-  const transactions = await db.purchase.findMany({
-    where: { status: "COMPLETED" },
-    include: {
-      enrollment: {
-        include: {
-          course: true,
-          user: true,
-        },
-      },
-    },
-    orderBy: { createdAt: "desc" },
-    take: 10,
-  });
+  // Fetch transactions and revenue
+  const transactions = await getRecentPurchases(10);
+  const { grossSales, platformRevenue } = await getPlatformRevenue();
 
-  const grossSales = await db.purchase.aggregate({
-    where: { status: "COMPLETED" },
-    _sum: {
-      amount: true,
-    },
-  });
-
-  const platformRevenue = (grossSales._sum.amount || 0) * 0.1;
+  const platformFeePercentage = APP.PLATFORM_FEE_PERCENT;
 
   return (
     <div className="space-y-6">
@@ -72,14 +54,14 @@ export default async function AdminDashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-extrabold text-blue-600 dark:text-blue-400">
-              {formatPrice(grossSales._sum.amount || 0)}
+              {formatPrice(grossSales)}
             </div>
           </CardContent>
         </Card>
 
         <Card className="bg-white dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50">
           <CardHeader className="pb-2">
-            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Platform Cut (10%)</CardTitle>
+            <CardTitle className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Platform Cut ({platformFeePercentage}%)</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-extrabold text-green-600 dark:text-green-400">
@@ -126,7 +108,7 @@ export default async function AdminDashboardPage() {
                       {formatPrice(t.amount)}
                     </TableCell>
                     <TableCell className="font-semibold text-sm text-green-600 dark:text-green-400">
-                      {formatPrice(t.amount * 0.1)}
+                      {formatPrice(t.amount * (platformFeePercentage / 100))}
                     </TableCell>
                   </TableRow>
                 ))}

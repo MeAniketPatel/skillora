@@ -50,3 +50,44 @@ export async function getLessonWithContent(lessonId: string) {
     },
   });
 }
+
+export async function getLessonWithSection(lessonId: string) {
+  return db.lesson.findUnique({
+    where: { id: lessonId },
+    include: { section: true },
+  });
+}
+
+export async function getLearningLesson(lessonId: string, courseId: string, userId: string) {
+  return db.lesson.findFirst({
+    where: { id: lessonId, section: { courseId } },
+    include: {
+      attachments: {
+        orderBy: { createdAt: "desc" },
+      },
+      quiz: {
+        include: {
+          questions: {
+            orderBy: { position: "asc" },
+          },
+          attempts: {
+            where: { userId },
+            orderBy: { startedAt: "desc" },
+          },
+        },
+      },
+    },
+  });
+}
+
+export async function createAttachment(data: { name: string; url: string; size?: number; type?: string; lessonId: string }) {
+  return db.attachment.create({
+    data,
+  });
+}
+
+export async function deleteAttachment(attachmentId: string, lessonId: string) {
+  return db.attachment.delete({
+    where: { id: attachmentId, lessonId },
+  });
+}

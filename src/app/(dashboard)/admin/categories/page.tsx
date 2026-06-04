@@ -31,9 +31,9 @@ export default async function AdminCategoriesPage() {
             "use server";
             await deleteCategory(item.id);
           }}>
-            <ActionButton action={async () => {}} variant="destructive" size="sm">
+            <Button type="submit" variant="destructive" size="sm">
               Delete
-            </ActionButton>
+            </Button>
           </form>
         </div>
       ),

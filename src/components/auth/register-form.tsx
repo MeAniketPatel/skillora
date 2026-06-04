@@ -90,7 +90,7 @@ export default function RegisterForm() {
 
     startTransition(async () => {
       const res = await registerUser(values);
-      if (res?.error) {
+      if (!res.success) {
         setError(res.error);
       } else {
         setSuccess("Account created! Redirecting to dashboard...");

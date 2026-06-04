@@ -5,10 +5,11 @@ import { MessageSquare } from "lucide-react";
 import { format } from "date-fns";
 import { markContactReplied } from "@/actions";
 import { ActionButton } from "@/components/shared/action-button";
+import { Button } from "@/components/ui/button";
 
 export default async function AdminContactPage() {
   await requireAdmin();
-  const messages = await getContactMessages({});
+  const { messages } = await getContactMessages({});
 
   const columns = [
     {
@@ -52,9 +53,9 @@ export default async function AdminContactPage() {
               "use server";
               await markContactReplied(item.id);
             }}>
-              <ActionButton action={async () => {}} variant="outline" size="sm">
+              <Button type="submit" variant="outline" size="sm">
                 Mark Replied
-              </ActionButton>
+              </Button>
             </form>
           )}
         </div>

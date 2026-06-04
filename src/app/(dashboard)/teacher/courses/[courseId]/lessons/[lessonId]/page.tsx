@@ -1,8 +1,8 @@
 import { requireTeacher } from "@/lib/auth-helpers";
 import { getCourseByIdForOwner } from "@/data";
-import db from "@/lib/prisma";
+import { getLessonWithSection } from "@/data/lesson.data";
 import { redirect } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { updateLesson } from "@/actions";
@@ -23,10 +23,7 @@ export default async function LessonEditPage({
     redirect(`/teacher/courses/${courseId}/curriculum`);
   }
 
-  const lesson = await db.lesson.findUnique({
-    where: { id: lessonId },
-    include: { section: true },
-  });
+  const lesson = await getLessonWithSection(lessonId);
 
   if (!lesson || lesson.section.courseId !== courseId) {
     redirect(`/teacher/courses/${courseId}/curriculum`);
@@ -35,11 +32,9 @@ export default async function LessonEditPage({
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-6">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" asChild>
-          <Link href={`/teacher/courses/${courseId}/curriculum`}>
-            <ArrowLeft className="h-4 w-4" />
-          </Link>
-        </Button>
+        <Link href={`/teacher/courses/${courseId}/curriculum`} className={buttonVariants({ variant: "ghost", size: "icon" })}>
+          <ArrowLeft className="h-4 w-4" />
+        </Link>
         <h1 className="text-2xl font-bold tracking-tight flex-1">
           Edit Lesson: {lesson.title}
         </h1>
@@ -49,9 +44,9 @@ export default async function LessonEditPage({
             isPublished: !lesson.isPublished
           });
         }}>
-          <ActionButton action={async () => {}} variant={lesson.isPublished ? "outline" : "default"}>
-            {lesson.isPublished ? "Unpublish Lesson" : "Publish Lesson"}
-          </ActionButton>
+          <Button type="submit" variant={lesson.isPublished ? "outline" : "default"}>
+            {lesson.isPublished ? "Unpublish" : "Publish"}
+          </Button>
         </form>
       </div>
 

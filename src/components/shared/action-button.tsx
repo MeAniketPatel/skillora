@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { Button, ButtonProps } from "@/components/ui/button";
+import { useState, type ComponentProps } from "react";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
-interface ActionButtonProps extends ButtonProps {
+interface ActionButtonProps extends Omit<ComponentProps<typeof Button>, "onError"> {
   action: () => Promise<{ success?: boolean; error?: string; data?: any } | any>;
   onSuccess?: (data?: any) => void;
   onError?: (error: string) => void;
@@ -29,16 +29,16 @@ export function ActionButton({
       setIsLoading(true);
       const res = await action();
       
-      // If our actionHandler format
-      if (res && res.error) {
-        toast.error(res.error);
-        onError?.(res.error);
-      } else if (res && res.success === false) {
+      if (res && res.success === false) {
         toast.error(res.error || errorMessage);
         onError?.(res.error || errorMessage);
+      } else if (res && res.error) {
+        toast.error(res.error);
+        onError?.(res.error);
       } else {
-        toast.success(res?.success || successMessage);
-        onSuccess?.(res?.data || res);
+        const successMsg = res && typeof res.success === "string" ? res.success : (res?.data?.success || successMessage);
+        toast.success(successMsg);
+        onSuccess?.(res?.data !== undefined ? res.data : res);
       }
     } catch (err: any) {
       toast.error(err.message || errorMessage);

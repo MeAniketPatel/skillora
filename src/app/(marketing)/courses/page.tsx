@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { GraduationCap, Search, Filter, BookOpen } from "lucide-react";
-import db from "@/lib/prisma";
+import { getAllCategories } from "@/data/category.data";
+import { getPublishedCourses } from "@/data/course.data";
 import { Button } from "@/components/ui/button";
 import LinkButton from "@/components/ui/link-button";
 import { Input } from "@/components/ui/input";
@@ -25,31 +26,12 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
   const { title, categoryId } = await searchParams;
 
   // Fetch categories for the filter bar
-  const categories = await db.category.findMany({
-    orderBy: { name: "asc" },
-  });
+  const categories = await getAllCategories();
 
   // Query published courses
-  const courses = await db.course.findMany({
-    where: {
-      status: "PUBLISHED",
-      title: title ? { contains: title, mode: "insensitive" } : undefined,
-      categoryId: categoryId || undefined,
-    },
-    include: {
-      category: true,
-      teacher: true,
-      sections: {
-        include: {
-          lessons: {
-            where: { isPublished: true },
-          },
-        },
-      },
-    },
-    orderBy: {
-      publishedAt: "desc",
-    },
+  const { courses } = await getPublishedCourses({
+    search: title,
+    categoryId: categoryId || undefined,
   });
 
   return (

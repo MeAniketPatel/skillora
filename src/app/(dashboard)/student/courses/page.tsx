@@ -42,9 +42,9 @@ export default async function StudentCoursesPage() {
       header: "Actions",
       cell: (item: any) => (
         <Link href={`/learn/${item.course.id}`}>
-          <ActionButton action={async () => {}}>
+          <Button>
             {item.progress === 0 ? "Start Course" : "Continue"}
-          </ActionButton>
+          </Button>
         </Link>
       ),
     },

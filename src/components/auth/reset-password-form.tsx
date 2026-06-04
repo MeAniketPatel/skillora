@@ -70,10 +70,10 @@ export default function ResetPasswordForm() {
         password: values.password,
       });
 
-      if (res?.error) {
+      if (!res.success) {
         setError(res.error);
       } else {
-        setSuccess(res.success || "Password updated successfully.");
+        setSuccess(res.data.success || "Password updated successfully.");
         setTimeout(() => {
           router.push("/login");
           router.refresh();

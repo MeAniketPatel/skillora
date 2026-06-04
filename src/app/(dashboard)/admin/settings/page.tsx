@@ -1,18 +1,12 @@
 import { requireAdmin } from "@/lib/auth-helpers";
-import { getPlatformSettings } from "@/data";
+import { getAllSettings } from "@/data";
 import { updateSetting } from "@/actions";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export default async function AdminSettingsPage() {
   await requireAdmin();
-  const settingsArray = await getPlatformSettings();
-  
-  // Convert array to record for easy access
-  const settings = settingsArray.reduce((acc, s) => {
-    acc[s.key] = s.value;
-    return acc;
-  }, {} as Record<string, string>);
+  const settings = await getAllSettings();
 
   const keys = [
     { key: "SITE_NAME", label: "Site Name", default: "Skillora" },

@@ -75,3 +75,7 @@ export async function updateEnrollmentProgress(enrollmentId: string, progress: n
 export async function getEnrollmentCount(courseId: string) {
   return db.enrollment.count({ where: { courseId } });
 }
+
+export async function getTotalEnrollmentCount() {
+  return db.enrollment.count();
+}

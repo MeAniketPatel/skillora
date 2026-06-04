@@ -22,7 +22,11 @@ import {
   reorderSections as reorderSectionsData,
   reorderLessons as reorderLessonsData,
 } from "@/data";
-import db from "@/lib/prisma"; // for attachments since we didn't make a DAL for attachment yet
+import { getCourseForPublishing } from "@/data/course.data";
+import {
+  createAttachment as createAttachmentData,
+  deleteAttachment as deleteAttachmentData,
+} from "@/data/lesson.data";
 
 export async function createCourse(values: CourseCreateInput) {
   return actionHandler(async () => {
@@ -63,10 +67,7 @@ export async function updateCourse(courseId: string, values: CourseUpdateInput) 
 export async function publishCourse(courseId: string) {
   return actionHandler(async () => {
     const user = await requireTeacher();
-    const course = await db.course.findUnique({
-      where: { id: courseId, teacherId: user.id },
-      include: { sections: { include: { lessons: true } } },
-    });
+    const course = await getCourseForPublishing(courseId, user.id);
 
     if (!course) throw new Error("Course not found");
 
@@ -199,9 +200,7 @@ export async function createAttachment(courseId: string, lessonId: string, name:
     const user = await requireTeacher();
     await getCourseByIdForOwner(courseId, user.id);
 
-    const attachment = await db.attachment.create({
-      data: { name, url, size, type, lessonId },
-    });
+    const attachment = await createAttachmentData({ name, url, size, type, lessonId });
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
     return attachment;
   });
@@ -212,9 +211,7 @@ export async function deleteAttachment(courseId: string, lessonId: string, attac
     const user = await requireTeacher();
     await getCourseByIdForOwner(courseId, user.id);
 
-    await db.attachment.delete({
-      where: { id: attachmentId, lessonId },
-    });
+    await deleteAttachmentData(attachmentId, lessonId);
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
     return true;
   });

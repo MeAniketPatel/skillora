@@ -4,7 +4,7 @@ import { DataTable } from "@/components/shared/data-table";
 import { HelpCircle } from "lucide-react";
 import { format } from "date-fns";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 export default async function TeacherQAPage() {
   const user = await requireTeacher();
@@ -40,11 +40,9 @@ export default async function TeacherQAPage() {
     {
       header: "Action",
       cell: (item: any) => (
-        <Button variant="outline" size="sm" asChild>
-          <Link href={`/learn/${item.lesson.section.course.id}/${item.lessonId}?tab=qa`}>
-            Answer
-          </Link>
-        </Button>
+        <Link href={`/learn/${item.courseId}/lesson/${item.lessonId}`} className={buttonVariants({ variant: "outline", size: "sm" })}>
+          View Lesson
+        </Link>
       ),
     },
   ];

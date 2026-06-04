@@ -48,10 +48,10 @@ export default function ForgotPasswordForm() {
 
     startTransition(async () => {
       const res = await requestPasswordReset(values);
-      if (res?.error) {
+      if (!res.success) {
         setError(res.error);
       } else {
-        setSuccess(res.success || "Password reset email sent.");
+        setSuccess(res.data.success || "Password reset email sent.");
       }
     });
   };

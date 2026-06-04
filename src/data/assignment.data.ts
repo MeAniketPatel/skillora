@@ -86,3 +86,34 @@ export async function getTeacherPendingSubmissions(teacherId: string) {
     orderBy: { submittedAt: "desc" },
   });
 }
+
+export async function getAllTeacherSubmissions(lessonIds: string[]) {
+  return db.assignmentSubmission.findMany({
+    where: {
+      lessonId: { in: lessonIds },
+    },
+    include: {
+      user: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
+      lesson: {
+        select: {
+          title: true,
+          section: {
+            select: {
+              course: {
+                select: {
+                  title: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    orderBy: { submittedAt: "desc" },
+  });
+}

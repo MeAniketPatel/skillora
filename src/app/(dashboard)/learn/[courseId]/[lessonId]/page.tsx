@@ -1,7 +1,11 @@
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
-import db from "@/lib/prisma";
+import { getEnrollmentWithProgress } from "@/data/enrollment.data";
+import { getCourseWithPublishedCurriculum } from "@/data/course.data";
+import { getLearningLesson } from "@/data/lesson.data";
+import { getLessonProgress } from "@/data/lesson-progress.data";
+import { getSubmission } from "@/data/assignment.data";
 import LessonPlayer from "@/components/course/lesson-player";
 
 interface LearnPageProps {
@@ -20,90 +24,30 @@ export default async function LearnPage({ params }: LearnPageProps) {
   }
 
   // Check enrollment
-  const enrollment = await db.enrollment.findUnique({
-    where: {
-      userId_courseId: {
-        userId: session.user.id,
-        courseId,
-      },
-    },
-    include: {
-      lessonProgress: {
-        select: { 
-          lessonId: true,
-          isCompleted: true,
-        },
-      },
-    },
-  });
+  const enrollment = await getEnrollmentWithProgress(session.user.id, courseId);
 
   if (!enrollment) {
     redirect(`/courses`);
   }
 
   // Retrieve course content
-  const course = await db.course.findUnique({
-    where: { id: courseId },
-    include: {
-      sections: {
-        orderBy: { position: "asc" },
-        include: {
-          lessons: {
-            where: { isPublished: true },
-            orderBy: { position: "asc" },
-          },
-        },
-      },
-    },
-  });
+  const course = await getCourseWithPublishedCurriculum(courseId);
 
   if (!course) {
     redirect("/student/courses");
   }
 
-  const lesson = await db.lesson.findFirst({
-    where: { id: lessonId, section: { courseId } },
-    include: {
-      attachments: {
-        orderBy: { createdAt: "desc" },
-      },
-      quiz: {
-        include: {
-          questions: {
-            orderBy: { position: "asc" },
-          },
-          attempts: {
-            where: { userId: session.user.id },
-            orderBy: { startedAt: "desc" },
-          },
-        },
-      },
-    },
-  });
+  const lesson = await getLearningLesson(lessonId, courseId, session.user.id);
 
   if (!lesson || !lesson.isPublished) {
     redirect(`/student/courses`);
   }
 
   // Find user's progress for this specific lesson
-  const currentProgress = await db.lessonProgress.findUnique({
-    where: {
-      enrollmentId_lessonId: {
-        enrollmentId: enrollment.id,
-        lessonId,
-      },
-    },
-  });
+  const currentProgress = await getLessonProgress(enrollment.id, lessonId);
 
   const assignmentSubmission = lesson.type === "ASSIGNMENT"
-    ? await db.assignmentSubmission.findUnique({
-        where: {
-          userId_lessonId: {
-            userId: session.user.id,
-            lessonId,
-          },
-        },
-      })
+    ? await getSubmission(session.user.id, lessonId)
     : null;
 
   // Flatten lessons to calculate next/prev

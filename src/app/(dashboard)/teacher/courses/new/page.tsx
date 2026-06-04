@@ -42,9 +42,9 @@ export default function NewCoursePage() {
   const onSubmit = async (values: CourseCreateInput) => {
     try {
       const res = await createCourse(values);
-      if (res && res.error) {
+      if (!res.success) {
         toast.error(res.error);
-      } else if (res && res.success && res.data) {
+      } else {
         toast.success("Course created!");
         router.push(`/teacher/courses/${res.data.id}`);
       }

@@ -41,3 +41,14 @@ export async function calculateCourseProgress(enrollmentId: string, courseId: st
 
   return (completedLessons / totalLessons) * 100;
 }
+
+export async function getLessonProgress(enrollmentId: string, lessonId: string) {
+  return db.lessonProgress.findUnique({
+    where: {
+      enrollmentId_lessonId: {
+        enrollmentId,
+        lessonId,
+      },
+    },
+  });
+}

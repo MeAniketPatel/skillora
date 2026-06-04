@@ -115,10 +115,10 @@ export default function SettingsClientForm({
       }
 
       const res = await updateUserSettings(payload);
-      if (res?.error) {
+      if (!res.success) {
         setError(res.error);
       } else {
-        setSuccess("Profile settings updated successfully!");
+        setSuccess(res.data.success || "Profile settings updated successfully!");
         router.refresh();
       }
     });
@@ -133,10 +133,10 @@ export default function SettingsClientForm({
       const res = await logoutSession({ sessionId });
       setPendingSessionId(null);
 
-      if (res?.error) {
+      if (!res.success) {
         setSecurityError(res.error);
       } else {
-        setSecuritySuccess(res.success || "Session signed out successfully.");
+        setSecuritySuccess(res.data.success || "Session signed out successfully.");
         router.refresh();
       }
     });

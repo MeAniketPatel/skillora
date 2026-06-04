@@ -40,14 +40,14 @@ export default function EnrollButton({ courseId, isLoggedIn, isEnrolled, firstLe
     startTransition(async () => {
       if (price !== null && price > 0) {
         const res = await createCheckoutSession(courseId);
-        if (res.error) {
+        if (!res.success) {
           setError(res.error);
-        } else if (res.url) {
-          window.location.href = res.url;
+        } else if (res.data.url) {
+          window.location.href = res.data.url;
         }
       } else {
         const res = await enrollInFreeCourse(courseId);
-        if (res.error) {
+        if (!res.success) {
           setError(res.error);
         } else if (firstLessonId) {
           router.refresh();

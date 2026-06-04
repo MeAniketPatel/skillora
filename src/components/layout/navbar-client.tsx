@@ -7,10 +7,18 @@ import { Button } from "@/components/ui/button";
 import LinkButton from "@/components/ui/link-button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { logoutCurrentSession } from "@/actions/auth.actions";
+import { ROUTES } from "@/constants/routes";
 
 type Session = {
   user?: { id?: string; role?: string; name?: string | null } | null;
 } | null;
+
+const NAV_LINKS = [
+  { name: "Courses", href: ROUTES.COURSES },
+  { name: "About", href: ROUTES.ABOUT },
+  { name: "Teachers", href: "/teachers" },
+  { name: "Contact", href: ROUTES.CONTACT },
+];
 
 export default function NavbarClient({ session }: { session: Session }) {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -65,30 +73,15 @@ export default function NavbarClient({ session }: { session: Session }) {
         </div>
 
         <div className="hidden md:flex md:items-center md:gap-6">
-          <Link
-            href="/courses"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Courses
-          </Link>
-          <Link
-            href="/about"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            About
-          </Link>
-          <Link
-            href="/teachers"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Teachers
-          </Link>
-          <Link
-            href="/contact"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Contact
-          </Link>
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {link.name}
+            </Link>
+          ))}
         </div>
 
         <div className="hidden md:flex md:items-center md:gap-4">
@@ -96,23 +89,23 @@ export default function NavbarClient({ session }: { session: Session }) {
 
           {!isLoggedIn ? (
             <>
-              <LinkButton variant="ghost" href="/login">
+              <LinkButton variant="ghost" href={ROUTES.LOGIN}>
                 Login
               </LinkButton>
-              <LinkButton href="/register">Join Free</LinkButton>
+              <LinkButton href={ROUTES.REGISTER}>Join Free</LinkButton>
             </>
           ) : (
             <>
               <Link
-                href="/settings"
+                href={ROUTES.SETTINGS}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
                 Settings
               </Link>
               {isTeacher ? (
-                <LinkButton href="/teacher/courses">Dashboard</LinkButton>
+                <LinkButton href={ROUTES.TEACHER_COURSES}>Dashboard</LinkButton>
               ) : (
-                <LinkButton href="/dashboard">Dashboard</LinkButton>
+                <LinkButton href={ROUTES.DASHBOARD}>Dashboard</LinkButton>
               )}
               <Button variant="ghost" onClick={handleLogout}>
                 Logout
@@ -138,34 +131,16 @@ export default function NavbarClient({ session }: { session: Session }) {
       {isOpen && (
         <div className="border-b border-border bg-background px-4 py-4 md:hidden animate-in slide-in-from-top duration-200">
           <div className="flex flex-col gap-4">
-            <Link
-              href="/courses"
-              onClick={() => setIsOpen(false)}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Courses
-            </Link>
-            <Link
-              href="/about"
-              onClick={() => setIsOpen(false)}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              About
-            </Link>
-            <Link
-              href="/teachers"
-              onClick={() => setIsOpen(false)}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Teachers
-            </Link>
-            <Link
-              href="/contact"
-              onClick={() => setIsOpen(false)}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Contact
-            </Link>
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {link.name}
+              </Link>
+            ))}
 
             <hr className="border-border" />
 
@@ -173,7 +148,7 @@ export default function NavbarClient({ session }: { session: Session }) {
               {!isLoggedIn ? (
                 <>
                   <LinkButton
-                    href="/login"
+                    href={ROUTES.LOGIN}
                     variant="outline"
                     className="w-full"
                     onClick={() => setIsOpen(false)}
@@ -181,7 +156,7 @@ export default function NavbarClient({ session }: { session: Session }) {
                     Login
                   </LinkButton>
                   <LinkButton
-                    href="/register"
+                    href={ROUTES.REGISTER}
                     className="w-full"
                     onClick={() => setIsOpen(false)}
                   >
@@ -191,7 +166,7 @@ export default function NavbarClient({ session }: { session: Session }) {
               ) : (
                 <>
                   <LinkButton
-                    href="/settings"
+                    href={ROUTES.SETTINGS}
                     className="w-full"
                     onClick={() => setIsOpen(false)}
                   >
@@ -199,7 +174,7 @@ export default function NavbarClient({ session }: { session: Session }) {
                   </LinkButton>
                   {isTeacher ? (
                     <LinkButton
-                      href="/teacher/courses"
+                      href={ROUTES.TEACHER_COURSES}
                       className="w-full"
                       onClick={() => setIsOpen(false)}
                     >
@@ -207,7 +182,7 @@ export default function NavbarClient({ session }: { session: Session }) {
                     </LinkButton>
                   ) : (
                     <LinkButton
-                      href="/dashboard"
+                      href={ROUTES.DASHBOARD}
                       className="w-full"
                       onClick={() => setIsOpen(false)}
                     >

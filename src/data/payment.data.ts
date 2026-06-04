@@ -128,3 +128,19 @@ export async function getRevenueTimeSeries(params: { startDate: Date; endDate: D
 
   return Object.entries(timeSeries).map(([date, amount]) => ({ date, amount }));
 }
+
+export async function getRecentPurchases(limit: number = 10) {
+  return db.purchase.findMany({
+    where: { status: "COMPLETED" },
+    include: {
+      enrollment: {
+        include: {
+          course: true,
+          user: true,
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+    take: limit,
+  });
+}

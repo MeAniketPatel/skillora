@@ -24,7 +24,7 @@ export default function AssignmentView({ lessonId, initialSubmission }: Assignme
     startTransition(async () => {
       const res = await submitAssignment(lessonId, content);
       if (res.success) {
-        setSubmission(res.submission);
+        setSubmission(res.data);
         router.refresh();
       }
     });

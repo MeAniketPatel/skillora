@@ -28,7 +28,7 @@ export default function ContactPage() {
   const onSubmit = async (values: z.infer<typeof contactSchema>) => {
     try {
       const res = await submitContactForm(values);
-      if (res && res.error) {
+      if (!res.success) {
         toast.error(res.error);
       } else {
         toast.success("We've received your message and will get back to you shortly.");

@@ -3,7 +3,8 @@ import Link from "next/link";
 import { GraduationCap, BookOpen, Layers, CheckCircle } from "lucide-react";
 
 import { auth } from "@/auth";
-import db from "@/lib/prisma";
+import { getCourseWithFullDetails } from "@/data/course.data";
+import { getEnrollment } from "@/data/enrollment.data";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Navbar } from "@/components/layout/navbar";
@@ -20,22 +21,7 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
   const session = await auth();
   const { slug } = await params;
 
-  const course = await db.course.findUnique({
-    where: { slug },
-    include: {
-      category: true,
-      teacher: true,
-      sections: {
-        orderBy: { position: "asc" },
-        include: {
-          lessons: {
-            where: { isPublished: true },
-            orderBy: { position: "asc" },
-          },
-        },
-      },
-    },
-  });
+  const course = await getCourseWithFullDetails(slug);
 
   if (!course || course.status !== "PUBLISHED") {
     redirect("/courses");
@@ -49,14 +35,7 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
   // Check enrollment
   let isEnrolled = false;
   if (session?.user) {
-    const enrollment = await db.enrollment.findUnique({
-      where: {
-        userId_courseId: {
-          userId: session.user.id,
-          courseId: course.id,
-        },
-      },
-    });
+    const enrollment = await getEnrollment(session.user.id, course.id);
     isEnrolled = !!enrollment;
   }
 

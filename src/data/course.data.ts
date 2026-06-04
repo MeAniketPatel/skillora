@@ -97,6 +97,8 @@ export async function getPublishedCourses(params: { page?: number; limit?: numbe
       orderBy,
       include: {
         teacher: { select: { name: true, image: true } },
+        category: { select: { name: true } },
+        sections: { select: { lessons: { select: { id: true } } } },
         _count: { select: { enrollments: true, reviews: true } },
       },
     }),
@@ -176,4 +178,60 @@ export async function getCoursesForAdmin(params: { page?: number; limit?: number
   ]);
 
   return { courses, total, pages: Math.ceil(total / limit) };
+}
+
+export async function getCourseCount() {
+  return db.course.count();
+}
+
+export async function getTeacherAnalyticsCourses(teacherId: string) {
+  return db.course.findMany({
+    where: { teacherId },
+    include: {
+      enrollments: {
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              image: true,
+            },
+          },
+        },
+      },
+      sections: {
+        include: {
+          lessons: {
+            where: { type: "ASSIGNMENT" },
+          },
+        },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+}
+
+export async function getCourseWithPublishedCurriculum(courseId: string) {
+  return db.course.findUnique({
+    where: { id: courseId },
+    include: {
+      sections: {
+        orderBy: { position: "asc" },
+        include: {
+          lessons: {
+            where: { isPublished: true },
+            orderBy: { position: "asc" },
+          },
+        },
+      },
+    },
+  });
+}
+
+export async function getCourseForPublishing(courseId: string, teacherId: string) {
+  return db.course.findUnique({
+    where: { id: courseId, teacherId },
+    include: { sections: { include: { lessons: true } } },
+  });
 }

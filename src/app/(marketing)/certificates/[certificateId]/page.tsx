@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Award, ShieldCheck, Calendar, User, GraduationCap } from "lucide-react";
-import db from "@/lib/prisma";
+import { getCertificateById } from "@/data/certificate.data";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
@@ -14,21 +14,7 @@ interface CertificatePageProps {
 export default async function CertificateVerificationPage({ params }: CertificatePageProps) {
   const { certificateId } = await params;
 
-  const certificate = await db.certificate.findUnique({
-    where: { certificateId },
-    include: {
-      enrollment: {
-        include: {
-          user: true,
-          course: {
-            include: {
-              teacher: true,
-            },
-          },
-        },
-      },
-    },
-  });
+  const certificate = await getCertificateById(certificateId);
 
   if (!certificate) {
     notFound();

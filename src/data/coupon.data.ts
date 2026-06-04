@@ -60,3 +60,17 @@ export async function validateCoupon(code: string, courseId: string) {
 
   return { discount: coupon.discount, type: coupon.type, couponId: coupon.id };
 }
+
+export async function getTeacherCoupons(teacherId: string) {
+  return db.coupon.findMany({
+    where: {
+      course: {
+        teacherId
+      }
+    },
+    include: {
+      course: { select: { title: true } }
+    },
+    orderBy: { createdAt: "desc" }
+  });
+}

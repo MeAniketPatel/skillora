@@ -56,9 +56,9 @@ export default function CreateCourseForm({
     setError(null);
     startTransition(async () => {
       const res = await createCourse(values);
-      if (res.error) {
+      if (!res.success) {
         setError(res.error);
-      } else if (res.data) {
+      } else {
         router.push(`/teacher/courses/${res.data.id}`);
       }
     });

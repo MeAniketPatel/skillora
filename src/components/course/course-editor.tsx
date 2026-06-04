@@ -82,10 +82,10 @@ export default function CourseEditor({
     setSuccess(null);
     try {
       const res = await generateAICourseDescription(titleVal);
-      if (res.error) {
+      if (!res.success) {
         setError(res.error);
-      } else if (res.description) {
-        setValue("description", res.description);
+      } else if (res.data.description) {
+        setValue("description", res.data.description);
         setSuccess(
           "AI Description generated successfully! Save your changes below.",
         );
@@ -126,7 +126,7 @@ export default function CourseEditor({
     setSuccess(null);
     startTransition(async () => {
       const res = await updateCourse(course.id, values);
-      if (res.error) {
+      if (!res.success) {
         setError(res.error);
       } else {
         setSuccess("Course updated successfully!");
@@ -141,7 +141,7 @@ export default function CourseEditor({
     startTransition(async () => {
       if (course.status === "PUBLISHED") {
         const res = await unpublishCourse(course.id);
-        if (res.error) setError(res.error);
+        if (!res.success) setError(res.error);
         else setSuccess("Course unpublished!");
       } else {
         // Clear any previous form errors
@@ -183,7 +183,7 @@ export default function CourseEditor({
         }
 
         const res = await publishCourse(course.id);
-        if (res.error) {
+        if (!res.success) {
           // If server returned missingFields, set those on the form as well
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           if ((res as any).missingFields) {
