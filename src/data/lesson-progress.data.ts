@@ -16,6 +16,17 @@ export async function upsertLessonProgress(enrollmentId: string, lessonId: strin
   });
 }
 
+export async function initializeEnrollmentProgress(enrollmentId: string, lessonIds: string[]) {
+  if (lessonIds.length === 0) return null;
+  return db.lessonProgress.createMany({
+    data: lessonIds.map((lessonId) => ({
+      enrollmentId,
+      lessonId,
+      isCompleted: false,
+    })),
+  });
+}
+
 export async function getProgressForEnrollment(enrollmentId: string) {
   return db.lessonProgress.findMany({
     where: { enrollmentId },

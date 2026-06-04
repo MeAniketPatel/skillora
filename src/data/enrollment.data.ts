@@ -62,6 +62,13 @@ export async function getEnrollmentWithProgress(userId: string, courseId: string
   });
 }
 
+export async function getEnrollmentWithUserAndCourse(enrollmentId: string) {
+  return db.enrollment.findUnique({
+    where: { id: enrollmentId },
+    include: { user: true, course: true },
+  });
+}
+
 export async function updateEnrollmentProgress(enrollmentId: string, progress: number, completedAt?: Date) {
   return db.enrollment.update({
     where: { id: enrollmentId },

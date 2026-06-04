@@ -6,7 +6,6 @@ import { headers } from "next/headers";
 import { AuthAuditAction, AuthSessionRevocationReason } from "@prisma/client";
 
 import { signIn, signOut, auth } from "@/auth";
-import db from "@/lib/prisma";
 import { sendPasswordResetEmail } from "@/lib/mail";
 import {
   PASSWORD_RESET_TOKEN_TTL_MINUTES,
@@ -21,7 +20,7 @@ import {
 
 import { actionHandler } from "@/lib/action-utils";
 import { requireAuth } from "@/lib/auth-helpers";
-import { getUserByEmail, updateUser } from "@/data";
+import { getUserByEmail, updateUser, createUser } from "@/data";
 import { ConflictError, UnauthorizedError, ValidationError } from "@/lib/errors";
 
 import {
@@ -61,13 +60,11 @@ export async function registerUser(values: RegisterInput) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await db.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-        role,
-      },
+    const user = await createUser({
+      name,
+      email,
+      password: hashedPassword,
+      role,
     });
 
     await logAuthAudit({

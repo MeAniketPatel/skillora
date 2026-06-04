@@ -25,6 +25,12 @@ export async function getUserByEmail(email: string) {
   });
 }
 
+export async function createUser(data: { name?: string; email: string; password?: string; role?: Role }) {
+  return db.user.create({
+    data,
+  });
+}
+
 export async function getUserProfile(id: string) {
   return db.user.findUnique({
     where: { id },

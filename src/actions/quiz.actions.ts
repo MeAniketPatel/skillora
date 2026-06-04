@@ -7,7 +7,8 @@ import {
   createQuiz as createQuizData,
   updateQuizWithQuestions,
   createQuizAttempt,
-  getQuizByLessonId
+  getQuizByLessonId,
+  getQuizWithQuestions
 } from "@/data";
 
 export async function createQuiz(lessonId: string, title: string, passingScore = 70) {
@@ -52,15 +53,7 @@ export async function submitQuizAttempt(
   return actionHandler(async () => {
     const user = await requireAuth();
 
-    // Since getQuizByLessonId is what we have, we might need a getQuizById, 
-    // but we can just use prisma here if needed or add a new DAL function.
-    // For simplicity I will just import db directly if the DAL is missing it
-    const db = (await import("@/lib/prisma")).default;
-    
-    const quiz = await db.quiz.findUnique({
-      where: { id: quizId },
-      include: { questions: true },
-    });
+    const quiz = await getQuizWithQuestions(quizId);
 
     if (!quiz) throw new NotFoundError("Quiz");
 

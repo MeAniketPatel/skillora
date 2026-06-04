@@ -58,6 +58,13 @@ export async function getLessonWithSection(lessonId: string) {
   });
 }
 
+export async function getLessonWithCourse(lessonId: string) {
+  return db.lesson.findUnique({
+    where: { id: lessonId },
+    include: { section: { include: { course: true } } },
+  });
+}
+
 export async function getLearningLesson(lessonId: string, courseId: string, userId: string) {
   return db.lesson.findFirst({
     where: { id: lessonId, section: { courseId } },

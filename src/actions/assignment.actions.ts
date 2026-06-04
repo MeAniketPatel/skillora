@@ -11,18 +11,15 @@ import {
   getLessonWithContent,
   getEnrollment,
   upsertLessonProgress,
-  createNotification
+  createNotification,
+  getLessonWithCourse
 } from "@/data";
-import db from "@/lib/prisma";
 
 export async function submitAssignment(lessonId: string, content: string) {
   return actionHandler(async () => {
     const user = await requireAuth();
 
-    const lesson = await db.lesson.findUnique({
-      where: { id: lessonId },
-      include: { section: { include: { course: true } } },
-    });
+    const lesson = await getLessonWithCourse(lessonId);
 
     if (!lesson) throw new NotFoundError("Lesson");
 

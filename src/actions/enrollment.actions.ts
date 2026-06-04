@@ -12,9 +12,10 @@ import {
   calculateCourseProgress,
   updateEnrollmentProgress,
   createCertificate,
-  createNotification
+  createNotification,
+  initializeEnrollmentProgress,
+  getEnrollmentWithUserAndCourse
 } from "@/data";
-import db from "@/lib/prisma";
 
 export async function enrollInFreeCourse(courseId: string) {
   return actionHandler(async () => {
@@ -36,13 +37,10 @@ export async function enrollInFreeCourse(courseId: string) {
 
     const lessons = course.sections.flatMap((s) => s.lessons);
     if (lessons.length > 0) {
-      await db.lessonProgress.createMany({
-        data: lessons.map((lesson) => ({
-          enrollmentId: enrollment.id,
-          lessonId: lesson.id,
-          isCompleted: false,
-        })),
-      });
+      await initializeEnrollmentProgress(
+        enrollment.id,
+        lessons.map((lesson) => lesson.id)
+      );
     }
 
     try {
@@ -91,10 +89,7 @@ export async function toggleLessonCompletion(
       try {
         const cert = await createCertificate(enrollment.id);
         
-        const fullEnrollment = await db.enrollment.findUnique({
-          where: { id: enrollment.id },
-          include: { user: true, course: true },
-        });
+        const fullEnrollment = await getEnrollmentWithUserAndCourse(enrollment.id);
 
         if (fullEnrollment) {
           await createNotification(

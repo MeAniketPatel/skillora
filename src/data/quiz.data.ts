@@ -11,6 +11,13 @@ export async function getQuizByLessonId(lessonId: string) {
   });
 }
 
+export async function getQuizWithQuestions(quizId: string) {
+  return db.quiz.findUnique({
+    where: { id: quizId },
+    include: { questions: true },
+  });
+}
+
 export async function createQuiz(lessonId: string, data: { title: string; passingScore: number; timeLimit?: number; maxAttempts?: number }) {
   return db.quiz.create({
     data: {
