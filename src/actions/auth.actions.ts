@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 import { headers } from "next/headers";
 import { AuthAuditAction, AuthSessionRevocationReason } from "@prisma/client";
+import { ZodError } from "zod";
 
 import { signIn, signOut, auth } from "@/auth";
 import { sendPasswordResetEmail } from "@/lib/mail";
@@ -115,7 +116,7 @@ export async function loginUser(values: LoginInput) {
       }
     }
     // if it's a zod error
-    if (error instanceof z.ZodError) {
+    if (error instanceof ZodError) {
       return { error: "Invalid login credentials." };
     }
     throw error;
