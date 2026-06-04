@@ -79,6 +79,11 @@ model User {
   answers       Answer[]
   submissions   AssignmentSubmission[]
   wishlist      Wishlist[]
+  studyStreak   StudyStreak?
+  studySessions StudySession[]
+  bookmarks     Bookmark[]
+  learningGoals LearningGoal[]
+  courseCollections CourseCollection[]
 }
 
 model Account {
@@ -232,6 +237,7 @@ model Course {
   coupons      Coupon[]
   tags         Tag[]
   wishlistedBy Wishlist[]
+  collections  CollectionCourse[]
 }
 
 model Section {
@@ -271,6 +277,7 @@ model Lesson {
   notes       Note[]
   questions   Question[]
   submissions AssignmentSubmission[]
+  bookmarks   Bookmark[]
   createdAt   DateTime               @default(now())
   updatedAt   DateTime               @updatedAt
 }
@@ -549,4 +556,72 @@ model PlatformSetting {
   key       String   @unique
   value     String   @db.Text
   updatedAt DateTime @updatedAt
+}
+
+// ============ STUDENT PORTAL (PHASE 2) ============
+
+model StudyStreak {
+  id               String    @id @default(cuid())
+  userId           String    @unique
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  currentStreak    Int       @default(0)
+  longestStreak    Int       @default(0)
+  lastActivityDate DateTime?
+  freezeCount      Int       @default(0)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model StudySession {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  duration  Int      // in seconds
+  date      DateTime @default(now())
+  createdAt DateTime @default(now())
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId  String
+  lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, lessonId])
+}
+
+model LearningGoal {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type       String   // "WEEKLY" | "MONTHLY"
+  target     Int      // target number of lessons
+  current    Int      @default(0)
+  targetDate DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model CourseCollection {
+  id          String             @id @default(cuid())
+  userId      String
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  description String?            @db.Text
+  courses     CollectionCourse[]
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+}
+
+model CollectionCourse {
+  id           String           @id @default(cuid())
+  collectionId String
+  collection   CourseCollection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  courseId     String
+  course       Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdAt    DateTime         @default(now())
+
+  @@unique([collectionId, courseId])
 }
