@@ -36,3 +36,56 @@ export async function unbanUser(userId: string) {
     return user;
   });
 }
+
+export async function approveCourse(courseId: string) {
+  return actionHandler(async () => {
+    await requireAdmin();
+    
+    const { updateCourse, createNotification } = await import("@/data");
+    const updated = await updateCourse(courseId, {
+      status: "PUBLISHED",
+      publishedAt: new Date(),
+    });
+    
+    try {
+      await createNotification(
+        updated.teacherId,
+        "COURSE_APPROVED",
+        "Course Approved! 🎉",
+        `Your course "${updated.title}" has been approved and is now live.`,
+        `/courses/${updated.slug}`
+      );
+    } catch (err) {
+      console.error("Failed to notify teacher:", err);
+    }
+    
+    revalidatePath("/admin/courses");
+    return updated;
+  });
+}
+
+export async function rejectCourse(courseId: string, reason: string) {
+  return actionHandler(async () => {
+    await requireAdmin();
+    
+    const { updateCourse, createNotification } = await import("@/data");
+    const updated = await updateCourse(courseId, {
+      status: "DRAFT",
+    });
+    
+    try {
+      await createNotification(
+        updated.teacherId,
+        "COURSE_REJECTED",
+        "Course Review Update ⚠️",
+        `Your course "${updated.title}" requires revisions: ${reason}`,
+        `/teacher/courses/${updated.id}`
+      );
+    } catch (err) {
+      console.error("Failed to notify teacher:", err);
+    }
+    
+    revalidatePath("/admin/courses");
+    return updated;
+  });
+}
