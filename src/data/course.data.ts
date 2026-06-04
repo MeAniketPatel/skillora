@@ -235,3 +235,50 @@ export async function getCourseForPublishing(courseId: string, teacherId: string
     include: { sections: { include: { lessons: true } } },
   });
 }
+
+export async function getCourseCountByStatus() {
+  const counts = await db.course.groupBy({
+    by: ["status"],
+    _count: {
+      id: true,
+    },
+  });
+  return counts.reduce((acc, curr) => {
+    acc[curr.status] = curr._count.id;
+    return acc;
+  }, {} as Record<string, number>);
+}
+
+export async function getCourseCountByCategory() {
+  const counts = await db.course.groupBy({
+    by: ["categoryId"],
+    _count: {
+      id: true,
+    },
+  });
+
+  const categories = await db.category.findMany({
+    select: { id: true, name: true },
+  });
+
+  const categoryMap = new Map(categories.map((c) => [c.id, c.name]));
+
+  const result: Record<string, number> = {};
+  counts.forEach((c) => {
+    const name = c.categoryId ? categoryMap.get(c.categoryId) || "Uncategorized" : "Uncategorized";
+    result[name] = (result[name] || 0) + c._count.id;
+  });
+
+  return result;
+}
+
+export async function getTeacherPublishedCourses(teacherId: string) {
+  return db.course.findMany({
+    where: { teacherId, status: "PUBLISHED" },
+    include: {
+      category: { select: { name: true } },
+      sections: { select: { lessons: { select: { id: true } } } },
+      _count: { select: { enrollments: true, reviews: true } },
+    },
+  });
+}
