@@ -19,4 +19,6 @@ export * from "./contact.data";
 export * from "./wishlist.data";
 export * from "./settings.data";
 export * from "./attachment.data";
+export * from "./streak.data";
+
 

@@ -7,3 +7,5 @@ export * from "./admin.schema";
 export * from "./note.schema";
 export * from "./settings.schema";
 export * from "./contact.schema";
+export * from "./streak.schema";
+
