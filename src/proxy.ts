@@ -1,5 +1,5 @@
 import NextAuth from "next-auth";
-import { authConfig } from "./auth.config";
+import { authConfig } from "./config/auth.config";
 
 export const proxy = NextAuth(authConfig).auth;
 

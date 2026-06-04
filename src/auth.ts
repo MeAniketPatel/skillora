@@ -12,7 +12,7 @@ import {
 } from "@prisma/client";
 
 import db from "@/lib/prisma";
-import { authConfig } from "./auth.config";
+import { authConfig } from "./config/auth.config";
 import {
   AUTH_SESSION_MAX_AGE_SECONDS,
   createAuthSession,
