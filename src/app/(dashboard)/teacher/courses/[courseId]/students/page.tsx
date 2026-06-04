@@ -78,7 +78,7 @@ export default async function CourseStudentsPage({ params, searchParams }: PageP
       cell: (item: any) => {
         const isCompleted = item.progress >= 100;
         return isCompleted ? (
-          <Badge variant="success" className="bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-400 border-none font-bold rounded-xl gap-1">
+          <Badge variant="outline" className="bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-400 border-none font-bold rounded-xl gap-1">
             <CheckCircle className="h-3 w-3" />
             Completed
           </Badge>

@@ -153,3 +153,12 @@ export async function getTeacherStudentCount(teacherId: string) {
     where: { course: { teacherId } },
   });
 }
+
+export async function getEnrolledStudentIds(courseId: string) {
+  const enrollments = await db.enrollment.findMany({
+    where: { courseId },
+    select: { userId: true },
+  });
+  return enrollments.map((e) => e.userId);
+}
+
