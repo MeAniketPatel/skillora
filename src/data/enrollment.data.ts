@@ -162,3 +162,25 @@ export async function getEnrolledStudentIds(courseId: string) {
   return enrollments.map((e) => e.userId);
 }
 
+export async function getEnrollmentTrends() {
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - 30);
+
+  const enrollments = await db.enrollment.findMany({
+    where: {
+      createdAt: { gte: startDate },
+    },
+    select: { createdAt: true },
+    orderBy: { createdAt: "asc" },
+  });
+
+  const timeline: Record<string, number> = {};
+  enrollments.forEach((e) => {
+    const key = e.createdAt.toISOString().split("T")[0];
+    timeline[key] = (timeline[key] || 0) + 1;
+  });
+
+  return Object.entries(timeline).map(([date, count]) => ({ date, count }));
+}
+
+

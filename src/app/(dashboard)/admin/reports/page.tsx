@@ -1,20 +1,25 @@
 import { PageHeader } from "@/components/shared/page-header";
-import { getUserCountByRole } from "@/data/user.data";
+import { getUserCountByRole, getUserGrowthTimeline } from "@/data/user.data";
 import { getCourseCountByStatus, getCourseCountByCategory } from "@/data/course.data";
+import { getEnrollmentTrends } from "@/data/enrollment.data";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, BookOpen } from "lucide-react";
 import { StatsCard } from "@/components/shared/stats-card";
+import { ReportsDashboard } from "@/components/admin/reports-dashboard";
 
 export default async function AdminReportsPage() {
   const roleCounts = await getUserCountByRole();
   const statusCounts = await getCourseCountByStatus();
   const categoryCounts = await getCourseCountByCategory();
 
+  const userGrowth = await getUserGrowthTimeline();
+  const enrollmentTrends = await getEnrollmentTrends();
+
   const totalUsers = Object.values(roleCounts).reduce((a, b) => a + b, 0);
   const totalCourses = Object.values(statusCounts).reduce((a, b) => a + b, 0);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-5xl mx-auto">
       <PageHeader
         title="System Reports & Analytics"
         description="Audit platform growth, user role distributions, catalog categories, and publishing metrics."
@@ -24,15 +29,20 @@ export default async function AdminReportsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <StatsCard
           label="Total Registered Users"
-          value={totalUsers}
+          value={totalUsers.toString()}
           icon={Users}
         />
         <StatsCard
           label="Total Created Courses"
-          value={totalCourses}
+          value={totalCourses.toString()}
           icon={BookOpen}
         />
       </div>
+
+      <ReportsDashboard
+        userGrowth={userGrowth}
+        enrollmentTrends={enrollmentTrends}
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* User Role Distribution */}
@@ -45,7 +55,7 @@ export default async function AdminReportsPage() {
             {Object.entries(roleCounts).map(([role, count]) => (
               <div key={role} className="flex justify-between items-center py-2 border-b border-neutral-100 dark:border-neutral-800/60 last:border-0">
                 <span className="font-semibold text-neutral-500">{role}</span>
-                <span className="font-bold text-neutral-800 dark:text-neutral-200">{count}</span>
+                <span className="font-bold text-neutral-850 dark:text-neutral-50">{count}</span>
               </div>
             ))}
           </CardContent>
@@ -61,7 +71,7 @@ export default async function AdminReportsPage() {
             {Object.entries(statusCounts).map(([status, count]) => (
               <div key={status} className="flex justify-between items-center py-2 border-b border-neutral-100 dark:border-neutral-800/60 last:border-0">
                 <span className="font-semibold text-neutral-500">{status.replace("_", " ")}</span>
-                <span className="font-bold text-neutral-800 dark:text-neutral-200">{count}</span>
+                <span className="font-bold text-neutral-850 dark:text-neutral-50">{count}</span>
               </div>
             ))}
           </CardContent>
@@ -80,7 +90,7 @@ export default async function AdminReportsPage() {
               Object.entries(categoryCounts).map(([cat, count]) => (
                 <div key={cat} className="flex justify-between items-center py-2 border-b border-neutral-100 dark:border-neutral-800/60 last:border-0">
                   <span className="font-semibold text-neutral-500">{cat}</span>
-                  <span className="font-bold text-neutral-800 dark:text-neutral-200">{count}</span>
+                  <span className="font-bold text-neutral-850 dark:text-neutral-50">{count}</span>
                 </div>
               ))
             )}

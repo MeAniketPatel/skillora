@@ -119,3 +119,25 @@ export async function unbanUser(id: string) {
     },
   });
 }
+
+export async function getUserGrowthTimeline() {
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - 30);
+
+  const users = await db.user.findMany({
+    where: {
+      createdAt: { gte: startDate },
+    },
+    select: { createdAt: true },
+    orderBy: { createdAt: "asc" },
+  });
+
+  const timeline: Record<string, number> = {};
+  users.forEach((u) => {
+    const key = u.createdAt.toISOString().split("T")[0];
+    timeline[key] = (timeline[key] || 0) + 1;
+  });
+
+  return Object.entries(timeline).map(([date, count]) => ({ date, count }));
+}
+
