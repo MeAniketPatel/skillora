@@ -1,17 +1,38 @@
 import { PageHeader } from "@/components/shared/page-header";
-import { getPlatformRevenue, getRecentPurchases } from "@/data/payment.data";
+import {
+  getPlatformRevenue,
+  getRecentPurchases,
+  getRevenueTimeSeries,
+  getRevenueByTeacher,
+  getRevenueByCourse,
+} from "@/data/payment.data";
 import { StatsCard } from "@/components/shared/stats-card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatPrice } from "@/lib/utils";
 import { DollarSign, Percent, TrendingUp } from "lucide-react";
+import { RevenueCharts } from "@/components/admin/revenue-charts";
 
 export default async function AdminRevenuePage() {
   const { grossSales, platformRevenue, totalTransactions } = await getPlatformRevenue();
   const transactions = await getRecentPurchases(25);
 
+  // Get data for past 30 days
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - 30);
+  const endDate = new Date();
+
+  const timeSeries = await getRevenueTimeSeries({
+    startDate,
+    endDate,
+    groupBy: "day",
+  });
+
+  const byTeacher = await getRevenueByTeacher();
+  const byCourse = await getRevenueByCourse();
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-7xl mx-auto">
       <PageHeader
         title="Revenue Dashboard"
         description="Monitor sales volume, platform commissions, and recent student checkout flows."
@@ -30,10 +51,16 @@ export default async function AdminRevenuePage() {
         />
         <StatsCard
           label="Total Transactions"
-          value={totalTransactions}
+          value={totalTransactions.toString()}
           icon={TrendingUp}
         />
       </div>
+
+      <RevenueCharts
+        timeSeries={timeSeries}
+        byTeacher={byTeacher}
+        byCourse={byCourse}
+      />
 
       <Card className="bg-white dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50 rounded-2xl shadow-sm">
         <CardHeader>

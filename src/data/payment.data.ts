@@ -144,3 +144,61 @@ export async function getRecentPurchases(limit: number = 10) {
     take: limit,
   });
 }
+
+export async function getRevenueByTeacher() {
+  const purchases = await db.purchase.findMany({
+    where: { status: "COMPLETED" },
+    include: {
+      enrollment: {
+        include: {
+          course: {
+            include: {
+              teacher: { select: { name: true, email: true } },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const teacherMap: Record<string, { name: string; revenue: number }> = {};
+  purchases.forEach((p) => {
+    const teacher = p.enrollment.course.teacher;
+    const name = teacher.name || teacher.email || "Unknown";
+    if (!teacherMap[name]) {
+      teacherMap[name] = { name, revenue: 0 };
+    }
+    teacherMap[name].revenue += p.amount;
+  });
+
+  return Object.values(teacherMap)
+    .sort((a, b) => b.revenue - a.revenue)
+    .slice(0, 5);
+}
+
+export async function getRevenueByCourse() {
+  const purchases = await db.purchase.findMany({
+    where: { status: "COMPLETED" },
+    include: {
+      enrollment: {
+        include: {
+          course: { select: { title: true } },
+        },
+      },
+    },
+  });
+
+  const courseMap: Record<string, { title: string; revenue: number }> = {};
+  purchases.forEach((p) => {
+    const title = p.enrollment.course.title || "Unknown Course";
+    if (!courseMap[title]) {
+      courseMap[title] = { title, revenue: 0 };
+    }
+    courseMap[title].revenue += p.amount;
+  });
+
+  return Object.values(courseMap)
+    .sort((a, b) => b.revenue - a.revenue)
+    .slice(0, 5);
+}
+
