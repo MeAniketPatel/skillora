@@ -100,6 +100,15 @@ model User {
   studyGroupsJoined    StudyGroupMember[]
   directMessagesSent   DirectMessage[]
   conversations        ConversationParticipant[]
+
+  // Phase 6 Advanced Learning
+  xpTransactions       XPTransaction[]
+  badges               UserBadge[]
+  pathEnrollments      PathEnrollment[]
+  discussions          Discussion[]
+  discussionReplies    DiscussionReply[]
+  flashcardDecks       FlashcardDeck[]
+  spacedRepProgress    SpacedRepetitionProgress[]
 }
 
 model Account {
@@ -256,6 +265,7 @@ model Course {
   collections  CollectionCourse[]
   announcements Announcement[]
   polls         Poll[]
+  learningPaths PathCourse[]
 }
 
 model Section {
@@ -866,4 +876,132 @@ model DirectMessage {
   createdAt      DateTime     @default(now())
   isRead         Boolean      @default(false)
 }
+
+// ============ GAMIFICATION (PHASE 6) ============
+
+model XPTransaction {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount    Int
+  reason    String   // e.g. "LESSON_COMPLETED" | "QUIZ_ACED" | "COURSE_COMPLETED" | "DAILY_STREAK"
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model UserBadge {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badgeId   String   // e.g. "quiz_master" | "perfect_score" | "weekly_warrior"
+  awardedAt DateTime @default(now())
+
+  @@unique([userId, badgeId])
+}
+
+// ============ LEARNING PATHS (PHASE 6) ============
+
+model LearningPath {
+  id          String           @id @default(cuid())
+  title       String
+  description String           @db.Text
+  imageUrl    String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  courses     PathCourse[]
+  enrollments PathEnrollment[]
+}
+
+model PathCourse {
+  id             String       @id @default(cuid())
+  learningPathId String
+  learningPath   LearningPath @relation(fields: [learningPathId], references: [id], onDelete: Cascade)
+  courseId       String
+  course         Course       @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  position       Int          // ordering in the timeline path
+
+  @@unique([learningPathId, courseId])
+}
+
+model PathEnrollment {
+  id             String       @id @default(cuid())
+  learningPathId String
+  learningPath   LearningPath @relation(fields: [learningPathId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  progress       Float        @default(0) // 0-100
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([learningPathId, userId])
+}
+
+// ============ DISCUSSIONS (PHASE 6) ============
+
+model Discussion {
+  id        String            @id @default(cuid())
+  title     String
+  content   String            @db.Text
+  category  String            // e.g. "GENERAL" | "HELP" | "SHOW_AND_TELL"
+  isPinned  Boolean           @default(false)
+  isLocked  Boolean           @default(false)
+  userId    String
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  replies   DiscussionReply[]
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+}
+
+model DiscussionReply {
+  id           String     @id @default(cuid())
+  discussionId String
+  discussion   Discussion @relation(fields: [discussionId], references: [id], onDelete: Cascade)
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content      String     @db.Text
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+// ============ FLASHCARDS & spaced repetition (PHASE 6) ============
+
+model FlashcardDeck {
+  id          String      @id @default(cuid())
+  title       String
+  description String?     @db.Text
+  userId      String
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  flashcards  Flashcard[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Flashcard {
+  id         String                     @id @default(cuid())
+  deckId     String
+  deck       FlashcardDeck              @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  front      String                     @db.Text // question / concept
+  back       String                     @db.Text // answer / definition
+  createdAt  DateTime                   @default(now())
+  updatedAt  DateTime                   @updatedAt
+  progress   SpacedRepetitionProgress[]
+}
+
+model SpacedRepetitionProgress {
+  id          String    @id @default(cuid())
+  flashcardId String
+  flashcard   Flashcard @relation(fields: [flashcardId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interval    Int       @default(1) // in days
+  easeFactor  Float     @default(2.5) // ease multiplier
+  repetitions Int       @default(0) // consecutive successful recall runs
+  nextStudyAt DateTime  @default(now())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([flashcardId, userId])
+}
+
 
