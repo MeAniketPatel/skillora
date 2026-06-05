@@ -14,6 +14,9 @@ import { ROUTES } from "@/constants/routes";
 import { Sidebar } from "@/components/layout/sidebar";
 import { cookies } from "next/headers";
 import { StopImpersonationBanner } from "@/components/admin/user-impersonation";
+import { CartSidebar } from "@/components/cart/cart-sidebar";
+import { getUserXPPoints } from "@/data";
+
 
 
 
@@ -27,6 +30,8 @@ export default async function DashboardLayout({
   if (!session?.user) {
     redirect("/login");
   }
+
+  const points = await getUserXPPoints(session.user.id!);
 
 
   const cookieStore = await cookies();
@@ -65,6 +70,11 @@ export default async function DashboardLayout({
           {children}
         </main>
       </div>
+      <CartSidebar
+        userPoints={points}
+        userId={session.user.id!}
+        userName={session.user.name || "Student"}
+      />
     </div>
   </div>
   );
