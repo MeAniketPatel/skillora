@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const dbSessions = await getLiveSessions(courseId);
-    const events: CalendarEvent[] = dbSessions.map((s) => ({
+    const events: CalendarEvent[] = dbSessions.map((s: any) => ({
       id: s.id,
       title: s.title,
       description: s.description,
