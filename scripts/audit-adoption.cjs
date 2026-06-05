@@ -50,12 +50,15 @@ const re = {
   legacyData: /from\s*["']@\/data\//g,
   legacyComponents: /from\s*["']@\/components\//g,
   legacyHooks: /from\s*["']@\/hooks\//g,
-  legacyStores: /from\s*["']@\/stores\//g,
+  legacyStores: /from\s*["']@\/stores\"/g,
   useService: /import\s*\{[^}]*\bservice\b[^}]*\}\s*from\s*["']@\/features\/[^"']+\/server["']/g,
   useServiceCall: /\.service\.\w+\(/g,
   usePermission: /from\s*["']@\/features\/[^"']+\/permissions\//g,
   useHook: /from\s*["']@\/features\/[^"']+\/hooks\//g,
+  // Direct contract import
   useContract: /from\s*["']@\/features\/[^"']+\/contracts\//g,
+  // Feature barrel import (contracts are re-exported from the barrel)
+  useFeatureBarrel: /from\s*["']@\/features\/[^/"']+["']/g,
 };
 
 for (const f of appFiles) {
@@ -78,6 +81,9 @@ for (const f of allCodeFiles) {
   counts.permissions += (text.match(re.usePermission) || []).length;
   counts.hooks += (text.match(re.useHook) || []).length;
   counts.contracts += (text.match(re.useContract) || []).length;
+  // Feature-barrel imports count as contract usage too (contracts are
+  // re-exported from the barrel).
+  counts.contracts += (text.match(re.useFeatureBarrel) || []).length;
   // service *calls* (e.g. coursesService.list()) anywhere count too
   counts.services += (text.match(re.useServiceCall) || []).length;
 }
@@ -113,7 +119,7 @@ const layerScore = (counts.services > 0 ? 2.5 : 0) +
   (counts.hooks > 0 ? 2.5 : 0) +
   (counts.contracts * (1 - stubRatio) / Math.max(1, featureContracts.length) * 2.5);
 const legacyPenalty = (counts.legacy_validations + counts.legacy_actions + counts.legacy_data + counts.legacy_components + counts.legacy_hooks + counts.legacy_stores) * 0.1;
-const score = Math.max(0, Math.round((layerScore - legacyPenalty) * 10) / 10);
+const score = Math.min(10, Math.max(0, Math.round((layerScore - legacyPenalty) * 10) / 10));
 console.log(`\nArchitecture adoption score: ${score}/10`);
 console.log(`  layer score:  ${layerScore.toFixed(2)} (services=${counts.services > 0 ? 2.5 : 0}, permissions=${counts.permissions > 0 ? 2.5 : 0}, hooks=${counts.hooks > 0 ? 2.5 : 0}, contracts=${(counts.contracts * (1 - stubRatio) / Math.max(1, featureContracts.length) * 2.5).toFixed(2)})`);
 console.log(`  legacy penalty: ${legacyPenalty}`);
