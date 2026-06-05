@@ -50,8 +50,8 @@ export type {
   InstructorProfile,
 } from "./repositories/user.repository";
 
-// Re-export Prisma enums through the feature boundary
-export { AuthAuditAction, AuthSessionRevocationReason } from "@prisma/client";
+// Re-export Prisma enums through the feature's repository (enums are values, not types)
+export { AuthAuditAction, AuthSessionRevocationReason } from "./repositories/user.repository";
 
 // Permissions
 export { canAuth as canAuth, assertAuthAccess } from "./permissions/auth.permissions";
