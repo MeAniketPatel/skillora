@@ -13,7 +13,7 @@ export { RevenueCharts } from "./components/revenue-charts";
 export { ImpersonateButton as ImpersonateButton, ImpersonateButton as UserImpersonation, StopImpersonationBanner } from "./components/user-impersonation";
 
 // Permissions
-export { canAdmin as canAdmin, assertAdminAccess } from "./permissions/admin.permissions";
+export { canAdmin as canAdmin, assertAdminAccess, isAdmin } from "./permissions/admin.permissions";
 
 
 

@@ -16,7 +16,7 @@ export { SubmissionTable } from "./components/submission-table";
 export { TeacherStats } from "./components/teacher-stats";
 
 // Permissions
-export { canTeachers as canTeachers, assertTeachersAccess } from "./permissions/teachers.permissions";
+export { canTeachers as canTeachers, assertTeachersAccess, isTeacherOrAdmin } from "./permissions/teachers.permissions";
 
 
 

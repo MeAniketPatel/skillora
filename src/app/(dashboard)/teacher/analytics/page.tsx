@@ -2,11 +2,11 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getTeacherAnalyticsCourses } from "@/features/courses";
 import { getAllTeacherSubmissions } from "@/features/assignments";
-import { AnalyticsClient } from "@/features/teachers";
+import { AnalyticsClient, isTeacherOrAdmin } from "@/features/teachers";
 
 export default async function TeacherAnalyticsPage() {
   const session = await auth();
-  if (!session?.user || (session.user.role !== "TEACHER" && session.user.role !== "ADMIN")) {
+  if (!session?.user || !isTeacherOrAdmin(session.user.role as any)) {
     redirect("/login");
   }
 

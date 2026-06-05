@@ -18,3 +18,7 @@ export function assertTeachersAccess(role: Role | null | undefined, action: keyo
     throw new Error(`Access denied: role '${role ?? "anonymous"}' cannot ${action} teachers`);
   }
 }
+
+export function isTeacherOrAdmin(role: Role | null | undefined): boolean {
+  return role === "TEACHER" || role === "ADMIN";
+}

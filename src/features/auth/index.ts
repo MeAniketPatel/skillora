@@ -9,7 +9,7 @@ export { default as SignOutButton, default as SignoutButton } from "./components
 
 
 // Permissions
-export { canAuth as canAuth, assertAuthAccess } from "./permissions/auth.permissions";
+export { canAuth as canAuth, assertAuthAccess, isTeacherOrAdmin } from "./permissions/auth.permissions";
 
 
 

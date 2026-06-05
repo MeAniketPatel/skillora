@@ -5,6 +5,7 @@ import {
 } from "uploadthing/next";
 import { ensureUploadThingToken } from "@/shared/lib/uploadthing-token";
 import { auth } from "@/auth";
+import { isTeacherOrAdmin } from "@/features/auth";
 
 // Note: do not validate UPLOADTHING_TOKEN at module init to avoid build-time
 // failures. Validation is performed at runtime when handling uploads.
@@ -12,7 +13,7 @@ const f = createUploadthing();
 
 const checkAuth = async () => {
   const session = await auth();
-  if (!session?.user || (session.user.role !== "TEACHER" && session.user.role !== "ADMIN")) {
+  if (!session?.user || !isTeacherOrAdmin(session.user.role as any)) {
     throw new Error("Unauthorized");
   }
   return { userId: session.user.id };

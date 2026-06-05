@@ -18,3 +18,7 @@ export function assertAdminAccess(role: Role | null | undefined, action: keyof t
     throw new Error(`Access denied: role '${role ?? "anonymous"}' cannot ${action} admin`);
   }
 }
+
+export function isAdmin(role: Role | null | undefined): boolean {
+  return role === "ADMIN";
+}

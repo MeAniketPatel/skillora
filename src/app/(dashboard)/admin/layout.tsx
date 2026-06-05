@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
+import { isAdmin } from "@/features/admin";
 
 export default async function AdminLayout({
   children,
@@ -7,7 +8,7 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const session = await auth();
-  if (session?.user?.role !== "ADMIN") {
+  if (!isAdmin(session?.user?.role as any)) {
     redirect("/dashboard");
   }
   return <>{children}</>;
