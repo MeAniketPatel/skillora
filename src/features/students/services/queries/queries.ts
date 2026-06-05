@@ -1,0 +1,20 @@
+import * as bookmarkRepo from "../../repositories/bookmark.repository";
+import * as collectionRepo from "../../repositories/collection.repository";
+import * as learningGoalRepo from "../../repositories/learning-goal.repository";
+import * as lessonProgressRepo from "../../repositories/lesson-progress.repository";
+import * as noteRepo from "../../repositories/note.repository";
+import * as streakRepo from "../../repositories/streak.repository";
+
+export const getUserBookmarks = bookmarkRepo.getUserBookmarks;
+export const isBookmarked = bookmarkRepo.isBookmarked;
+export const getUserCollections = collectionRepo.getUserCollections;
+export const getUserGoals = learningGoalRepo.getUserGoals;
+export const initializeEnrollmentProgress = lessonProgressRepo.initializeEnrollmentProgress;
+export const getProgressForEnrollment = lessonProgressRepo.getProgressForEnrollment;
+export const calculateCourseProgress = lessonProgressRepo.calculateCourseProgress;
+export const getLessonProgress = lessonProgressRepo.getLessonProgress;
+export const getUserCompletedLessonsCount = lessonProgressRepo.getUserCompletedLessonsCount;
+export const getNotesForLesson = noteRepo.getNotesForLesson;
+export const getAllUserNotes = noteRepo.getAllUserNotes;
+export const getStudyStreak = streakRepo.getStudyStreak;
+export const getStudySessions = streakRepo.getStudySessions;
