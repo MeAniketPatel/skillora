@@ -22,3 +22,11 @@ export type { TeachersService } from "./services/teachers.service";
 
 // Permissions
 export { canTeachers as canTeachers, assertTeachersAccess } from "./permissions/teachers.permissions";
+
+// Contracts
+export { createTeachersSchema, updateTeachersSchema, listTeachersQuerySchema } from "./contracts/teachers.contract";
+export type { CreateTeachersInput, UpdateTeachersInput, ListTeachersQuery } from "./contracts/teachers.contract";
+
+// Hooks
+export {  useTeachersList, useTeachersDetail, useTeachersCreate, useTeachersUpdate, useTeachersDelete } from "./hooks/use-teachers";
+

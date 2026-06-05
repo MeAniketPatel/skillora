@@ -13,3 +13,11 @@ export type { PollsService } from "./services/polls.service";
 
 // Permissions
 export { canPolls as canPolls, assertPollsAccess } from "./permissions/polls.permissions";
+
+// Contracts
+export { createPollsSchema, updatePollsSchema, listPollsQuerySchema } from "./contracts/polls.contract";
+export type { CreatePollsInput, UpdatePollsInput, ListPollsQuery } from "./contracts/polls.contract";
+
+// Hooks
+export {  usePollsList, usePollsDetail, usePollsCreate, usePollsUpdate, usePollsDelete } from "./hooks/use-polls";
+

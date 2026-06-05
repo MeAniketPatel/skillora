@@ -32,3 +32,11 @@ export type { CoursesService } from "./services/courses.service";
 
 // Permissions
 export { canCourses as canCourses, assertCoursesAccess } from "./permissions/courses.permissions";
+
+// Contracts
+export { createCoursesSchema, updateCoursesSchema, listCoursesQuerySchema } from "./contracts/courses.contract";
+export type { CreateCoursesInput, UpdateCoursesInput, ListCoursesQuery } from "./contracts/courses.contract";
+
+// Hooks
+export {  useCoursesList, useCoursesDetail, useCoursesCreate, useCoursesUpdate, useCoursesDelete } from "./hooks/use-courses";
+

@@ -56,3 +56,7 @@ export type { AuthService } from "./services/auth.service";
 
 // Permissions
 export { canAuth as canAuth, assertAuthAccess } from "./permissions/auth.permissions";
+
+// Hooks
+export {  useAuthList, useAuthDetail, useAuthCreate, useAuthUpdate, useAuthDelete } from "./hooks/use-auth";
+

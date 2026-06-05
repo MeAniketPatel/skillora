@@ -17,3 +17,11 @@ export type { SocialService } from "./services/social.service";
 
 // Permissions
 export { canSocial as canSocial, assertSocialAccess } from "./permissions/social.permissions";
+
+// Contracts
+export { createSocialSchema, updateSocialSchema, listSocialQuerySchema } from "./contracts/social.contract";
+export type { CreateSocialInput, UpdateSocialInput, ListSocialQuery } from "./contracts/social.contract";
+
+// Hooks
+export {  useSocialList, useSocialDetail, useSocialCreate, useSocialUpdate, useSocialDelete } from "./hooks/use-social";
+

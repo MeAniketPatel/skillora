@@ -26,3 +26,11 @@ export type { StudentsService } from "./services/students.service";
 
 // Permissions
 export { canStudents as canStudents, assertStudentsAccess } from "./permissions/students.permissions";
+
+// Contracts
+export { createStudentsSchema, updateStudentsSchema, listStudentsQuerySchema } from "./contracts/students.contract";
+export type { CreateStudentsInput, UpdateStudentsInput, ListStudentsQuery } from "./contracts/students.contract";
+
+// Hooks
+export {  useStudentsList, useStudentsDetail, useStudentsCreate, useStudentsUpdate, useStudentsDelete } from "./hooks/use-students";
+

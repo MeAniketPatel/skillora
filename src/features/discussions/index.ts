@@ -13,3 +13,11 @@ export type { DiscussionsService } from "./services/discussions.service";
 
 // Permissions
 export { canDiscussions as canDiscussions, assertDiscussionsAccess } from "./permissions/discussions.permissions";
+
+// Contracts
+export { createDiscussionsSchema, updateDiscussionsSchema, listDiscussionsQuerySchema } from "./contracts/discussions.contract";
+export type { CreateDiscussionsInput, UpdateDiscussionsInput, ListDiscussionsQuery } from "./contracts/discussions.contract";
+
+// Hooks
+export {  useDiscussionsList, useDiscussionsDetail, useDiscussionsCreate, useDiscussionsUpdate, useDiscussionsDelete } from "./hooks/use-discussions";
+

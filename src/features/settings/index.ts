@@ -12,3 +12,11 @@ export type { SettingsService } from "./services/settings.service";
 
 // Permissions
 export { canSettings as canSettings, assertSettingsAccess } from "./permissions/settings.permissions";
+
+// Contracts
+export { createSettingsSchema, updateSettingsSchema, listSettingsQuerySchema } from "./contracts/settings.contract";
+export type { CreateSettingsInput, UpdateSettingsInput, ListSettingsQuery } from "./contracts/settings.contract";
+
+// Hooks
+export {  useSettingsList, useSettingsDetail, useSettingsCreate, useSettingsUpdate, useSettingsDelete } from "./hooks/use-settings";
+

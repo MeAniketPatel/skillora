@@ -7,3 +7,11 @@ export type { EmailPreferencesService } from "./services/email-preferences.servi
 
 // Permissions
 export { canEmailPreferences as canEmailPreferences, assertEmailPreferencesAccess } from "./permissions/email-preferences.permissions";
+
+// Contracts
+export { createEmailPreferencesSchema, updateEmailPreferencesSchema, listEmailPreferencesQuerySchema } from "./contracts/email-preferences.contract";
+export type { CreateEmailPreferencesInput, UpdateEmailPreferencesInput, ListEmailPreferencesQuery } from "./contracts/email-preferences.contract";
+
+// Hooks
+export {  useEmailPreferencesList, useEmailPreferencesDetail, useEmailPreferencesCreate, useEmailPreferencesUpdate, useEmailPreferencesDelete } from "./hooks/use-email-preferences";
+

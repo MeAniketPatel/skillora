@@ -21,3 +21,11 @@ export type { AdminService } from "./services/admin.service";
 
 // Permissions
 export { canAdmin as canAdmin, assertAdminAccess } from "./permissions/admin.permissions";
+
+// Contracts
+export { createAdminSchema, updateAdminSchema, listAdminQuerySchema } from "./contracts/admin.contract";
+export type { CreateAdminInput, UpdateAdminInput, ListAdminQuery } from "./contracts/admin.contract";
+
+// Hooks
+export {  useAdminList, useAdminDetail, useAdminCreate, useAdminUpdate, useAdminDelete } from "./hooks/use-admin";
+

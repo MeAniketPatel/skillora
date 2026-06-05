@@ -7,3 +7,11 @@ export type { SkillGapService } from "./services/skill-gap.service";
 
 // Permissions
 export { canSkillGap as canSkillGap, assertSkillGapAccess } from "./permissions/skill-gap.permissions";
+
+// Contracts
+export { createSkillGapSchema, updateSkillGapSchema, listSkillGapQuerySchema } from "./contracts/skill-gap.contract";
+export type { CreateSkillGapInput, UpdateSkillGapInput, ListSkillGapQuery } from "./contracts/skill-gap.contract";
+
+// Hooks
+export {  useSkillGapList, useSkillGapDetail, useSkillGapCreate, useSkillGapUpdate, useSkillGapDelete } from "./hooks/use-skill-gap";
+

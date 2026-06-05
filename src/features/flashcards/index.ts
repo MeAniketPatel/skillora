@@ -11,3 +11,11 @@ export type { FlashcardsService } from "./services/flashcards.service";
 
 // Permissions
 export { canFlashcards as canFlashcards, assertFlashcardsAccess } from "./permissions/flashcards.permissions";
+
+// Contracts
+export { createFlashcardsSchema, updateFlashcardsSchema, listFlashcardsQuerySchema } from "./contracts/flashcards.contract";
+export type { CreateFlashcardsInput, UpdateFlashcardsInput, ListFlashcardsQuery } from "./contracts/flashcards.contract";
+
+// Hooks
+export {  useFlashcardsList, useFlashcardsDetail, useFlashcardsCreate, useFlashcardsUpdate, useFlashcardsDelete } from "./hooks/use-flashcards";
+

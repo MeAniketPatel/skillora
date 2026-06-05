@@ -12,3 +12,11 @@ export type { GamificationService } from "./services/gamification.service";
 
 // Permissions
 export { canGamification as canGamification, assertGamificationAccess } from "./permissions/gamification.permissions";
+
+// Contracts
+export { createGamificationSchema, updateGamificationSchema, listGamificationQuerySchema } from "./contracts/gamification.contract";
+export type { CreateGamificationInput, UpdateGamificationInput, ListGamificationQuery } from "./contracts/gamification.contract";
+
+// Hooks
+export {  useGamificationList, useGamificationDetail, useGamificationCreate, useGamificationUpdate, useGamificationDelete } from "./hooks/use-gamification";
+
