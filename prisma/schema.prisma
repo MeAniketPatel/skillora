@@ -712,3 +712,44 @@ model PollVote {
 
   @@unique([userId, optionId])
 }
+
+// ============ ADMIN COMMAND CENTER (PHASE 4) ============
+
+model FeatureFlag {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  name        String
+  description String?
+  isEnabled   Boolean  @default(false)
+  rolloutPct  Int      @default(100) // 0-100% gradual rollout
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum ModerationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ModerationContentType {
+  REVIEW
+  DISCUSSION
+  BLOG_POST
+  COMMENT
+}
+
+model ModerationItem {
+  id          String                @id @default(cuid())
+  contentType ModerationContentType
+  contentId   String  // ID of the flagged review / discussion / blog
+  reason      String?
+  status      ModerationStatus      @default(PENDING)
+  reviewedBy  String?
+  reviewedAt  DateTime?
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+
+  @@index([status, createdAt])
+  @@index([contentType, contentId])
+}
