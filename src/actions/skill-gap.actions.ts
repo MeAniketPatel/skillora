@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
-import { getSkillGapRecommendations } from "@/data/skill-gap.data";
+import { getSkillGapRecommendations } from "@/features/skill-gap/repositories/skill-gap.repository";
 
 const skillGapSchema = z.object({
   skills: z

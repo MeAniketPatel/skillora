@@ -3,8 +3,8 @@ import Link from "next/link";
 import { GraduationCap, BookOpen, Layers, CheckCircle } from "lucide-react";
 
 import { auth } from "@/auth";
-import { getCourseWithFullDetails } from "@/data/course.data";
-import { getEnrollment } from "@/data/enrollment.data";
+import { getCourseWithFullDetails } from "@/features/courses/repositories/course.repository";
+import { getEnrollment } from "@/features/enrollment/repositories/enrollment.repository";
 import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Navbar } from "@/shared/components/layout/navbar";

@@ -1,5 +1,5 @@
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { getCoursesForAdmin } from "@/data/course.data";
+import { getCoursesForAdmin } from "@/features/courses/repositories/course.repository";
 import { CourseModeration } from "@/components/admin/course-moderation";
 import { Pagination } from "@/shared/components/shared/pagination";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
-import { getGlobalAnnouncements } from "@/data/announcement.data";
+import { getGlobalAnnouncements } from "@/features/announcements/repositories/announcement.repository";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { PlatformAnnouncements } from "@/components/admin/platform-announcements";
 

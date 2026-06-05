@@ -1,7 +1,7 @@
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { getUserCountByRole, getUserGrowthTimeline } from "@/data/user.data";
-import { getCourseCountByStatus, getCourseCountByCategory } from "@/data/course.data";
-import { getEnrollmentTrends } from "@/data/enrollment.data";
+import { getUserCountByRole, getUserGrowthTimeline } from "@/features/auth";
+import { getCourseCountByStatus, getCourseCountByCategory } from "@/features/courses/repositories/course.repository";
+import { getEnrollmentTrends } from "@/features/enrollment/repositories/enrollment.repository";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Users, BookOpen } from "lucide-react";
 import { StatsCard } from "@/shared/components/shared/stats-card";

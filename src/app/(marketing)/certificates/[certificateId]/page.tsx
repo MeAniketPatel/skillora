@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Award, ShieldCheck, Calendar, User, GraduationCap } from "lucide-react";
-import { getCertificateById } from "@/data/certificate.data";
+import { getCertificateById } from "@/features/certificates/repositories/certificate.repository";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Navbar } from "@/shared/components/layout/navbar";
 import { Footer } from "@/shared/components/layout/footer";

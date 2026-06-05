@@ -11,7 +11,7 @@ import { FeaturedCourses } from "@/components/marketing/featured-courses";
 import { TestimonialGrid } from "@/components/marketing/testimonial-card";
 import { SkillGapAnalyzer } from "@/components/marketing/skill-gap-analyzer";
 import { CareerHub } from "@/components/marketing/career-hub";
-import { getFeaturedCourses, getPlatformStats } from "@/data/skill-gap.data";
+import { getFeaturedCourses, getPlatformStats } from "@/features/skill-gap/repositories/skill-gap.repository";
 import { TESTIMONIALS } from "@/shared/constants/marketing";
 import { ROUTES } from "@/shared/constants/routes";
 

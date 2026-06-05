@@ -1,5 +1,5 @@
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { getAllCoupons } from "@/data/coupon.data";
+import { getAllCoupons } from "@/features/admin/repositories/coupon.repository";
 import { CouponManager } from "@/components/admin/coupon-manager";
 import { Pagination } from "@/shared/components/shared/pagination";
 

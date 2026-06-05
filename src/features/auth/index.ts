@@ -1,9 +1,14 @@
+// Auto-generated barrel: re-exports all repositories for the auth feature.
+export * from "./repositories/user.repository";
+
+// Components
 export { default as LoginForm } from "./components/login-form";
 export { default as RegisterForm } from "./components/register-form";
 export { default as ForgotPasswordForm } from "./components/forgot-password-form";
 export { default as ResetPasswordForm } from "./components/reset-password-form";
 export { default as SignOutButton } from "./components/signout-button";
 
+// Contracts
 export {
   registerSchema,
   loginSchema,
@@ -19,6 +24,7 @@ export type {
   RevokeSessionInput,
 } from "./contracts/auth.contract";
 
+// Actions
 export {
   loginUser,
   registerUser,
@@ -31,22 +37,7 @@ export {
   getSessionSecurityOverview,
 } from "./actions/auth.actions";
 
-export {
-  userRepository,
-  getUserById,
-  getUserByEmail,
-  createUser,
-  getUserProfile,
-  getAllUsers,
-  getUserCount,
-  getUserCountByRole,
-  updateUser,
-  banUser,
-  unbanUser,
-  getUserGrowthTimeline,
-  getAllInstructors,
-  getInstructorProfile,
-} from "./repositories/user.repository";
+// Repository types
 export type {
   IUserRepository,
   UserSummary,

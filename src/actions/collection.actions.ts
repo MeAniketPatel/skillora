@@ -8,7 +8,7 @@ import {
   addCourseToCollection,
   removeCourseFromCollection,
   deleteCollection,
-} from "@/data/collection.data";
+} from "@/features/students/repositories/collection.repository";
 import { revalidatePath } from "next/cache";
 
 export async function createCollectionAction(values: any) {

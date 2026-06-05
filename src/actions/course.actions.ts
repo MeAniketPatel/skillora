@@ -25,7 +25,7 @@ import {
   createAttachment as createAttachmentData,
   deleteAttachment as deleteAttachmentData,
 } from "@/data";
-import { getCourseForPublishing } from "@/data/course.data";
+import { getCourseForPublishing } from "@/features/courses/repositories/course.repository";
 
 
 export async function createCourse(values: CourseCreateInput) {

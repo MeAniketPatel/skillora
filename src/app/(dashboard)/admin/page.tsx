@@ -1,14 +1,14 @@
 import { requireAdmin } from "@/shared/lib/auth-helpers";
-import { getUserCount } from "@/data/user.data";
-import { getCourseCount } from "@/data/course.data";
-import { getTotalEnrollmentCount } from "@/data/enrollment.data";
-import { getPlatformRevenue, getRecentPurchases } from "@/data/payment.data";
+import { getUserCount } from "@/features/auth";
+import { getCourseCount } from "@/features/courses/repositories/course.repository";
+import { getTotalEnrollmentCount } from "@/features/enrollment/repositories/enrollment.repository";
+import { getPlatformRevenue, getRecentPurchases } from "@/features/payments/repositories/payment.repository";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/components/ui/table";
 import { formatPrice } from "@/shared/lib/utils";
 import { APP } from "@/shared/constants/app";
 
-import { getSetting } from "@/data/settings.data";
+import { getSetting } from "@/features/settings/repositories/settings.repository";
 import { MaintenanceBanner } from "@/components/admin/maintenance-banner";
 
 export default async function AdminDashboardPage() {

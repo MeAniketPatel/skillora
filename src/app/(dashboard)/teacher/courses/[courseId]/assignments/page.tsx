@@ -1,8 +1,8 @@
 import React from "react";
 import { redirect } from "next/navigation";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
-import { getCourseByIdForOwner } from "@/data/course.data";
-import { getCourseSubmissions } from "@/data/assignment.data";
+import { getCourseByIdForOwner } from "@/features/courses/repositories/course.repository";
+import { getCourseSubmissions } from "@/features/assignments/repositories/assignment.repository";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { SubmissionTable } from "@/components/teacher/submission-table";
 

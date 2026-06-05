@@ -1,5 +1,5 @@
 import { GraduationCap, Search, UserSearch } from "lucide-react";
-import { getAllInstructors } from "@/data/user.data";
+import { getAllInstructors } from "@/features/auth";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { InstructorCard } from "@/components/marketing/instructor-card";
 import { Navbar } from "@/shared/components/layout/navbar";

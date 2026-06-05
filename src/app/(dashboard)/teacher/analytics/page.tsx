@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { getTeacherAnalyticsCourses } from "@/data/course.data";
-import { getAllTeacherSubmissions } from "@/data/assignment.data";
+import { getTeacherAnalyticsCourses } from "@/features/courses/repositories/course.repository";
+import { getAllTeacherSubmissions } from "@/features/assignments/repositories/assignment.repository";
 import { AnalyticsClient } from "@/components/teacher/analytics";
 
 export default async function TeacherAnalyticsPage() {

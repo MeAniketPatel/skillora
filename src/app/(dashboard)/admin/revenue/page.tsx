@@ -5,7 +5,7 @@ import {
   getRevenueTimeSeries,
   getRevenueByTeacher,
   getRevenueByCourse,
-} from "@/data/payment.data";
+} from "@/features/payments/repositories/payment.repository";
 import { StatsCard } from "@/shared/components/shared/stats-card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
