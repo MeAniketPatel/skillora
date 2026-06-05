@@ -2,7 +2,7 @@
 
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { toggleBookmarkSchema } from "@/validations/bookmark.schema";
+import { toggleBookmarkSchema } from "@/features/bookmarks/contracts/bookmark.contract";
 import { toggleBookmark } from "@/features/students/server";
 import { revalidatePath } from "next/cache";
 

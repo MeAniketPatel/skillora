@@ -9,8 +9,7 @@ export { BlogEditor } from "./components/blog-editor";
 export { canBlog as canBlog, assertBlogAccess } from "./permissions/blog.permissions";
 
 // Contracts
-export { createBlogSchema, updateBlogSchema, listBlogQuerySchema } from "./contracts/blog.contract";
-export type { CreateBlogInput, UpdateBlogInput, ListBlogQuery } from "./contracts/blog.contract";
+export { createBlogPostSchema, blogCommentSchema } from "./contracts/blog.contract";
 
 // Hooks
 export {  useBlogList, useBlogDetail, useBlogCreate, useBlogUpdate, useBlogDelete } from "./hooks/use-blog";

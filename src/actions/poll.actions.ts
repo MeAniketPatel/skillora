@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth, requireTeacher } from "@/shared/lib/auth-helpers";
-import { pollSchema } from "@/validations/poll.schema";
+import { pollSchema } from "@/features/polls/contracts/poll.contract";
 import { createPoll as createPollDAL, voteInPoll as voteInPollDAL, closePoll as closePollDAL, deletePoll as deletePollDAL, getPollById } from "@/features/polls/server";
 import { getCourseByIdForOwner } from "@/features/courses/server";
 import { z } from "zod";

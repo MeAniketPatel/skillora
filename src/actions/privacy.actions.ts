@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { privacySettingsSchema } from "@/validations";
+import { privacySettingsSchema } from "@/features/privacy/contracts/privacy.contract";;
 import db from "@/shared/lib/prisma";
 import { revalidatePath } from "next/cache";
 

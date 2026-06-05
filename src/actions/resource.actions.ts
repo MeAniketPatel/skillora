@@ -4,7 +4,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { addResourceSchema } from "@/validations/resource.schema";
+import { addResourceSchema } from "@/features/resources/contracts/resource.contract";
 import { createResource, deleteResource } from "@/features/courses/server";
 import db from "@/shared/lib/prisma";
 

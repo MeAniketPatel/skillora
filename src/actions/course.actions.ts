@@ -9,7 +9,7 @@ import {
   courseUpdateSchema,
   CourseCreateInput,
   CourseUpdateInput,
-} from "@/validations/course.schema";
+} from "@/features/courses/contracts/course.contract";
 import { createCourse as createCourseData, updateCourse as updateCourseData, getCourseByIdForOwner, createSection as createSectionData, updateSection as updateSectionData, deleteSection as deleteSectionData, createLesson as createLessonData, updateLesson as updateLessonData, deleteLesson as deleteLessonData, reorderSections as reorderSectionsData, reorderLessons as reorderLessonsData } from "@/features/courses/server";
 import { createAttachment as createAttachmentData, deleteAttachment as deleteAttachmentData } from "@/features/attachments/server";
 import { getCourseForPublishing } from "@/features/courses/server";

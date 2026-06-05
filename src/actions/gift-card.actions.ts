@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { purchaseGiftCardSchema, redeemGiftCardSchema } from "@/validations/gift-card.schema";
+import { purchaseGiftCardSchema, redeemGiftCardSchema } from "@/features/gift-cards/contracts/gift-card.contract";
 import { createGiftCard, redeemGiftCard } from "@/features/gift-cards/server";
 import { revalidatePath } from "next/cache";
 

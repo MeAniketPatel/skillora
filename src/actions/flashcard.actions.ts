@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { createDeckSchema, addCardSchema } from "@/validations/flashcard.schema";
+import { createDeckSchema, addCardSchema } from "@/features/flashcards/contracts/flashcard.contract";
 import { createDeck, addCardToDeck, updateCardRepetitionProgress } from "@/features/flashcards/server";
 export async function createDeckAction(values: z.infer<typeof createDeckSchema>) {
   return actionHandler(async () => {

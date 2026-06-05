@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
-import { userRoleUpdateSchema } from "@/validations/admin.schema";
+import { userRoleUpdateSchema } from "@/features/admin/contracts/admin.contract";
 import { updateUser, banUser as banUserData, unbanUser as unbanUserData } from "@/features/auth/server";
 export async function updateUserRole(values: any) {
   return actionHandler(async () => {

@@ -4,7 +4,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { createBlogPostSchema, blogCommentSchema } from "@/validations/blog.schema";
+import { createBlogPostSchema, blogCommentSchema } from "@/features/blog/contracts/blog.contract";
 import { createBlogPost, addBlogComment, togglePublishBlogPost, getBlogPostDetail } from "@/features/blog/server";
 import db from "@/shared/lib/prisma";
 

@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { setSetting } from "@/features/settings/server";
-import { settingSchema } from "@/validations";
+import { settingSchema } from "@/features/settings/contracts/settings.contract";;
 
 export async function updateSetting(values: any) {
   return actionHandler(async () => {

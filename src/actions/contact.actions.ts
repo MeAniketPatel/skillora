@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { createContactMessage as createContactMessageData, markContactMessageReplied } from "@/features/contact/server";
-import { contactSchema } from "@/validations";
+import { contactSchema } from "@/features/contact/contracts/contact.contract";;
 
 export async function submitContactForm(values: any) {
   return actionHandler(async () => {

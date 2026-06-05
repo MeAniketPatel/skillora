@@ -1,18 +1,13 @@
-import { z } from "zod";
+import { z } from "zod"
 
-export const createBlogSchema = z.object({
-  // TODO: define input shape
+// Real contract (migrated from src/validations/blog.schema.ts)
+export const createBlogPostSchema = z.object({
+  title: z.string().min(5).max(150),
+  content: z.string().min(20).max(20000),
+  excerpt: z.string().max(300).optional().nullable(),
+  coverImage: z.string().url().optional().nullable().or(z.literal("")),
 });
 
-export const updateBlogSchema = z.object({
-  id: z.string(),
+export const blogCommentSchema = z.object({
+  content: z.string().min(2).max(1000),
 });
-
-export const listBlogQuerySchema = z.object({
-  cursor: z.string().optional(),
-  limit: z.number().int().min(1).max(100).default(20),
-});
-
-export type CreateBlogInput = z.infer<typeof createBlogSchema>;
-export type UpdateBlogInput = z.infer<typeof updateBlogSchema>;
-export type ListBlogQuery = z.infer<typeof listBlogQuerySchema>;

@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { directMessageSchema } from "@/validations/message.schema";
+import { directMessageSchema } from "@/features/messages/contracts/message.contract";
 import { getOrCreateConversation, sendDirectMessage } from "@/features/social/server";
 export async function startConversationAction(targetUserId: string) {
   return actionHandler(async () => {

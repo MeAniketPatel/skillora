@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { discussionReplySchema } from "@/validations/discussion.schema";
+import { discussionReplySchema } from "@/features/discussions/contracts/discussion.contract";
 import { addDiscussionReplyAction } from "@/actions/discussion.actions";
 import { Button } from "@/shared/components/ui/button";
 import { Textarea } from "@/shared/components/ui/textarea";

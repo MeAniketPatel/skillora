@@ -1,5 +1,5 @@
 import db from "@/shared/lib/prisma";
-import { EmailPreferenceInput } from "@/validations";
+import type { EmailPreferenceInput } from "@/features/email-preferences/contracts/email-preference.contract";
 
 export async function getEmailPreferences(userId: string) {
   let prefs = await db.emailPreference.findUnique({

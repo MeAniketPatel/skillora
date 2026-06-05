@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
-import { liveSessionSchema } from "@/validations";
+import { liveSessionSchema } from "@/features/live-sessions/contracts/live-session.contract";;
 import { createLiveSession, deleteLiveSession, getLiveSessionById, getCourseByIdForOwner } from "@/features/courses/server";
 import { triggerWebhook } from "@/lib/webhook-sender";
 import { revalidatePath } from "next/cache";

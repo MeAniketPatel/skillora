@@ -4,7 +4,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAdmin, requireAuth } from "@/shared/lib/auth-helpers";
-import { createBundleSchema } from "@/validations/bundle.schema";
+import { createBundleSchema } from "@/features/bundles/contracts/bundle.contract";
 import { createCourseBundle, getCourseBundleDetail } from "@/features/bundles/server";
 import db from "@/shared/lib/prisma"; // Direct db import allowed for multi-step transaction if needed, but we can do it via loop / DAL
 

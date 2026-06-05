@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
-import { flagContentSchema } from "@/validations/moderation.schema";
+import { flagContentSchema } from "@/features/moderation/contracts/moderation.contract";
 import { approveModerationItem, rejectModerationItem, createModerationItem } from "@/features/admin/server";
 export async function approveModerationItemAction(id: string) {
   return actionHandler(async () => {

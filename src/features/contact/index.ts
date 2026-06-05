@@ -7,8 +7,8 @@ export { default as ContactForm } from "./components/contact-form";
 export { canContact as canContact, assertContactAccess } from "./permissions/contact.permissions";
 
 // Contracts
-export { createContactSchema, updateContactSchema, listContactQuerySchema } from "./contracts/contact.contract";
-export type { CreateContactInput, UpdateContactInput, ListContactQuery } from "./contracts/contact.contract";
+export { contactSchema } from "./contracts/contact.contract";
+export type { ContactInput } from "./contracts/contact.contract";
 
 // Hooks
 export {  useContactList, useContactDetail, useContactCreate, useContactUpdate, useContactDelete } from "./hooks/use-contact";

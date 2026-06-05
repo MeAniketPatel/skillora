@@ -1,18 +1,11 @@
-import { z } from "zod";
+import { z } from "zod"
 
-export const createContactSchema = z.object({
-  // TODO: define input shape
+// Real contract (migrated from src/validations/contact.schema.ts)
+export const contactSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email address"),
+  subject: z.string().min(1, "Subject is required"),
+  message: z.string().min(10, "Message must be at least 10 characters"),
 });
 
-export const updateContactSchema = z.object({
-  id: z.string(),
-});
-
-export const listContactQuerySchema = z.object({
-  cursor: z.string().optional(),
-  limit: z.number().int().min(1).max(100).default(20),
-});
-
-export type CreateContactInput = z.infer<typeof createContactSchema>;
-export type UpdateContactInput = z.infer<typeof updateContactSchema>;
-export type ListContactQuery = z.infer<typeof listContactQuerySchema>;
+export type ContactInput = z.infer<typeof contactSchema>;

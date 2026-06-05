@@ -3,7 +3,7 @@
 import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createGoalSchema } from "@/validations/learning-goal.schema";
+import { createGoalSchema } from "@/features/learning-goals/contracts/learning-goal.contract";
 import { createGoalAction } from "@/actions/learning-goal.actions";
 import { z } from "zod";
 import { Button } from "@/shared/components/ui/button";

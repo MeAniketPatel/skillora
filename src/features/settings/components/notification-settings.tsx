@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { emailPreferenceSchema, EmailPreferenceInput } from "@/validations";
+import { emailPreferenceSchema, type EmailPreferenceInput } from "@/features/email-preferences/contracts/email-preference.contract";;
 import { updateEmailPreferencesAction } from "@/actions";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";

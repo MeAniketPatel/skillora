@@ -4,7 +4,7 @@ import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { payoutSchema } from "@/validations/payout.schema";
+import { payoutSchema } from "@/features/payouts/contracts/payout.contract";
 import { requestPayoutAction } from "@/actions/payout.actions";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";

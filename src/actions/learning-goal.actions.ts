@@ -2,7 +2,7 @@
 
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { createGoalSchema, updateGoalProgressSchema } from "@/validations/learning-goal.schema";
+import { createGoalSchema, updateGoalProgressSchema } from "@/features/learning-goals/contracts/learning-goal.contract";
 import { createGoal, updateGoalProgress, deleteGoal } from "@/features/students/server";
 import { revalidatePath } from "next/cache";
 

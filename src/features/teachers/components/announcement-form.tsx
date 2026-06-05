@@ -4,7 +4,7 @@ import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { announcementSchema } from "@/validations/announcement.schema";
+import { announcementSchema } from "@/features/announcements/contracts/announcement.contract";
 import { createAnnouncement } from "@/actions/announcement.actions";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";

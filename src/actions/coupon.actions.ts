@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
-import { couponCreateSchema } from "@/validations/admin.schema";
+import { couponCreateSchema } from "@/features/admin/contracts/admin.contract";
 import { createCoupon as createCouponData, updateCoupon as updateCouponData, deleteCoupon as deleteCouponData } from "@/features/admin/server";
 export async function createCoupon(values: any) {
   return actionHandler(async () => {

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createDeckSchema, addCardSchema } from "@/validations/flashcard.schema";
+import { createDeckSchema, addCardSchema } from "@/features/flashcards/contracts/flashcard.contract";
 import { createDeckAction, addCardAction } from "@/actions/flashcard.actions";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";

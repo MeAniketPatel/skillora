@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { emailPreferenceSchema } from "@/validations";
+import { emailPreferenceSchema } from "@/features/email-preferences/contracts/email-preference.contract";;
 import { updateEmailPreferences } from "@/features/email-preferences/server";
 import { revalidatePath } from "next/cache";
 

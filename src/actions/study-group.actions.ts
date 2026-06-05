@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { createStudyGroupSchema, studyGroupMessageSchema } from "@/validations/study-group.schema";
+import { createStudyGroupSchema, studyGroupMessageSchema } from "@/features/study-groups/contracts/study-group.contract";
 import { createStudyGroup, joinStudyGroup, leaveStudyGroup, sendStudyGroupMessage } from "@/features/social/server";
 export async function createStudyGroupAction(values: z.infer<typeof createStudyGroupSchema>) {
   return actionHandler(async () => {

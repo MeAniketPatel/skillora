@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { reviewCreateSchema, reviewUpdateSchema } from "@/validations/review.schema";
+import { reviewCreateSchema, reviewUpdateSchema } from "@/features/reviews/contracts/review.contract";
 import { createReview as createReviewData, updateReview as updateReviewData, deleteReview as deleteReviewData, getUserReviewForCourse } from "@/features/reviews/server";
 import { ConflictError, NotFoundError } from "@/shared/lib/errors";
 

@@ -4,7 +4,7 @@ import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { featureFlagSchema } from "@/validations/feature-flag.schema";
+import { featureFlagSchema } from "@/features/feature-flags/contracts/feature-flag.contract";
 import {
   createFeatureFlagAction,
   toggleFeatureFlagAction,

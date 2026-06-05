@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { profileUpdateSchema, portfolioProjectSchema } from "@/validations/profile.schema";
+import { profileUpdateSchema, portfolioProjectSchema } from "@/features/profile/contracts/profile.contract";
 import { updateUser } from "@/features/auth/server";
 import { createPortfolioProject, deletePortfolioProject, recordActivity } from "@/features/social/server";
 export async function updateProfileAction(values: z.infer<typeof profileUpdateSchema>) {

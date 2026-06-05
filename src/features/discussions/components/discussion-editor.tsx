@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { createDiscussionSchema } from "@/validations/discussion.schema";
+import { createDiscussionSchema } from "@/features/discussions/contracts/discussion.contract";
 import { createDiscussionAction } from "@/actions/discussion.actions";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";

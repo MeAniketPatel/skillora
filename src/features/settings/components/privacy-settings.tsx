@@ -3,7 +3,7 @@
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { privacySettingsSchema, PrivacySettingsInput } from "@/validations";
+import { privacySettingsSchema, PrivacySettingsInput } from "@/features/privacy/contracts/privacy.contract";;
 import { updatePrivacySettingsAction } from "@/actions";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";

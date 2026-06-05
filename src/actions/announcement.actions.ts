@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireTeacher, requireAdmin } from "@/shared/lib/auth-helpers";
-import { announcementSchema } from "@/validations/announcement.schema";
+import { announcementSchema } from "@/features/announcements/contracts/announcement.contract";
 import { createAnnouncement as createAnnouncementDAL, getAnnouncementById, deleteAnnouncement as deleteAnnouncementDAL } from "@/features/announcements/server";
 import { getCourseByIdForOwner } from "@/features/courses/server";
 import { getEnrolledStudentIds } from "@/features/enrollment/server";

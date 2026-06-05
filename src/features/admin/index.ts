@@ -16,8 +16,8 @@ export { ImpersonateButton as ImpersonateButton, ImpersonateButton as UserImpers
 export { canAdmin as canAdmin, assertAdminAccess } from "./permissions/admin.permissions";
 
 // Contracts
-export { createAdminSchema, updateAdminSchema, listAdminQuerySchema } from "./contracts/admin.contract";
-export type { CreateAdminInput, UpdateAdminInput, ListAdminQuery } from "./contracts/admin.contract";
+export { userRoleUpdateSchema, categoryCreateSchema, categoryUpdateSchema, couponCreateSchema } from "./contracts/admin.contract";
+export type { UserRoleUpdateInput, CategoryCreateInput, CategoryUpdateInput, CouponCreateInput } from "./contracts/admin.contract";
 
 // Hooks
 export {  useAdminList, useAdminDetail, useAdminCreate, useAdminUpdate, useAdminDelete } from "./hooks/use-admin";

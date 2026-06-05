@@ -8,7 +8,7 @@ import {
   featureFlagSchema,
   toggleFeatureFlagSchema,
   updateRolloutSchema,
-} from "@/validations/feature-flag.schema";
+} from "@/features/feature-flags/contracts/feature-flag.contract";
 import { createFeatureFlag as createFeatureFlagDAL, toggleFeatureFlag as toggleFeatureFlagDAL, updateFeatureFlagRollout, deleteFeatureFlag as deleteFeatureFlagDAL } from "@/features/feature-flags/server";
 export async function createFeatureFlagAction(
   values: z.infer<typeof featureFlagSchema>

@@ -3,3 +3,7 @@
 
 // Repository functions
 export { getUserById, getUserByEmail, createUser, getUserProfile, getAllUsers, getUserCount, getUserCountByRole, updateUser, banUser, unbanUser, getUserGrowthTimeline, getAllInstructors, getInstructorProfile } from "./repositories/user.repository";
+
+// Actions
+export { loginUser, registerUser, logoutCurrentSession, logoutAllSessions, logoutSession, requestPasswordReset, resetPassword, updateUserSettings, getSessionSecurityOverview } from "./actions/auth.actions";
+export { AuthAuditAction, AuthSessionRevocationReason } from "./repositories/user.repository";

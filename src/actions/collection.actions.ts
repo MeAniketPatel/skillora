@@ -2,7 +2,7 @@
 
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { createCollectionSchema, courseToCollectionSchema } from "@/validations/collection.schema";
+import { createCollectionSchema, courseToCollectionSchema } from "@/features/collections/contracts/collection.contract";
 import { createCollection, addCourseToCollection, removeCourseFromCollection, deleteCollection } from "@/features/students/server";
 import { revalidatePath } from "next/cache";
 

@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { ValidationError } from "@/shared/lib/errors";
-import { payoutSchema } from "@/validations/payout.schema";
+import { payoutSchema } from "@/features/payouts/contracts/payout.contract";
 import { getPayoutBalance, createPayoutRequest } from "@/features/teachers/server";
 import { z } from "zod";
 

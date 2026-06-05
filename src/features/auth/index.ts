@@ -8,50 +8,8 @@ export { default as ResetPasswordForm } from "./components/reset-password-form";
 export { default as SignOutButton, default as SignoutButton } from "./components/signout-button";
 
 // Contracts
-export {
-  registerSchema,
-  loginSchema,
-  forgotPasswordSchema,
-  resetPasswordSchema,
-  revokeSessionSchema,
-} from "./contracts/auth.contract";
-export type {
-  RegisterInput,
-  LoginInput,
-  ForgotPasswordInput,
-  ResetPasswordInput,
-  RevokeSessionInput,
-} from "./contracts/auth.contract";
-// Actions
-export {
-  loginUser,
-  registerUser,
-  logoutCurrentSession,
-  logoutAllSessions,
-  logoutSession,
-  requestPasswordReset,
-  resetPassword,
-  updateUserSettings,
-  getSessionSecurityOverview,
-} from "./actions/auth.actions";
-// Repository types
-export type {
-  IUserRepository,
-  UserSummary,
-  UserWithPassword,
-  CreateUserInput,
-  UpdateUserInput,
-  GetAllUsersParams,
-  PaginatedUsers,
-  UserProfile,
-  InstructorListItem,
-  GetAllInstructorsParams,
-  PaginatedInstructors,
-  InstructorProfile,
-} from "./repositories/user.repository";
-
-// Re-export Prisma enums through the feature's repository (enums are values, not types)
-export { AuthAuditAction, AuthSessionRevocationReason } from "./repositories/user.repository";
+export { registerSchema, loginSchema, forgotPasswordSchema, resetPasswordSchema, updateSettingsSchema, revokeSessionSchema } from "./contracts/auth.contract";
+export type { RegisterInput, LoginInput, ForgotPasswordInput, ResetPasswordInput, UpdateSettingsInput, RevokeSessionInput } from "./contracts/auth.contract";
 
 // Permissions
 export { canAuth as canAuth, assertAuthAccess } from "./permissions/auth.permissions";
