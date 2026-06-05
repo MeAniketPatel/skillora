@@ -43,3 +43,20 @@ export async function deleteAnnouncement(id: string) {
     where: { id },
   });
 }
+
+export async function getGlobalAnnouncements() {
+  return db.announcement.findMany({
+    where: { courseId: null },
+    orderBy: { createdAt: "desc" },
+    include: {
+      user: {
+        select: {
+          name: true,
+          email: true,
+          image: true,
+        },
+      },
+    },
+  });
+}
+

@@ -1,9 +1,30 @@
 import { auth } from "@/auth";
 import { UnauthorizedError, ForbiddenError } from "@/lib/errors";
+import { cookies } from "next/headers";
+import { getUserById } from "@/data/user.data";
 
 export async function requireAuth() {
   const session = await auth();
   if (!session?.user?.id) throw new UnauthorizedError();
+
+  // If the user is admin, check for impersonation cookie
+  if (session.user.role === "ADMIN") {
+    const cookieStore = await cookies();
+    const impersonateUserId = cookieStore.get("impersonate_user_id")?.value;
+    if (impersonateUserId) {
+      const impersonatedUser = await getUserById(impersonateUserId);
+      if (impersonatedUser) {
+        return {
+          id: impersonatedUser.id,
+          name: impersonatedUser.name,
+          email: impersonatedUser.email,
+          image: impersonatedUser.image,
+          role: impersonatedUser.role,
+        };
+      }
+    }
+  }
+
   return session.user;
 }
 
@@ -16,20 +37,40 @@ export async function requireTeacher() {
 }
 
 export async function requireAdmin() {
-  const user = await requireAuth();
-  if (user.role !== "ADMIN") {
+  // Impersonated user can't perform admin actions, so check the raw session here
+  const session = await auth();
+  if (!session?.user?.id || session.user.role !== "ADMIN") {
     throw new ForbiddenError("Admin access required");
   }
-  return user;
+  return session.user;
 }
 
 export async function requireStudent() {
   const user = await requireAuth();
-  // All roles can be students; just ensure auth
   return user;
 }
 
 export async function getOptionalUser() {
   const session = await auth();
-  return session?.user ?? null;
+  if (!session?.user?.id) return null;
+
+  if (session.user.role === "ADMIN") {
+    const cookieStore = await cookies();
+    const impersonateUserId = cookieStore.get("impersonate_user_id")?.value;
+    if (impersonateUserId) {
+      const impersonatedUser = await getUserById(impersonateUserId);
+      if (impersonatedUser) {
+        return {
+          id: impersonatedUser.id,
+          name: impersonatedUser.name,
+          email: impersonatedUser.email,
+          image: impersonatedUser.image,
+          role: impersonatedUser.role,
+        };
+      }
+    }
+  }
+
+  return session.user;
 }
+
