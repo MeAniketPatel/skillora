@@ -17,3 +17,7 @@ export type { SettingInput } from "./contracts/settings.contract";
 
 // Hooks
 export { useSettings } from "./hooks/use-settings";
+
+export { getSetting, getAllSettings } from "./server";
+
+export { updateSetting } from "./actions/settings.actions";

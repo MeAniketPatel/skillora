@@ -9,3 +9,5 @@ export { canSearch as canSearch, assertSearchAccess } from "./permissions/search
 // Contracts
 export { createSearchSchema, updateSearchSchema, listSearchQuerySchema } from "./contracts/search.contract";
 export type { CreateSearchInput, UpdateSearchInput } from "./contracts/search.contract";
+
+export { globalSearch } from "./server";

@@ -5,8 +5,8 @@ import { Plus, Trash2, CheckCircle2, Circle, Sparkles } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
-import { createQuiz, updateQuiz } from "@/features/quizzes/actions/quiz.actions";
-import { generateAIQuizQuestions } from "@/features/ai/actions/ai.actions";
+import { createQuiz, updateQuiz } from "@/features/quizzes";
+import { generateAIQuizQuestions } from "@/features/ai";
 
 interface QuestionOption {
   text: string;

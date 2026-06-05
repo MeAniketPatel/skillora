@@ -24,3 +24,7 @@ export type { UserRoleUpdateInput, CategoryCreateInput, CategoryUpdateInput, Cou
 
 // Hooks
 export { useAdminActions } from "./hooks/use-admin";
+
+export { getAuditLogs, getAllCoupons, getPendingModerationItems, getTeacherCoupons, service } from "./server";
+
+export { updateUserRole, banUser, unbanUser } from "./actions/admin.actions";

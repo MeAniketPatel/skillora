@@ -3,7 +3,7 @@
 import { useTransition } from "react";
 import { useAdminActions } from "@/features/admin/hooks/use-admin";
 import { Button } from "@/shared/components/ui/button";
-import { impersonateUserAction, stopImpersonationAction } from "@/features/impersonations/actions/impersonation.actions";
+import { impersonateUserAction, stopImpersonationAction } from "@/features/impersonations";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 

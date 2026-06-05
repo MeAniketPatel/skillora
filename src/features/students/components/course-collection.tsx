@@ -4,7 +4,7 @@ import React, { useTransition } from "react";
 import { Folder, Trash2, X, Play, GraduationCap } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
-import { deleteCollectionAction, removeCourseFromCollectionAction } from "@/features/collections/actions/collection.actions";
+import { deleteCollectionAction, removeCourseFromCollectionAction } from "@/features/collections";
 import { toast } from "sonner";
 import Link from "next/link";
 

@@ -15,3 +15,5 @@ export { canDiscussions as canDiscussions, assertDiscussionsAccess } from "./per
 export { createDiscussionSchema, discussionReplySchema } from "./contracts/discussion.contract";
 export { createDiscussionsSchema, updateDiscussionsSchema, listDiscussionsQuerySchema } from "./contracts/discussions.contract";
 export type { CreateDiscussionsInput, UpdateDiscussionsInput } from "./contracts/discussions.contract";
+
+export { getDiscussionsList, getDiscussionThread, getQuestionsForTeacher, service } from "./server";

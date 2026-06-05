@@ -12,3 +12,5 @@ export { canLearningPaths as canLearningPaths, assertLearningPathsAccess } from 
 // Contracts
 export { createLearningPathsSchema, updateLearningPathsSchema, listLearningPathsQuerySchema } from "./contracts/learning-paths.contract";
 export type { CreateLearningPathsInput, UpdateLearningPathsInput } from "./contracts/learning-paths.contract";
+
+export { getLearningPaths, getLearningPathDetail, isEnrolledInPath } from "./server";

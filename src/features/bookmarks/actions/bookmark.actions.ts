@@ -3,10 +3,10 @@
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { toggleBookmarkSchema } from "@/features/bookmarks/contracts/bookmark.contract";
-import { service as studentsService } from "@/features/students/server";
+import { service as studentsService } from "@/features/students";
 import { revalidatePath } from "next/cache";
 
-import { assertStudentsAccess } from "@/features/students/permissions/students.permissions";
+import { assertStudentsAccess } from "@/features/students";
 export async function toggleBookmarkAction(values: { lessonId: string }) {
   return actionHandler(async () => {
     const user = await requireAuth();

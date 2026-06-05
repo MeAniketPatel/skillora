@@ -4,8 +4,8 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { questionCreateSchema, answerCreateSchema } from "@/features/qa/contracts/qa.contract";
-import { service as discussionsService } from "@/features/discussions/server";
-import { assertDiscussionsAccess } from "@/features/discussions/permissions/discussions.permissions";
+import { service as discussionsService } from "@/features/discussions";
+import { assertDiscussionsAccess } from "@/features/discussions";
 export async function createQuestion(values: any) {
   return actionHandler(async () => {
     const user = await requireAuth();

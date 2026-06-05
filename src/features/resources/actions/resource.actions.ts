@@ -5,10 +5,10 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { addResourceSchema } from "@/features/resources/contracts/resource.contract";
-import { service as coursesService } from "@/features/courses/server";
+import { service as coursesService } from "@/features/courses";
 import db from "@/shared/lib/prisma";
 
-import { assertCoursesAccess } from "@/features/courses/permissions/courses.permissions";
+import { assertCoursesAccess } from "@/features/courses";
 export async function addCourseResourceAction(courseId: string, values: z.infer<typeof addResourceSchema>) {
   return actionHandler(async () => {
     const user = await requireAuth();

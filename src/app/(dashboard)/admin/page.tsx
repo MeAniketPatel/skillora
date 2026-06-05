@@ -1,14 +1,14 @@
 import { requireAdmin } from "@/shared/lib/auth-helpers";
-import { getUserCount } from "@/features/auth/server";
-import { getCourseCount } from "@/features/courses/server";
-import { getTotalEnrollmentCount } from "@/features/enrollment/server";
-import { getPlatformRevenue, getRecentPurchases } from "@/features/payments/server";
+import { getUserCount } from "@/features/auth";
+import { getCourseCount } from "@/features/courses";
+import { getTotalEnrollmentCount } from "@/features/enrollment";
+import { getPlatformRevenue, getRecentPurchases } from "@/features/payments";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/components/ui/table";
 import { formatPrice } from "@/shared/lib/utils";
 import { APP } from "@/shared/constants/app";
 
-import { getSetting } from "@/features/settings/server";
+import { getSetting } from "@/features/settings";
 import { MaintenanceBanner } from "@/features/admin";
 
 export default async function AdminDashboardPage() {

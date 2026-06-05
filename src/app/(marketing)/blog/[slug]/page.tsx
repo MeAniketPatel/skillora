@@ -1,4 +1,4 @@
-import { getBlogPostDetail } from "@/features/blog/server";
+import { getBlogPostDetail } from "@/features/blog";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { BlogComments } from "@/features/blog";

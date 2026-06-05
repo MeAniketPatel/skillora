@@ -4,8 +4,8 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { noteCreateSchema, noteUpdateSchema } from "@/features/notes/contracts/note.contract";
-import { service as studentsService } from "@/features/students/server";
-import { assertStudentsAccess } from "@/features/students/permissions/students.permissions";
+import { service as studentsService } from "@/features/students";
+import { assertStudentsAccess } from "@/features/students";
 export async function createNote(values: any) {
   return actionHandler(async () => {
     const user = await requireAuth();

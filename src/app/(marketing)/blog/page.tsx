@@ -1,4 +1,4 @@
-import { getBlogPosts } from "@/features/blog/server";
+import { getBlogPosts } from "@/features/blog";
 import { auth } from "@/auth";
 import { BlogCard } from "@/features/blog";
 import { BlogEditor } from "@/features/blog";

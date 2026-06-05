@@ -10,3 +10,7 @@ export { canWishlist as canWishlist, assertWishlistAccess } from "./permissions/
 export { createWishlistSchema, updateWishlistSchema, listWishlistQuerySchema } from "./contracts/wishlist.contract";
 export type { CreateWishlistInput, UpdateWishlistInput } from "./contracts/wishlist.contract";
 
+
+export { getUserWishlist } from "./server";
+
+export { toggleWishlist } from "./actions/wishlist.actions";

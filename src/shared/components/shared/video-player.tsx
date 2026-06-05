@@ -12,7 +12,7 @@ import {
   Settings 
 } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
-import { updateVideoProgress, toggleLessonCompletion } from "@/features/enrollment/actions/enrollment.actions";
+import { updateVideoProgress, toggleLessonCompletion } from "@/features/enrollment";
 
 interface VideoPlayerProps {
   courseId: string;

@@ -3,7 +3,7 @@
 import React, { useTransition } from "react";
 import { Snowflake, Loader2 } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
-import { purchaseStreakFreezeAction } from "@/features/streaks/actions/streak.actions";
+import { purchaseStreakFreezeAction } from "@/features/streaks";
 import { toast } from "sonner";
 
 interface StreakFreezeButtonProps {

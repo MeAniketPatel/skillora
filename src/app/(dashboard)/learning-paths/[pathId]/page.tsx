@@ -1,4 +1,4 @@
-import { getLearningPathDetail, isEnrolledInPath } from "@/features/learning-paths/server";
+import { getLearningPathDetail, isEnrolledInPath } from "@/features/learning-paths";
 import { auth } from "@/auth";
 import { notFound, redirect } from "next/navigation";
 import { PathTimeline } from "@/features/learning-paths";

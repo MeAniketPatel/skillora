@@ -17,3 +17,7 @@ export type { CreateNotificationsInput, UpdateNotificationsInput } from "./contr
 
 // Hooks
 export { useNotifications } from "./hooks/use-notifications";
+
+export { getUserNotifications, service } from "./server";
+
+export { getNotifications, markNotificationAsRead, markAllNotificationsAsRead } from "./actions/notification.actions";

@@ -5,7 +5,7 @@ import Github from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
-import { AuthAuditAction, AuthSessionRevocationReason } from "@/features/auth/server";
+import { AuthAuditAction, AuthSessionRevocationReason } from "@/features/auth";
 import { Role } from "@/core/entities";
 
 import db from "@/shared/lib/prisma";

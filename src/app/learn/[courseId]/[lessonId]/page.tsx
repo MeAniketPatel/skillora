@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
-import { getEnrollmentWithProgress } from "@/features/enrollment/server";
-import { getCourseWithPublishedCurriculum } from "@/features/courses/server";
-import { getLearningLesson } from "@/features/courses/server";
-import { getLessonProgress } from "@/features/students/server";
-import { getSubmission } from "@/features/assignments/server";
+import { getEnrollmentWithProgress } from "@/features/enrollment";
+import { getCourseWithPublishedCurriculum } from "@/features/courses";
+import { getLearningLesson } from "@/features/courses";
+import { getLessonProgress } from "@/features/students";
+import { getSubmission } from "@/features/assignments";
 import { LessonPlayer } from "@/features/courses";
 interface LearnPageProps {
   params: Promise<{

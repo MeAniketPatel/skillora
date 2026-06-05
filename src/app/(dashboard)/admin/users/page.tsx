@@ -1,9 +1,9 @@
 import { requireAdmin } from "@/shared/lib/auth-helpers";
-import { getAllUsers } from "@/features/auth/server";
+import { getAllUsers } from "@/features/auth";
 import { DataTable } from "@/shared/components/shared/data-table";
 import { Users } from "lucide-react";
 import { format } from "date-fns";
-import { updateUserRole, banUser, unbanUser } from "@/features/admin/actions/admin.actions";
+import { updateUserRole, banUser, unbanUser } from "@/features/admin";
 import { ActionButton } from "@/shared/components/shared/action-button";
 import { Button } from "@/shared/components/ui/button";
 import { ImpersonateButton } from "@/features/admin";

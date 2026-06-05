@@ -1,17 +1,17 @@
 "use client";
 
 import { useTransition, useState } from "react";
-import { useFeatureFlag } from "@/features/feature-flags/hooks/use-feature-flags";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { featureFlagSchema } from "@/features/feature-flags/contracts/feature-flag.contract";
 import {
+  useFeatureFlag,
+  featureFlagSchema,
   createFeatureFlagAction,
   toggleFeatureFlagAction,
   updateFeatureFlagRolloutAction,
   deleteFeatureFlagAction,
-} from "@/features/feature-flags/actions/feature-flag.actions";
+} from "@/features/feature-flags";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";

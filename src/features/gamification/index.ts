@@ -14,3 +14,5 @@ export { canGamification as canGamification, assertGamificationAccess } from "./
 // Contracts
 export { createGamificationSchema, updateGamificationSchema, listGamificationQuerySchema } from "./contracts/gamification.contract";
 export type { CreateGamificationInput, UpdateGamificationInput } from "./contracts/gamification.contract";
+
+export { getUserXPPoints, getLeaderboardRankings, getUserBadgesList } from "./server";

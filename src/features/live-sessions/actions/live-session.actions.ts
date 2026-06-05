@@ -4,12 +4,12 @@ import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { liveSessionSchema } from "@/features/live-sessions/contracts/live-session.contract";;
-import { service as coursesService } from "@/features/courses/server";
+import { service as coursesService } from "@/features/courses";
 import { triggerWebhook } from "@/lib/webhook-sender";
 import { revalidatePath } from "next/cache";
 import db from "@/shared/lib/prisma";
 
-import { assertCoursesAccess } from "@/features/courses/permissions/courses.permissions";
+import { assertCoursesAccess } from "@/features/courses";
 export async function createLiveSessionAction(values: z.infer<typeof liveSessionSchema>) {
   return actionHandler(async () => {
     const user = await requireTeacher();

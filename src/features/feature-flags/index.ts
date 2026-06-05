@@ -15,3 +15,7 @@ export type { CreateFeatureFlagsInput, UpdateFeatureFlagsInput } from "./contrac
 
 // Hooks
 export { useFeatureFlag } from "./hooks/use-feature-flags";
+
+export { getFeatureFlags } from "./server";
+
+export { createFeatureFlagAction, toggleFeatureFlagAction, updateFeatureFlagRolloutAction, deleteFeatureFlagAction } from "./actions/feature-flag.actions";

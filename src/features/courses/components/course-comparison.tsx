@@ -1,6 +1,6 @@
 "use client";
 
-import { useCartStore } from "@/features/cart/stores/cart.store";
+import { useCartStore } from "@/features/cart";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/components/ui/table";
 import { Button } from "@/shared/components/ui/button";

@@ -13,3 +13,5 @@ export { canBlog as canBlog, assertBlogAccess } from "./permissions/blog.permiss
 
 // Contracts
 export { createBlogPostSchema, blogCommentSchema } from "./contracts/blog.contract";
+
+export { getBlogPosts, getBlogPostDetail } from "./server";

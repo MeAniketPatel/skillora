@@ -12,3 +12,7 @@ export { canContact as canContact, assertContactAccess } from "./permissions/con
 // Contracts
 export { contactSchema } from "./contracts/contact.contract";
 export type { ContactInput } from "./contracts/contact.contract";
+
+export { getContactMessages } from "./server";
+
+export { markContactReplied, submitContactForm } from "./actions/contact.actions";

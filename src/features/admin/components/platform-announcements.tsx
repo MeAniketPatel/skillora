@@ -1,12 +1,12 @@
 "use client";
 
 import { useTransition, useState } from "react";
-import { useAnnouncements } from "@/features/announcements/hooks/use-announcements";
+import { useAnnouncements } from "@/features/announcements";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { announcementSchema } from "@/features/announcements/contracts/announcement.contract";
-import { createGlobalAnnouncement, deleteGlobalAnnouncement } from "@/features/announcements/actions/announcement.actions";
+import { announcementSchema } from "@/features/announcements";
+import { createGlobalAnnouncement, deleteGlobalAnnouncement } from "@/features/announcements";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";

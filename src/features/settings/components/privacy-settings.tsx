@@ -3,8 +3,8 @@
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { privacySettingsSchema, PrivacySettingsInput } from "@/features/privacy/contracts/privacy.contract";;
-import { updatePrivacySettingsAction } from "@/features/privacy/actions/privacy.actions";
+import { privacySettingsSchema, PrivacySettingsInput } from "@/features/privacy";
+import { updatePrivacySettingsAction } from "@/features/privacy";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Switch } from "@/shared/components/ui/switch";

@@ -9,3 +9,5 @@ export { canCertificates as canCertificates, assertCertificatesAccess } from "./
 // Contracts
 export { createCertificatesSchema, updateCertificatesSchema, listCertificatesQuerySchema } from "./contracts/certificates.contract";
 export type { CreateCertificatesInput, UpdateCertificatesInput } from "./contracts/certificates.contract";
+
+export { getUserCertificates, getUserCertificatesCount, getCertificateById, service } from "./server";

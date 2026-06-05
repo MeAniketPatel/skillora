@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getCourseInsightsAction } from "@/features/courses/actions/course-insights.actions";
+import { getCourseInsightsAction } from "@/features/courses";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Users, GraduationCap, Star, DollarSign, Loader2 } from "lucide-react";
 import { AreaChart, Area, ResponsiveContainer } from "recharts";

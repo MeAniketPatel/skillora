@@ -17,7 +17,7 @@ import {
 
 import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
-import { toggleLessonCompletion } from "@/features/enrollment/actions/enrollment.actions";
+import { toggleLessonCompletion } from "@/features/enrollment";
 import { VideoPlayer } from "@/shared/components/shared/video-player";
 import { QuizView } from "@/features/courses";
 import { AssignmentView } from "@/features/courses";

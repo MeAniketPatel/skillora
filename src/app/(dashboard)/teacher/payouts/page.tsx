@@ -1,6 +1,6 @@
 import React from "react";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
-import { getPayoutBalance, getPayoutHistory } from "@/features/teachers/server";
+import { getPayoutBalance, getPayoutHistory } from "@/features/teachers";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { PayoutDashboard } from "@/features/teachers";
 

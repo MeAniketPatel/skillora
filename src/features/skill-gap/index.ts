@@ -9,3 +9,8 @@ export { canSkillGap as canSkillGap, assertSkillGapAccess } from "./permissions/
 // Contracts
 export { createSkillGapSchema, updateSkillGapSchema, listSkillGapQuerySchema } from "./contracts/skill-gap.contract";
 export type { CreateSkillGapInput, UpdateSkillGapInput } from "./contracts/skill-gap.contract";
+
+export { getFeaturedCourses, getPlatformStats } from "./server";
+export type { FeaturedCourse } from "./server";
+
+export { recommendSkillGapAction } from "./actions/skill-gap.actions";

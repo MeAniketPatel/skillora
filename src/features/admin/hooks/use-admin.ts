@@ -8,8 +8,8 @@ import {
   unbanUser,
   updateUserRole,
 } from "../actions/admin.actions";
-import { impersonateUserAction, stopImpersonationAction } from "@/features/impersonations/actions/impersonation.actions";
-import { approveModerationItemAction, rejectModerationItemAction, flagContentAction } from "@/features/moderation/actions/moderation.actions";
+import { impersonateUserAction, stopImpersonationAction } from "@/features/impersonations";
+import { approveModerationItemAction, rejectModerationItemAction, flagContentAction } from "@/features/moderation";
 
 export function useAdminActions() {
   const [isPending, setPending] = useState(false);

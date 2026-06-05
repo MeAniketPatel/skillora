@@ -4,10 +4,10 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { peerReviewConfigSchema } from "@/features/peer-reviews/contracts/peer-review.contract";
-import { service as coursesService } from "@/features/courses/server";
+import { service as coursesService } from "@/features/courses";
 import { z } from "zod";
 
-import { assertCoursesAccess } from "@/features/courses/permissions/courses.permissions";
+import { assertCoursesAccess } from "@/features/courses";
 export async function savePeerReviewConfig(
   lessonId: string,
   values: z.infer<typeof peerReviewConfigSchema>

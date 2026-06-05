@@ -3,10 +3,10 @@
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { recordStudySessionSchema } from "@/features/streaks/contracts/streak.contract";
-import { service as studentsService } from "@/features/students/server";
+import { service as studentsService } from "@/features/students";
 import { revalidatePath } from "next/cache";
 
-import { assertStudentsAccess } from "@/features/students/permissions/students.permissions";
+import { assertStudentsAccess } from "@/features/students";
 export async function recordStudyActivity(values: { durationSeconds: number }) {
   return actionHandler(async () => {
     const user = await requireAuth();

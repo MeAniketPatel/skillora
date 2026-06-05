@@ -5,9 +5,9 @@ import { actionHandler } from "@/shared/lib/action-utils";
 import { requireTeacher, requireAdmin } from "@/shared/lib/auth-helpers";
 import { announcementSchema } from "@/features/announcements/contracts/announcement.contract";
 import { service as announcementsService } from "@/features/announcements/server";
-import { service as coursesService } from "@/features/courses/server";
-import { service as enrollmentService } from "@/features/enrollment/server";
-import { service as notificationsService } from "@/features/notifications/server";
+import { service as coursesService } from "@/features/courses";
+import { service as enrollmentService } from "@/features/enrollment";
+import { service as notificationsService } from "@/features/notifications";
 import { z } from "zod";
 
 import { assertAnnouncementsAccess } from "@/features/announcements/permissions/announcements.permissions";

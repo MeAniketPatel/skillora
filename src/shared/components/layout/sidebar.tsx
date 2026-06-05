@@ -20,7 +20,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 import { ThemeToggle } from "@/shared/components/shared/theme-toggle";
 import { NotificationsMenu } from "@/shared/components/shared/notifications-menu";
-import { logoutCurrentSession } from "@/features/auth/actions/auth.actions";
+import { logoutCurrentSession } from "@/features/auth";
 import { ROUTES } from "@/shared/constants/routes";
 
 interface SidebarProps {

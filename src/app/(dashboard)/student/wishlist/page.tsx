@@ -1,10 +1,10 @@
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserWishlist } from "@/features/wishlist/server";
+import { getUserWishlist } from "@/features/wishlist";
 import { DataTable } from "@/shared/components/shared/data-table";
 import { Heart } from "lucide-react";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/shared/components/ui/button";
-import { toggleWishlist } from "@/features/wishlist/actions/wishlist.actions";
+import { toggleWishlist } from "@/features/wishlist";
 
 export default async function StudentWishlistPage() {
   const user = await requireAuth();

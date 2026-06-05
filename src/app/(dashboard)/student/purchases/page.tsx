@@ -1,5 +1,5 @@
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserPurchases } from "@/features/payments/server";
+import { getUserPurchases } from "@/features/payments";
 import { DataTable } from "@/shared/components/shared/data-table";
 import { Receipt } from "lucide-react";
 import { format } from "date-fns";

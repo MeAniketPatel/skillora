@@ -14,3 +14,5 @@ export { canFlashcards as canFlashcards, assertFlashcardsAccess } from "./permis
 export { createDeckSchema, addCardSchema } from "./contracts/flashcard.contract";
 export { createFlashcardsSchema, updateFlashcardsSchema, listFlashcardsQuerySchema } from "./contracts/flashcards.contract";
 export type { CreateFlashcardsInput, UpdateFlashcardsInput } from "./contracts/flashcards.contract";
+
+export { getDecksForUser, getDeckDetails } from "./server";
