@@ -120,6 +120,13 @@ model User {
   // Phase 8 Content & Media
   blogPosts            BlogPost[]
   blogComments         BlogComment[]
+
+  // Phase 9 Privacy, Settings & Integrations
+  profileVisible      Boolean          @default(true)
+  activityVisible     Boolean          @default(true)
+  messagingPreference String           @default("ALL") // "ALL" | "FRIENDS" | "NONE"
+  emailPreferences    EmailPreference?
+  hostedSessions      LiveSession[]    @relation("HostSessions")
 }
 
 model Account {
@@ -279,6 +286,7 @@ model Course {
   learningPaths PathCourse[]
   bundles      BundleCourse[]
   resources    Resource[]
+  liveSessions LiveSession[]
 }
 
 model Section {
@@ -1121,6 +1129,61 @@ model Resource {
   courseId  String
   course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+}
+
+// ============ EMAIL PREFERENCES (PHASE 9) ============
+
+model EmailPreference {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  digestType    String   @default("WEEKLY") // "DAILY" | "WEEKLY" | "NEVER"
+  enrollment    Boolean  @default(true)
+  certificates  Boolean  @default(true)
+  promotions    Boolean  @default(true)
+  forumReplies  Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// ============ WEBHOOK SYSTEM (PHASE 9) ============
+
+model Webhook {
+  id        String       @id @default(cuid())
+  url       String
+  event     String       // e.g. "enrollment.created", "course.published"
+  secret    String
+  isActive  Boolean      @default(true)
+  logs      WebhookLog[]
+  createdAt DateTime     @default(now())
+}
+
+model WebhookLog {
+  id         String   @id @default(cuid())
+  webhookId  String
+  webhook    Webhook  @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+  statusCode Int?
+  payload    String   @db.Text
+  response   String?  @db.Text
+  success    Boolean
+  createdAt  DateTime @default(now())
+}
+
+// ============ LIVE SESSIONS (PHASE 9) ============
+
+model LiveSession {
+  id          String   @id @default(cuid())
+  title       String
+  description String?  @db.Text
+  meetUrl     String
+  startTime   DateTime
+  endTime     DateTime
+  courseId    String?
+  course      Course?  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  hostId      String
+  host        User     @relation("HostSessions", fields: [hostId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 
