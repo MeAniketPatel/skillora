@@ -10,6 +10,7 @@ import { service as enrollmentService } from "@/features/enrollment/server";
 import { service as notificationsService } from "@/features/notifications/server";
 import { z } from "zod";
 
+import { assertAnnouncementsAccess } from "@/features/announcements/permissions/announcements.permissions";
 export async function createAnnouncement(
   courseId: string,
   values: z.infer<typeof announcementSchema>

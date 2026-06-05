@@ -10,6 +10,7 @@ import {
   updateRolloutSchema,
 } from "@/features/feature-flags/contracts/feature-flag.contract";
 import { service as featureFlagsService } from "@/features/feature-flags/server";
+import { assertFeatureFlagsAccess } from "@/features/feature-flags/permissions/feature-flags.permissions";
 export async function createFeatureFlagAction(
   values: z.infer<typeof featureFlagSchema>
 ) {

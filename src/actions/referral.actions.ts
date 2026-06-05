@@ -5,6 +5,7 @@ import { requireAuth } from "@/shared/lib/auth-helpers";
 import { service as referralsService } from "@/features/referrals/server";
 import { revalidatePath } from "next/cache";
 
+import { assertReferralsAccess } from "@/features/referrals/permissions/referrals.permissions";
 export async function trackReferralSignupAction(referrerId: string) {
   return actionHandler(async () => {
     const user = await requireAuth();

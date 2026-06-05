@@ -10,6 +10,7 @@ import { service as enrollmentService } from "@/features/enrollment/server";
 import { service as studentsService } from "@/features/students/server";
 import { service as certificatesService } from "@/features/certificates/server";
 import { service as notificationsService } from "@/features/notifications/server";
+import { assertNotificationsAccess } from "@/features/notifications/permissions/notifications.permissions";
 export async function enrollInFreeCourse(courseId: string) {
   return actionHandler(async () => {
     const user = await requireAuth();

@@ -5,9 +5,11 @@ import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { noteCreateSchema, noteUpdateSchema } from "@/features/notes/contracts/note.contract";
 import { service as studentsService } from "@/features/students/server";
+import { assertStudentsAccess } from "@/features/students/permissions/students.permissions";
 export async function createNote(values: any) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertStudentsAccess(user.role, "update");
     const validated = noteCreateSchema.parse(values);
 
     const note = await studentsService.createNote(user.id, validated.lessonId, validated.content, validated.timestamp);
@@ -19,6 +21,7 @@ export async function createNote(values: any) {
 export async function updateNote(noteId: string, values: any) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertStudentsAccess(user.role, "update");
     const validated = noteUpdateSchema.parse(values);
 
     const note = await studentsService.updateNote(noteId, user.id, validated.content);

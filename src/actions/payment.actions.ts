@@ -7,6 +7,7 @@ import { NotFoundError, ValidationError, ConflictError } from "@/shared/lib/erro
 import { service as coursesService } from "@/features/courses/server";
 import { service as adminService } from "@/features/admin/server";
 import { service as enrollmentService } from "@/features/enrollment/server";
+import { assertEnrollmentAccess } from "@/features/enrollment/permissions/enrollment.permissions";
 export async function createCheckoutSession(courseId: string, couponCode?: string) {
   return actionHandler(async () => {
     const user = await requireAuth();

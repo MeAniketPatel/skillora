@@ -6,9 +6,11 @@ import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { createDiscussionSchema, discussionReplySchema } from "@/features/discussions/contracts/discussion.contract";
 import { service as discussionsService } from "@/features/discussions/server";
+import { assertDiscussionsAccess } from "@/features/discussions/permissions/discussions.permissions";
 export async function createDiscussionAction(values: z.infer<typeof createDiscussionSchema>) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertDiscussionsAccess(user.role, "update");
     const validated = createDiscussionSchema.parse(values);
 
     const discussion = await discussionsService.createDiscussion(
@@ -29,6 +31,7 @@ export async function addDiscussionReplyAction(
 ) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertDiscussionsAccess(user.role, "update");
     const validated = discussionReplySchema.parse(values);
 
     const reply = await discussionsService.addDiscussionReply(discussionId, user.id!, validated.content);

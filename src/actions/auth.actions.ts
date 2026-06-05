@@ -40,6 +40,7 @@ import {
 
 
 
+import { assertAuthAccess } from "@/features/auth/permissions/auth.permissions";
 async function getActionRequestMetadata() {
   const requestHeaders = await headers();
   return getAuthRequestMetadata(requestHeaders);

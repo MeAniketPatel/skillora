@@ -8,6 +8,7 @@ import { addResourceSchema } from "@/features/resources/contracts/resource.contr
 import { service as coursesService } from "@/features/courses/server";
 import db from "@/shared/lib/prisma";
 
+import { assertCoursesAccess } from "@/features/courses/permissions/courses.permissions";
 export async function addCourseResourceAction(courseId: string, values: z.infer<typeof addResourceSchema>) {
   return actionHandler(async () => {
     const user = await requireAuth();

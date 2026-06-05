@@ -4,6 +4,7 @@ import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth, requireTeacher } from "@/shared/lib/auth-helpers";
 import { ConflictError, NotFoundError } from "@/shared/lib/errors";
 import { service as coursesService } from "@/features/courses/server";
+import { assertCoursesAccess } from "@/features/courses/permissions/courses.permissions";
 export async function createQuiz(lessonId: string, title: string, passingScore = 70) {
   return actionHandler(async () => {
     await requireTeacher();

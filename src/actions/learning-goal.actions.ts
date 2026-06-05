@@ -6,9 +6,11 @@ import { createGoalSchema, updateGoalProgressSchema } from "@/features/learning-
 import { service as studentsService } from "@/features/students/server";
 import { revalidatePath } from "next/cache";
 
+import { assertStudentsAccess } from "@/features/students/permissions/students.permissions";
 export async function createGoalAction(values: any) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertStudentsAccess(user.role, "update");
     const validated = createGoalSchema.parse(values);
 
     const result = await studentsService.createGoal(user.id, validated);
@@ -21,6 +23,7 @@ export async function createGoalAction(values: any) {
 export async function updateGoalProgressAction(goalId: string, progress: number) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertStudentsAccess(user.role, "update");
     const validated = updateGoalProgressSchema.parse({ progress });
 
     const result = await studentsService.updateGoalProgress(goalId, user.id, validated.progress);

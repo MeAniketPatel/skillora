@@ -6,9 +6,11 @@ import { recordStudySessionSchema } from "@/features/streaks/contracts/streak.co
 import { service as studentsService } from "@/features/students/server";
 import { revalidatePath } from "next/cache";
 
+import { assertStudentsAccess } from "@/features/students/permissions/students.permissions";
 export async function recordStudyActivity(values: { durationSeconds: number }) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertStudentsAccess(user.role, "update");
     const validated = recordStudySessionSchema.parse(values);
 
     const result = await studentsService.recordStudySession(user.id, validated.durationSeconds);

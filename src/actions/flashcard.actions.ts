@@ -6,9 +6,11 @@ import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { createDeckSchema, addCardSchema } from "@/features/flashcards/contracts/flashcard.contract";
 import { service as flashcardsService } from "@/features/flashcards/server";
+import { assertFlashcardsAccess } from "@/features/flashcards/permissions/flashcards.permissions";
 export async function createDeckAction(values: z.infer<typeof createDeckSchema>) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertFlashcardsAccess(user.role, "update");
     const validated = createDeckSchema.parse(values);
 
     const deck = await flashcardsService.createDeck(user.id!, validated.title, validated.description);

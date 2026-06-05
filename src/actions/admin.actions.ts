@@ -5,6 +5,7 @@ import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { userRoleUpdateSchema } from "@/features/admin/contracts/admin.contract";
 import { service as authService } from "@/features/auth/server";
+import { assertAuthAccess } from "@/features/auth/permissions/auth.permissions";
 export async function updateUserRole(values: any) {
   return actionHandler(async () => {
     await requireAdmin();

@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { service as skillGapService } from "@/features/skill-gap/server";
+import { assertSkillGapAccess } from "@/features/skill-gap/permissions/skill-gap.permissions";
 const skillGapSchema = z.object({
   skills: z
     .array(z.string().min(1).max(64))

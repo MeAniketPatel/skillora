@@ -7,9 +7,11 @@ import { reviewCreateSchema, reviewUpdateSchema } from "@/features/reviews/contr
 import { service as reviewsService } from "@/features/reviews/server";
 import { ConflictError, NotFoundError } from "@/shared/lib/errors";
 
+import { assertReviewsAccess } from "@/features/reviews/permissions/reviews.permissions";
 export async function createReview(values: any) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertReviewsAccess(user.role, "update");
     const validated = reviewCreateSchema.parse(values);
 
     const existing = await reviewsService.getUserReviewForCourse(user.id, validated.courseId);
@@ -26,6 +28,7 @@ export async function createReview(values: any) {
 export async function updateReview(reviewId: string, values: any) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertReviewsAccess(user.role, "update");
     const validated = reviewUpdateSchema.parse(values);
 
     const review = await reviewsService.updateReview(reviewId, user.id, validated);

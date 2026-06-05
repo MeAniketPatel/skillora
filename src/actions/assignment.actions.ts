@@ -9,6 +9,7 @@ import { service as coursesService } from "@/features/courses/server";
 import { service as enrollmentService } from "@/features/enrollment/server";
 import { service as studentsService } from "@/features/students/server";
 import { service as notificationsService } from "@/features/notifications/server";
+import { assertNotificationsAccess } from "@/features/notifications/permissions/notifications.permissions";
 export async function submitAssignment(lessonId: string, content: string) {
   return actionHandler(async () => {
     const user = await requireAuth();

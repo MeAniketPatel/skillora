@@ -7,9 +7,11 @@ import { emailPreferenceSchema } from "@/features/email-preferences/contracts/em
 import { service as emailPreferencesService } from "@/features/email-preferences/server";
 import { revalidatePath } from "next/cache";
 
+import { assertEmailPreferencesAccess } from "@/features/email-preferences/permissions/email-preferences.permissions";
 export async function updateEmailPreferencesAction(values: z.infer<typeof emailPreferenceSchema>) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertEmailPreferencesAccess(user.role, "update");
     const validated = emailPreferenceSchema.parse(values);
     
     const prefs = await emailPreferencesService.updateEmailPreferences(user.id, validated);

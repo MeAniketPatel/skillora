@@ -6,9 +6,11 @@ import { createCollectionSchema, courseToCollectionSchema } from "@/features/col
 import { service as studentsService } from "@/features/students/server";
 import { revalidatePath } from "next/cache";
 
+import { assertStudentsAccess } from "@/features/students/permissions/students.permissions";
 export async function createCollectionAction(values: any) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertStudentsAccess(user.role, "update");
     const validated = createCollectionSchema.parse(values);
 
     const result = await studentsService.createCollection(user.id, validated);

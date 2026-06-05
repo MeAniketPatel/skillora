@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { service as wishlistService } from "@/features/wishlist/server";
+import { assertWishlistAccess } from "@/features/wishlist/permissions/wishlist.permissions";
 export async function toggleWishlist(courseId: string) {
   return actionHandler(async () => {
     const user = await requireAuth();

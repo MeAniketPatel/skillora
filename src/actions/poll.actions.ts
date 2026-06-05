@@ -8,6 +8,7 @@ import { service as pollsService } from "@/features/polls/server";
 import { service as coursesService } from "@/features/courses/server";
 import { z } from "zod";
 
+import { assertCoursesAccess } from "@/features/courses/permissions/courses.permissions";
 export async function createPollAction(
   courseId: string,
   values: z.infer<typeof pollSchema>

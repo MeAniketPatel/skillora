@@ -7,9 +7,11 @@ import { requireAuth } from "@/shared/lib/auth-helpers";
 import { profileUpdateSchema, portfolioProjectSchema } from "@/features/profile/contracts/profile.contract";
 import { service as authService } from "@/features/auth/server";
 import { service as socialService } from "@/features/social/server";
+import { assertSocialAccess } from "@/features/social/permissions/social.permissions";
 export async function updateProfileAction(values: z.infer<typeof profileUpdateSchema>) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertSocialAccess(user.role, "update");
     const validated = profileUpdateSchema.parse(values);
 
     const socialLinks = {
@@ -33,6 +35,7 @@ export async function updateProfileAction(values: z.infer<typeof profileUpdateSc
 export async function addPortfolioProjectAction(values: z.infer<typeof portfolioProjectSchema>) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertSocialAccess(user.role, "update");
     const validated = portfolioProjectSchema.parse(values);
 
     const project = await socialService.createPortfolioProject(user.id!, {

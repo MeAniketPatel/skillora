@@ -7,6 +7,7 @@ import { peerReviewConfigSchema } from "@/features/peer-reviews/contracts/peer-r
 import { service as coursesService } from "@/features/courses/server";
 import { z } from "zod";
 
+import { assertCoursesAccess } from "@/features/courses/permissions/courses.permissions";
 export async function savePeerReviewConfig(
   lessonId: string,
   values: z.infer<typeof peerReviewConfigSchema>

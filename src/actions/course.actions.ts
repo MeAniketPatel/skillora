@@ -12,6 +12,7 @@ import {
 } from "@/features/courses/contracts/course.contract";
 import { service as coursesService } from "@/features/courses/server";
 import { service as attachmentsService } from "@/features/attachments/server";
+import { assertAttachmentsAccess } from "@/features/attachments/permissions/attachments.permissions";
 export async function createCourse(values: CourseCreateInput) {
   return actionHandler(async () => {
     const user = await requireTeacher();

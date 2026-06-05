@@ -6,9 +6,11 @@ import { toggleBookmarkSchema } from "@/features/bookmarks/contracts/bookmark.co
 import { service as studentsService } from "@/features/students/server";
 import { revalidatePath } from "next/cache";
 
+import { assertStudentsAccess } from "@/features/students/permissions/students.permissions";
 export async function toggleBookmarkAction(values: { lessonId: string }) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertStudentsAccess(user.role, "update");
     const validated = toggleBookmarkSchema.parse(values);
 
     const result = await studentsService.toggleBookmark(user.id, validated.lessonId);

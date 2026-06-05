@@ -6,6 +6,7 @@ import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { directMessageSchema } from "@/features/messages/contracts/message.contract";
 import { service as socialService } from "@/features/social/server";
+import { assertSocialAccess } from "@/features/social/permissions/social.permissions";
 export async function startConversationAction(targetUserId: string) {
   return actionHandler(async () => {
     const user = await requireAuth();
@@ -21,6 +22,7 @@ export async function startConversationAction(targetUserId: string) {
 export async function sendMessageAction(conversationId: string, values: z.infer<typeof directMessageSchema>) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertSocialAccess(user.role, "update");
     const validated = directMessageSchema.parse(values);
 
     const message = await socialService.sendDirectMessage(conversationId, user.id!, validated.content);

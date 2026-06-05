@@ -9,6 +9,7 @@ import { triggerWebhook } from "@/lib/webhook-sender";
 import { revalidatePath } from "next/cache";
 import db from "@/shared/lib/prisma";
 
+import { assertCoursesAccess } from "@/features/courses/permissions/courses.permissions";
 export async function createLiveSessionAction(values: z.infer<typeof liveSessionSchema>) {
   return actionHandler(async () => {
     const user = await requireTeacher();

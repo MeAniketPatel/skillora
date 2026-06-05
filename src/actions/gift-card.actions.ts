@@ -7,6 +7,7 @@ import { purchaseGiftCardSchema, redeemGiftCardSchema } from "@/features/gift-ca
 import { service as giftCardsService } from "@/features/gift-cards/server";
 import { revalidatePath } from "next/cache";
 
+import { assertGiftCardsAccess } from "@/features/gift-cards/permissions/gift-cards.permissions";
 // Helper to generate a random 12 character code
 function generateCode(): string {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -20,6 +21,7 @@ function generateCode(): string {
 export async function purchaseGiftCardAction(values: z.infer<typeof purchaseGiftCardSchema>) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertGiftCardsAccess(user.role, "update");
     const validated = purchaseGiftCardSchema.parse(values);
     
     const code = generateCode();
@@ -33,6 +35,7 @@ export async function purchaseGiftCardAction(values: z.infer<typeof purchaseGift
 export async function redeemGiftCardAction(values: z.infer<typeof redeemGiftCardSchema>) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertGiftCardsAccess(user.role, "update");
     const validated = redeemGiftCardSchema.parse(values);
     
     const giftCard = await giftCardsService.redeemGiftCard(validated.code, user.id!);

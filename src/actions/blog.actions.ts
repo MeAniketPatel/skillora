@@ -8,6 +8,7 @@ import { createBlogPostSchema, blogCommentSchema } from "@/features/blog/contrac
 import { service as blogService } from "@/features/blog/server";
 import db from "@/shared/lib/prisma";
 
+import { assertBlogAccess } from "@/features/blog/permissions/blog.permissions";
 // Helper to generate a URL friendly slug
 function slugify(text: string): string {
   return text
@@ -24,6 +25,7 @@ function slugify(text: string): string {
 export async function createBlogPostAction(values: z.infer<typeof createBlogPostSchema>) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertBlogAccess(user.role, "update");
     const validated = createBlogPostSchema.parse(values);
 
     let baseSlug = slugify(validated.title);
@@ -58,6 +60,7 @@ export async function createBlogPostAction(values: z.infer<typeof createBlogPost
 export async function addBlogCommentAction(postId: string, values: z.infer<typeof blogCommentSchema>) {
   return actionHandler(async () => {
     const user = await requireAuth();
+    assertBlogAccess(user.role, "update");
     const validated = blogCommentSchema.parse(values);
 
     const comment = await blogService.addBlogComment(postId, user.id!, validated.content);
