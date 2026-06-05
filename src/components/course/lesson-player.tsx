@@ -21,6 +21,7 @@ import { toggleLessonCompletion } from "@/actions/enrollment.actions";
 import { VideoPlayer } from "@/components/shared/video-player";
 import QuizView from "@/components/course/quiz-view";
 import AssignmentView from "@/components/course/assignment-view";
+import { AITutor } from "@/components/learn/ai-tutor";
 
 interface Lesson {
   id: string;
@@ -251,6 +252,7 @@ export default function LessonPlayer({
           )}
         </div>
       </div>
+      <AITutor courseTitle={courseTitle} lessonTitle={lesson.title} />
     </div>
   );
 }

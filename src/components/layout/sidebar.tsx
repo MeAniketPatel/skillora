@@ -11,7 +11,11 @@ import {
   LogOut,
   User,
   LayoutDashboard,
-  Coins
+  Coins,
+  MessageSquare,
+  Layers,
+  Compass,
+  Trophy
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
@@ -51,6 +55,10 @@ export function Sidebar({ session }: SidebarProps) {
     : [
         { name: "Dashboard", href: ROUTES.DASHBOARD, icon: LayoutDashboard },
         { name: "My Learning", href: ROUTES.STUDENT_COURSES, icon: BookOpen },
+        { name: "Learning Paths", href: "/learning-paths", icon: Compass },
+        { name: "Flashcards", href: "/student/flashcards", icon: Layers },
+        { name: "Discussions", href: "/discussions", icon: MessageSquare },
+        { name: "Leaderboard", href: "/leaderboard", icon: Trophy },
         { name: "Study Groups", href: "/student/study-groups", icon: GraduationCap },
         { name: "Profile", href: "/profile", icon: User },
         { name: "Messages", href: "/messages", icon: Settings },
