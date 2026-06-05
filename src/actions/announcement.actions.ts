@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/lib/action-utils";
-import { requireTeacher } from "@/lib/auth-helpers";
+import { requireTeacher, requireAdmin } from "@/lib/auth-helpers";
 import { announcementSchema } from "@/validations/announcement.schema";
 import {
   createAnnouncement as createAnnouncementDAL,
@@ -71,3 +71,35 @@ export async function deleteAnnouncement(announcementId: string, courseId: strin
     return { success: true };
   });
 }
+
+export async function createGlobalAnnouncement(values: z.infer<typeof announcementSchema>) {
+  return actionHandler(async () => {
+    const user = await requireAdmin();
+    const validated = announcementSchema.parse(values);
+
+    const announcement = await createAnnouncementDAL(
+      user.id,
+      null, // null courseId means global
+      validated.title,
+      validated.content
+    );
+
+    revalidatePath("/admin/announcements");
+    return announcement;
+  });
+}
+
+export async function deleteGlobalAnnouncement(announcementId: string) {
+  return actionHandler(async () => {
+    await requireAdmin();
+
+    const announcement = await getAnnouncementById(announcementId);
+    if (!announcement) throw new Error("Announcement not found");
+
+    await deleteAnnouncementDAL(announcementId);
+
+    revalidatePath("/admin/announcements");
+    return { success: true };
+  });
+}
+
