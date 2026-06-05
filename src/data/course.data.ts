@@ -5,6 +5,21 @@ export async function getCourseById(id: string) {
   return db.course.findUnique({ where: { id } });
 }
 
+export async function getCoursesByIds(ids: string[]) {
+  return db.course.findMany({
+    where: {
+      id: { in: ids },
+    },
+    include: {
+      teacher: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+}
+
 export async function getCourseBySlug(slug: string) {
   return db.course.findUnique({
     where: { slug },

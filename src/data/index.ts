@@ -42,3 +42,6 @@ export * from "./bundle.data";
 export * from "./subscription.data";
 export * from "./gift-card.data";
 export * from "./referral.data";
+export * from "./blog.data";
+export * from "./resource.data";
+
