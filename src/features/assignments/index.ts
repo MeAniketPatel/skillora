@@ -3,7 +3,9 @@
 // Permissions
 export { canAssignments as canAssignments, assertAssignmentsAccess } from "./permissions/assignments.permissions";
 
+
+
+
 // Contracts
 export { createAssignmentsSchema, updateAssignmentsSchema, listAssignmentsQuerySchema } from "./contracts/assignments.contract";
-export type { CreateAssignmentsInput, UpdateAssignmentsInput, ListAssignmentsQuery } from "./contracts/assignments.contract";
-
+export type { CreateAssignmentsInput, UpdateAssignmentsInput } from "./contracts/assignments.contract";

@@ -15,7 +15,9 @@ export { TestimonialGrid } from "./components/testimonial-grid";
 // Permissions
 export { canMarketing as canMarketing, assertMarketingAccess } from "./permissions/marketing.permissions";
 
+
+
+
 // Contracts
 export { createMarketingSchema, updateMarketingSchema, listMarketingQuerySchema } from "./contracts/marketing.contract";
-export type { CreateMarketingInput, UpdateMarketingInput, ListMarketingQuery } from "./contracts/marketing.contract";
-
+export type { CreateMarketingInput, UpdateMarketingInput } from "./contracts/marketing.contract";

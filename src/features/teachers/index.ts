@@ -18,7 +18,9 @@ export { TeacherStats } from "./components/teacher-stats";
 // Permissions
 export { canTeachers as canTeachers, assertTeachersAccess } from "./permissions/teachers.permissions";
 
+
+
+
 // Contracts
 export { createTeachersSchema, updateTeachersSchema, listTeachersQuerySchema } from "./contracts/teachers.contract";
-export type { CreateTeachersInput, UpdateTeachersInput, ListTeachersQuery } from "./contracts/teachers.contract";
-
+export type { CreateTeachersInput, UpdateTeachersInput } from "./contracts/teachers.contract";

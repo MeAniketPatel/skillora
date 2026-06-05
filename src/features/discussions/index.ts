@@ -8,7 +8,10 @@ export { DiscussionReply } from "./components/discussion-reply";
 // Permissions
 export { canDiscussions as canDiscussions, assertDiscussionsAccess } from "./permissions/discussions.permissions";
 
-// Contracts
-export { createDiscussionsSchema, updateDiscussionsSchema, listDiscussionsQuerySchema } from "./contracts/discussions.contract";
-export type { CreateDiscussionsInput, UpdateDiscussionsInput, ListDiscussionsQuery } from "./contracts/discussions.contract";
 
+
+
+// Contracts
+export { createDiscussionSchema, discussionReplySchema } from "./contracts/discussion.contract";
+export { createDiscussionsSchema, updateDiscussionsSchema, listDiscussionsQuerySchema } from "./contracts/discussions.contract";
+export type { CreateDiscussionsInput, UpdateDiscussionsInput } from "./contracts/discussions.contract";

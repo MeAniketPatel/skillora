@@ -8,7 +8,10 @@ export { GroupChat } from "./components/group-chat";
 // Permissions
 export { canStudyGroups as canStudyGroups, assertStudyGroupsAccess } from "./permissions/study-groups.permissions";
 
-// Contracts
-export { createStudyGroupsSchema, updateStudyGroupsSchema, listStudyGroupsQuerySchema } from "./contracts/study-groups.contract";
-export type { CreateStudyGroupsInput, UpdateStudyGroupsInput, ListStudyGroupsQuery } from "./contracts/study-groups.contract";
 
+
+
+// Contracts
+export { createStudyGroupSchema, studyGroupMessageSchema } from "./contracts/study-group.contract";
+export { createStudyGroupsSchema, updateStudyGroupsSchema, listStudyGroupsQuerySchema } from "./contracts/study-groups.contract";
+export type { CreateStudyGroupsInput, UpdateStudyGroupsInput } from "./contracts/study-groups.contract";

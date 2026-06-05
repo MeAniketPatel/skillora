@@ -9,7 +9,10 @@ export { PollVoter } from "./components/poll-voter";
 // Permissions
 export { canPolls as canPolls, assertPollsAccess } from "./permissions/polls.permissions";
 
-// Contracts
-export { createPollsSchema, updatePollsSchema, listPollsQuerySchema } from "./contracts/polls.contract";
-export type { CreatePollsInput, UpdatePollsInput, ListPollsQuery } from "./contracts/polls.contract";
 
+
+
+// Contracts
+export { pollSchema } from "./contracts/poll.contract";
+export { createPollsSchema, updatePollsSchema, listPollsQuerySchema } from "./contracts/polls.contract";
+export type { CreatePollsInput, UpdatePollsInput } from "./contracts/polls.contract";

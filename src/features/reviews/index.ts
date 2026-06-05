@@ -3,7 +3,11 @@
 // Permissions
 export { canReviews as canReviews, assertReviewsAccess } from "./permissions/reviews.permissions";
 
-// Contracts
-export { createReviewsSchema, updateReviewsSchema, listReviewsQuerySchema } from "./contracts/reviews.contract";
-export type { CreateReviewsInput, UpdateReviewsInput, ListReviewsQuery } from "./contracts/reviews.contract";
 
+
+
+// Contracts
+export { reviewCreateSchema, reviewUpdateSchema } from "./contracts/review.contract";
+export type { ReviewCreateInput, ReviewUpdateInput } from "./contracts/review.contract";
+export { createReviewsSchema, updateReviewsSchema, listReviewsQuerySchema } from "./contracts/reviews.contract";
+export type { CreateReviewsInput, UpdateReviewsInput } from "./contracts/reviews.contract";

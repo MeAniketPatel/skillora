@@ -1,7 +1,11 @@
 import { z } from "zod";
 
 export const createGiftCardsSchema = z.object({
-  // TODO: define input shape
+  id: z.string().min(1).optional(),
+  name: z.string().min(1).optional(),
+  title: z.string().min(1).optional(),
+  description: z.string().optional(),
+  data: z.record(z.string(), z.unknown()).optional(),
 });
 
 export const updateGiftCardsSchema = z.object({

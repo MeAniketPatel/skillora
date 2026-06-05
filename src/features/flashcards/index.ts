@@ -7,7 +7,10 @@ export { FlashcardReviewer } from "./components/flashcard-reviewer";
 // Permissions
 export { canFlashcards as canFlashcards, assertFlashcardsAccess } from "./permissions/flashcards.permissions";
 
-// Contracts
-export { createFlashcardsSchema, updateFlashcardsSchema, listFlashcardsQuerySchema } from "./contracts/flashcards.contract";
-export type { CreateFlashcardsInput, UpdateFlashcardsInput, ListFlashcardsQuery } from "./contracts/flashcards.contract";
 
+
+
+// Contracts
+export { createDeckSchema, addCardSchema } from "./contracts/flashcard.contract";
+export { createFlashcardsSchema, updateFlashcardsSchema, listFlashcardsQuerySchema } from "./contracts/flashcards.contract";
+export type { CreateFlashcardsInput, UpdateFlashcardsInput } from "./contracts/flashcards.contract";

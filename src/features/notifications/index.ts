@@ -6,7 +6,9 @@ export { NotificationsClient } from "./components/notifications-client";
 // Permissions
 export { canNotifications as canNotifications, assertNotificationsAccess } from "./permissions/notifications.permissions";
 
+
+
+
 // Contracts
 export { createNotificationsSchema, updateNotificationsSchema, listNotificationsQuerySchema } from "./contracts/notifications.contract";
-export type { CreateNotificationsInput, UpdateNotificationsInput, ListNotificationsQuery } from "./contracts/notifications.contract";
-
+export type { CreateNotificationsInput, UpdateNotificationsInput } from "./contracts/notifications.contract";

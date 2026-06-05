@@ -3,7 +3,9 @@
 // Permissions
 export { canCertificates as canCertificates, assertCertificatesAccess } from "./permissions/certificates.permissions";
 
+
+
+
 // Contracts
 export { createCertificatesSchema, updateCertificatesSchema, listCertificatesQuerySchema } from "./contracts/certificates.contract";
-export type { CreateCertificatesInput, UpdateCertificatesInput, ListCertificatesQuery } from "./contracts/certificates.contract";
-
+export type { CreateCertificatesInput, UpdateCertificatesInput } from "./contracts/certificates.contract";

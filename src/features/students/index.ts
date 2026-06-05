@@ -17,7 +17,9 @@ export { WeeklyProgress } from "./components/weekly-progress";
 // Permissions
 export { canStudents as canStudents, assertStudentsAccess } from "./permissions/students.permissions";
 
+
+
+
 // Contracts
 export { createStudentsSchema, updateStudentsSchema, listStudentsQuerySchema } from "./contracts/students.contract";
-export type { CreateStudentsInput, UpdateStudentsInput, ListStudentsQuery } from "./contracts/students.contract";
-
+export type { CreateStudentsInput, UpdateStudentsInput } from "./contracts/students.contract";

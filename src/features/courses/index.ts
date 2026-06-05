@@ -23,7 +23,11 @@ export { default as QuizView } from "./components/quiz-view";
 // Permissions
 export { canCourses as canCourses, assertCoursesAccess } from "./permissions/courses.permissions";
 
-// Contracts
-export { createCoursesSchema, updateCoursesSchema, listCoursesQuerySchema } from "./contracts/courses.contract";
-export type { CreateCoursesInput, UpdateCoursesInput, ListCoursesQuery } from "./contracts/courses.contract";
 
+
+
+// Contracts
+export { courseCreateSchema, courseUpdateSchema, sectionCreateSchema, lessonUpdateSchema } from "./contracts/course.contract";
+export type { CourseCreateInput, CourseUpdateInput, SectionCreateInput, LessonUpdateInput } from "./contracts/course.contract";
+export { createCoursesSchema, updateCoursesSchema, listCoursesQuerySchema } from "./contracts/courses.contract";
+export type { CreateCoursesInput, UpdateCoursesInput } from "./contracts/courses.contract";

@@ -3,7 +3,11 @@
 // Permissions
 export { canEmailPreferences as canEmailPreferences, assertEmailPreferencesAccess } from "./permissions/email-preferences.permissions";
 
-// Contracts
-export { createEmailPreferencesSchema, updateEmailPreferencesSchema, listEmailPreferencesQuerySchema } from "./contracts/email-preferences.contract";
-export type { CreateEmailPreferencesInput, UpdateEmailPreferencesInput, ListEmailPreferencesQuery } from "./contracts/email-preferences.contract";
 
+
+
+// Contracts
+export { emailPreferenceSchema } from "./contracts/email-preference.contract";
+export type { EmailPreferenceInput } from "./contracts/email-preference.contract";
+export { createEmailPreferencesSchema, updateEmailPreferencesSchema, listEmailPreferencesQuerySchema } from "./contracts/email-preferences.contract";
+export type { CreateEmailPreferencesInput, UpdateEmailPreferencesInput } from "./contracts/email-preferences.contract";

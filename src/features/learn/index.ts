@@ -8,7 +8,9 @@ export { LessonSidebar } from "./components/lesson-sidebar";
 // Permissions
 export { canLearn as canLearn, assertLearnAccess } from "./permissions/learn.permissions";
 
+
+
+
 // Contracts
 export { createLearnSchema, updateLearnSchema, listLearnQuerySchema } from "./contracts/learn.contract";
-export type { CreateLearnInput, UpdateLearnInput, ListLearnQuery } from "./contracts/learn.contract";
-
+export type { CreateLearnInput, UpdateLearnInput } from "./contracts/learn.contract";

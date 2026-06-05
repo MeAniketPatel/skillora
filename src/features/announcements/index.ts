@@ -3,7 +3,10 @@
 // Permissions
 export { canAnnouncements as canAnnouncements, assertAnnouncementsAccess } from "./permissions/announcements.permissions";
 
-// Contracts
-export { createAnnouncementsSchema, updateAnnouncementsSchema, listAnnouncementsQuerySchema } from "./contracts/announcements.contract";
-export type { CreateAnnouncementsInput, UpdateAnnouncementsInput, ListAnnouncementsQuery } from "./contracts/announcements.contract";
 
+
+
+// Contracts
+export { announcementSchema } from "./contracts/announcement.contract";
+export { createAnnouncementsSchema, updateAnnouncementsSchema, listAnnouncementsQuerySchema } from "./contracts/announcements.contract";
+export type { CreateAnnouncementsInput, UpdateAnnouncementsInput } from "./contracts/announcements.contract";
