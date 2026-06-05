@@ -44,13 +44,19 @@ export function Sidebar({ session }: SidebarProps) {
         { name: "My Courses", href: ROUTES.TEACHER_COURSES, icon: BookOpen },
         { name: "Analytics", href: ROUTES.TEACHER_ANALYTICS, icon: BarChart },
         { name: "Payouts", href: ROUTES.TEACHER_PAYOUTS, icon: Coins },
+        { name: "Profile", href: "/profile", icon: User },
+        { name: "Messages", href: "/messages", icon: Settings }, // Settings can be replaced with messaging or other icon
         { name: "Settings", href: ROUTES.SETTINGS, icon: Settings },
       ]
     : [
         { name: "Dashboard", href: ROUTES.DASHBOARD, icon: LayoutDashboard },
         { name: "My Learning", href: ROUTES.STUDENT_COURSES, icon: BookOpen },
+        { name: "Study Groups", href: "/student/study-groups", icon: GraduationCap },
+        { name: "Profile", href: "/profile", icon: User },
+        { name: "Messages", href: "/messages", icon: Settings },
         { name: "Settings", href: ROUTES.SETTINGS, icon: Settings },
       ];
+
 
   const handleSignOut = async (e: React.FormEvent) => {
     e.preventDefault();
