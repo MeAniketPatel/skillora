@@ -12,6 +12,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { NotificationsMenu } from "@/components/shared/notifications-menu";
 import { ROUTES } from "@/constants/routes";
 import { Sidebar } from "@/components/layout/sidebar";
+import { cookies } from "next/headers";
+import { StopImpersonationBanner } from "@/components/admin/user-impersonation";
+
 
 
 export default async function DashboardLayout({
@@ -26,9 +29,15 @@ export default async function DashboardLayout({
   }
 
 
+  const cookieStore = await cookies();
+  const isImpersonating = cookieStore.has("impersonate_user_id");
+
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex flex-col md:flex-row">
-      <Sidebar session={session} />
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex flex-col">
+      {isImpersonating && <StopImpersonationBanner />}
+      <div className="flex-1 flex flex-col md:flex-row">
+        <Sidebar session={session} />
+
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
@@ -57,5 +66,6 @@ export default async function DashboardLayout({
         </main>
       </div>
     </div>
+  </div>
   );
 }

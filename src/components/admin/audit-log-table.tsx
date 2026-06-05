@@ -6,6 +6,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Calendar, User, Info, ShieldAlert } from "lucide-react";
+import { cn } from "@/lib/utils";
+
 
 interface AuditLog {
   id: string;

@@ -6,6 +6,8 @@ import { format } from "date-fns";
 import { updateUserRole, banUser, unbanUser } from "@/actions";
 import { ActionButton } from "@/components/shared/action-button";
 import { Button } from "@/components/ui/button";
+import { ImpersonateButton } from "@/components/admin/user-impersonation";
+
 
 export default async function AdminUsersPage() {
   await requireAdmin();
@@ -60,6 +62,7 @@ export default async function AdminUsersPage() {
       header: "Actions",
       cell: (item: any) => (
         <div className="flex gap-2">
+          <ImpersonateButton userId={item.id} />
           <form action={async () => {
             "use server";
             await updateUserRole({ userId: item.id, role: item.role === "TEACHER" ? "STUDENT" : "TEACHER" });
@@ -80,6 +83,7 @@ export default async function AdminUsersPage() {
         </div>
       ),
     },
+
   ];
 
   return (

@@ -8,8 +8,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { formatPrice } from "@/lib/utils";
 import { APP } from "@/constants/app";
 
+import { getSetting } from "@/data/settings.data";
+import { MaintenanceBanner } from "@/components/admin/maintenance-banner";
+
 export default async function AdminDashboardPage() {
   await requireAdmin();
+
+  // Fetch maintenance setting
+  const maintenanceMode = await getSetting("maintenance_mode");
+  const isMaintenanceActive = maintenanceMode?.value === "true";
 
   // Fetch counts
   const usersCount = await getUserCount();
@@ -24,6 +31,8 @@ export default async function AdminDashboardPage() {
 
   return (
     <div className="space-y-6">
+      <MaintenanceBanner isEnabled={isMaintenanceActive} />
+
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Admin Control Panel</h1>
         <p className="text-sm text-neutral-500">Manage users, audit course submissions, and monitor platform transaction flows.</p>
