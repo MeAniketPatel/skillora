@@ -85,17 +85,18 @@ export async function markQuestionResolved(questionId: string) {
   });
 }
 
-export async function acceptAnswer(answerId: string, questionId: string) {
-  return db.$transaction([
-    db.answer.updateMany({
+export async function acceptAnswer(answerId: string, questionId: string, tx?: any) {
+  const client = tx || db;
+  return Promise.all([
+    client.answer.updateMany({
       where: { questionId },
       data: { isAccepted: false },
     }),
-    db.answer.update({
+    client.answer.update({
       where: { id: answerId },
       data: { isAccepted: true },
     }),
-    db.question.update({
+    client.question.update({
       where: { id: questionId },
       data: { isResolved: true },
     })

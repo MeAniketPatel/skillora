@@ -27,33 +27,32 @@ export async function createQuiz(lessonId: string, data: { title: string; passin
   });
 }
 
-export async function updateQuizWithQuestions(quizId: string, data: any, questions: any[]) {
-  return db.$transaction(async (tx) => {
-    const q = await tx.quiz.update({
-      where: { id: quizId },
-      data,
-    });
-
-    await tx.quizQuestion.deleteMany({
-      where: { quizId },
-    });
-
-    if (questions.length > 0) {
-      await tx.quizQuestion.createMany({
-        data: questions.map((item, index) => ({
-          quizId,
-          question: item.question,
-          type: item.type || "MULTIPLE_CHOICE",
-          options: item.options,
-          explanation: item.explanation || "",
-          points: item.points || 1,
-          position: index + 1,
-        })),
-      });
-    }
-
-    return q;
+export async function updateQuizWithQuestions(quizId: string, data: any, questions: any[], tx?: any) {
+  const client = tx || db;
+  const q = await client.quiz.update({
+    where: { id: quizId },
+    data,
   });
+
+  await client.quizQuestion.deleteMany({
+    where: { quizId },
+  });
+
+  if (questions.length > 0) {
+    await client.quizQuestion.createMany({
+      data: questions.map((item: any, index: number) => ({
+        quizId,
+        question: item.question,
+        type: item.type || "MULTIPLE_CHOICE",
+        options: item.options,
+        explanation: item.explanation || "",
+        points: item.points || 1,
+        position: index + 1,
+      })),
+    });
+  }
+
+  return q;
 }
 
 export async function getQuizAttempts(quizId: string, userId?: string) {

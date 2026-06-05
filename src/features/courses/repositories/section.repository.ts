@@ -30,12 +30,13 @@ export async function deleteSection(sectionId: string, courseId: string) {
   });
 }
 
-export async function reorderSections(courseId: string, items: { id: string; position: number }[]) {
+export async function reorderSections(courseId: string, items: { id: string; position: number }[], tx?: any) {
+  const client = tx || db;
   const updates = items.map((item) =>
-    db.section.update({
+    client.section.update({
       where: { id: item.id, courseId },
       data: { position: item.position },
     })
   );
-  return db.$transaction(updates);
+  return Promise.all(updates);
 }

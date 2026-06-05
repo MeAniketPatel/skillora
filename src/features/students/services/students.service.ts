@@ -3,6 +3,7 @@
 // per ADR-007). Mutation methods emit domain events on the in-process
 // event bus for cross-feature side effects.
 import { eventBus } from "@/shared/events";
+import db from "@/shared/lib/prisma";
 import * as bookmarkRepo from "../repositories/bookmark.repository";
 import * as collectionRepo from "../repositories/collection.repository";
 import * as learningGoalRepo from "../repositories/learning-goal.repository";
@@ -89,9 +90,11 @@ export const studentsService = {
     await eventBus.emit({ name: "students.recordStudySession", feature: "students", payload: { result, args }, occurredAt: new Date() } as any);
     return result;
   },
-  async buyStreakFreeze(...args: Parameters<typeof streakRepo.buyStreakFreeze>): Promise<Awaited<ReturnType<typeof streakRepo.buyStreakFreeze>>> {
-    const result = await streakRepo.buyStreakFreeze(...args);
-    await eventBus.emit({ name: "students.buyStreakFreeze", feature: "students", payload: { result, args }, occurredAt: new Date() } as any);
+  async buyStreakFreeze(userId: string, costPoints = 100): Promise<any> {
+    const result = await db.$transaction(async (tx) => {
+      return streakRepo.buyStreakFreeze(userId, costPoints, tx);
+    });
+    await eventBus.emit({ name: "students.buyStreakFreeze", feature: "students", payload: { result, args: [userId, costPoints] }, occurredAt: new Date() } as any);
     return result;
   },
 };

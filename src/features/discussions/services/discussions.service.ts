@@ -3,6 +3,7 @@
 // per ADR-007). Mutation methods emit domain events on the in-process
 // event bus for cross-feature side effects.
 import { eventBus } from "@/shared/events";
+import db from "@/shared/lib/prisma";
 import * as discussionRepo from "../repositories/discussion.repository";
 import * as qaRepo from "../repositories/qa.repository";
 
@@ -46,9 +47,11 @@ export const discussionsService = {
     await eventBus.emit({ name: "discussions.markQuestionResolved", feature: "discussions", payload: { result, args }, occurredAt: new Date() } as any);
     return result;
   },
-  async acceptAnswer(...args: Parameters<typeof qaRepo.acceptAnswer>): Promise<Awaited<ReturnType<typeof qaRepo.acceptAnswer>>> {
-    const result = await qaRepo.acceptAnswer(...args);
-    await eventBus.emit({ name: "discussions.acceptAnswer", feature: "discussions", payload: { result, args }, occurredAt: new Date() } as any);
+  async acceptAnswer(answerId: string, questionId: string): Promise<any> {
+    const result = await db.$transaction(async (tx) => {
+      return qaRepo.acceptAnswer(answerId, questionId, tx);
+    });
+    await eventBus.emit({ name: "discussions.acceptAnswer", feature: "discussions", payload: { result, args: [answerId, questionId] }, occurredAt: new Date() } as any);
     return result;
   },
 };

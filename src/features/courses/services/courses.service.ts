@@ -3,6 +3,7 @@
 // per ADR-007). Mutation methods emit domain events on the in-process
 // event bus for cross-feature side effects.
 import { eventBus } from "@/shared/events";
+import db from "@/shared/lib/prisma";
 import * as courseRepo from "../repositories/course.repository";
 import * as lessonRepo from "../repositories/lesson.repository";
 import * as liveSessionRepo from "../repositories/live-session.repository";
@@ -60,7 +61,13 @@ export const coursesService = {
     await eventBus.emit({ name: "courses.deleteLesson", feature: "courses", payload: { result, args }, occurredAt: new Date() } as any);
     return result;
   },
-  reorderLessons: lessonRepo.reorderLessons,
+  async reorderLessons(sectionId: string, items: { id: string; position: number }[]): Promise<any> {
+    const result = await db.$transaction(async (tx) => {
+      return lessonRepo.reorderLessons(sectionId, items, tx);
+    });
+    await eventBus.emit({ name: "courses.reorderLessons", feature: "courses", payload: { result, args: [sectionId, items] }, occurredAt: new Date() } as any);
+    return result;
+  },
   getLessonWithContent: lessonRepo.getLessonWithContent,
   getLessonWithSection: lessonRepo.getLessonWithSection,
   getLessonWithCourse: lessonRepo.getLessonWithCourse,
@@ -95,9 +102,11 @@ export const coursesService = {
     await eventBus.emit({ name: "courses.createQuiz", feature: "courses", payload: { result, args }, occurredAt: new Date() } as any);
     return result;
   },
-  async updateQuizWithQuestions(...args: Parameters<typeof quizRepo.updateQuizWithQuestions>): Promise<Awaited<ReturnType<typeof quizRepo.updateQuizWithQuestions>>> {
-    const result = await quizRepo.updateQuizWithQuestions(...args);
-    await eventBus.emit({ name: "courses.updateQuizWithQuestions", feature: "courses", payload: { result, args }, occurredAt: new Date() } as any);
+  async updateQuizWithQuestions(quizId: string, data: any, questions: any[]): Promise<any> {
+    const result = await db.$transaction(async (tx) => {
+      return quizRepo.updateQuizWithQuestions(quizId, data, questions, tx);
+    });
+    await eventBus.emit({ name: "courses.updateQuizWithQuestions", feature: "courses", payload: { result, args: [quizId, data, questions] }, occurredAt: new Date() } as any);
     return result;
   },
   getQuizAttempts: quizRepo.getQuizAttempts,
@@ -132,7 +141,13 @@ export const coursesService = {
     await eventBus.emit({ name: "courses.deleteSection", feature: "courses", payload: { result, args }, occurredAt: new Date() } as any);
     return result;
   },
-  reorderSections: sectionRepo.reorderSections,
+  async reorderSections(courseId: string, items: { id: string; position: number }[]): Promise<any> {
+    const result = await db.$transaction(async (tx) => {
+      return sectionRepo.reorderSections(courseId, items, tx);
+    });
+    await eventBus.emit({ name: "courses.reorderSections", feature: "courses", payload: { result, args: [courseId, items] }, occurredAt: new Date() } as any);
+    return result;
+  },
 };
 
 export type CoursesService = typeof coursesService;

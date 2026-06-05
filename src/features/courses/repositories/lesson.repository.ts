@@ -31,14 +31,15 @@ export async function deleteLesson(lessonId: string, sectionId: string) {
   });
 }
 
-export async function reorderLessons(sectionId: string, items: { id: string; position: number }[]) {
+export async function reorderLessons(sectionId: string, items: { id: string; position: number }[], tx?: any) {
+  const client = tx || db;
   const updates = items.map((item) =>
-    db.lesson.update({
+    client.lesson.update({
       where: { id: item.id, sectionId },
       data: { position: item.position },
     })
   );
-  return db.$transaction(updates);
+  return Promise.all(updates);
 }
 
 export async function getLessonWithContent(lessonId: string) {
