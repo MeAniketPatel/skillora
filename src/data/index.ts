@@ -48,4 +48,5 @@ export * from "./live-session.data";
 export * from "./email-preference.data";
 export * from "./webhook.data";
 export * from "./search.data";
+export * from "./skill-gap.data";
 

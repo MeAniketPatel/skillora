@@ -5,7 +5,15 @@ export const ROUTES = {
   COURSE_DETAIL: (slug: string) => `/courses/${slug}` as const,
   ABOUT: "/about",
   CONTACT: "/contact",
+  PRICING: "/pricing",
+  COMPARE: "/compare",
+  SEARCH: "/search",
+  CAREERS: "/careers",
+  INSTRUCTORS: "/instructors",
+  INSTRUCTOR_DETAIL: (id: string) => `/instructors/${id}` as const,
   CERTIFICATE_VIEW: (certId: string) => `/certificates/${certId}` as const,
+  CERTIFICATE_VERIFY: (certId: string) =>
+    `/certificates/verify/${certId}` as const,
 
   // Auth
   LOGIN: "/login",
@@ -23,6 +31,7 @@ export const ROUTES = {
   STUDENT_WISHLIST: "/student/wishlist",
 
   // Learn
+  LEARN_COURSE: (courseId: string) => `/learn/${courseId}` as const,
   LEARN_LESSON: (courseId: string, lessonId: string) =>
     `/learn/${courseId}/${lessonId}` as const,
 

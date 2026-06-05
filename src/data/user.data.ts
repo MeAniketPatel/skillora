@@ -1,5 +1,6 @@
 import db from "@/lib/prisma";
 import { Role } from "@prisma/client";
+import { APP } from "@/constants/app";
 
 export async function getUserById(id: string) {
   return db.user.findUnique({
@@ -139,5 +140,133 @@ export async function getUserGrowthTimeline() {
   });
 
   return Object.entries(timeline).map(([date, count]) => ({ date, count }));
+}
+
+export async function getAllInstructors(params: {
+  page?: number;
+  limit?: number;
+  search?: string;
+}) {
+  const page = params.page || 1;
+  const limit = params.limit || APP.PAGINATION_DEFAULT;
+  const skip = (page - 1) * limit;
+
+  const where: any = {
+    role: { in: ["TEACHER", "ADMIN"] },
+    isBanned: false,
+  };
+
+  if (params.search) {
+    where.OR = [
+      { name: { contains: params.search, mode: "insensitive" } },
+      { headline: { contains: params.search, mode: "insensitive" } },
+    ];
+  }
+
+  const [instructors, total] = await Promise.all([
+    db.user.findMany({
+      where,
+      skip,
+      take: limit,
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        name: true,
+        image: true,
+        bio: true,
+        headline: true,
+        createdAt: true,
+        _count: {
+          select: {
+            courses: { where: { status: "PUBLISHED" } },
+          },
+        },
+      },
+    }),
+    db.user.count({ where }),
+  ]);
+
+  const instructorIds = instructors.map((i) => i.id);
+
+  const enrollmentCounts = instructorIds.length
+    ? await db.enrollment.groupBy({
+        by: ["courseId"],
+        where: { course: { teacherId: { in: instructorIds } } },
+        _count: { id: true },
+      })
+    : [];
+
+  const courseTeacherMap = instructorIds.length
+    ? await db.course.findMany({
+        where: { teacherId: { in: instructorIds } },
+        select: { id: true, teacherId: true },
+      })
+    : [];
+
+  const totalStudentsByInstructor: Record<string, number> = {};
+  courseTeacherMap.forEach((c) => {
+    const count = enrollmentCounts.find((e) => e.courseId === c.id)?._count.id ?? 0;
+    totalStudentsByInstructor[c.teacherId] =
+      (totalStudentsByInstructor[c.teacherId] || 0) + count;
+  });
+
+  return {
+    instructors: instructors.map((i) => ({
+      id: i.id,
+      name: i.name,
+      image: i.image,
+      bio: i.bio,
+      headline: i.headline,
+      publishedCourseCount: i._count.courses,
+      totalStudents: totalStudentsByInstructor[i.id] || 0,
+    })),
+    total,
+    pages: Math.ceil(total / limit),
+  };
+}
+
+export async function getInstructorProfile(userId: string) {
+  const user = await db.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      image: true,
+      bio: true,
+      headline: true,
+      socialLinks: true,
+      createdAt: true,
+      role: true,
+    },
+  });
+
+  if (!user || (user.role !== "TEACHER" && user.role !== "ADMIN")) {
+    return null;
+  }
+
+  const [courses, totalStudentsAgg, averageRating] = await Promise.all([
+    db.course.findMany({
+      where: { teacherId: userId, status: "PUBLISHED" },
+      include: {
+        category: { select: { name: true } },
+        sections: { select: { lessons: { select: { id: true } } } },
+        _count: { select: { enrollments: true, reviews: true } },
+      },
+      orderBy: { createdAt: "desc" },
+    }),
+    db.enrollment.count({ where: { course: { teacherId: userId } } }),
+    db.review.aggregate({
+      where: { course: { teacherId: userId } },
+      _avg: { rating: true },
+    }),
+  ]);
+
+  return {
+    ...user,
+    courses,
+    totalStudents: totalStudentsAgg,
+    averageRating: averageRating._avg.rating ?? 0,
+  };
 }
 
