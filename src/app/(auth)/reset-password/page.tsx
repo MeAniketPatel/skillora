@@ -1,6 +1,6 @@
 import React from "react";
 
-import ResetPasswordForm from "@/components/auth/reset-password-form";
+import { ResetPasswordForm } from "@/features/auth";
 
 export const metadata = {
   title: "Reset Password - Skillora",

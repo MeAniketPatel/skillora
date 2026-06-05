@@ -1,4 +1,4 @@
-import ForgotPasswordForm from "@/components/auth/forgot-password-form";
+import { ForgotPasswordForm } from "@/features/auth";
 
 export const metadata = {
   title: "Forgot Password - Skillora",

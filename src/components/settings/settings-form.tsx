@@ -24,8 +24,8 @@ import {
   logoutAllSessions,
   logoutSession,
   updateUserSettings,
-} from "@/actions/auth.actions";
-import SignOutButton from "@/components/auth/signout-button";
+} from "@/features/auth";
+import { SignOutButton } from "@/features/auth";
 
 const settingsSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),

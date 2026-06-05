@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { getSessionSecurityOverview } from "@/actions/auth.actions";
+import { getSessionSecurityOverview } from "@/features/auth";
 import SettingsClientForm from "@/components/settings/settings-form";
 import Link from "next/link";
 import { ROUTES } from "@/shared/constants/routes";

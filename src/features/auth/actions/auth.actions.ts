@@ -21,7 +21,7 @@ import {
 
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserByEmail, updateUser, createUser } from "@/data";
+import { getUserByEmail, updateUser, createUser } from "@/features/auth";
 import { ConflictError, UnauthorizedError, ValidationError } from "@/shared/lib/errors";
 
 import {
@@ -35,7 +35,7 @@ import {
   ForgotPasswordInput,
   ResetPasswordInput,
   RevokeSessionInput
-} from "@/features/auth";
+} from "@/features/auth/contracts/auth.contract";
 
 
 
