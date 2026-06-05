@@ -6,3 +6,7 @@ export { PollCreator } from "./components/poll-creator";
 export { PollList } from "./components/poll-list";
 export { PollResults } from "./components/poll-results";
 export { PollVoter } from "./components/poll-voter";
+
+// Services
+export { pollsService } from "./services/polls.service";
+export type { PollsService } from "./services/polls.service";

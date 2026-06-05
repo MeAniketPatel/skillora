@@ -5,3 +5,7 @@ export * from "./repositories/blog.repository";
 export { BlogCard } from "./components/blog-card";
 export { BlogComments } from "./components/blog-comments";
 export { BlogEditor } from "./components/blog-editor";
+
+// Services
+export { blogService } from "./services/blog.service";
+export type { BlogService } from "./services/blog.service";

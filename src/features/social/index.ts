@@ -10,3 +10,7 @@ export { FollowButton } from "./components/follow-button";
 export { ProfileActivityFeed } from "./components/profile-activity-feed";
 export { ProfileCard } from "./components/profile-card";
 export { ProfilePortfolio } from "./components/profile-portfolio";
+
+// Services
+export { socialService } from "./services/social.service";
+export type { SocialService } from "./services/social.service";

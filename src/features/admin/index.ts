@@ -14,3 +14,7 @@ export { PlatformAnnouncements } from "./components/platform-announcements";
 export { ReportsDashboard } from "./components/reports-dashboard";
 export { RevenueCharts } from "./components/revenue-charts";
 export { ImpersonateButton as ImpersonateButton, ImpersonateButton as UserImpersonation, StopImpersonationBanner } from "./components/user-impersonation";
+
+// Services
+export { adminService } from "./services/admin.service";
+export type { AdminService } from "./services/admin.service";

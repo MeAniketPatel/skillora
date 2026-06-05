@@ -15,3 +15,7 @@ export { PeerReviewConfig } from "./components/peer-review-config";
 export { RecentEnrollments } from "./components/recent-enrollments";
 export { SubmissionTable } from "./components/submission-table";
 export { TeacherStats } from "./components/teacher-stats";
+
+// Services
+export { teachersService } from "./services/teachers.service";
+export type { TeachersService } from "./services/teachers.service";

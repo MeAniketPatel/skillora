@@ -49,3 +49,7 @@ export type {
   PaginatedInstructors,
   InstructorProfile,
 } from "./repositories/user.repository";
+
+// Services
+export { authService } from "./services/auth.service";
+export type { AuthService } from "./services/auth.service";

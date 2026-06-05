@@ -25,3 +25,7 @@ export { default as LessonEditor } from "./components/lesson-editor";
 export { default as LessonPlayer } from "./components/lesson-player";
 export { default as QuizBuilder } from "./components/quiz-builder";
 export { default as QuizView } from "./components/quiz-view";
+
+// Services
+export { coursesService } from "./services/courses.service";
+export type { CoursesService } from "./services/courses.service";

@@ -19,3 +19,7 @@ export { StreakCalendar } from "./components/streak-calendar";
 export { StreakFreezeButton } from "./components/streak-freeze-button";
 export { StreakWidget } from "./components/streak-widget";
 export { WeeklyProgress } from "./components/weekly-progress";
+
+// Services
+export { studentsService } from "./services/students.service";
+export type { StudentsService } from "./services/students.service";

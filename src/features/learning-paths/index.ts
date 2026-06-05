@@ -3,3 +3,7 @@ export * from "./repositories/learning-path.repository";
 
 // Components
 export { PathTimeline } from "./components/path-timeline";
+
+// Services
+export { learningPathsService } from "./services/learning-paths.service";
+export type { LearningPathsService } from "./services/learning-paths.service";
