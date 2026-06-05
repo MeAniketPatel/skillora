@@ -35,6 +35,9 @@ export const ROUTES = {
   LEARN_LESSON: (courseId: string, lessonId: string) =>
     `/learn/${courseId}/${lessonId}` as const,
 
+  // Learning paths
+  LEARNING_PATHS: "/learning-paths",
+
   // Teacher
   TEACHER_COURSES: "/teacher/courses",
   TEACHER_COURSE_NEW: "/teacher/courses/new",
