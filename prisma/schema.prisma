@@ -109,6 +109,13 @@ model User {
   discussionReplies    DiscussionReply[]
   flashcardDecks       FlashcardDeck[]
   spacedRepProgress    SpacedRepetitionProgress[]
+
+  // Phase 7 Commerce & Monetization
+  subscriptions        Subscription[]
+  giftCardsSent        GiftCard[]              @relation("GiftSender")
+  giftCardsReceived    GiftCard[]              @relation("GiftReceiver")
+  referralsMade        Referral[]              @relation("ReferralsMade")
+  referralReceived     Referral?               @relation("ReferralsReceived")
 }
 
 model Account {
@@ -266,6 +273,7 @@ model Course {
   announcements Announcement[]
   polls         Poll[]
   learningPaths PathCourse[]
+  bundles      BundleCourse[]
 }
 
 model Section {
@@ -1002,6 +1010,71 @@ model SpacedRepetitionProgress {
   updatedAt   DateTime  @updatedAt
 
   @@unique([flashcardId, userId])
+}
+
+// ============ BUNDLES (PHASE 7) ============
+
+model CourseBundle {
+  id          String         @id @default(cuid())
+  title       String
+  description String         @db.Text
+  price       Float
+  imageUrl    String?
+  courses     BundleCourse[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model BundleCourse {
+  id       String       @id @default(cuid())
+  bundleId String
+  bundle   CourseBundle @relation(fields: [bundleId], references: [id], onDelete: Cascade)
+  courseId String
+  course   Course       @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  @@unique([bundleId, courseId])
+}
+
+// ============ SUBSCRIPTIONS (PHASE 7) ============
+
+model Subscription {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan      String   // "FREE" | "PRO" | "ENTERPRISE"
+  status    String   // "ACTIVE" | "CANCELLED" | "EXPIRED"
+  startDate DateTime @default(now())
+  endDate   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============ GIFT CARDS (PHASE 7) ============
+
+model GiftCard {
+  id          String    @id @default(cuid())
+  code        String    @unique
+  amount      Float
+  isRedeemed  Boolean   @default(false)
+  senderId    String
+  sender      User      @relation("GiftSender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId  String?
+  receiver    User?     @relation("GiftReceiver", fields: [receiverId], references: [id], onDelete: SetNull)
+  redeemedAt  DateTime?
+  createdAt   DateTime  @default(now())
+}
+
+// ============ REFERRALS (PHASE 7) ============
+
+model Referral {
+  id             String   @id @default(cuid())
+  referrerId     String
+  referrer       User     @relation("ReferralsMade", fields: [referrerId], references: [id], onDelete: Cascade)
+  referredId     String   @unique
+  referred       User     @relation("ReferralsReceived", fields: [referredId], references: [id], onDelete: Cascade)
+  pointsAwarded  Int      @default(100)
+  isConverted    Boolean  @default(false)
+  createdAt      DateTime @default(now())
 }
 
 
