@@ -22,6 +22,9 @@ export * from "./study-group.schema";
 export * from "./message.schema";
 export * from "./discussion.schema";
 export * from "./flashcard.schema";
+export * from "./bundle.schema";
+export * from "./gift-card.schema";
+
 
 
 
