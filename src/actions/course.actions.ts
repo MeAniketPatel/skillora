@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/lib/action-utils";
 import { requireTeacher } from "@/lib/auth-helpers";
+import { triggerWebhook } from "@/lib/webhook-sender";
 import {
   courseCreateSchema,
   courseUpdateSchema,
@@ -85,6 +86,20 @@ export async function publishCourse(courseId: string) {
     }
 
     const updated = await updateCourseData(courseId, { status: "PUBLISHED", publishedAt: new Date() });
+    
+    try {
+      await triggerWebhook("course.published", {
+        courseId: updated.id,
+        title: updated.title,
+        slug: updated.slug,
+        price: updated.price,
+        teacherId: updated.teacherId,
+        publishedAt: updated.publishedAt,
+      });
+    } catch (whErr) {
+      console.error("Failed to trigger webhook on course publish:", whErr);
+    }
+
     revalidatePath(`/teacher/courses/${courseId}`);
     return updated;
   });

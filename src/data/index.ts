@@ -46,4 +46,5 @@ export * from "./blog.data";
 export * from "./resource.data";
 export * from "./live-session.data";
 export * from "./email-preference.data";
+export * from "./webhook.data";
 
