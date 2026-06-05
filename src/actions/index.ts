@@ -39,4 +39,7 @@ export * from "./bundle.actions";
 export * from "./subscription.actions";
 export * from "./gift-card.actions";
 export * from "./referral.actions";
+export * from "./blog.actions";
+export * from "./resource.actions";
+
 

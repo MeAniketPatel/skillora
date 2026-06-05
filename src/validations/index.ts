@@ -24,6 +24,9 @@ export * from "./discussion.schema";
 export * from "./flashcard.schema";
 export * from "./bundle.schema";
 export * from "./gift-card.schema";
+export * from "./blog.schema";
+export * from "./resource.schema";
+
 
 
 
