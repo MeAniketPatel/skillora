@@ -1,0 +1,22 @@
+import React from "react";
+import { requireAdmin } from "@/lib/auth-helpers";
+import { getFeatureFlags } from "@/data/feature-flag.data";
+import { PageHeader } from "@/components/shared/page-header";
+import { FeatureFlagsPanel } from "@/components/admin/feature-flags-panel";
+
+export default async function AdminFeatureFlagsPage() {
+  await requireAdmin();
+
+  const flags = await getFeatureFlags();
+
+  return (
+    <div className="p-6 max-w-5xl mx-auto space-y-6">
+      <PageHeader
+        title="Feature Flags Manager"
+        description="Release features dynamically, control rollouts, and toggle features platform-wide."
+      />
+
+      <FeatureFlagsPanel initialFlags={flags as any} />
+    </div>
+  );
+}
