@@ -20,6 +20,9 @@ export * from "./moderation.schema";
 export * from "./profile.schema";
 export * from "./study-group.schema";
 export * from "./message.schema";
+export * from "./discussion.schema";
+export * from "./flashcard.schema";
+
 
 
 

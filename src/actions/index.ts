@@ -31,5 +31,7 @@ export * from "./profile.actions";
 export * from "./follow.actions";
 export * from "./study-group.actions";
 export * from "./message.actions";
-
-
+export * from "./gamification.actions";
+export * from "./learning-path.actions";
+export * from "./discussion.actions";
+export * from "./flashcard.actions";
