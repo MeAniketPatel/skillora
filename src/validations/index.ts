@@ -26,6 +26,7 @@ export * from "./bundle.schema";
 export * from "./gift-card.schema";
 export * from "./blog.schema";
 export * from "./resource.schema";
+export * from "./email-preference.schema";
 
 
 

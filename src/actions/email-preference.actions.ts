@@ -1,0 +1,21 @@
+"use server";
+
+import { z } from "zod";
+import { actionHandler } from "@/lib/action-utils";
+import { requireAuth } from "@/lib/auth-helpers";
+import { emailPreferenceSchema } from "@/validations";
+import { updateEmailPreferences } from "@/data";
+import { revalidatePath } from "next/cache";
+
+export async function updateEmailPreferencesAction(values: z.infer<typeof emailPreferenceSchema>) {
+  return actionHandler(async () => {
+    const user = await requireAuth();
+    const validated = emailPreferenceSchema.parse(values);
+    
+    const prefs = await updateEmailPreferences(user.id, validated);
+    
+    revalidatePath("/settings/notifications");
+    
+    return prefs;
+  });
+}

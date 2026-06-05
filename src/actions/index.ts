@@ -41,5 +41,6 @@ export * from "./gift-card.actions";
 export * from "./referral.actions";
 export * from "./blog.actions";
 export * from "./resource.actions";
+export * from "./email-preference.actions";
 
 

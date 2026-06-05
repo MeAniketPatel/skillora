@@ -61,4 +61,6 @@ export const ROUTES = {
 
   // Settings
   SETTINGS: "/settings",
+  SETTINGS_NOTIFICATIONS: "/settings/notifications",
+  SETTINGS_PRIVACY: "/settings/privacy",
 } as const;
