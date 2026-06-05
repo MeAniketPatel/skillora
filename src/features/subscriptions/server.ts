@@ -3,3 +3,9 @@
 
 // Repository functions
 export { getUserSubscription, createSubscription } from "./repositories/subscription.repository";
+
+// Service
+
+// Service
+import { subscriptionsService as service } from "./services/subscriptions.service";
+export { service };

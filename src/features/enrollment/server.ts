@@ -3,3 +3,9 @@
 
 // Repository functions
 export { getEnrollment, createEnrollment, getUserEnrollments, getCourseEnrollments, getEnrollmentWithProgress, getEnrollmentWithUserAndCourse, updateEnrollmentProgress, getEnrollmentCount, getTotalEnrollmentCount, getUserEnrollmentCount, getResumeLessonId, getTeacherRecentEnrollments, getTeacherStudentCount, getEnrolledStudentIds, getEnrollmentTrends } from "./repositories/enrollment.repository";
+
+// Service
+
+// Service
+import { enrollmentService as service } from "./services/enrollment.service";
+export { service };

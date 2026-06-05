@@ -3,3 +3,9 @@
 
 // Repository functions
 export { getCourseBundles, getCourseBundleDetail, createCourseBundle } from "./repositories/bundle.repository";
+
+// Service
+
+// Service
+import { bundlesService as service } from "./services/bundles.service";
+export { service };

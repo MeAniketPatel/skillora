@@ -5,11 +5,11 @@ import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { flagContentSchema } from "@/features/moderation/contracts/moderation.contract";
-import { approveModerationItem, rejectModerationItem, createModerationItem } from "@/features/admin/server";
+import { service as adminService } from "@/features/admin/server";
 export async function approveModerationItemAction(id: string) {
   return actionHandler(async () => {
     const user = await requireAdmin();
-    await approveModerationItem(id, user.id!);
+    await adminService.approveModerationItem(id, user.id!);
     revalidatePath("/admin/moderation");
     return { success: true };
   });
@@ -18,7 +18,7 @@ export async function approveModerationItemAction(id: string) {
 export async function rejectModerationItemAction(id: string) {
   return actionHandler(async () => {
     const user = await requireAdmin();
-    await rejectModerationItem(id, user.id!);
+    await adminService.rejectModerationItem(id, user.id!);
     revalidatePath("/admin/moderation");
     return { success: true };
   });
@@ -27,7 +27,7 @@ export async function rejectModerationItemAction(id: string) {
 export async function flagContentAction(values: z.infer<typeof flagContentSchema>) {
   return actionHandler(async () => {
     const validated = flagContentSchema.parse(values);
-    const item = await createModerationItem(validated as any);
+    const item = await adminService.createModerationItem(validated as any);
     revalidatePath("/admin/moderation");
     return item;
   });

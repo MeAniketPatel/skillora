@@ -4,7 +4,7 @@ import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { liveSessionSchema } from "@/features/live-sessions/contracts/live-session.contract";;
-import { createLiveSession, deleteLiveSession, getLiveSessionById, getCourseByIdForOwner } from "@/features/courses/server";
+import { service as coursesService } from "@/features/courses/server";
 import { triggerWebhook } from "@/lib/webhook-sender";
 import { revalidatePath } from "next/cache";
 import db from "@/shared/lib/prisma";
@@ -16,10 +16,10 @@ export async function createLiveSessionAction(values: z.infer<typeof liveSession
 
     // If associated with a course, verify ownership
     if (validated.courseId) {
-      await getCourseByIdForOwner(validated.courseId, user.id);
+      await coursesService.getCourseByIdForOwner(validated.courseId, user.id);
     }
 
-    const session = await createLiveSession({
+    const session = await coursesService.createLiveSession({
       title: validated.title,
       description: validated.description,
       meetUrl: validated.meetUrl,
@@ -57,7 +57,7 @@ export async function createLiveSessionAction(values: z.infer<typeof liveSession
 export async function deleteLiveSessionAction(id: string) {
   return actionHandler(async () => {
     const user = await requireTeacher();
-    const session = await getLiveSessionById(id);
+    const session = await coursesService.getLiveSessionById(id);
     if (!session) {
       throw new Error("Live session not found.");
     }
@@ -67,7 +67,7 @@ export async function deleteLiveSessionAction(id: string) {
       throw new Error("You do not have permission to delete this session.");
     }
 
-    const deleted = await deleteLiveSession(id);
+    const deleted = await coursesService.deleteLiveSession(id);
 
     if (session.courseId) {
       revalidatePath(`/teacher/courses/${session.courseId}`);

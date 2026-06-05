@@ -3,3 +3,9 @@
 
 // Repository functions
 export { getUserWishlist, isWishlisted, toggleWishlist } from "./repositories/wishlist.repository";
+
+// Service
+
+// Service
+import { wishlistService as service } from "./services/wishlist.service";
+export { service };

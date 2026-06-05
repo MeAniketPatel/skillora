@@ -3,3 +3,9 @@
 
 // Repository functions
 export { getAnnouncementsByCourseId, createAnnouncement, getAnnouncementById, deleteAnnouncement, getGlobalAnnouncements } from "./repositories/announcement.repository";
+
+// Service
+
+// Service
+import { announcementsService as service } from "./services/announcements.service";
+export { service };

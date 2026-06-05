@@ -44,7 +44,8 @@ const re = {
   legacyComponents: /from\s*["']@\/components\//g,
   legacyHooks: /from\s*["']@\/hooks\//g,
   legacyStores: /from\s*["']@\/stores\//g,
-  useService: /from\s*["']@\/features\/[^"']+\/services\//g,
+  useService: /import\s*\{[^}]*\bservice\b[^}]*\}\s*from\s*["']@\/features\/[^"']+\/server["']/g,
+  useServiceCall: /\.service\.\w+\(/g,
   usePermission: /from\s*["']@\/features\/[^"']+\/permissions\//g,
   useHook: /from\s*["']@\/features\/[^"']+\/hooks\//g,
   useContract: /from\s*["']@\/features\/[^"']+\/contracts\//g,
@@ -59,6 +60,7 @@ for (const f of appFiles) {
   counts.legacy_hooks += (text.match(re.legacyHooks) || []).length;
   counts.legacy_stores += (text.match(re.legacyStores) || []).length;
   counts.services += (text.match(re.useService) || []).length;
+  counts.services += (text.match(re.useServiceCall) || []).length;
   counts.permissions += (text.match(re.usePermission) || []).length;
   counts.hooks += (text.match(re.useHook) || []).length;
   counts.contracts += (text.match(re.useContract) || []).length;

@@ -7,3 +7,9 @@ export { isFollowing, followUser, unfollowUser, getFollowers, getFollowing } fro
 export { getConversations, getOrCreateConversation, getMessages, sendDirectMessage } from "./repositories/message.repository";
 export { getUserProfileCard, getUserPortfolio, createPortfolioProject, deletePortfolioProject } from "./repositories/profile.repository";
 export { getStudyGroups, createStudyGroup, getStudyGroupById, isGroupMember, joinStudyGroup, leaveStudyGroup, sendStudyGroupMessage } from "./repositories/study-group.repository";
+
+// Service
+
+// Service
+import { socialService as service } from "./services/social.service";
+export { service };

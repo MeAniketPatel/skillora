@@ -3,3 +3,9 @@
 
 // Repository functions
 export { createPurchase, getPurchaseByStripeId, getUserPurchases, getTeacherEarnings, getPlatformRevenue, getRevenueTimeSeries, getRecentPurchases, getRevenueByTeacher, getRevenueByCourse } from "./repositories/payment.repository";
+
+// Service
+
+// Service
+import { paymentsService as service } from "./services/payments.service";
+export { service };

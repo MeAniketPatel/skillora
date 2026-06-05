@@ -2,7 +2,7 @@
 
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { createReferral, convertReferral } from "@/features/referrals/server";
+import { service as referralsService } from "@/features/referrals/server";
 import { revalidatePath } from "next/cache";
 
 export async function trackReferralSignupAction(referrerId: string) {
@@ -14,10 +14,10 @@ export async function trackReferralSignupAction(referrerId: string) {
     }
     
     // Create the referral link in the DB
-    const referral = await createReferral(referrerId, user.id!);
+    const referral = await referralsService.createReferral(referrerId, user.id!);
     
     // Auto-convert immediately for mock testing ease
-    await convertReferral(user.id!);
+    await referralsService.convertReferral(user.id!);
     
     revalidatePath("/student/referrals");
     return referral;

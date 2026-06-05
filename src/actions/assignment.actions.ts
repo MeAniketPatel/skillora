@@ -4,31 +4,31 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth, requireTeacher } from "@/shared/lib/auth-helpers";
 import { NotFoundError, ValidationError } from "@/shared/lib/errors";
-import { submitAssignment as submitAssignmentData, getSubmissionsForLesson, gradeSubmission as gradeSubmissionData } from "@/features/assignments/server";
-import { getLessonWithContent, getLessonWithCourse } from "@/features/courses/server";
-import { getEnrollment } from "@/features/enrollment/server";
-import { upsertLessonProgress } from "@/features/students/server";
-import { createNotification } from "@/features/notifications/server";
+import { service as assignmentsService } from "@/features/assignments/server";
+import { service as coursesService } from "@/features/courses/server";
+import { service as enrollmentService } from "@/features/enrollment/server";
+import { service as studentsService } from "@/features/students/server";
+import { service as notificationsService } from "@/features/notifications/server";
 export async function submitAssignment(lessonId: string, content: string) {
   return actionHandler(async () => {
     const user = await requireAuth();
 
-    const lesson = await getLessonWithCourse(lessonId);
+    const lesson = await coursesService.getLessonWithCourse(lessonId);
 
     if (!lesson) throw new NotFoundError("Lesson");
 
-    const enrollment = await getEnrollment(user.id, lesson.section.courseId);
+    const enrollment = await enrollmentService.getEnrollment(user.id, lesson.section.courseId);
     if (!enrollment) throw new ValidationError("You are not enrolled in this course");
 
-    const submission = await submitAssignmentData(user.id, lessonId, content);
+    const submission = await assignmentsService.submitAssignment(user.id, lessonId, content);
 
-    await upsertLessonProgress(enrollment.id, lessonId, {
+    await studentsService.upsertLessonProgress(enrollment.id, lessonId, {
       isCompleted: true,
       completedAt: new Date(),
     });
 
     try {
-      await createNotification(
+      await notificationsService.createNotification(
         lesson.section.course.teacherId,
         "ASSIGNMENT_SUBMISSION",
         "New Assignment Submission 📝",
@@ -47,7 +47,7 @@ export async function submitAssignment(lessonId: string, content: string) {
 export async function getLessonSubmissions(lessonId: string) {
   return actionHandler(async () => {
     await requireTeacher();
-    const submissions = await getSubmissionsForLesson(lessonId);
+    const submissions = await assignmentsService.getSubmissionsForLesson(lessonId);
     return submissions;
   });
 }
@@ -60,10 +60,10 @@ export async function gradeSubmission(
   return actionHandler(async () => {
     await requireTeacher();
 
-    const submission = await gradeSubmissionData(submissionId, score, feedback);
+    const submission = await assignmentsService.gradeSubmission(submissionId, score, feedback);
 
     try {
-      await createNotification(
+      await notificationsService.createNotification(
         submission.userId,
         "ASSIGNMENT_GRADED",
         "Assignment Graded! 📝",

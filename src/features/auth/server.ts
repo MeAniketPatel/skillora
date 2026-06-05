@@ -7,3 +7,9 @@ export { getUserById, getUserByEmail, createUser, getUserProfile, getAllUsers, g
 // Actions
 export { loginUser, registerUser, logoutCurrentSession, logoutAllSessions, logoutSession, requestPasswordReset, resetPassword, updateUserSettings, getSessionSecurityOverview } from "./actions/auth.actions";
 export { AuthAuditAction, AuthSessionRevocationReason } from "./repositories/user.repository";
+
+// Service
+
+// Service
+import { authService as service } from "./services/auth.service";
+export { service };

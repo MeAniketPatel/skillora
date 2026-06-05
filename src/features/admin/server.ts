@@ -5,3 +5,9 @@
 export { getAuditLogs } from "./repositories/audit.repository";
 export { getCouponByCode, getAllCoupons, createCoupon, updateCoupon, deleteCoupon, incrementCouponUsage, validateCoupon, getTeacherCoupons } from "./repositories/coupon.repository";
 export { getPendingModerationItems, getModerationItems, createModerationItem, approveModerationItem, rejectModerationItem, getModerationStats } from "./repositories/moderation.repository";
+
+// Service
+
+// Service
+import { adminService as service } from "./services/admin.service";
+export { service };

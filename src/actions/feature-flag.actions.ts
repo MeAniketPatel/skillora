@@ -9,14 +9,14 @@ import {
   toggleFeatureFlagSchema,
   updateRolloutSchema,
 } from "@/features/feature-flags/contracts/feature-flag.contract";
-import { createFeatureFlag as createFeatureFlagDAL, toggleFeatureFlag as toggleFeatureFlagDAL, updateFeatureFlagRollout, deleteFeatureFlag as deleteFeatureFlagDAL } from "@/features/feature-flags/server";
+import { service as featureFlagsService } from "@/features/feature-flags/server";
 export async function createFeatureFlagAction(
   values: z.infer<typeof featureFlagSchema>
 ) {
   return actionHandler(async () => {
     await requireAdmin();
     const validated = featureFlagSchema.parse(values);
-    const flag = await createFeatureFlagDAL(validated);
+    const flag = await featureFlagsService.createFeatureFlag(validated);
     revalidatePath("/admin/feature-flags");
     return flag;
   });
@@ -28,7 +28,7 @@ export async function toggleFeatureFlagAction(
   return actionHandler(async () => {
     await requireAdmin();
     const validated = toggleFeatureFlagSchema.parse(values);
-    const flag = await toggleFeatureFlagDAL(validated.id, validated.isEnabled);
+    const flag = await featureFlagsService.toggleFeatureFlag(validated.id, validated.isEnabled);
     revalidatePath("/admin/feature-flags");
     return flag;
   });
@@ -40,7 +40,7 @@ export async function updateFeatureFlagRolloutAction(
   return actionHandler(async () => {
     await requireAdmin();
     const validated = updateRolloutSchema.parse(values);
-    const flag = await updateFeatureFlagRollout(validated.id, validated.rolloutPct);
+    const flag = await featureFlagsService.updateFeatureFlagRollout(validated.id, validated.rolloutPct);
     revalidatePath("/admin/feature-flags");
     return flag;
   });
@@ -49,7 +49,7 @@ export async function updateFeatureFlagRolloutAction(
 export async function deleteFeatureFlagAction(id: string) {
   return actionHandler(async () => {
     await requireAdmin();
-    await deleteFeatureFlagDAL(id);
+    await featureFlagsService.deleteFeatureFlag(id);
     revalidatePath("/admin/feature-flags");
     return { success: true };
   });

@@ -5,13 +5,13 @@ import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { createStudyGroupSchema, studyGroupMessageSchema } from "@/features/study-groups/contracts/study-group.contract";
-import { createStudyGroup, joinStudyGroup, leaveStudyGroup, sendStudyGroupMessage } from "@/features/social/server";
+import { service as socialService } from "@/features/social/server";
 export async function createStudyGroupAction(values: z.infer<typeof createStudyGroupSchema>) {
   return actionHandler(async () => {
     const user = await requireAuth();
     const validated = createStudyGroupSchema.parse(values);
 
-    const group = await createStudyGroup(
+    const group = await socialService.createStudyGroup(
       user.id!,
       validated.name,
       validated.description,
@@ -26,7 +26,7 @@ export async function createStudyGroupAction(values: z.infer<typeof createStudyG
 export async function joinStudyGroupAction(studyGroupId: string) {
   return actionHandler(async () => {
     const user = await requireAuth();
-    await joinStudyGroup(studyGroupId, user.id!);
+    await socialService.joinStudyGroup(studyGroupId, user.id!);
     revalidatePath("/student/study-groups");
     return { success: true };
   });
@@ -35,7 +35,7 @@ export async function joinStudyGroupAction(studyGroupId: string) {
 export async function leaveStudyGroupAction(studyGroupId: string) {
   return actionHandler(async () => {
     const user = await requireAuth();
-    await leaveStudyGroup(studyGroupId, user.id!);
+    await socialService.leaveStudyGroup(studyGroupId, user.id!);
     revalidatePath("/student/study-groups");
     return { success: true };
   });
@@ -46,7 +46,7 @@ export async function sendStudyGroupMessageAction(studyGroupId: string, values: 
     const user = await requireAuth();
     const validated = studyGroupMessageSchema.parse(values);
 
-    const msg = await sendStudyGroupMessage(studyGroupId, user.id!, validated.content);
+    const msg = await socialService.sendStudyGroupMessage(studyGroupId, user.id!, validated.content);
     revalidatePath(`/student/study-groups/${studyGroupId}`);
     return msg;
   });

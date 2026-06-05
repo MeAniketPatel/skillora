@@ -3,3 +3,9 @@
 
 // Repository functions
 export { getSetting, setSetting, getAllSettings } from "./repositories/settings.repository";
+
+// Service
+
+// Service
+import { settingsService as service } from "./services/settings.service";
+export { service };

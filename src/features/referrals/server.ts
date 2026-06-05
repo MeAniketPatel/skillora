@@ -3,3 +3,9 @@
 
 // Repository functions
 export { createReferral, convertReferral, getReferralStats } from "./repositories/referral.repository";
+
+// Service
+
+// Service
+import { referralsService as service } from "./services/referrals.service";
+export { service };

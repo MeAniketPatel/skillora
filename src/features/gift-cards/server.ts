@@ -3,3 +3,9 @@
 
 // Repository functions
 export { createGiftCard, redeemGiftCard } from "./repositories/gift-card.repository";
+
+// Service
+
+// Service
+import { giftCardsService as service } from "./services/gift-cards.service";
+export { service };

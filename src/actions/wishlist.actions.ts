@@ -3,12 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { toggleWishlist as toggleWishlistData } from "@/features/wishlist/server";
+import { service as wishlistService } from "@/features/wishlist/server";
 export async function toggleWishlist(courseId: string) {
   return actionHandler(async () => {
     const user = await requireAuth();
     
-    const result = await toggleWishlistData(user.id, courseId);
+    const result = await wishlistService.toggleWishlist(user.id, courseId);
     
     revalidatePath(`/courses/${courseId}`);
     revalidatePath(`/student/wishlist`);

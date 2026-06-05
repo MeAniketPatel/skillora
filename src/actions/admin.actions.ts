@@ -4,13 +4,13 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { userRoleUpdateSchema } from "@/features/admin/contracts/admin.contract";
-import { updateUser, banUser as banUserData, unbanUser as unbanUserData } from "@/features/auth/server";
+import { service as authService } from "@/features/auth/server";
 export async function updateUserRole(values: any) {
   return actionHandler(async () => {
     await requireAdmin();
     const validated = userRoleUpdateSchema.parse(values);
     
-    const user = await updateUser(validated.userId, { role: validated.role });
+    const user = await authService.updateUser(validated.userId, { role: validated.role });
     revalidatePath(`/admin/users`);
     return user;
   });
@@ -20,7 +20,7 @@ export async function banUser(userId: string, reason?: string) {
   return actionHandler(async () => {
     await requireAdmin();
     
-    const user = await banUserData(userId, reason);
+    const user = await authService.banUser(userId, reason);
     revalidatePath(`/admin/users`);
     return user;
   });
@@ -30,7 +30,7 @@ export async function unbanUser(userId: string) {
   return actionHandler(async () => {
     await requireAdmin();
     
-    const user = await unbanUserData(userId);
+    const user = await authService.unbanUser(userId);
     revalidatePath(`/admin/users`);
     return user;
   });

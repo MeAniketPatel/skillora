@@ -5,7 +5,7 @@ import { actionHandler } from "@/shared/lib/action-utils";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { ValidationError } from "@/shared/lib/errors";
 import { payoutSchema } from "@/features/payouts/contracts/payout.contract";
-import { getPayoutBalance, createPayoutRequest } from "@/features/teachers/server";
+import { service as teachersService } from "@/features/teachers/server";
 import { z } from "zod";
 
 export async function requestPayoutAction(values: z.infer<typeof payoutSchema>) {
@@ -14,7 +14,7 @@ export async function requestPayoutAction(values: z.infer<typeof payoutSchema>) 
     const validated = payoutSchema.parse(values);
 
     // Get current balance status
-    const { availableBalance } = await getPayoutBalance(user.id);
+    const { availableBalance } = await teachersService.getPayoutBalance(user.id);
 
     if (validated.amount > availableBalance) {
       throw new ValidationError(
@@ -24,7 +24,7 @@ export async function requestPayoutAction(values: z.infer<typeof payoutSchema>) 
       );
     }
 
-    const payout = await createPayoutRequest(user.id, validated.amount);
+    const payout = await teachersService.createPayoutRequest(user.id, validated.amount);
 
     revalidatePath("/teacher/payouts");
     return payout;

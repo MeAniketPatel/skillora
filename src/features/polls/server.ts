@@ -3,3 +3,9 @@
 
 // Repository functions
 export { getCoursePolls, getPollById, createPoll, voteInPoll, closePoll, deletePoll } from "./repositories/poll.repository";
+
+// Service
+
+// Service
+import { pollsService as service } from "./services/polls.service";
+export { service };

@@ -4,8 +4,8 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth, requireTeacher } from "@/shared/lib/auth-helpers";
 import { pollSchema } from "@/features/polls/contracts/poll.contract";
-import { createPoll as createPollDAL, voteInPoll as voteInPollDAL, closePoll as closePollDAL, deletePoll as deletePollDAL, getPollById } from "@/features/polls/server";
-import { getCourseByIdForOwner } from "@/features/courses/server";
+import { service as pollsService } from "@/features/polls/server";
+import { service as coursesService } from "@/features/courses/server";
 import { z } from "zod";
 
 export async function createPollAction(
@@ -17,9 +17,9 @@ export async function createPollAction(
     const validated = pollSchema.parse(values);
 
     // Verify course ownership
-    await getCourseByIdForOwner(courseId, user.id);
+    await coursesService.getCourseByIdForOwner(courseId, user.id);
 
-    const poll = await createPollDAL(
+    const poll = await pollsService.createPoll(
       user.id,
       courseId,
       validated.question,
@@ -35,11 +35,11 @@ export async function voteInPollAction(courseId: string, pollId: string, optionI
   return actionHandler(async () => {
     const user = await requireAuth();
 
-    const poll = await getPollById(pollId);
+    const poll = await pollsService.getPollById(pollId);
     if (!poll) throw new Error("Poll not found");
     if (poll.closedAt) throw new Error("Poll is closed");
 
-    const vote = await voteInPollDAL(user.id, pollId, optionId);
+    const vote = await pollsService.voteInPoll(user.id, pollId, optionId);
 
     revalidatePath(`/teacher/courses/${courseId}/polls`);
     revalidatePath(`/learn/${courseId}`); // Revalidate student view
@@ -52,9 +52,9 @@ export async function closePollAction(courseId: string, pollId: string) {
     const user = await requireTeacher();
 
     // Verify course ownership
-    await getCourseByIdForOwner(courseId, user.id);
+    await coursesService.getCourseByIdForOwner(courseId, user.id);
 
-    const poll = await closePollDAL(pollId);
+    const poll = await pollsService.closePoll(pollId);
 
     revalidatePath(`/teacher/courses/${courseId}/polls`);
     return poll;
@@ -66,9 +66,9 @@ export async function deletePollAction(courseId: string, pollId: string) {
     const user = await requireTeacher();
 
     // Verify course ownership
-    await getCourseByIdForOwner(courseId, user.id);
+    await coursesService.getCourseByIdForOwner(courseId, user.id);
 
-    await deletePollDAL(pollId);
+    await pollsService.deletePoll(pollId);
 
     revalidatePath(`/teacher/courses/${courseId}/polls`);
     return { success: true };

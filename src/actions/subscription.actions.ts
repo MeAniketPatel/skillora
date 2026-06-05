@@ -2,7 +2,7 @@
 
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { createSubscription } from "@/features/subscriptions/server";
+import { service as subscriptionsService } from "@/features/subscriptions/server";
 import { revalidatePath } from "next/cache";
 
 export async function subscribeToPlanAction(plan: "FREE" | "PRO" | "ENTERPRISE") {
@@ -10,7 +10,7 @@ export async function subscribeToPlanAction(plan: "FREE" | "PRO" | "ENTERPRISE")
     const user = await requireAuth();
     
     // Default mock duration of 30 days
-    const subscription = await createSubscription(user.id!, plan, 30);
+    const subscription = await subscriptionsService.createSubscription(user.id!, plan, 30);
     
     revalidatePath("/pricing");
     revalidatePath("/settings/privacy"); // or wherever subscriptions are viewed

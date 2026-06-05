@@ -4,7 +4,7 @@ import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { purchaseGiftCardSchema, redeemGiftCardSchema } from "@/features/gift-cards/contracts/gift-card.contract";
-import { createGiftCard, redeemGiftCard } from "@/features/gift-cards/server";
+import { service as giftCardsService } from "@/features/gift-cards/server";
 import { revalidatePath } from "next/cache";
 
 // Helper to generate a random 12 character code
@@ -23,7 +23,7 @@ export async function purchaseGiftCardAction(values: z.infer<typeof purchaseGift
     const validated = purchaseGiftCardSchema.parse(values);
     
     const code = generateCode();
-    const giftCard = await createGiftCard(user.id!, validated.amount, code);
+    const giftCard = await giftCardsService.createGiftCard(user.id!, validated.amount, code);
     
     revalidatePath("/student/purchases");
     return giftCard;
@@ -35,7 +35,7 @@ export async function redeemGiftCardAction(values: z.infer<typeof redeemGiftCard
     const user = await requireAuth();
     const validated = redeemGiftCardSchema.parse(values);
     
-    const giftCard = await redeemGiftCard(validated.code, user.id!);
+    const giftCard = await giftCardsService.redeemGiftCard(validated.code, user.id!);
     
     revalidatePath("/student/purchases");
     revalidatePath("/leaderboard"); // refresh leaderboard points display

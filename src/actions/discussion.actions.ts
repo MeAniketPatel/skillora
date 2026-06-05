@@ -5,13 +5,13 @@ import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { createDiscussionSchema, discussionReplySchema } from "@/features/discussions/contracts/discussion.contract";
-import { createDiscussion, addDiscussionReply } from "@/features/discussions/server";
+import { service as discussionsService } from "@/features/discussions/server";
 export async function createDiscussionAction(values: z.infer<typeof createDiscussionSchema>) {
   return actionHandler(async () => {
     const user = await requireAuth();
     const validated = createDiscussionSchema.parse(values);
 
-    const discussion = await createDiscussion(
+    const discussion = await discussionsService.createDiscussion(
       user.id!,
       validated.title,
       validated.content,
@@ -31,7 +31,7 @@ export async function addDiscussionReplyAction(
     const user = await requireAuth();
     const validated = discussionReplySchema.parse(values);
 
-    const reply = await addDiscussionReply(discussionId, user.id!, validated.content);
+    const reply = await discussionsService.addDiscussionReply(discussionId, user.id!, validated.content);
     revalidatePath(`/discussions/${discussionId}`);
     return reply;
   });

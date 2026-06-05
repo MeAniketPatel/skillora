@@ -5,28 +5,28 @@ import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { ConflictError, NotFoundError, ValidationError } from "@/shared/lib/errors";
 import { triggerWebhook } from "@/lib/webhook-sender";
-import { getCourseWithCurriculum } from "@/features/courses/server";
-import { getEnrollment, createEnrollment as createEnrollmentData, updateEnrollmentProgress, getEnrollmentWithUserAndCourse } from "@/features/enrollment/server";
-import { upsertLessonProgress, calculateCourseProgress, initializeEnrollmentProgress } from "@/features/students/server";
-import { createCertificate } from "@/features/certificates/server";
-import { createNotification } from "@/features/notifications/server";
+import { service as coursesService } from "@/features/courses/server";
+import { service as enrollmentService } from "@/features/enrollment/server";
+import { service as studentsService } from "@/features/students/server";
+import { service as certificatesService } from "@/features/certificates/server";
+import { service as notificationsService } from "@/features/notifications/server";
 export async function enrollInFreeCourse(courseId: string) {
   return actionHandler(async () => {
     const user = await requireAuth();
 
-    const course = await getCourseWithCurriculum(courseId);
+    const course = await coursesService.getCourseWithCurriculum(courseId);
     if (!course) throw new NotFoundError("Course");
 
     if (course.price !== 0 && course.price !== null) {
       throw new ValidationError("This is a paid course. Enrollment requires payment.");
     }
 
-    const existingEnrollment = await getEnrollment(user.id, courseId);
+    const existingEnrollment = await enrollmentService.getEnrollment(user.id, courseId);
     if (existingEnrollment) {
       throw new ConflictError("You are already enrolled in this course.");
     }
 
-    const enrollment = await createEnrollmentData(user.id, courseId);
+    const enrollment = await enrollmentService.createEnrollment(user.id, courseId);
 
     try {
       await triggerWebhook("enrollment.created", {
@@ -44,14 +44,14 @@ export async function enrollInFreeCourse(courseId: string) {
 
     const lessons = course.sections.flatMap((s) => s.lessons);
     if (lessons.length > 0) {
-      await initializeEnrollmentProgress(
+      await studentsService.initializeEnrollmentProgress(
         enrollment.id,
         lessons.map((lesson) => lesson.id)
       );
     }
 
     try {
-      await createNotification(
+      await notificationsService.createNotification(
         user.id,
         "ENROLLMENT",
         "Successfully Enrolled! 🎓",
@@ -76,17 +76,17 @@ export async function toggleLessonCompletion(
   return actionHandler(async () => {
     const user = await requireAuth();
 
-    const enrollment = await getEnrollment(user.id, courseId);
+    const enrollment = await enrollmentService.getEnrollment(user.id, courseId);
     if (!enrollment) throw new NotFoundError("Enrollment");
 
-    await upsertLessonProgress(enrollment.id, lessonId, {
+    await studentsService.upsertLessonProgress(enrollment.id, lessonId, {
       isCompleted,
       completedAt: isCompleted ? new Date() : null,
     });
 
-    const progress = await calculateCourseProgress(enrollment.id, courseId);
+    const progress = await studentsService.calculateCourseProgress(enrollment.id, courseId);
     
-    await updateEnrollmentProgress(
+    await enrollmentService.updateEnrollmentProgress(
       enrollment.id,
       progress,
       progress === 100 ? new Date() : undefined
@@ -94,12 +94,12 @@ export async function toggleLessonCompletion(
 
     if (progress === 100) {
       try {
-        const cert = await createCertificate(enrollment.id);
+        const cert = await certificatesService.createCertificate(enrollment.id);
         
-        const fullEnrollment = await getEnrollmentWithUserAndCourse(enrollment.id);
+        const fullEnrollment = await enrollmentService.getEnrollmentWithUserAndCourse(enrollment.id);
 
         if (fullEnrollment) {
-          await createNotification(
+          await notificationsService.createNotification(
             fullEnrollment.userId,
             "CERTIFICATE",
             "Certificate Earned! 🎉",
@@ -134,10 +134,10 @@ export async function updateVideoProgress(
   return actionHandler(async () => {
     const user = await requireAuth();
 
-    const enrollment = await getEnrollment(user.id, courseId);
+    const enrollment = await enrollmentService.getEnrollment(user.id, courseId);
     if (!enrollment) throw new NotFoundError("Enrollment");
 
-    await upsertLessonProgress(enrollment.id, lessonId, { videoPosition });
+    await studentsService.upsertLessonProgress(enrollment.id, lessonId, { videoPosition });
 
     return true;
   });

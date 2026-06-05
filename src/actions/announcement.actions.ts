@@ -4,10 +4,10 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireTeacher, requireAdmin } from "@/shared/lib/auth-helpers";
 import { announcementSchema } from "@/features/announcements/contracts/announcement.contract";
-import { createAnnouncement as createAnnouncementDAL, getAnnouncementById, deleteAnnouncement as deleteAnnouncementDAL } from "@/features/announcements/server";
-import { getCourseByIdForOwner } from "@/features/courses/server";
-import { getEnrolledStudentIds } from "@/features/enrollment/server";
-import { createNotification } from "@/features/notifications/server";
+import { service as announcementsService } from "@/features/announcements/server";
+import { service as coursesService } from "@/features/courses/server";
+import { service as enrollmentService } from "@/features/enrollment/server";
+import { service as notificationsService } from "@/features/notifications/server";
 import { z } from "zod";
 
 export async function createAnnouncement(
@@ -19,9 +19,9 @@ export async function createAnnouncement(
     const validated = announcementSchema.parse(values);
 
     // Verify course owner
-    const course = await getCourseByIdForOwner(courseId, user.id);
+    const course = await coursesService.getCourseByIdForOwner(courseId, user.id);
 
-    const announcement = await createAnnouncementDAL(
+    const announcement = await announcementsService.createAnnouncement(
       user.id,
       courseId,
       validated.title,
@@ -30,10 +30,10 @@ export async function createAnnouncement(
 
     // Notify all enrolled students
     try {
-      const studentIds = await getEnrolledStudentIds(courseId);
+      const studentIds = await enrollmentService.getEnrolledStudentIds(courseId);
       await Promise.all(
         studentIds.map((studentId) =>
-          createNotification(
+          notificationsService.createNotification(
             studentId,
             "COURSE_ANNOUNCEMENT",
             `New Announcement in ${course.title} 📢`,
@@ -56,12 +56,12 @@ export async function deleteAnnouncement(announcementId: string, courseId: strin
     const user = await requireTeacher();
 
     // Verify course owner
-    await getCourseByIdForOwner(courseId, user.id);
+    await coursesService.getCourseByIdForOwner(courseId, user.id);
 
-    const announcement = await getAnnouncementById(announcementId);
+    const announcement = await announcementsService.getAnnouncementById(announcementId);
     if (!announcement) throw new Error("Announcement not found");
 
-    await deleteAnnouncementDAL(announcementId);
+    await announcementsService.deleteAnnouncement(announcementId);
 
     revalidatePath(`/teacher/courses/${courseId}/announcements`);
     return { success: true };
@@ -73,7 +73,7 @@ export async function createGlobalAnnouncement(values: z.infer<typeof announceme
     const user = await requireAdmin();
     const validated = announcementSchema.parse(values);
 
-    const announcement = await createAnnouncementDAL(
+    const announcement = await announcementsService.createAnnouncement(
       user.id,
       null, // null courseId means global
       validated.title,
@@ -89,10 +89,10 @@ export async function deleteGlobalAnnouncement(announcementId: string) {
   return actionHandler(async () => {
     await requireAdmin();
 
-    const announcement = await getAnnouncementById(announcementId);
+    const announcement = await announcementsService.getAnnouncementById(announcementId);
     if (!announcement) throw new Error("Announcement not found");
 
-    await deleteAnnouncementDAL(announcementId);
+    await announcementsService.deleteAnnouncement(announcementId);
 
     revalidatePath("/admin/announcements");
     return { success: true };

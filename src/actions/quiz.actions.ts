@@ -3,15 +3,15 @@
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth, requireTeacher } from "@/shared/lib/auth-helpers";
 import { ConflictError, NotFoundError } from "@/shared/lib/errors";
-import { createQuiz as createQuizData, updateQuizWithQuestions, createQuizAttempt, getQuizByLessonId, getQuizWithQuestions } from "@/features/courses/server";
+import { service as coursesService } from "@/features/courses/server";
 export async function createQuiz(lessonId: string, title: string, passingScore = 70) {
   return actionHandler(async () => {
     await requireTeacher();
 
-    const existing = await getQuizByLessonId(lessonId);
+    const existing = await coursesService.getQuizByLessonId(lessonId);
     if (existing) throw new ConflictError("Quiz already exists for this lesson");
 
-    const quiz = await createQuizData(lessonId, { title, passingScore });
+    const quiz = await coursesService.createQuiz(lessonId, { title, passingScore });
     return quiz;
   });
 }
@@ -29,7 +29,7 @@ export async function updateQuiz(
   return actionHandler(async () => {
     await requireTeacher();
 
-    const quiz = await updateQuizWithQuestions(
+    const quiz = await coursesService.updateQuizWithQuestions(
       quizId,
       { title, passingScore },
       questions
@@ -46,7 +46,7 @@ export async function submitQuizAttempt(
   return actionHandler(async () => {
     const user = await requireAuth();
 
-    const quiz = await getQuizWithQuestions(quizId);
+    const quiz = await coursesService.getQuizWithQuestions(quizId);
 
     if (!quiz) throw new NotFoundError("Quiz");
 
@@ -67,7 +67,7 @@ export async function submitQuizAttempt(
     const score = totalPoints > 0 ? (earnedPoints / totalPoints) * 100 : 0;
     const passed = score >= quiz.passingScore;
 
-    const attempt = await createQuizAttempt({
+    const attempt = await coursesService.createQuizAttempt({
       quizId,
       userId: user.id,
       score,

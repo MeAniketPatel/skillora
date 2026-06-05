@@ -3,3 +3,9 @@
 
 // Repository functions
 export { getFeatureFlags, getFeatureFlagByKey, createFeatureFlag, toggleFeatureFlag, updateFeatureFlagRollout, deleteFeatureFlag } from "./repositories/feature-flag.repository";
+
+// Service
+
+// Service
+import { featureFlagsService as service } from "./services/feature-flags.service";
+export { service };

@@ -3,3 +3,9 @@
 
 // Repository functions
 export { getBlogPosts, getBlogPostDetail, createBlogPost, addBlogComment, togglePublishBlogPost } from "./repositories/blog.repository";
+
+// Service
+
+// Service
+import { blogService as service } from "./services/blog.service";
+export { service };

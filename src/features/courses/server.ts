@@ -9,3 +9,9 @@ export { getPeerReviewConfig, upsertPeerReviewConfig, deletePeerReviewConfig } f
 export { getQuizByLessonId, getQuizWithQuestions, createQuiz, updateQuizWithQuestions, getQuizAttempts, createQuizAttempt } from "./repositories/quiz.repository";
 export { createResource, getCourseResources, deleteResource } from "./repositories/resource.repository";
 export { createSection, updateSection, deleteSection, reorderSections } from "./repositories/section.repository";
+
+// Service
+
+// Service
+import { coursesService as service } from "./services/courses.service";
+export { service };

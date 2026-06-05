@@ -5,7 +5,7 @@ import crypto from "crypto";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { webhookSchema } from "@/features/webhooks/contracts/webhook.contract";;
-import { createWebhook, deleteWebhook, getWebhookById, logWebhookDelivery } from "@/features/webhooks/server";
+import { service as webhooksService } from "@/features/webhooks/server";
 import { revalidatePath } from "next/cache";
 
 export async function registerWebhookAction(values: z.infer<typeof webhookSchema>) {
@@ -16,7 +16,7 @@ export async function registerWebhookAction(values: z.infer<typeof webhookSchema
     // Generate a secure webhook secret
     const secret = `whsec_${crypto.randomBytes(24).toString("hex")}`;
 
-    const webhook = await createWebhook({
+    const webhook = await webhooksService.createWebhook({
       url: validated.url,
       event: validated.event,
       secret,
@@ -30,7 +30,7 @@ export async function registerWebhookAction(values: z.infer<typeof webhookSchema
 export async function deleteWebhookAction(id: string) {
   return actionHandler(async () => {
     await requireAdmin();
-    const deleted = await deleteWebhook(id);
+    const deleted = await webhooksService.deleteWebhook(id);
     revalidatePath("/admin/settings");
     return deleted;
   });
@@ -39,7 +39,7 @@ export async function deleteWebhookAction(id: string) {
 export async function testWebhookAction(id: string) {
   return actionHandler(async () => {
     await requireAdmin();
-    const webhook = await getWebhookById(id);
+    const webhook = await webhooksService.getWebhookById(id);
     if (!webhook) {
       throw new Error("Webhook not found");
     }
@@ -88,7 +88,7 @@ export async function testWebhookAction(id: string) {
     }
 
     // Log the test delivery
-    await logWebhookDelivery({
+    await webhooksService.logWebhookDelivery({
       webhookId: webhook.id,
       statusCode,
       payload: testPayload,

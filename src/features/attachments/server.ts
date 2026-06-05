@@ -3,3 +3,9 @@
 
 // Repository functions
 export { createAttachment, deleteAttachment } from "./repositories/attachment.repository";
+
+// Service
+
+// Service
+import { attachmentsService as service } from "./services/attachments.service";
+export { service };

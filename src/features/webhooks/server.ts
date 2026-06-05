@@ -3,3 +3,9 @@
 
 // Repository functions
 export { getWebhooks, getWebhookById, getActiveWebhooksByEvent, createWebhook, deleteWebhook, logWebhookDelivery } from "./repositories/webhook.repository";
+
+// Service
+
+// Service
+import { webhooksService as service } from "./services/webhooks.service";
+export { service };

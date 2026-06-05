@@ -3,3 +3,9 @@
 
 // Repository functions
 export { getCertificateById, getUserCertificates, createCertificate, getCertificateByEnrollment, getUserCertificatesCount } from "./repositories/certificate.repository";
+
+// Service
+
+// Service
+import { certificatesService as service } from "./services/certificates.service";
+export { service };

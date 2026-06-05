@@ -3,3 +3,9 @@
 
 // Repository functions
 export { getEmailPreferences, updateEmailPreferences } from "./repositories/email-preference.repository";
+
+// Service
+
+// Service
+import { emailPreferencesService as service } from "./services/email-preferences.service";
+export { service };

@@ -3,3 +3,9 @@
 
 // Repository functions
 export { createContactMessage, getContactMessages, markContactMessageReplied } from "./repositories/contact.repository";
+
+// Service
+
+// Service
+import { contactService as service } from "./services/contact.service";
+export { service };

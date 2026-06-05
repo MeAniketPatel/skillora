@@ -8,3 +8,9 @@ export { getUserGoals, createGoal, updateGoalProgress, deleteGoal } from "./repo
 export { upsertLessonProgress, initializeEnrollmentProgress, getProgressForEnrollment, calculateCourseProgress, getLessonProgress, getUserCompletedLessonsCount } from "./repositories/lesson-progress.repository";
 export { createNote, updateNote, deleteNote, getNotesForLesson, getAllUserNotes } from "./repositories/note.repository";
 export { getStudyStreak, getStudySessions, recordStudySession, buyStreakFreeze } from "./repositories/streak.repository";
+
+// Service
+
+// Service
+import { studentsService as service } from "./services/students.service";
+export { service };

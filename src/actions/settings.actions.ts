@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
-import { setSetting } from "@/features/settings/server";
+import { service as settingsService } from "@/features/settings/server";
 import { settingSchema } from "@/features/settings/contracts/settings.contract";;
 
 export async function updateSetting(values: any) {
@@ -11,7 +11,7 @@ export async function updateSetting(values: any) {
     await requireAdmin();
     const validated = settingSchema.parse(values);
     
-    const setting = await setSetting(validated.key, validated.value);
+    const setting = await settingsService.setSetting(validated.key, validated.value);
     revalidatePath(`/admin/settings`);
     return setting;
   });

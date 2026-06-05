@@ -4,14 +4,14 @@ import { stripe } from "@/shared/lib/stripe";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { NotFoundError, ValidationError, ConflictError } from "@/shared/lib/errors";
-import { getCourseById } from "@/features/courses/server";
-import { getCouponByCode } from "@/features/admin/server";
-import { getEnrollment } from "@/features/enrollment/server";
+import { service as coursesService } from "@/features/courses/server";
+import { service as adminService } from "@/features/admin/server";
+import { service as enrollmentService } from "@/features/enrollment/server";
 export async function createCheckoutSession(courseId: string, couponCode?: string) {
   return actionHandler(async () => {
     const user = await requireAuth();
 
-    const course = await getCourseById(courseId);
+    const course = await coursesService.getCourseById(courseId);
     if (!course || course.price === null || course.price <= 0) {
       throw new ValidationError("Invalid course or course is free");
     }
@@ -20,7 +20,7 @@ export async function createCheckoutSession(courseId: string, couponCode?: strin
     let couponRecord = null;
 
     if (couponCode) {
-      couponRecord = await getCouponByCode(couponCode);
+      couponRecord = await adminService.getCouponByCode(couponCode);
 
       if (!couponRecord) throw new ValidationError("Invalid coupon code");
       if (couponRecord.expiresAt && new Date(couponRecord.expiresAt) < new Date()) {
@@ -40,7 +40,7 @@ export async function createCheckoutSession(courseId: string, couponCode?: strin
       }
     }
 
-    const existingEnrollment = await getEnrollment(user.id, courseId);
+    const existingEnrollment = await enrollmentService.getEnrollment(user.id, courseId);
     if (existingEnrollment) {
       throw new ConflictError("Already enrolled in this course");
     }

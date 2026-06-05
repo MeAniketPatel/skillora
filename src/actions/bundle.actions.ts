@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAdmin, requireAuth } from "@/shared/lib/auth-helpers";
 import { createBundleSchema } from "@/features/bundles/contracts/bundle.contract";
-import { createCourseBundle, getCourseBundleDetail } from "@/features/bundles/server";
+import { service as bundlesService } from "@/features/bundles/server";
 import db from "@/shared/lib/prisma"; // Direct db import allowed for multi-step transaction if needed, but we can do it via loop / DAL
 
 export async function createBundleAction(values: z.infer<typeof createBundleSchema>) {
@@ -13,7 +13,7 @@ export async function createBundleAction(values: z.infer<typeof createBundleSche
     await requireAdmin();
     const validated = createBundleSchema.parse(values);
 
-    const bundle = await createCourseBundle(
+    const bundle = await bundlesService.createCourseBundle(
       validated.title,
       validated.description,
       validated.price,
@@ -28,7 +28,7 @@ export async function createBundleAction(values: z.infer<typeof createBundleSche
 export async function purchaseBundleAction(bundleId: string) {
   return actionHandler(async () => {
     const user = await requireAuth();
-    const bundle = await getCourseBundleDetail(bundleId);
+    const bundle = await bundlesService.getCourseBundleDetail(bundleId);
 
     if (!bundle) {
       throw new Error("Course bundle not found.");

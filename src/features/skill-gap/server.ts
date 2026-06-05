@@ -4,3 +4,9 @@
 // Repository functions
 export { getCoursesForSkill, getSkillGapRecommendations, getSkillNodeById, getFeaturedSkillsCatalog, getFeaturedCourses, getPlatformStats, getRecommendation } from "./repositories/skill-gap.repository";
 export type { FeaturedCourse } from "./repositories/skill-gap.repository";
+
+// Service
+
+// Service
+import { skillGapService as service } from "./services/skill-gap.service";
+export { service };

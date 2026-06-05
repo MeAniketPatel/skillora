@@ -3,3 +3,9 @@
 
 // Repository functions
 export { getLearningPaths, getLearningPathDetail, isEnrolledInPath, enrollInLearningPath, getPathEnrollment, updatePathProgress } from "./repositories/learning-path.repository";
+
+// Service
+
+// Service
+import { learningPathsService as service } from "./services/learning-paths.service";
+export { service };

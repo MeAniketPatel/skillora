@@ -3,3 +3,9 @@
 
 // Repository functions
 export { getAllCategories, getCategoriesWithCounts, getCategoryBySlug, createCategory, updateCategory, deleteCategory } from "./repositories/category.repository";
+
+// Service
+
+// Service
+import { categoriesService as service } from "./services/categories.service";
+export { service };

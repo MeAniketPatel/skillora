@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { addResourceSchema } from "@/features/resources/contracts/resource.contract";
-import { createResource, deleteResource } from "@/features/courses/server";
+import { service as coursesService } from "@/features/courses/server";
 import db from "@/shared/lib/prisma";
 
 export async function addCourseResourceAction(courseId: string, values: z.infer<typeof addResourceSchema>) {
@@ -28,7 +28,7 @@ export async function addCourseResourceAction(courseId: string, values: z.infer<
 
     const validated = addResourceSchema.parse(values);
 
-    const resource = await createResource(
+    const resource = await coursesService.createResource(
       courseId,
       validated.name,
       validated.url,
@@ -58,7 +58,7 @@ export async function deleteCourseResourceAction(courseId: string, resourceId: s
       throw new Error("You do not have permission to delete resources from this course.");
     }
 
-    const resource = await deleteResource(resourceId);
+    const resource = await coursesService.deleteResource(resourceId);
 
     revalidatePath(`/teacher/courses/${courseId}`);
     return resource;

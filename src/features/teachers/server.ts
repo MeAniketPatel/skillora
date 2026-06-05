@@ -3,3 +3,9 @@
 
 // Repository functions
 export { getPayoutHistory, getPayoutBalance, createPayoutRequest } from "./repositories/payout.repository";
+
+// Service
+
+// Service
+import { teachersService as service } from "./services/teachers.service";
+export { service };

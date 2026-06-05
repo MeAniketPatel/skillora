@@ -10,9 +10,8 @@ import {
   CourseCreateInput,
   CourseUpdateInput,
 } from "@/features/courses/contracts/course.contract";
-import { createCourse as createCourseData, updateCourse as updateCourseData, getCourseByIdForOwner, createSection as createSectionData, updateSection as updateSectionData, deleteSection as deleteSectionData, createLesson as createLessonData, updateLesson as updateLessonData, deleteLesson as deleteLessonData, reorderSections as reorderSectionsData, reorderLessons as reorderLessonsData } from "@/features/courses/server";
-import { createAttachment as createAttachmentData, deleteAttachment as deleteAttachmentData } from "@/features/attachments/server";
-import { getCourseForPublishing } from "@/features/courses/server";
+import { service as coursesService } from "@/features/courses/server";
+import { service as attachmentsService } from "@/features/attachments/server";
 export async function createCourse(values: CourseCreateInput) {
   return actionHandler(async () => {
     const user = await requireTeacher();
@@ -25,7 +24,7 @@ export async function createCourse(values: CourseCreateInput) {
     const randomSuffix = Math.random().toString(36).substring(2, 7);
     const slug = `${baseSlug}-${randomSuffix}`;
 
-    const course = await createCourseData({
+    const course = await coursesService.createCourse({
       ...validated,
       slug,
       teacherId: user.id,
@@ -40,9 +39,9 @@ export async function updateCourse(courseId: string, values: CourseUpdateInput) 
     const user = await requireTeacher();
     const validated = courseUpdateSchema.parse(values);
 
-    await getCourseByIdForOwner(courseId, user.id);
+    await coursesService.getCourseByIdForOwner(courseId, user.id);
 
-    const updated = await updateCourseData(courseId, validated);
+    const updated = await coursesService.updateCourse(courseId, validated);
 
     revalidatePath(`/teacher/courses/${courseId}`);
     return updated;
@@ -52,7 +51,7 @@ export async function updateCourse(courseId: string, values: CourseUpdateInput) 
 export async function publishCourse(courseId: string) {
   return actionHandler(async () => {
     const user = await requireTeacher();
-    const course = await getCourseForPublishing(courseId, user.id);
+    const course = await coursesService.getCourseForPublishing(courseId, user.id);
 
     if (!course) throw new Error("Course not found");
 
@@ -70,7 +69,7 @@ export async function publishCourse(courseId: string) {
       throw new Error(`Cannot publish: Missing ${missingFields.join(", ")} or published lessons`);
     }
 
-    const updated = await updateCourseData(courseId, { status: "PUBLISHED", publishedAt: new Date() });
+    const updated = await coursesService.updateCourse(courseId, { status: "PUBLISHED", publishedAt: new Date() });
     
     try {
       await triggerWebhook("course.published", {
@@ -93,9 +92,9 @@ export async function publishCourse(courseId: string) {
 export async function unpublishCourse(courseId: string) {
   return actionHandler(async () => {
     const user = await requireTeacher();
-    await getCourseByIdForOwner(courseId, user.id);
+    await coursesService.getCourseByIdForOwner(courseId, user.id);
 
-    const updated = await updateCourseData(courseId, { status: "DRAFT" });
+    const updated = await coursesService.updateCourse(courseId, { status: "DRAFT" });
     revalidatePath(`/teacher/courses/${courseId}`);
     return updated;
   });
@@ -104,9 +103,9 @@ export async function unpublishCourse(courseId: string) {
 export async function createSection(courseId: string, title: string) {
   return actionHandler(async () => {
     const user = await requireTeacher();
-    await getCourseByIdForOwner(courseId, user.id);
+    await coursesService.getCourseByIdForOwner(courseId, user.id);
 
-    const section = await createSectionData(courseId, title);
+    const section = await coursesService.createSection(courseId, title);
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
     return section;
   });
@@ -115,9 +114,9 @@ export async function createSection(courseId: string, title: string) {
 export async function updateSection(courseId: string, sectionId: string, title: string) {
   return actionHandler(async () => {
     const user = await requireTeacher();
-    await getCourseByIdForOwner(courseId, user.id);
+    await coursesService.getCourseByIdForOwner(courseId, user.id);
 
-    const section = await updateSectionData(sectionId, courseId, { title });
+    const section = await coursesService.updateSection(sectionId, courseId, { title });
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
     return section;
   });
@@ -126,9 +125,9 @@ export async function updateSection(courseId: string, sectionId: string, title: 
 export async function deleteSection(courseId: string, sectionId: string) {
   return actionHandler(async () => {
     const user = await requireTeacher();
-    await getCourseByIdForOwner(courseId, user.id);
+    await coursesService.getCourseByIdForOwner(courseId, user.id);
 
-    await deleteSectionData(sectionId, courseId);
+    await coursesService.deleteSection(sectionId, courseId);
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
     return true;
   });
@@ -137,9 +136,9 @@ export async function deleteSection(courseId: string, sectionId: string) {
 export async function createLesson(courseId: string, sectionId: string, title: string) {
   return actionHandler(async () => {
     const user = await requireTeacher();
-    await getCourseByIdForOwner(courseId, user.id);
+    await coursesService.getCourseByIdForOwner(courseId, user.id);
 
-    const lesson = await createLessonData(sectionId, title);
+    const lesson = await coursesService.createLesson(sectionId, title);
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
     return lesson;
   });
@@ -153,9 +152,9 @@ export async function updateLesson(
 ) {
   return actionHandler(async () => {
     const user = await requireTeacher();
-    await getCourseByIdForOwner(courseId, user.id);
+    await coursesService.getCourseByIdForOwner(courseId, user.id);
 
-    const updated = await updateLessonData(lessonId, sectionId, values);
+    const updated = await coursesService.updateLesson(lessonId, sectionId, values);
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
     return updated;
   });
@@ -164,9 +163,9 @@ export async function updateLesson(
 export async function deleteLesson(courseId: string, sectionId: string, lessonId: string) {
   return actionHandler(async () => {
     const user = await requireTeacher();
-    await getCourseByIdForOwner(courseId, user.id);
+    await coursesService.getCourseByIdForOwner(courseId, user.id);
 
-    await deleteLessonData(lessonId, sectionId);
+    await coursesService.deleteLesson(lessonId, sectionId);
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
     return true;
   });
@@ -175,9 +174,9 @@ export async function deleteLesson(courseId: string, sectionId: string, lessonId
 export async function reorderSections(courseId: string, items: { id: string; position: number }[]) {
   return actionHandler(async () => {
     const user = await requireTeacher();
-    await getCourseByIdForOwner(courseId, user.id);
+    await coursesService.getCourseByIdForOwner(courseId, user.id);
 
-    await reorderSectionsData(courseId, items);
+    await coursesService.reorderSections(courseId, items);
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
     return true;
   });
@@ -186,9 +185,9 @@ export async function reorderSections(courseId: string, items: { id: string; pos
 export async function reorderLessons(courseId: string, sectionId: string, items: { id: string; position: number }[]) {
   return actionHandler(async () => {
     const user = await requireTeacher();
-    await getCourseByIdForOwner(courseId, user.id);
+    await coursesService.getCourseByIdForOwner(courseId, user.id);
 
-    await reorderLessonsData(sectionId, items);
+    await coursesService.reorderLessons(sectionId, items);
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
     return true;
   });
@@ -197,9 +196,9 @@ export async function reorderLessons(courseId: string, sectionId: string, items:
 export async function createAttachment(courseId: string, lessonId: string, name: string, url: string, size?: number, type?: string) {
   return actionHandler(async () => {
     const user = await requireTeacher();
-    await getCourseByIdForOwner(courseId, user.id);
+    await coursesService.getCourseByIdForOwner(courseId, user.id);
 
-    const attachment = await createAttachmentData({ name, url, size, type, lessonId });
+    const attachment = await attachmentsService.createAttachment({ name, url, size, type, lessonId });
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
     return attachment;
   });
@@ -208,9 +207,9 @@ export async function createAttachment(courseId: string, lessonId: string, name:
 export async function deleteAttachment(courseId: string, lessonId: string, attachmentId: string) {
   return actionHandler(async () => {
     const user = await requireTeacher();
-    await getCourseByIdForOwner(courseId, user.id);
+    await coursesService.getCourseByIdForOwner(courseId, user.id);
 
-    await deleteAttachmentData(attachmentId, lessonId);
+    await attachmentsService.deleteAttachment(attachmentId, lessonId);
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
     return true;
   });

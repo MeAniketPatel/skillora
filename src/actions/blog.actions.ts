@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { createBlogPostSchema, blogCommentSchema } from "@/features/blog/contracts/blog.contract";
-import { createBlogPost, addBlogComment, togglePublishBlogPost, getBlogPostDetail } from "@/features/blog/server";
+import { service as blogService } from "@/features/blog/server";
 import db from "@/shared/lib/prisma";
 
 // Helper to generate a URL friendly slug
@@ -41,7 +41,7 @@ export async function createBlogPostAction(values: z.infer<typeof createBlogPost
       count++;
     }
 
-    const post = await createBlogPost(
+    const post = await blogService.createBlogPost(
       user.id!,
       validated.title,
       slug,
@@ -60,7 +60,7 @@ export async function addBlogCommentAction(postId: string, values: z.infer<typeo
     const user = await requireAuth();
     const validated = blogCommentSchema.parse(values);
 
-    const comment = await addBlogComment(postId, user.id!, validated.content);
+    const comment = await blogService.addBlogComment(postId, user.id!, validated.content);
     
     const post = await db.blogPost.findUnique({
       where: { id: postId },
@@ -92,7 +92,7 @@ export async function togglePublishBlogPostAction(id: string, published: boolean
       throw new Error("You do not have permission to publish this post.");
     }
 
-    const updated = await togglePublishBlogPost(id, published);
+    const updated = await blogService.togglePublishBlogPost(id, published);
     
     revalidatePath("/blog");
     revalidatePath(`/blog/${post.slug}`);

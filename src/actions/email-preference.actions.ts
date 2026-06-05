@@ -4,7 +4,7 @@ import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { emailPreferenceSchema } from "@/features/email-preferences/contracts/email-preference.contract";;
-import { updateEmailPreferences } from "@/features/email-preferences/server";
+import { service as emailPreferencesService } from "@/features/email-preferences/server";
 import { revalidatePath } from "next/cache";
 
 export async function updateEmailPreferencesAction(values: z.infer<typeof emailPreferenceSchema>) {
@@ -12,7 +12,7 @@ export async function updateEmailPreferencesAction(values: z.infer<typeof emailP
     const user = await requireAuth();
     const validated = emailPreferenceSchema.parse(values);
     
-    const prefs = await updateEmailPreferences(user.id, validated);
+    const prefs = await emailPreferencesService.updateEmailPreferences(user.id, validated);
     
     revalidatePath("/settings/notifications");
     

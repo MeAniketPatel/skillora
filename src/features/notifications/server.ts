@@ -3,3 +3,9 @@
 
 // Repository functions
 export { createNotification, getUserNotifications, markAsRead, markAllAsRead, getUnreadCount, deleteNotification } from "./repositories/notification.repository";
+
+// Service
+
+// Service
+import { notificationsService as service } from "./services/notifications.service";
+export { service };

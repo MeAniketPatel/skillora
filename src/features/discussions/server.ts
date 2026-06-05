@@ -4,3 +4,9 @@
 // Repository functions
 export { getDiscussionsList, getDiscussionThread, createDiscussion, addDiscussionReply, togglePinDiscussion, toggleLockDiscussion } from "./repositories/discussion.repository";
 export { createQuestion, createAnswer, getQuestionsForLesson, getQuestionsForTeacher, markQuestionResolved, acceptAnswer } from "./repositories/qa.repository";
+
+// Service
+
+// Service
+import { discussionsService as service } from "./services/discussions.service";
+export { service };
