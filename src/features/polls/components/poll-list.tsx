@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { closePollAction, deletePollAction } from "@/actions/poll.actions";
+import { closePollAction, deletePollAction } from "../actions/poll.actions";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Badge } from "@/shared/components/ui/badge";

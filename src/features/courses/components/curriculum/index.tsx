@@ -11,7 +11,7 @@ import {
   reorderSections,
   updateLesson,
   updateSection,
-} from "@/actions/course.actions";
+} from "../../actions/course.actions";
 import { CurriculumHeader } from "./curriculum-header";
 import { SectionCard } from "./section-card";
 import { AddSectionForm } from "./add-section-form";

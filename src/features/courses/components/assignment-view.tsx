@@ -3,7 +3,7 @@
 import React, { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Check, ClipboardList, Send, Sparkles } from "lucide-react";
-import { submitAssignment } from "@/actions/assignment.actions";
+import { submitAssignment } from "@/features/assignments/actions/assignment.actions";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 

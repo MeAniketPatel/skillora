@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useCartStore } from "@/stores/cart.store";
+import { useCartStore } from "../stores/cart.store";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Badge } from "@/shared/components/ui/badge";

@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { Button, buttonVariants } from "@/shared/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft, Plus } from "lucide-react";
-import { createSection } from "@/actions";
+import { createSection } from "@/features/courses/actions/course.actions";
 
 export default async function CurriculumBuilderPage({
   params,
@@ -73,7 +73,7 @@ export default async function CurriculumBuilderPage({
                 <div className="pt-2">
                   <form action={async (formData) => {
                     "use server";
-                    const { createLesson } = await import("@/actions");
+                    const { createLesson } = await import("@/features/courses/actions/course.actions");
                     await createLesson(courseId, section.id, formData.get("title") as string);
                   }} className="flex items-center gap-2">
                     <input 

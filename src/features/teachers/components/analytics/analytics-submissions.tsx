@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
-import { gradeSubmission } from "@/actions/assignment.actions";
+import { gradeSubmission } from "@/features/assignments/actions/assignment.actions";
 import type { AnalyticsSubmission } from "./analytics.shared";
 
 interface AnalyticsSubmissionsProps {

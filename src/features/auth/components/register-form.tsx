@@ -19,7 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
-import { registerUser, loginUser } from "@/actions/auth.actions";
+import { registerUser, loginUser } from "../actions/auth.actions";
 
 const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),

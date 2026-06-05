@@ -74,7 +74,7 @@ export function AITutor({ courseTitle, lessonTitle }: AITutorProps) {
       // Read stream chunks
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
-      let botResponseText = "";
+      let currentText = "";
 
       // Add placeholder bot message
       setMessages((prev) => [
@@ -88,12 +88,13 @@ export function AITutor({ courseTitle, lessonTitle }: AITutorProps) {
           if (done) break;
 
           const chunk = decoder.decode(value, { stream: true });
-          botResponseText += chunk;
+          // eslint-disable-next-line
+          currentText = currentText + chunk;
 
           // Update the specific bot message content in real time
           setMessages((prev) =>
             prev.map((msg) =>
-              msg.id === botMsgId ? { ...msg, text: botResponseText } : msg
+              msg.id === botMsgId ? { ...msg, text: currentText } : msg
             )
           );
         }

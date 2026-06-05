@@ -6,7 +6,7 @@ import { Trash2, Plus, Calendar, Target, Loader2 } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { Progress } from "@/shared/components/ui/progress";
 import { Card, CardContent } from "@/shared/components/ui/card";
-import { deleteGoalAction } from "@/actions/learning-goal.actions";
+import { deleteGoalAction } from "@/features/learning-goals/actions/learning-goal.actions";
 import { toast } from "sonner";
 import { format } from "date-fns";
 

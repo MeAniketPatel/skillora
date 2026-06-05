@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { KeyRound } from "lucide-react";
 import { z } from "zod";
 
-import { resetPassword } from "@/actions/auth.actions";
+import { resetPassword } from "../actions/auth.actions";
 import { Button } from "@/shared/components/ui/button";
 import {
   Card,

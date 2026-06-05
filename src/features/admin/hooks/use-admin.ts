@@ -7,9 +7,9 @@ import {
   banUser,
   unbanUser,
   updateUserRole,
-} from "@/actions/admin.actions";
-import { impersonateUserAction, stopImpersonationAction } from "@/actions/impersonation.actions";
-import { approveModerationItemAction, rejectModerationItemAction, flagContentAction } from "@/actions/moderation.actions";
+} from "../actions/admin.actions";
+import { impersonateUserAction, stopImpersonationAction } from "@/features/impersonations/actions/impersonation.actions";
+import { approveModerationItemAction, rejectModerationItemAction, flagContentAction } from "@/features/moderation/actions/moderation.actions";
 
 export function useAdminActions() {
   const [isPending, setPending] = useState(false);

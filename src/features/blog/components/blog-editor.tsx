@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { createBlogPostSchema } from "@/features/blog/contracts/blog.contract";
-import { createBlogPostAction } from "@/actions/blog.actions";
+import { createBlogPostAction } from "@/features/blog/actions/blog.actions";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";

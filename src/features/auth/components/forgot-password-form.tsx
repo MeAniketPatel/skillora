@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Mail } from "lucide-react";
 import { z } from "zod";
 
-import { requestPasswordReset } from "@/actions/auth.actions";
+import { requestPasswordReset } from "../actions/auth.actions";
 import { Button } from "@/shared/components/ui/button";
 import {
   Card,

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { announcementSchema } from "@/features/announcements/contracts/announcement.contract";
-import { createAnnouncement } from "@/actions/announcement.actions";
+import { createAnnouncement } from "@/features/announcements/actions/announcement.actions";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";

@@ -18,7 +18,7 @@ import { Card, CardContent, CardDescription, CardTitle } from "@/shared/componen
 import {
   markNotificationAsRead,
   markAllNotificationsAsRead,
-} from "@/actions/notification.actions";
+} from "../actions/notification.actions";
 import { cn } from "@/shared/lib/utils";
 
 interface Notification {

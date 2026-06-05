@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { pollSchema } from "@/features/polls/contracts/poll.contract";
-import { createPollAction } from "@/actions/poll.actions";
+import { createPollAction } from "../actions/poll.actions";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";

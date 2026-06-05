@@ -16,12 +16,12 @@ import { CourseEditorFormSection } from "./course-editor-form";
 import { CourseEditorMediaSection } from "./course-editor-media";
 import { CourseEditorChecklist } from "./course-editor-checklist";
 import { CourseInsights } from "@/features/teachers";
-import { generateAICourseDescription } from "@/actions/ai.actions";
+import { generateAICourseDescription } from "@/features/ai/actions/ai.actions";
 import {
   publishCourse,
   unpublishCourse,
   updateCourse,
-} from "@/actions/course.actions";
+} from "../../actions/course.actions";
 
 interface CourseEditorProps {
   course: CourseEditorCourse;

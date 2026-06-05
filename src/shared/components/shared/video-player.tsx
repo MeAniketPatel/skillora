@@ -12,7 +12,7 @@ import {
   Settings 
 } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
-import { updateVideoProgress, toggleLessonCompletion } from "@/actions/enrollment.actions";
+import { updateVideoProgress, toggleLessonCompletion } from "@/features/enrollment/actions/enrollment.actions";
 
 interface VideoPlayerProps {
   courseId: string;
@@ -129,7 +129,7 @@ export function VideoPlayer({
     };
   }, [isPlaying]);
 
-  const togglePlay = () => {
+  function togglePlay() {
     const video = videoRef.current;
     if (!video) return;
 
@@ -141,23 +141,23 @@ export function VideoPlayer({
       video.play().catch(() => {});
       setIsPlaying(true);
     }
-  };
+  }
 
-  const handleTimeUpdate = () => {
+  function handleTimeUpdate() {
     if (videoRef.current) {
       setCurrentTime(videoRef.current.currentTime);
     }
   };
 
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleSeek(e: React.ChangeEvent<HTMLInputElement>) {
     const time = parseFloat(e.target.value);
     setCurrentTime(time);
     if (videoRef.current) {
       videoRef.current.currentTime = time;
     }
-  };
+  }
 
-  const skip = (amount: number) => {
+  function skip(amount: number) {
     if (videoRef.current) {
       videoRef.current.currentTime = Math.min(
         Math.max(0, videoRef.current.currentTime + amount),
@@ -166,7 +166,7 @@ export function VideoPlayer({
     }
   };
 
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleVolumeChange(e: React.ChangeEvent<HTMLInputElement>) {
     const val = parseFloat(e.target.value);
     setVolume(val);
     setIsMuted(val === 0);
@@ -174,9 +174,9 @@ export function VideoPlayer({
       videoRef.current.volume = val;
       videoRef.current.muted = val === 0;
     }
-  };
+  }
 
-  const toggleMute = () => {
+  function toggleMute() {
     const video = videoRef.current;
     if (!video) return;
 
@@ -190,15 +190,15 @@ export function VideoPlayer({
     }
   };
 
-  const handleSpeedChange = (rate: number) => {
+  function handleSpeedChange(rate: number) {
     setPlaybackRate(rate);
     setShowSpeedMenu(false);
     if (videoRef.current) {
       videoRef.current.playbackRate = rate;
     }
-  };
+  }
 
-  const toggleFullscreen = () => {
+  function toggleFullscreen() {
     const container = containerRef.current;
     if (!container) return;
 
@@ -209,18 +209,18 @@ export function VideoPlayer({
       document.exitFullscreen().catch(() => {});
       setIsFullscreen(false);
     }
-  };
+  }
 
-  const handleVideoEnded = async () => {
+  async function handleVideoEnded() {
     setIsPlaying(false);
     if (videoRef.current) {
       await updateVideoProgress(courseId, lessonId, Math.floor(videoRef.current.duration));
       await toggleLessonCompletion(courseId, lessonId, true);
       if (onComplete) onComplete();
     }
-  };
+  }
 
-  const formatTime = (seconds: number) => {
+  function formatTime(seconds: number) {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs < 10 ? "0" : ""}${secs}`;

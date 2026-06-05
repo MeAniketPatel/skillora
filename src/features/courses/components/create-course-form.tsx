@@ -18,7 +18,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
-import { createCourse } from "@/actions/course.actions";
+import { createCourse } from "../actions/course.actions";
 
 const createSchema = z.object({
   title: z.string().min(1, "Title is required"),

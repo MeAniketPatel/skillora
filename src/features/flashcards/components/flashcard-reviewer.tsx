@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { Progress } from "@/shared/components/ui/progress";
-import { reviewCardAction } from "@/actions/flashcard.actions";
+import { reviewCardAction } from "../actions/flashcard.actions";
 import { toast } from "sonner";
 import { ArrowLeft, RotateCw, CheckCircle2, Award, ChevronRight, HelpCircle } from "lucide-react";
 

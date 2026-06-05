@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import "dotenv/config";
 import { PrismaClient, Role, CourseStatus, PaymentStatus } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";

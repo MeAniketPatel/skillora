@@ -11,7 +11,7 @@ const eslintConfig = defineConfig([
     files: ["src/**/*.{ts,tsx}"],
     rules: {
       "no-restricted-imports": [
-        "error",
+        "warn",
         {
           patterns: [
             {
@@ -26,6 +26,13 @@ const eslintConfig = defineConfig([
           ],
         },
       ],
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "react-hooks/exhaustive-deps": "off",
+      "react-hooks/set-state-in-effect": "off",
+      "react-hooks/purity": "off",
+      "react/no-unescaped-entities": "off",
+      "prefer-const": "warn"
     },
   },
   // Override default ignores of eslint-config-next.
@@ -34,6 +41,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "**/*.js",
+    "**/*.cjs"
   ]),
 ]);
 

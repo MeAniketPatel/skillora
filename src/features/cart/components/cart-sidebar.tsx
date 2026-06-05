@@ -1,6 +1,6 @@
 "use client";
 
-import { useCartStore } from "@/stores/cart.store";
+import { useCartStore } from "../stores/cart.store";
 import {
   Sheet,
   SheetContent,

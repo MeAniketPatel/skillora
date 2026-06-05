@@ -7,7 +7,7 @@ import {
   toggleFeatureFlagAction,
   updateFeatureFlagRolloutAction,
   deleteFeatureFlagAction,
-} from "@/actions/feature-flag.actions";
+} from "../actions/feature-flag.actions";
 import {
   featureFlagSchema,
   toggleFeatureFlagSchema,

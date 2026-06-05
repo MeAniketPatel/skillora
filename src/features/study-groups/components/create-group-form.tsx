@@ -9,7 +9,7 @@ import { Input } from "@/shared/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createStudyGroupSchema } from "@/features/study-groups/contracts/study-group.contract";
-import { createStudyGroupAction } from "@/actions/study-group.actions";
+import { createStudyGroupAction } from "../actions/study-group.actions";
 import { Loader2, Plus } from "lucide-react";
 import { z } from "zod";
 

@@ -4,7 +4,7 @@ import { DataTable } from "@/shared/components/shared/data-table";
 import { Heart } from "lucide-react";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/shared/components/ui/button";
-import { toggleWishlist } from "@/actions";
+import { toggleWishlist } from "@/features/wishlist/actions/wishlist.actions";
 
 export default async function StudentWishlistPage() {
   const user = await requireAuth();

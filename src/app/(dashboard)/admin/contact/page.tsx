@@ -3,7 +3,7 @@ import { getContactMessages } from "@/features/contact/server";
 import { DataTable } from "@/shared/components/shared/data-table";
 import { MessageSquare } from "lucide-react";
 import { format } from "date-fns";
-import { markContactReplied } from "@/actions";
+import { markContactReplied } from "@/features/contact/actions/contact.actions";
 import { ActionButton } from "@/shared/components/shared/action-button";
 import { Button } from "@/shared/components/ui/button";
 

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { peerReviewConfigSchema } from "@/features/peer-reviews/contracts/peer-review.contract";
-import { savePeerReviewConfig } from "@/actions/peer-review.actions";
+import { savePeerReviewConfig } from "@/features/peer-reviews/actions/peer-review.actions";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";

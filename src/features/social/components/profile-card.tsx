@@ -12,7 +12,7 @@ import { User, Mail, Calendar, Sparkles, Globe, Link2, Share2, Edit3, Loader2 } 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { profileUpdateSchema } from "@/features/profile/contracts/profile.contract";
-import { updateProfileAction } from "@/actions/profile.actions";
+import { updateProfileAction } from "@/features/profile/actions/profile.actions";
 import { FollowButton } from "./follow-button";
 import { z } from "zod";
 

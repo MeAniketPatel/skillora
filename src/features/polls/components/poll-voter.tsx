@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { voteInPollAction } from "@/actions/poll.actions";
+import { voteInPollAction } from "../actions/poll.actions";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/shared/components/ui/radio-group";
 import { Label } from "@/shared/components/ui/label";

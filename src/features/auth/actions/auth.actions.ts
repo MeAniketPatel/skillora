@@ -3,7 +3,8 @@
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 import { headers } from "next/headers";
-import { AuthAuditAction, AuthSessionRevocationReason } from "../repositories/user.repository";
+import { service as authService, AuthAuditAction, AuthSessionRevocationReason } from "@/features/auth/server";
+
 import { ZodError } from "zod";
 
 import { signIn, signOut, auth } from "@/auth";
@@ -21,7 +22,7 @@ import {
 
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserByEmail, updateUser, createUser } from "@/features/auth/server";
+
 import { ConflictError, UnauthorizedError, ValidationError } from "@/shared/lib/errors";
 
 import {
@@ -35,10 +36,11 @@ import {
   ForgotPasswordInput,
   ResetPasswordInput,
   RevokeSessionInput
-} from "@/features/auth/contracts/auth.contract";
+} from "@/features/auth";
 
 
 
+import { assertAuthAccess } from "@/features/auth/permissions/auth.permissions";
 async function getActionRequestMetadata() {
   const requestHeaders = await headers();
   return getAuthRequestMetadata(requestHeaders);
@@ -52,14 +54,14 @@ export async function registerUser(values: RegisterInput) {
     const { name, password, role } = validated;
     const email = validated.email.toLowerCase();
     
-    const existingUser = await getUserByEmail(email);
+    const existingUser = await authService.getUserByEmail(email);
     if (existingUser) {
       throw new ConflictError("Email already registered.");
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await createUser({
+    const user = await authService.createUser({
       name,
       email,
       password: hashedPassword,
@@ -139,7 +141,7 @@ export async function updateUserSettings(values: {
     if (name) updateData.name = name;
 
     if (email && email !== user.email) {
-      const existingUser = await getUserByEmail(email);
+      const existingUser = await authService.getUserByEmail(email);
       if (existingUser) {
         throw new ConflictError("Email already in use.");
       }
@@ -154,7 +156,7 @@ export async function updateUserSettings(values: {
     }
 
     if (Object.keys(updateData).length > 0) {
-      await updateUser(user.id, updateData);
+      await authService.updateUser(user.id, updateData);
     }
 
     if (updateData.password) {
@@ -195,7 +197,7 @@ export async function requestPasswordReset(values: ForgotPasswordInput) {
     const validated = forgotPasswordSchema.parse(values);
     const email = validated.email.toLowerCase();
 
-    const user = await getUserByEmail(email);
+    const user = await authService.getUserByEmail(email);
 
     await logAuthAudit({
       action: AuthAuditAction.PASSWORD_RESET_REQUESTED,

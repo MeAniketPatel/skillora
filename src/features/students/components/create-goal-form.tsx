@@ -4,7 +4,7 @@ import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createGoalSchema } from "@/features/learning-goals/contracts/learning-goal.contract";
-import { createGoalAction } from "@/actions/learning-goal.actions";
+import { createGoalAction } from "@/features/learning-goals/actions/learning-goal.actions";
 import { z } from "zod";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition, useCallback } from "react";
-import { createReview, updateReview, deleteReview } from "@/actions/review.actions";
+import { createReview, updateReview, deleteReview } from "../actions/review.actions";
 
 export function useReviews() {
   const [isPending, setPending] = useState(false);

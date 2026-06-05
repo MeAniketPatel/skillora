@@ -3,8 +3,8 @@
 import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/shared/components/ui/button";
-import { enrollInFreeCourse } from "@/actions/enrollment.actions";
-import { createCheckoutSession } from "@/actions/payment.actions";
+import { enrollInFreeCourse } from "@/features/enrollment/actions/enrollment.actions";
+import { createCheckoutSession } from "@/features/payments/actions/payment.actions";
 
 interface EnrollButtonProps {
   courseId: string;

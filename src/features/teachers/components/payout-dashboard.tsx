@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { payoutSchema } from "@/features/payouts/contracts/payout.contract";
-import { requestPayoutAction } from "@/actions/payout.actions";
+import { requestPayoutAction } from "@/features/payouts/actions/payout.actions";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";

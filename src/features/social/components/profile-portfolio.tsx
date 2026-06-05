@@ -10,7 +10,7 @@ import { Textarea } from "@/shared/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { portfolioProjectSchema } from "@/features/profile/contracts/profile.contract";
-import { addPortfolioProjectAction, deletePortfolioProjectAction } from "@/actions/profile.actions";
+import { addPortfolioProjectAction, deletePortfolioProjectAction } from "@/features/profile/actions/profile.actions";
 import { ExternalLink, Trash2, FolderPlus, Loader2, Info } from "lucide-react";
 import { z } from "zod";
 

@@ -2,7 +2,7 @@
 
 import { useTransition, useState } from "react";
 import { Button } from "@/shared/components/ui/button";
-import { toggleFollowAction } from "@/actions/follow.actions";
+import { toggleFollowAction } from "@/features/follows/actions/follow.actions";
 import { UserCheck, UserPlus, Loader2 } from "lucide-react";
 
 interface FollowButtonProps {

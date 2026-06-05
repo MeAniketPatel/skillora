@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Label } from "@/shared/components/ui/label";
 import { Switch } from "@/shared/components/ui/switch";
-import { updateSetting } from "@/actions/settings.actions";
+import { updateSetting } from "@/features/settings/actions/settings.actions";
 import { AlertTriangle, Wrench, ShieldAlert } from "lucide-react";
 
 interface MaintenanceBannerProps {

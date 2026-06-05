@@ -11,7 +11,7 @@ import {
   toggleFeatureFlagAction,
   updateFeatureFlagRolloutAction,
   deleteFeatureFlagAction,
-} from "@/actions/feature-flag.actions";
+} from "@/features/feature-flags/actions/feature-flag.actions";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";

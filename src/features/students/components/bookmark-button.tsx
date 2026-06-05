@@ -3,7 +3,7 @@
 import React, { useTransition } from "react";
 import { Bookmark, Loader2 } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
-import { toggleBookmarkAction } from "@/actions/bookmark.actions";
+import { toggleBookmarkAction } from "@/features/bookmarks/actions/bookmark.actions";
 import { toast } from "sonner";
 
 interface BookmarkButtonProps {

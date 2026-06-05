@@ -9,7 +9,7 @@ import { Badge } from "@/shared/components/ui/badge";
 import {
   approveModerationItemAction,
   rejectModerationItemAction,
-} from "@/actions/moderation.actions";
+} from "@/features/moderation/actions/moderation.actions";
 import { ShieldCheck, ShieldAlert, Check, X, Shield, AlertTriangle } from "lucide-react";
 
 interface ModerationItemType {

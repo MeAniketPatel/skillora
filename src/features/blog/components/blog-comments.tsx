@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { blogCommentSchema } from "@/features/blog/contracts/blog.contract";
-import { addBlogCommentAction } from "@/actions/blog.actions";
+import { addBlogCommentAction } from "@/features/blog/actions/blog.actions";
 import { Button } from "@/shared/components/ui/button";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/shared/components/ui/form";

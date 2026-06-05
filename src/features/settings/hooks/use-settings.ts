@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition, useCallback } from "react";
-import { updateSetting } from "@/actions/settings.actions";
+import { updateSetting } from "../actions/settings.actions";
 
 export function useSettings() {
   const [isPending, setPending] = useState(false);

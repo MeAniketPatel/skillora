@@ -2,7 +2,7 @@
 
 import { useState, useTransition, useCallback } from "react";
 import { z } from "zod";
-import { createGlobalAnnouncement, deleteGlobalAnnouncement } from "@/actions/announcement.actions";
+import { createGlobalAnnouncement, deleteGlobalAnnouncement } from "../actions/announcement.actions";
 import { announcementSchema } from "@/features/announcements/contracts/announcement.contract";
 
 export function useAnnouncements() {

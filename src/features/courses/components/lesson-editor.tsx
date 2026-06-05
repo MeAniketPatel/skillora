@@ -34,7 +34,7 @@ import {
   updateLesson,
   createAttachment,
   deleteAttachment,
-} from "@/actions/course.actions";
+} from "../actions/course.actions";
 import { QuizBuilder } from "@/features/courses";
 const lessonSchema = z.object({
   title: z.string().min(1, "Title is required"),

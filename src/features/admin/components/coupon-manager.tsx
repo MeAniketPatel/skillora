@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { createCoupon, deleteCoupon } from "@/actions/coupon.actions";
+import { createCoupon, deleteCoupon } from "@/features/coupons/actions/coupon.actions";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";

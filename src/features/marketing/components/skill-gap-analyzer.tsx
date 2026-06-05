@@ -10,7 +10,7 @@ import { Input } from "@/shared/components/ui/input";
 import { Badge } from "@/shared/components/ui/badge";
 import { cn } from "@/shared/lib/utils";
 import { SKILL_CATALOG } from "@/shared/constants/marketing";
-import { recommendSkillGapAction } from "@/actions/skill-gap.actions";
+import { recommendSkillGapAction } from "@/features/skill-gap/actions/skill-gap.actions";
 import { ROUTES } from "@/shared/constants/routes";
 
 interface SkillGapAnalyzerProps {

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { courseCreateSchema, CourseCreateInput } from "@/features/courses/contracts/course.contract";
-import { createCourse } from "@/actions";
+import { createCourse } from "@/features/courses/actions/course.actions";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";

@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { Award, AlertTriangle, CheckCircle, XCircle } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
-import { submitQuizAttempt } from "@/actions/quiz.actions";
-import { toggleLessonCompletion } from "@/actions/enrollment.actions";
+import { submitQuizAttempt } from "@/features/quizzes/actions/quiz.actions";
+import { toggleLessonCompletion } from "@/features/enrollment/actions/enrollment.actions";
 
 interface Question {
   id: string;

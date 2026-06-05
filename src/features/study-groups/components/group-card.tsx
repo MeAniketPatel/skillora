@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Badge } from "@/shared/components/ui/badge";
-import { joinStudyGroupAction, leaveStudyGroupAction } from "@/actions/study-group.actions";
+import { joinStudyGroupAction, leaveStudyGroupAction } from "../actions/study-group.actions";
 import { Users, Lock, Unlock, MessageSquare, Loader2 } from "lucide-react";
 
 interface StudyGroupType {

@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
-import { subscribeToPlanAction } from "@/actions/subscription.actions";
+import { subscribeToPlanAction } from "@/features/subscriptions/actions/subscription.actions";
 import { toast } from "sonner";
 import { Check, Loader2, Star, Zap, Shield } from "lucide-react";
 

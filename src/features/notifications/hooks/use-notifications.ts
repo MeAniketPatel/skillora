@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition, useCallback } from "react";
-import { markNotificationAsRead, markAllNotificationsAsRead } from "@/actions/notification.actions";
+import { markNotificationAsRead, markAllNotificationsAsRead } from "../actions/notification.actions";
 
 export function useNotifications() {
   const [isPending, setPending] = useState(false);

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Bell, Check, ExternalLink, MailOpen } from "lucide-react";
 import Link from "next/link";
-import { getNotifications, markNotificationAsRead, markAllNotificationsAsRead } from "@/actions/notification.actions";
+import { getNotifications, markNotificationAsRead, markAllNotificationsAsRead } from "@/features/notifications/actions/notification.actions";
 import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 
