@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useAdminActions } from "@/features/admin/hooks/use-admin";
 import { useRouter } from "next/navigation";
 import { approveCourse, rejectCourse } from "@/actions/admin.actions";
 import { Button } from "@/shared/components/ui/button";

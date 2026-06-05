@@ -14,3 +14,6 @@ export { canSettings as canSettings, assertSettingsAccess } from "./permissions/
 // Contracts
 export { settingSchema } from "./contracts/settings.contract";
 export type { SettingInput } from "./contracts/settings.contract";
+
+// Hooks
+export { useSettings } from "./hooks/use-settings";

@@ -10,3 +10,8 @@ export { canFeatureFlags as canFeatureFlags, assertFeatureFlagsAccess } from "./
 export { featureFlagSchema, toggleFeatureFlagSchema, updateRolloutSchema } from "./contracts/feature-flag.contract";
 export { createFeatureFlagsSchema, updateFeatureFlagsSchema, listFeatureFlagsQuerySchema } from "./contracts/feature-flags.contract";
 export type { CreateFeatureFlagsInput, UpdateFeatureFlagsInput } from "./contracts/feature-flags.contract";
+
+
+
+// Hooks
+export { useFeatureFlag } from "./hooks/use-feature-flags";

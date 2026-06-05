@@ -20,9 +20,16 @@ function walk(dir, exts, out = []) {
 }
 
 const files = walk(srcDir, [".ts", ".tsx"], []);
-const isApp = (f) => f.includes(`${path.sep}actions${path.sep}`) || f.includes(`${path.sep}app${path.sep}`) || f.includes(`${path.sep}lib${path.sep}`);
-const appFiles = files.filter(isApp);
+// The "application surface" for counting adoption: anything that's not
+// an internal feature file. The split exists so legacy `@/actions` etc.
+// is only counted at the application edge (in src/actions, src/app,
+// src/lib), but new-layer adoption (services, permissions, hooks,
+// contracts) is counted across the whole src tree, because features
+// are the real consumers of those layers.
+const isAppEdge = (f) => f.includes(`${path.sep}actions${path.sep}`) || f.includes(`${path.sep}app${path.sep}`) || f.includes(`${path.sep}lib${path.sep}`);
+const appFiles = files.filter(isAppEdge);
 const featureFiles = files.filter((f) => f.includes(`${path.sep}features${path.sep}`));
+const allCodeFiles = files; // for new-layer adoption
 
 const counts = {
   services: 0,
@@ -61,9 +68,18 @@ for (const f of appFiles) {
   counts.legacy_stores += (text.match(re.legacyStores) || []).length;
   counts.services += (text.match(re.useService) || []).length;
   counts.services += (text.match(re.useServiceCall) || []).length;
+}
+
+// New-layer adoption (services, permissions, hooks, contracts) is
+// counted across all of src/ so that client components in features
+// that use the new layer are credited.
+for (const f of allCodeFiles) {
+  const text = fs.readFileSync(f, "utf8");
   counts.permissions += (text.match(re.usePermission) || []).length;
   counts.hooks += (text.match(re.useHook) || []).length;
   counts.contracts += (text.match(re.useContract) || []).length;
+  // service *calls* (e.g. coursesService.list()) anywhere count too
+  counts.services += (text.match(re.useServiceCall) || []).length;
 }
 
 const featureContracts = featureFiles.filter((f) => /contracts[\\/][^\\/]+contract\.ts$/.test(f));

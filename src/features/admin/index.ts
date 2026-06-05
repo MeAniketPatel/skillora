@@ -21,3 +21,6 @@ export { canAdmin as canAdmin, assertAdminAccess } from "./permissions/admin.per
 // Contracts
 export { userRoleUpdateSchema, categoryCreateSchema, categoryUpdateSchema, couponCreateSchema } from "./contracts/admin.contract";
 export type { UserRoleUpdateInput, CategoryCreateInput, CategoryUpdateInput, CouponCreateInput } from "./contracts/admin.contract";
+
+// Hooks
+export { useAdminActions } from "./hooks/use-admin";

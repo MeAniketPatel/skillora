@@ -11,3 +11,8 @@ export { reviewCreateSchema, reviewUpdateSchema } from "./contracts/review.contr
 export type { ReviewCreateInput, ReviewUpdateInput } from "./contracts/review.contract";
 export { createReviewsSchema, updateReviewsSchema, listReviewsQuerySchema } from "./contracts/reviews.contract";
 export type { CreateReviewsInput, UpdateReviewsInput } from "./contracts/reviews.contract";
+
+
+
+// Hooks
+export { useReviews } from "./hooks/use-reviews";

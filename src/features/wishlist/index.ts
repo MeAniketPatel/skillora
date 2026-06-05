@@ -9,3 +9,4 @@ export { canWishlist as canWishlist, assertWishlistAccess } from "./permissions/
 // Contracts
 export { createWishlistSchema, updateWishlistSchema, listWishlistQuerySchema } from "./contracts/wishlist.contract";
 export type { CreateWishlistInput, UpdateWishlistInput } from "./contracts/wishlist.contract";
+

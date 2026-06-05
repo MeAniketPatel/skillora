@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
+import { useAdminActions } from "@/features/admin/hooks/use-admin";
 import { Button } from "@/shared/components/ui/button";
 import { impersonateUserAction, stopImpersonationAction } from "@/actions/impersonation.actions";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
