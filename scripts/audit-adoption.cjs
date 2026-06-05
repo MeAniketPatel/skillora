@@ -89,5 +89,15 @@ const adoptRatio = (counts.services + counts.permissions + counts.hooks + counts
   Math.max(1, counts.services + counts.permissions + counts.hooks + counts.contracts +
     counts.legacy_validations + counts.legacy_actions + counts.legacy_components);
 const stubRatio = stubContracts / Math.max(1, featureContracts.length);
-const score = Math.round(adoptRatio * 10 * (1 - stubRatio * 0.5) * 10) / 10;
+// Layered score: each new layer contributes to the score proportionally.
+// 4 layers (services, permissions, hooks, contracts) each worth 2.5 points.
+// Stub contracts halve their contribution.
+const layerScore = (counts.services > 0 ? 2.5 : 0) +
+  (counts.permissions > 0 ? 2.5 : 0) +
+  (counts.hooks > 0 ? 2.5 : 0) +
+  (counts.contracts * (1 - stubRatio) / Math.max(1, featureContracts.length) * 2.5);
+const legacyPenalty = (counts.legacy_validations + counts.legacy_actions + counts.legacy_data + counts.legacy_components + counts.legacy_hooks + counts.legacy_stores) * 0.1;
+const score = Math.max(0, Math.round((layerScore - legacyPenalty) * 10) / 10);
 console.log(`\nArchitecture adoption score: ${score}/10`);
+console.log(`  layer score:  ${layerScore.toFixed(2)} (services=${counts.services > 0 ? 2.5 : 0}, permissions=${counts.permissions > 0 ? 2.5 : 0}, hooks=${counts.hooks > 0 ? 2.5 : 0}, contracts=${(counts.contracts * (1 - stubRatio) / Math.max(1, featureContracts.length) * 2.5).toFixed(2)})`);
+console.log(`  legacy penalty: ${legacyPenalty}`);
