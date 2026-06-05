@@ -9,3 +9,6 @@ export { BlogEditor } from "./components/blog-editor";
 // Services
 export { blogService } from "./services/blog.service";
 export type { BlogService } from "./services/blog.service";
+
+// Permissions
+export { canBlog as canBlog, assertBlogAccess } from "./permissions/blog.permissions";

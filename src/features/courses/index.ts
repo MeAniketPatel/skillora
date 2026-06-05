@@ -29,3 +29,6 @@ export { default as QuizView } from "./components/quiz-view";
 // Services
 export { coursesService } from "./services/courses.service";
 export type { CoursesService } from "./services/courses.service";
+
+// Permissions
+export { canCourses as canCourses, assertCoursesAccess } from "./permissions/courses.permissions";

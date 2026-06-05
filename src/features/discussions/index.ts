@@ -10,3 +10,6 @@ export { DiscussionReply } from "./components/discussion-reply";
 // Services
 export { discussionsService } from "./services/discussions.service";
 export type { DiscussionsService } from "./services/discussions.service";
+
+// Permissions
+export { canDiscussions as canDiscussions, assertDiscussionsAccess } from "./permissions/discussions.permissions";

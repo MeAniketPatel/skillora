@@ -23,3 +23,6 @@ export { WeeklyProgress } from "./components/weekly-progress";
 // Services
 export { studentsService } from "./services/students.service";
 export type { StudentsService } from "./services/students.service";
+
+// Permissions
+export { canStudents as canStudents, assertStudentsAccess } from "./permissions/students.permissions";

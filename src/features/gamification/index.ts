@@ -9,3 +9,6 @@ export { XPProgressBar as XPProgressBar, XPProgressBar as XpProgressBar } from "
 // Services
 export { gamificationService } from "./services/gamification.service";
 export type { GamificationService } from "./services/gamification.service";
+
+// Permissions
+export { canGamification as canGamification, assertGamificationAccess } from "./permissions/gamification.permissions";

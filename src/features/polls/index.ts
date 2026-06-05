@@ -10,3 +10,6 @@ export { PollVoter } from "./components/poll-voter";
 // Services
 export { pollsService } from "./services/polls.service";
 export type { PollsService } from "./services/polls.service";
+
+// Permissions
+export { canPolls as canPolls, assertPollsAccess } from "./permissions/polls.permissions";

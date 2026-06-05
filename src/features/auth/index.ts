@@ -53,3 +53,6 @@ export type {
 // Services
 export { authService } from "./services/auth.service";
 export type { AuthService } from "./services/auth.service";
+
+// Permissions
+export { canAuth as canAuth, assertAuthAccess } from "./permissions/auth.permissions";

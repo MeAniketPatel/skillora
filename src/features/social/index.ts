@@ -14,3 +14,6 @@ export { ProfilePortfolio } from "./components/profile-portfolio";
 // Services
 export { socialService } from "./services/social.service";
 export type { SocialService } from "./services/social.service";
+
+// Permissions
+export { canSocial as canSocial, assertSocialAccess } from "./permissions/social.permissions";

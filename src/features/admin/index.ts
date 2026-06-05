@@ -18,3 +18,6 @@ export { ImpersonateButton as ImpersonateButton, ImpersonateButton as UserImpers
 // Services
 export { adminService } from "./services/admin.service";
 export type { AdminService } from "./services/admin.service";
+
+// Permissions
+export { canAdmin as canAdmin, assertAdminAccess } from "./permissions/admin.permissions";

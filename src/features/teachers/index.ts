@@ -19,3 +19,6 @@ export { TeacherStats } from "./components/teacher-stats";
 // Services
 export { teachersService } from "./services/teachers.service";
 export type { TeachersService } from "./services/teachers.service";
+
+// Permissions
+export { canTeachers as canTeachers, assertTeachersAccess } from "./permissions/teachers.permissions";

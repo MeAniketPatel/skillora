@@ -9,3 +9,6 @@ export { default as SettingsForm, default as SettingsClientForm } from "./compon
 // Services
 export { settingsService } from "./services/settings.service";
 export type { SettingsService } from "./services/settings.service";
+
+// Permissions
+export { canSettings as canSettings, assertSettingsAccess } from "./permissions/settings.permissions";

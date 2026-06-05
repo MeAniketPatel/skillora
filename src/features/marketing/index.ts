@@ -12,3 +12,5 @@ export { PricingTable } from "./components/pricing-table";
 export { SkillGapAnalyzer } from "./components/skill-gap-analyzer";
 export { TestimonialCard } from "./components/testimonial-card";
 export { TestimonialGrid } from "./components/testimonial-grid";
+// Permissions
+export { canMarketing as canMarketing, assertMarketingAccess } from "./permissions/marketing.permissions";
