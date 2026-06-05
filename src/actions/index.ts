@@ -44,5 +44,6 @@ export * from "./resource.actions";
 export * from "./email-preference.actions";
 export * from "./webhook.actions";
 export * from "./live-session.actions";
+export * from "./privacy.actions";
 
 

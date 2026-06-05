@@ -29,6 +29,7 @@ export * from "./resource.schema";
 export * from "./email-preference.schema";
 export * from "./webhook.schema";
 export * from "./live-session.schema";
+export * from "./privacy.schema";
 
 
 
