@@ -17,6 +17,10 @@ export * from "./peer-review.schema";
 export * from "./poll.schema";
 export * from "./feature-flag.schema";
 export * from "./moderation.schema";
+export * from "./profile.schema";
+export * from "./study-group.schema";
+export * from "./message.schema";
+
 
 
 

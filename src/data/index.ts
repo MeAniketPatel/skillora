@@ -29,8 +29,9 @@ export * from "./peer-review.data";
 export * from "./poll.data";
 export * from "./feature-flag.data";
 export * from "./moderation.data";
-
-
-
-
+export * from "./profile.data";
+export * from "./follow.data";
+export * from "./activity.data";
+export * from "./study-group.data";
+export * from "./message.data";
 
