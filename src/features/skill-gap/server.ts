@@ -10,3 +10,5 @@ export type { FeaturedCourse } from "./repositories/skill-gap.repository";
 // Service
 import { skillGapService as service } from "./services/skill-gap.service";
 export { service };
+
+export * from './index';

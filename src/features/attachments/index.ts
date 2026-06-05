@@ -10,4 +10,3 @@ export { canAttachments as canAttachments, assertAttachmentsAccess } from "./per
 export { createAttachmentsSchema, updateAttachmentsSchema, listAttachmentsQuerySchema } from "./contracts/attachments.contract";
 export type { CreateAttachmentsInput, UpdateAttachmentsInput } from "./contracts/attachments.contract";
 
-export { service } from "./server";

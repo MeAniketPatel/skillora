@@ -1,10 +1,10 @@
 import React from "react";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserGoals } from "@/features/students";
+import { getUserGoals } from "@/features/students/server";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/components/ui/card";
-import { CreateGoalForm } from "@/features/students";
-import { LearningGoals } from "@/features/students";
+import { CreateGoalForm } from "@/features/students/server";
+import { LearningGoals } from "@/features/students/server";
 
 export default async function GoalsPage() {
   const user = await requireAuth();
@@ -40,3 +40,4 @@ export default async function GoalsPage() {
     </div>
   );
 }
+

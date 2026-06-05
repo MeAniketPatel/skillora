@@ -9,3 +9,5 @@ export { createPurchase, getPurchaseByStripeId, getUserPurchases, getTeacherEarn
 // Service
 import { paymentsService as service } from "./services/payments.service";
 export { service };
+
+export * from './index';

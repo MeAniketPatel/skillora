@@ -1,6 +1,6 @@
 import { Briefcase, TrendingUp, Sparkles } from "lucide-react";
-import { CareerHub } from "@/features/marketing";
-import { SkillGapAnalyzer } from "@/features/marketing";
+import { CareerHub } from "@/features/marketing/server";
+import { SkillGapAnalyzer } from "@/features/marketing/server";
 import { Navbar } from "@/shared/components/layout/navbar";
 import { Footer } from "@/shared/components/layout/footer";
 import LinkButton from "@/shared/components/ui/link-button";
@@ -92,3 +92,4 @@ function Highlight({
     </div>
   );
 }
+

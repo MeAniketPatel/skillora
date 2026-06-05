@@ -1,4 +1,4 @@
-import { ForgotPasswordForm } from "@/features/auth";
+import { ForgotPasswordForm } from "@/features/auth/server";
 
 export const metadata = {
   title: "Forgot Password - Skillora",
@@ -8,3 +8,4 @@ export const metadata = {
 export default function ForgotPasswordPage() {
   return <ForgotPasswordForm />;
 }
+

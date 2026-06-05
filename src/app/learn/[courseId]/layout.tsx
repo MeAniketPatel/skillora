@@ -1,12 +1,12 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { getCourseWithPublishedCurriculum } from "@/features/courses";
-import { getEnrollmentWithProgress } from "@/features/enrollment";
+import { getCourseWithPublishedCurriculum } from "@/features/courses/server";
+import { getEnrollmentWithProgress } from "@/features/enrollment/server";
 import { Navbar } from "@/shared/components/layout/navbar";
-import { LessonSidebar } from "@/features/learn";
+import { LessonSidebar } from "@/features/learn/server";
 import type {
   LessonSidebarSection,
-} from "@/features/learn";
+} from "@/features/learn/server";
 
 interface LearnCourseLayoutProps {
   children: React.ReactNode;
@@ -157,3 +157,4 @@ function CourseProgressBar({
     </div>
   );
 }
+

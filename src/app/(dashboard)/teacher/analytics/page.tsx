@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { getTeacherAnalyticsCourses } from "@/features/courses";
-import { getAllTeacherSubmissions } from "@/features/assignments";
-import { AnalyticsClient, isTeacherOrAdmin } from "@/features/teachers";
+import { getTeacherAnalyticsCourses } from "@/features/courses/server";
+import { getAllTeacherSubmissions } from "@/features/assignments/server";
+import { AnalyticsClient, isTeacherOrAdmin } from "@/features/teachers/server";
 
 export default async function TeacherAnalyticsPage() {
   const session = await auth();
@@ -32,3 +32,4 @@ export default async function TeacherAnalyticsPage() {
     </div>
   );
 }
+

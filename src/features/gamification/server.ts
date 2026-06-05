@@ -9,3 +9,5 @@ export { getUserXPPoints, awardXPPoints, getUserBadgesList, unlockBadgeForUser, 
 // Service
 import { gamificationService as service } from "./services/gamification.service";
 export { service };
+
+export * from './index';

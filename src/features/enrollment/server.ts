@@ -9,3 +9,7 @@ export { getEnrollment, createEnrollment, getUserEnrollments, getCourseEnrollmen
 // Service
 import { enrollmentService as service } from "./services/enrollment.service";
 export { service };
+
+export * from './permissions/enrollment.permissions';
+
+export * from './index';

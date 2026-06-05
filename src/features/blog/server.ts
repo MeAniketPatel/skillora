@@ -9,3 +9,5 @@ export { getBlogPosts, getBlogPostDetail, createBlogPost, addBlogComment, toggle
 // Service
 import { blogService as service } from "./services/blog.service";
 export { service };
+
+export * from './index';

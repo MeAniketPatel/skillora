@@ -6,3 +6,5 @@
 // Service
 import { codePlaygroundService as service } from "./services/code-playground.service";
 export { service };
+
+export * from './index';

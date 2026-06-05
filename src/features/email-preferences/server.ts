@@ -9,3 +9,5 @@ export { getEmailPreferences, updateEmailPreferences } from "./repositories/emai
 // Service
 import { emailPreferencesService as service } from "./services/email-preferences.service";
 export { service };
+
+export * from './index';

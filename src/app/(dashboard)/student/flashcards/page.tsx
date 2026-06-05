@@ -1,7 +1,7 @@
-import { getDecksForUser } from "@/features/flashcards";
+import { getDecksForUser } from "@/features/flashcards/server";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { DeckList } from "@/features/flashcards";
+import { DeckList } from "@/features/flashcards/server";
 import { HelpCircle, Sparkles } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 
@@ -45,3 +45,4 @@ export default async function FlashcardsPage() {
     </div>
   );
 }
+

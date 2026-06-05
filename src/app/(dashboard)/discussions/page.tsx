@@ -1,6 +1,6 @@
-import { getDiscussionsList } from "@/features/discussions";
-import { DiscussionList } from "@/features/discussions";
-import { DiscussionEditor } from "@/features/discussions";
+import { getDiscussionsList } from "@/features/discussions/server";
+import { DiscussionList } from "@/features/discussions/server";
+import { DiscussionEditor } from "@/features/discussions/server";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { MessageSquare, Flame } from "lucide-react";
@@ -59,3 +59,4 @@ export default async function DiscussionsPage() {
     </div>
   );
 }
+

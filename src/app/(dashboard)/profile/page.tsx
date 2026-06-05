@@ -1,10 +1,10 @@
 import React from "react";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserProfileCard, getUserPortfolio, getUserActivities } from "@/features/social";
+import { getUserProfileCard, getUserPortfolio, getUserActivities } from "@/features/social/server";
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { ProfileCard } from "@/features/social";
-import { ProfilePortfolio } from "@/features/social";
-import { ProfileActivityFeed } from "@/features/social";
+import { ProfileCard } from "@/features/social/server";
+import { ProfilePortfolio } from "@/features/social/server";
+import { ProfileActivityFeed } from "@/features/social/server";
 
 export default async function OwnProfilePage() {
   const user = await requireAuth();
@@ -36,3 +36,4 @@ export default async function OwnProfilePage() {
     </div>
   );
 }
+

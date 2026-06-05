@@ -9,3 +9,7 @@ export { createAttachment, deleteAttachment } from "./repositories/attachment.re
 // Service
 import { attachmentsService as service } from "./services/attachments.service";
 export { service };
+
+export * from './permissions/attachments.permissions';
+
+export * from './index';

@@ -9,3 +9,5 @@ export { createGiftCard, redeemGiftCard } from "./repositories/gift-card.reposit
 // Service
 import { giftCardsService as service } from "./services/gift-cards.service";
 export { service };
+
+export * from './index';

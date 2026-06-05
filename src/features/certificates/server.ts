@@ -9,3 +9,5 @@ export { getCertificateById, getUserCertificates, createCertificate, getCertific
 // Service
 import { certificatesService as service } from "./services/certificates.service";
 export { service };
+
+export * from './index';

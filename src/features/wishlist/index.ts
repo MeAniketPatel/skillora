@@ -11,6 +11,5 @@ export { createWishlistSchema, updateWishlistSchema, listWishlistQuerySchema } f
 export type { CreateWishlistInput, UpdateWishlistInput } from "./contracts/wishlist.contract";
 
 
-export { getUserWishlist } from "./server";
 
 export { toggleWishlist } from "./actions/wishlist.actions";

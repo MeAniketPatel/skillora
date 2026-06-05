@@ -17,4 +17,3 @@ export { pollSchema } from "./contracts/poll.contract";
 export { createPollsSchema, updatePollsSchema, listPollsQuerySchema } from "./contracts/polls.contract";
 export type { CreatePollsInput, UpdatePollsInput } from "./contracts/polls.contract";
 
-export { getCoursePolls } from "./server";

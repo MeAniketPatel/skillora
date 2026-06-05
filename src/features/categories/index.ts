@@ -10,6 +10,5 @@ export { canCategories as canCategories, assertCategoriesAccess } from "./permis
 export { createCategoriesSchema, updateCategoriesSchema, listCategoriesQuerySchema } from "./contracts/categories.contract";
 export type { CreateCategoriesInput, UpdateCategoriesInput } from "./contracts/categories.contract";
 
-export { getAllCategories } from "./server";
 
 export { createCategory, deleteCategory } from "./actions/category.actions";

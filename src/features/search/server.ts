@@ -10,3 +10,5 @@ export type { SearchFilters } from "./repositories/search.repository";
 // Service
 import { searchService as service } from "./services/search.service";
 export { service };
+
+export * from './index';

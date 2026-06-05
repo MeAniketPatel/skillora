@@ -6,3 +6,5 @@
 // Service
 import { cartService as service } from "./services/cart.service";
 export { service };
+
+export * from './index';

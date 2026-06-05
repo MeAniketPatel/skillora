@@ -5,7 +5,7 @@ import {
 } from "uploadthing/next";
 import { ensureUploadThingToken } from "@/shared/lib/uploadthing-token";
 import { auth } from "@/auth";
-import { isTeacherOrAdmin } from "@/features/auth";
+import { isTeacherOrAdmin } from "@/features/auth/server";
 
 // Note: do not validate UPLOADTHING_TOKEN at module init to avoid build-time
 // failures. Validation is performed at runtime when handling uploads.
@@ -62,3 +62,4 @@ export type OurFileRouter = typeof ourFileRouter;
 export const { GET, POST } = createRouteHandler({
   router: ourFileRouter,
 });
+

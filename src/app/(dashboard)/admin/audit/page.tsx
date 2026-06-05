@@ -1,10 +1,10 @@
 import React from "react";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
-import { getAuditLogs } from "@/features/admin";
+import { getAuditLogs } from "@/features/admin/server";
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { AuditLogTable } from "@/features/admin";
+import { AuditLogTable } from "@/features/admin/server";
 import { Pagination } from "@/shared/components/shared/pagination";
-import { AuthAuditAction } from "@/features/auth";
+import { AuthAuditAction } from "@/features/auth/server";
 interface PageProps {
   searchParams: Promise<{
     page?: string;
@@ -43,3 +43,4 @@ export default async function AdminAuditPage({ searchParams }: PageProps) {
     </div>
   );
 }
+

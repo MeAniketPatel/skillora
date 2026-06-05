@@ -1,4 +1,4 @@
-import { LoginForm } from "@/features/auth";
+import { LoginForm } from "@/features/auth/server";
 
 export const metadata = {
   title: "Login - Skillora",
@@ -8,3 +8,4 @@ export const metadata = {
 export default function LoginPage() {
   return <LoginForm />;
 }
+

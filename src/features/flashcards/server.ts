@@ -9,3 +9,5 @@ export { createDeck, addCardToDeck, getDecksForUser, getDeckDetails, getReviewCa
 // Service
 import { flashcardsService as service } from "./services/flashcards.service";
 export { service };
+
+export * from './index';

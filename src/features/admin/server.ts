@@ -11,3 +11,9 @@ export { getPendingModerationItems, getModerationItems, createModerationItem, ap
 // Service
 import { adminService as service } from "./services/admin.service";
 export { service };
+
+export * from './permissions/admin.permissions';
+
+export * from './contracts/admin.contract';
+
+export * from './index';

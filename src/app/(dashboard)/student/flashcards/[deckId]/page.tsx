@@ -1,7 +1,7 @@
-import { getDeckDetails } from "@/features/flashcards";
+import { getDeckDetails } from "@/features/flashcards/server";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { FlashcardReviewer } from "@/features/flashcards";
+import { FlashcardReviewer } from "@/features/flashcards/server";
 
 interface DeckReviewPageProps {
   params: Promise<{
@@ -35,3 +35,4 @@ export default async function DeckReviewPage({ params }: DeckReviewPageProps) {
     </div>
   );
 }
+

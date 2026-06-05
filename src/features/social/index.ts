@@ -16,4 +16,3 @@ export { canSocial as canSocial, assertSocialAccess } from "./permissions/social
 export { createSocialSchema, updateSocialSchema, listSocialQuerySchema } from "./contracts/social.contract";
 export type { CreateSocialInput, UpdateSocialInput } from "./contracts/social.contract";
 
-export { getConversations, getMessages, getUserProfileCard, getUserPortfolio, getUserActivities, isFollowing, getStudyGroups, getStudyGroupById, isGroupMember, service } from "./server";

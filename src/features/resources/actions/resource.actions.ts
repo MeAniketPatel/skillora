@@ -5,10 +5,9 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { addResourceSchema } from "@/features/resources/contracts/resource.contract";
-import { service as coursesService } from "@/features/courses";
+import { service as coursesService } from "@/features/courses/server";
 import db from "@/shared/lib/prisma";
-
-import { assertCoursesAccess } from "@/features/courses";
+import { assertResourceAccess } from "../permissions/resources.permissions";
 export async function addCourseResourceAction(courseId: string, values: z.infer<typeof addResourceSchema>) {
   return actionHandler(async () => {
     const user = await requireAuth();
@@ -23,9 +22,7 @@ export async function addCourseResourceAction(courseId: string, values: z.infer<
       throw new Error("Course not found.");
     }
 
-    if (course.teacherId !== user.id && user.role !== "ADMIN") {
-      throw new Error("You do not have permission to add resources to this course.");
-    }
+    assertResourceAccess(user as any, course.teacherId, "add");
 
     const validated = addResourceSchema.parse(values);
 
@@ -55,9 +52,7 @@ export async function deleteCourseResourceAction(courseId: string, resourceId: s
       throw new Error("Course not found.");
     }
 
-    if (course.teacherId !== user.id && user.role !== "ADMIN") {
-      throw new Error("You do not have permission to delete resources from this course.");
-    }
+    assertResourceAccess(user as any, course.teacherId, "delete");
 
     const resource = await coursesService.deleteResource(resourceId);
 

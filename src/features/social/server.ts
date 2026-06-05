@@ -13,3 +13,7 @@ export { getStudyGroups, createStudyGroup, getStudyGroupById, isGroupMember, joi
 // Service
 import { socialService as service } from "./services/social.service";
 export { service };
+
+export * from './permissions/social.permissions';
+
+export * from './index';

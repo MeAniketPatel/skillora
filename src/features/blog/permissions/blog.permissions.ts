@@ -18,3 +18,9 @@ export function assertBlogAccess(role: Role | null | undefined, action: keyof ty
     throw new Error(`Access denied: role '${role ?? "anonymous"}' cannot ${action} blog`);
   }
 }
+
+export function assertBlogPostEditAccess(user: { id: string; role: Role }, authorId: string) {
+  if (authorId !== user.id && user.role !== "ADMIN") {
+    throw new Error("You do not have permission to modify this post.");
+  }
+}

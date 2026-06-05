@@ -1,6 +1,6 @@
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { getCoursesForAdmin } from "@/features/courses";
-import { CourseModeration } from "@/features/admin";
+import { getCoursesForAdmin } from "@/features/courses/server";
+import { CourseModeration } from "@/features/admin/server";
 import { Pagination } from "@/shared/components/shared/pagination";
 
 interface AdminCoursesPageProps {
@@ -41,3 +41,4 @@ export default async function AdminCoursesPage({
     </div>
   );
 }
+

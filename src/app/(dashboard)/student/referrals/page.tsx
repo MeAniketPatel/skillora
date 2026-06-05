@@ -1,7 +1,7 @@
-import { getReferralStats } from "@/features/referrals";
+import { getReferralStats } from "@/features/referrals/server";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { ReferralDashboard } from "@/features/referrals";
+import { ReferralDashboard } from "@/features/referrals/server";
 import { Badge } from "@/shared/components/ui/badge";
 import { Users, Sparkles } from "lucide-react";
 
@@ -52,3 +52,4 @@ export default async function ReferralsPage() {
     </div>
   );
 }
+

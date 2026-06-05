@@ -10,6 +10,5 @@ export { canSubscriptions as canSubscriptions, assertSubscriptionsAccess } from 
 export { createSubscriptionsSchema, updateSubscriptionsSchema, listSubscriptionsQuerySchema } from "./contracts/subscriptions.contract";
 export type { CreateSubscriptionsInput, UpdateSubscriptionsInput } from "./contracts/subscriptions.contract";
 
-export { getUserSubscription } from "./server";
 
 export { subscribeToPlanAction } from "./actions/subscription.actions";

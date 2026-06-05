@@ -17,4 +17,3 @@ export type { CreateReviewsInput, UpdateReviewsInput } from "./contracts/reviews
 // Hooks
 export { useReviews } from "./hooks/use-reviews";
 
-export { getTeacherAverageRating, getTeacherReviews } from "./server";

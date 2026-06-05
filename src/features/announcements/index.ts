@@ -14,6 +14,5 @@ export type { CreateAnnouncementsInput, UpdateAnnouncementsInput } from "./contr
 // Hooks
 export { useAnnouncements } from "./hooks/use-announcements";
 
-export { getGlobalAnnouncements, getAnnouncementsByCourseId } from "./server";
 
 export { createGlobalAnnouncement, deleteGlobalAnnouncement, createAnnouncement, deleteAnnouncement } from "./actions/announcement.actions";

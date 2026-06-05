@@ -14,3 +14,7 @@ export { getStudyStreak, getStudySessions, recordStudySession, buyStreakFreeze }
 // Service
 import { studentsService as service } from "./services/students.service";
 export { service };
+
+export * from './permissions/students.permissions';
+
+export * from './index';

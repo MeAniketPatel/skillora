@@ -13,4 +13,3 @@ export { canReferrals as canReferrals, assertReferralsAccess } from "./permissio
 export { createReferralsSchema, updateReferralsSchema, listReferralsQuerySchema } from "./contracts/referrals.contract";
 export type { CreateReferralsInput, UpdateReferralsInput } from "./contracts/referrals.contract";
 
-export { getReferralStats } from "./server";

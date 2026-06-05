@@ -9,3 +9,5 @@ export { getWebhooks, getWebhookById, getActiveWebhooksByEvent, createWebhook, d
 // Service
 import { webhooksService as service } from "./services/webhooks.service";
 export { service };
+
+export * from './index';

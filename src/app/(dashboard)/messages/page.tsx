@@ -1,9 +1,9 @@
 import React from "react";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getConversations, getMessages } from "@/features/social";
+import { getConversations, getMessages } from "@/features/social/server";
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { ChatSidebar } from "@/features/chat";
-import { ChatWindow } from "@/features/chat";
+import { ChatSidebar } from "@/features/chat/server";
+import { ChatWindow } from "@/features/chat/server";
 import { Card } from "@/shared/components/ui/card";
 
 interface MessagesPageProps {
@@ -68,3 +68,4 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
     </div>
   );
 }
+

@@ -9,3 +9,5 @@ export { getCoursePolls, getPollById, createPoll, voteInPoll, closePoll, deleteP
 // Service
 import { pollsService as service } from "./services/polls.service";
 export { service };
+
+export * from './index';

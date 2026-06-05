@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { getSessionSecurityOverview } from "@/features/auth";
-import { SettingsClientForm } from "@/features/settings";
+import { getSessionSecurityOverview } from "@/features/auth/server";
+import { SettingsClientForm } from "@/features/settings/server";
 import Link from "next/link";
 import { ROUTES } from "@/shared/constants/routes";
 import { Shield, Bell, User } from "lucide-react";
@@ -62,3 +62,4 @@ export default async function SettingsPage() {
     </div>
   );
 }
+

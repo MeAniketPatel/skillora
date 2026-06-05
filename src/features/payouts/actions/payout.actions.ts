@@ -5,10 +5,10 @@ import { actionHandler } from "@/shared/lib/action-utils";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { ValidationError } from "@/shared/lib/errors";
 import { payoutSchema } from "@/features/payouts/contracts/payout.contract";
-import { service as teachersService } from "@/features/teachers";
+import { service as teachersService } from "@/features/teachers/server";
 import { z } from "zod";
 
-import { assertTeachersAccess } from "@/features/teachers";
+import { assertTeachersAccess } from "@/features/teachers/server";
 export async function requestPayoutAction(values: z.infer<typeof payoutSchema>) {
   return actionHandler(async () => {
     const user = await requireTeacher();

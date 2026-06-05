@@ -1,5 +1,5 @@
 import { requireAdmin } from "@/shared/lib/auth-helpers";
-import { getAllCategories } from "@/features/categories";
+import { getAllCategories } from "@/features/categories/server";
 import { DataTable } from "@/shared/components/shared/data-table";
 import { Tags, Plus } from "lucide-react";
 import { createCategory, deleteCategory } from "@/features/categories";
@@ -49,10 +49,7 @@ export default async function AdminCategoriesPage() {
         </div>
         <form action={async (formData) => {
           "use server";
-          await createCategory({
-            name: formData.get("name"),
-            description: formData.get("description"),
-          });
+          await createCategory({ name: formData.get("name") as string, description: (formData.get("description") as string) || undefined });
         }} className="flex items-center gap-2">
           <input 
             name="name" 
@@ -80,3 +77,7 @@ export default async function AdminCategoriesPage() {
     </div>
   );
 }
+
+
+
+

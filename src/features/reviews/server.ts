@@ -9,3 +9,5 @@ export { createReview, updateReview, deleteReview, getCourseReviews, getUserRevi
 // Service
 import { reviewsService as service } from "./services/reviews.service";
 export { service };
+
+export * from './index';

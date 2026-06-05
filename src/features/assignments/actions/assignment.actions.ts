@@ -5,11 +5,11 @@ import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth, requireTeacher } from "@/shared/lib/auth-helpers";
 import { NotFoundError, ValidationError } from "@/shared/lib/errors";
 import { service as assignmentsService } from "@/features/assignments/server";
-import { service as coursesService } from "@/features/courses";
-import { service as enrollmentService } from "@/features/enrollment";
-import { service as studentsService } from "@/features/students";
-import { service as notificationsService } from "@/features/notifications";
-import { assertNotificationsAccess } from "@/features/notifications";
+import { service as coursesService } from "@/features/courses/server";
+import { service as enrollmentService } from "@/features/enrollment/server";
+import { service as studentsService } from "@/features/students/server";
+import { service as notificationsService } from "@/features/notifications/server";
+import { assertNotificationsAccess } from "@/features/notifications/server";
 export async function submitAssignment(lessonId: string, content: string) {
   return actionHandler(async () => {
     const user = await requireAuth();

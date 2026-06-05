@@ -9,3 +9,5 @@ export { getSetting, setSetting, getAllSettings } from "./repositories/settings.
 // Service
 import { settingsService as service } from "./services/settings.service";
 export { service };
+
+export * from './index';

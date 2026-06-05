@@ -9,3 +9,5 @@ export { getFeatureFlags, getFeatureFlagByKey, createFeatureFlag, toggleFeatureF
 // Service
 import { featureFlagsService as service } from "./services/feature-flags.service";
 export { service };
+
+export * from './index';

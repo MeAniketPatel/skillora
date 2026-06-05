@@ -1,6 +1,6 @@
 import { requireAdmin } from "@/shared/lib/auth-helpers";
-import { getAllSettings } from "@/features/settings";
-import { updateSetting } from "@/features/settings";
+import { getAllSettings } from "@/features/settings/server";
+import { updateSetting } from "@/features/settings/server";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 
@@ -48,3 +48,4 @@ export default async function AdminSettingsPage() {
     </div>
   );
 }
+

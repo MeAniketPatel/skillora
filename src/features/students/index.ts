@@ -24,4 +24,3 @@ export { canStudents as canStudents, assertStudentsAccess } from "./permissions/
 export { createStudentsSchema, updateStudentsSchema, listStudentsQuerySchema } from "./contracts/students.contract";
 export type { CreateStudentsInput, UpdateStudentsInput } from "./contracts/students.contract";
 
-export { getUserBookmarks, getUserCollections, getUserCompletedLessonsCount, getUserGoals, getAllUserNotes, getLessonProgress, service } from "./server";

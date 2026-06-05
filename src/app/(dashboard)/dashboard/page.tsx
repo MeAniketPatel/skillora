@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { isTeacherOrAdmin } from "@/features/auth";
+import { isTeacherOrAdmin } from "@/features/auth/server";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -15,3 +15,4 @@ export default async function DashboardPage() {
     redirect("/student/courses");
   }
 }
+

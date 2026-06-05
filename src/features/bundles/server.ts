@@ -9,3 +9,5 @@ export { getCourseBundles, getCourseBundleDetail, createCourseBundle } from "./r
 // Service
 import { bundlesService as service } from "./services/bundles.service";
 export { service };
+
+export * from './index';

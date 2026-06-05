@@ -1,11 +1,11 @@
 import React from "react";
 import { redirect } from "next/navigation";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
-import { getCourseByIdForOwner } from "@/features/courses";
-import { getCoursePolls } from "@/features/polls";
+import { getCourseByIdForOwner } from "@/features/courses/server";
+import { getCoursePolls } from "@/features/polls/server";
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { PollCreator } from "@/features/polls";
-import { PollList } from "@/features/polls";
+import { PollCreator } from "@/features/polls/server";
+import { PollList } from "@/features/polls/server";
 
 interface PageProps {
   params: Promise<{ courseId: string }>;

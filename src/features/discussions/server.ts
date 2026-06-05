@@ -10,3 +10,7 @@ export { createQuestion, createAnswer, getQuestionsForLesson, getQuestionsForTea
 // Service
 import { discussionsService as service } from "./services/discussions.service";
 export { service };
+
+export * from './permissions/discussions.permissions';
+
+export * from './index';

@@ -15,3 +15,7 @@ export { createSection, updateSection, deleteSection, reorderSections } from "./
 // Service
 import { coursesService as service } from "./services/courses.service";
 export { service };
+
+export { canCourses, assertCoursesAccess } from "./permissions/courses.permissions";
+
+export * from './index';

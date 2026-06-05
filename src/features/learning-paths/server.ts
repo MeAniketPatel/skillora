@@ -9,3 +9,5 @@ export { getLearningPaths, getLearningPathDetail, isEnrolledInPath, enrollInLear
 // Service
 import { learningPathsService as service } from "./services/learning-paths.service";
 export { service };
+
+export * from './index';

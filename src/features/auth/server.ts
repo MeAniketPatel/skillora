@@ -13,3 +13,7 @@ export { AuthAuditAction, AuthSessionRevocationReason } from "./repositories/use
 // Service
 import { authService as service } from "./services/auth.service";
 export { service };
+
+export * from './permissions/auth.permissions';
+
+export * from './index';

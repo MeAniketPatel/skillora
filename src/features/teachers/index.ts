@@ -25,4 +25,3 @@ export { canTeachers as canTeachers, assertTeachersAccess, isTeacherOrAdmin } fr
 export { createTeachersSchema, updateTeachersSchema, listTeachersQuerySchema } from "./contracts/teachers.contract";
 export type { CreateTeachersInput, UpdateTeachersInput } from "./contracts/teachers.contract";
 
-export { getPayoutBalance, getPayoutHistory, service } from "./server";

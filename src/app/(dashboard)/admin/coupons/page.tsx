@@ -1,6 +1,6 @@
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { getAllCoupons } from "@/features/admin";
-import { CouponManager } from "@/features/admin";
+import { getAllCoupons } from "@/features/admin/server";
+import { CouponManager } from "@/features/admin/server";
 import { Pagination } from "@/shared/components/shared/pagination";
 
 interface AdminCouponsPageProps {
@@ -34,3 +34,4 @@ export default async function AdminCouponsPage({
     </div>
   );
 }
+

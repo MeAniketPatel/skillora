@@ -5,8 +5,8 @@ import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { createStudyGroupSchema, studyGroupMessageSchema } from "@/features/study-groups/contracts/study-group.contract";
-import { service as socialService } from "@/features/social";
-import { assertSocialAccess } from "@/features/social";
+import { service as socialService } from "@/features/social/server";
+import { assertSocialAccess } from "@/features/social/server";
 export async function createStudyGroupAction(values: z.infer<typeof createStudyGroupSchema>) {
   return actionHandler(async () => {
     const user = await requireAuth();

@@ -1,7 +1,7 @@
-import { getDiscussionThread } from "@/features/discussions";
+import { getDiscussionThread } from "@/features/discussions/server";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { DiscussionReply } from "@/features/discussions";
+import { DiscussionReply } from "@/features/discussions/server";
 import LinkButton from "@/shared/components/ui/link-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 import { Card, CardContent } from "@/shared/components/ui/card";
@@ -160,3 +160,4 @@ export default async function DiscussionDetailPage({ params }: DiscussionDetailP
     </div>
   );
 }
+

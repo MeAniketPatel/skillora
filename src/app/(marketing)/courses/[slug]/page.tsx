@@ -3,13 +3,13 @@ import Link from "next/link";
 import { GraduationCap, BookOpen, Layers, CheckCircle } from "lucide-react";
 
 import { auth } from "@/auth";
-import { getCourseWithFullDetails } from "@/features/courses";
-import { getEnrollment } from "@/features/enrollment";
+import { getCourseWithFullDetails } from "@/features/courses/server";
+import { getEnrollment } from "@/features/enrollment/server";
 import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Navbar } from "@/shared/components/layout/navbar";
 import { Footer } from "@/shared/components/layout/footer";
-import { EnrollButton } from "@/features/courses";
+import { EnrollButton } from "@/features/courses/server";
 interface CourseDetailPageProps {
   params: Promise<{
     slug: string;
@@ -147,3 +147,4 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
     </div>
   );
 }
+

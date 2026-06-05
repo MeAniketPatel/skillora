@@ -1,11 +1,11 @@
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { getPlatformRevenue, getRecentPurchases, getRevenueTimeSeries, getRevenueByTeacher, getRevenueByCourse } from "@/features/payments";
+import { getPlatformRevenue, getRecentPurchases, getRevenueTimeSeries, getRevenueByTeacher, getRevenueByCourse } from "@/features/payments/server";
 import { StatsCard } from "@/shared/components/shared/stats-card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { formatPrice } from "@/shared/lib/utils";
 import { DollarSign, Percent, TrendingUp } from "lucide-react";
-import { RevenueCharts } from "@/features/admin";
+import { RevenueCharts } from "@/features/admin/server";
 
 export default async function AdminRevenuePage() {
   const { grossSales, platformRevenue, totalTransactions } = await getPlatformRevenue();
@@ -109,3 +109,4 @@ export default async function AdminRevenuePage() {
     </div>
   );
 }
+

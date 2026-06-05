@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ResetPasswordForm } from "@/features/auth";
+import { ResetPasswordForm } from "@/features/auth/server";
 
 export const metadata = {
   title: "Reset Password - Skillora",
@@ -14,3 +14,4 @@ export default function ResetPasswordPage() {
     </React.Suspense>
   );
 }
+

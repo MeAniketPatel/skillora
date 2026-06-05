@@ -9,3 +9,5 @@ export { createContactMessage, getContactMessages, markContactMessageReplied } f
 // Service
 import { contactService as service } from "./services/contact.service";
 export { service };
+
+export * from './index';

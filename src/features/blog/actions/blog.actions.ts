@@ -8,7 +8,7 @@ import { createBlogPostSchema, blogCommentSchema } from "@/features/blog/contrac
 import { service as blogService } from "@/features/blog/server";
 import db from "@/shared/lib/prisma";
 
-import { assertBlogAccess } from "@/features/blog/permissions/blog.permissions";
+import { assertBlogAccess, assertBlogPostEditAccess } from "@/features/blog/server";
 // Helper to generate a URL friendly slug
 function slugify(text: string): string {
   return text
@@ -91,9 +91,7 @@ export async function togglePublishBlogPostAction(id: string, published: boolean
       throw new Error("Blog post not found.");
     }
 
-    if (post.authorId !== user.id && user.role !== "ADMIN") {
-      throw new Error("You do not have permission to publish this post.");
-    }
+    assertBlogPostEditAccess(user as any, post.authorId);
 
     const updated = await blogService.togglePublishBlogPost(id, published);
     

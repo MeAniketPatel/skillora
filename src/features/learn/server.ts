@@ -6,3 +6,5 @@
 // Service
 import { learnService as service } from "./services/learn.service";
 export { service };
+
+export * from './index';

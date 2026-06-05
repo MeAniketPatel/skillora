@@ -1,7 +1,7 @@
-import { getLearningPathDetail, isEnrolledInPath } from "@/features/learning-paths";
+import { getLearningPathDetail, isEnrolledInPath } from "@/features/learning-paths/server";
 import { auth } from "@/auth";
 import { notFound, redirect } from "next/navigation";
-import { PathTimeline } from "@/features/learning-paths";
+import { PathTimeline } from "@/features/learning-paths/server";
 import { Badge } from "@/shared/components/ui/badge";
 import { Sparkles, Calendar, BookOpen } from "lucide-react";
 
@@ -73,3 +73,4 @@ export default async function LearningPathDetailPage({ params }: PathDetailPageP
     </div>
   );
 }
+

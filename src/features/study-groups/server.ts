@@ -6,3 +6,5 @@
 // Service
 import { studyGroupsService as service } from "./services/study-groups.service";
 export { service };
+
+export * from './index';

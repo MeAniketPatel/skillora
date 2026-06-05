@@ -9,3 +9,5 @@ export { getAnnouncementsByCourseId, createAnnouncement, getAnnouncementById, de
 // Service
 import { announcementsService as service } from "./services/announcements.service";
 export { service };
+
+export * from './index';

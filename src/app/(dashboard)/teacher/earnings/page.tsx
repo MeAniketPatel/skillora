@@ -1,5 +1,5 @@
 import { requireTeacher } from "@/shared/lib/auth-helpers";
-import { getTeacherEarnings } from "@/features/payments";
+import { getTeacherEarnings } from "@/features/payments/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { BarChart, DollarSign, Users } from "lucide-react";
 

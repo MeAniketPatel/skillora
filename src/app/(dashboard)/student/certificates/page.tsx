@@ -1,5 +1,5 @@
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserCertificates } from "@/features/certificates";
+import { getUserCertificates } from "@/features/certificates/server";
 import { DataTable } from "@/shared/components/shared/data-table";
 import { Award } from "lucide-react";
 import { format } from "date-fns";
@@ -49,3 +49,4 @@ export default async function StudentCertificatesPage() {
     </div>
   );
 }
+

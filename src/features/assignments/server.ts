@@ -9,3 +9,5 @@ export { submitAssignment, getSubmission, getSubmissionsForLesson, gradeSubmissi
 // Service
 import { assignmentsService as service } from "./services/assignments.service";
 export { service };
+
+export * from './index';

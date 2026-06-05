@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { UnauthorizedError, ForbiddenError } from "@/shared/lib/errors";
 import { cookies } from "next/headers";
-import { getUserById } from "@/features/auth";
+import { getUserById } from "@/features/auth/server";
 export async function requireAuth() {
   const session = await auth();
   if (!session?.user?.id) throw new UnauthorizedError();

@@ -9,3 +9,7 @@ export { createNotification, getUserNotifications, markAsRead, markAllAsRead, ge
 // Service
 import { notificationsService as service } from "./services/notifications.service";
 export { service };
+
+export * from './permissions/notifications.permissions';
+
+export * from './index';

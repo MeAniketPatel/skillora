@@ -1,10 +1,10 @@
 import React from "react";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserCollections } from "@/features/students";
+import { getUserCollections } from "@/features/students/server";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/components/ui/card";
-import { CreateCollectionForm } from "@/features/students";
-import { CourseCollections } from "@/features/students";
+import { CreateCollectionForm } from "@/features/students/server";
+import { CourseCollections } from "@/features/students/server";
 
 export default async function CollectionsPage() {
   const user = await requireAuth();
@@ -40,3 +40,4 @@ export default async function CollectionsPage() {
     </div>
   );
 }
+

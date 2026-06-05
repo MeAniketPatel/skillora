@@ -9,3 +9,7 @@ export { getPayoutHistory, getPayoutBalance, createPayoutRequest } from "./repos
 // Service
 import { teachersService as service } from "./services/teachers.service";
 export { service };
+
+export * from './permissions/teachers.permissions';
+
+export * from './index';

@@ -9,3 +9,5 @@ export { createReferral, convertReferral, getReferralStats } from "./repositorie
 // Service
 import { referralsService as service } from "./services/referrals.service";
 export { service };
+
+export * from './index';

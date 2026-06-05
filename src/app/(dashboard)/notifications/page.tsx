@@ -1,7 +1,7 @@
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { getUserNotifications } from "@/features/notifications";
-import { NotificationsClient } from "@/features/notifications";
+import { getUserNotifications } from "@/features/notifications/server";
+import { NotificationsClient } from "@/features/notifications/server";
 
 export default async function NotificationsPage() {
   const user = await requireAuth();
@@ -17,3 +17,4 @@ export default async function NotificationsPage() {
     </div>
   );
 }
+

@@ -1,7 +1,7 @@
 import { GraduationCap, Search, UserSearch } from "lucide-react";
-import { getAllInstructors } from "@/features/auth";
+import { getAllInstructors } from "@/features/auth/server";
 import { Card, CardContent } from "@/shared/components/ui/card";
-import { InstructorCard } from "@/features/marketing";
+import { InstructorCard } from "@/features/marketing/server";
 import { Navbar } from "@/shared/components/layout/navbar";
 import { Footer } from "@/shared/components/layout/footer";
 import { Input } from "@/shared/components/ui/input";
@@ -138,3 +138,4 @@ function EmptyState() {
     </Card>
   );
 }
+

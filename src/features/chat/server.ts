@@ -6,3 +6,5 @@
 // Service
 import { chatService as service } from "./services/chat.service";
 export { service };
+
+export * from './index';

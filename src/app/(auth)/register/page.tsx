@@ -1,5 +1,5 @@
 import React from "react";
-import { RegisterForm } from "@/features/auth";
+import { RegisterForm } from "@/features/auth/server";
 
 export const metadata = {
   title: "Register - Skillora",
@@ -13,3 +13,4 @@ export default function RegisterPage() {
     </React.Suspense>
   );
 }
+

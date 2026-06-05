@@ -1,4 +1,4 @@
-import { getLearningPaths } from "@/features/learning-paths";
+import { getLearningPaths } from "@/features/learning-paths/server";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import LinkButton from "@/shared/components/ui/link-button";
 import { GraduationCap, ArrowRight, BookOpen, Users } from "lucide-react";
@@ -66,3 +66,4 @@ export default async function LearningPathsPage() {
     </div>
   );
 }
+

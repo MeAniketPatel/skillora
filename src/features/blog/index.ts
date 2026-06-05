@@ -6,7 +6,7 @@ export { BlogComments } from "./components/blog-comments";
 export { BlogEditor } from "./components/blog-editor";
 
 // Permissions
-export { canBlog as canBlog, assertBlogAccess } from "./permissions/blog.permissions";
+export { canBlog as canBlog, assertBlogAccess, assertBlogPostEditAccess } from "./permissions/blog.permissions";
 
 
 
@@ -14,4 +14,3 @@ export { canBlog as canBlog, assertBlogAccess } from "./permissions/blog.permiss
 // Contracts
 export { createBlogPostSchema, blogCommentSchema } from "./contracts/blog.contract";
 
-export { getBlogPosts, getBlogPostDetail } from "./server";

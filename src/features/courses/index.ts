@@ -32,8 +32,6 @@ export type { CourseCreateInput, CourseUpdateInput, SectionCreateInput, LessonUp
 export { createCoursesSchema, updateCoursesSchema, listCoursesQuerySchema } from "./contracts/courses.contract";
 export type { CreateCoursesInput, UpdateCoursesInput } from "./contracts/courses.contract";
 
-export { getCoursesForAdmin, getCourseCount, getCourseCountByStatus, getCourseCountByCategory, getTeacherAnalyticsCourses, getTeacherCourses, getCourseByIdForOwner, getPeerReviewConfig, getLessonWithContent, getCoursesByIds, getPublishedCourses, getCourseWithFullDetails, getLiveSessions, getCourseWithPublishedCurriculum, getLearningLesson, service } from "./server";
-
 
 export { createCourse, createSection } from "./actions/course.actions";
 

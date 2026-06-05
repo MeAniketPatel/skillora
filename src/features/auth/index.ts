@@ -18,6 +18,5 @@ export { canAuth as canAuth, assertAuthAccess, isTeacherOrAdmin } from "./permis
 export { registerSchema, loginSchema, forgotPasswordSchema, resetPasswordSchema, updateSettingsSchema, revokeSessionSchema } from "./contracts/auth.contract";
 export type { RegisterInput, LoginInput, ForgotPasswordInput, ResetPasswordInput, UpdateSettingsInput, RevokeSessionInput } from "./contracts/auth.contract";
 
-export { AuthAuditAction, getUserCount, getUserCountByRole, getUserGrowthTimeline, getAllUsers, getSessionSecurityOverview, getAllInstructors, getInstructorProfile, AuthSessionRevocationReason, service, getUserById } from "./server";
 
 export { logoutAllSessions, logoutSession, updateUserSettings, logoutCurrentSession } from "./actions/auth.actions";

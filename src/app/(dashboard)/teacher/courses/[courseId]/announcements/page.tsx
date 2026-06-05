@@ -1,11 +1,11 @@
 import React from "react";
 import { redirect } from "next/navigation";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
-import { getCourseByIdForOwner } from "@/features/courses";
-import { getAnnouncementsByCourseId } from "@/features/announcements";
+import { getCourseByIdForOwner } from "@/features/courses/server";
+import { getAnnouncementsByCourseId } from "@/features/announcements/server";
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { AnnouncementForm } from "@/features/teachers";
-import { AnnouncementList } from "@/features/teachers";
+import { AnnouncementForm } from "@/features/teachers/server";
+import { AnnouncementList } from "@/features/teachers/server";
 
 interface PageProps {
   params: Promise<{ courseId: string }>;
@@ -49,3 +49,4 @@ export default async function CourseAnnouncementsPage({ params }: PageProps) {
     </div>
   );
 }
+

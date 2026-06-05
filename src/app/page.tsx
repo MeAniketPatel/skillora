@@ -5,13 +5,13 @@ import { Navbar } from "@/shared/components/layout/navbar";
 import { Footer } from "@/shared/components/layout/footer";
 import LinkButton from "@/shared/components/ui/link-button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
-import { HeroSection } from "@/features/marketing";
-import { PlatformStats } from "@/features/marketing";
-import { FeaturedCourses } from "@/features/marketing";
-import { TestimonialGrid } from "@/features/marketing";
-import { SkillGapAnalyzer } from "@/features/marketing";
-import { CareerHub } from "@/features/marketing";
-import { getFeaturedCourses, getPlatformStats } from "@/features/skill-gap";
+import { HeroSection } from "@/features/marketing/server";
+import { PlatformStats } from "@/features/marketing/server";
+import { FeaturedCourses } from "@/features/marketing/server";
+import { TestimonialGrid } from "@/features/marketing/server";
+import { SkillGapAnalyzer } from "@/features/marketing/server";
+import { CareerHub } from "@/features/marketing/server";
+import { getFeaturedCourses, getPlatformStats } from "@/features/skill-gap/server";
 import { TESTIMONIALS } from "@/shared/constants/marketing";
 import { ROUTES } from "@/shared/constants/routes";
 
@@ -130,3 +130,4 @@ function FeatureCard({
     </Card>
   );
 }
+

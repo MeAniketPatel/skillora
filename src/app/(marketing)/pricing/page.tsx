@@ -1,6 +1,6 @@
-import { getUserSubscription } from "@/features/subscriptions";
+import { getUserSubscription } from "@/features/subscriptions/server";
 import { auth } from "@/auth";
-import { PricingTable } from "@/features/marketing";
+import { PricingTable } from "@/features/marketing/server";
 import { Badge } from "@/shared/components/ui/badge";
 import { Sparkles } from "lucide-react";
 
@@ -39,3 +39,4 @@ export default async function PricingPage() {
     </div>
   );
 }
+

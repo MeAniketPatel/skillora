@@ -1,5 +1,5 @@
-import { getCoursesByIds } from "@/features/courses";
-import { CourseComparison } from "@/features/courses";
+import { getCoursesByIds } from "@/features/courses/server";
+import { CourseComparison } from "@/features/courses/server";
 import { Badge } from "@/shared/components/ui/badge";
 import { BarChart2 } from "lucide-react";
 
@@ -39,3 +39,4 @@ export default async function ComparePage({ searchParams }: ComparePageProps) {
     </div>
   );
 }
+

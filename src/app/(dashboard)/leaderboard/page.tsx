@@ -1,9 +1,9 @@
-import { getLeaderboardRankings, getUserXPPoints, getUserBadgesList } from "@/features/gamification";
+import { getLeaderboardRankings, getUserXPPoints, getUserBadgesList } from "@/features/gamification/server";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { Leaderboard } from "@/features/gamification";
-import { XPProgressBar } from "@/features/gamification";
-import { BadgeShowcase } from "@/features/gamification";
+import { Leaderboard } from "@/features/gamification/server";
+import { XPProgressBar } from "@/features/gamification/server";
+import { BadgeShowcase } from "@/features/gamification/server";
 import { Trophy, Sparkles } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 
@@ -71,3 +71,4 @@ export default async function LeaderboardPage() {
     </div>
   );
 }
+

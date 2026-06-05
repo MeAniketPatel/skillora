@@ -3,10 +3,10 @@
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { createGoalSchema, updateGoalProgressSchema } from "@/features/learning-goals/contracts/learning-goal.contract";
-import { service as studentsService } from "@/features/students";
+import { service as studentsService } from "@/features/students/server";
 import { revalidatePath } from "next/cache";
 
-import { assertStudentsAccess } from "@/features/students";
+import { assertStudentsAccess } from "@/features/students/server";
 export async function createGoalAction(values: any) {
   return actionHandler(async () => {
     const user = await requireAuth();

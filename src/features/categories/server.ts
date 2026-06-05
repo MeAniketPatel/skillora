@@ -9,3 +9,5 @@ export { getAllCategories, getCategoriesWithCounts, getCategoryBySlug, createCat
 // Service
 import { categoriesService as service } from "./services/categories.service";
 export { service };
+
+export * from './index';

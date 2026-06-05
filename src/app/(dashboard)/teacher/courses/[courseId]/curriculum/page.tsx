@@ -1,10 +1,10 @@
 import { requireTeacher } from "@/shared/lib/auth-helpers";
-import { getCourseByIdForOwner } from "@/features/courses";
+import { getCourseByIdForOwner } from "@/features/courses/server";
 import { redirect } from "next/navigation";
 import { Button, buttonVariants } from "@/shared/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft, Plus } from "lucide-react";
-import { createSection } from "@/features/courses";
+import { createSection } from "@/features/courses/server";
 
 export default async function CurriculumBuilderPage({
   params,

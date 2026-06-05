@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { isAdmin } from "@/features/admin";
+import { isAdmin } from "@/features/admin/server";
 
 export default async function AdminLayout({
   children,
@@ -13,3 +13,4 @@ export default async function AdminLayout({
   }
   return <>{children}</>;
 }
+

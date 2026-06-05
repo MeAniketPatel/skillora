@@ -12,7 +12,6 @@ export type { EmailPreferenceInput } from "./contracts/email-preference.contract
 export { createEmailPreferencesSchema, updateEmailPreferencesSchema, listEmailPreferencesQuerySchema } from "./contracts/email-preferences.contract";
 export type { CreateEmailPreferencesInput, UpdateEmailPreferencesInput } from "./contracts/email-preferences.contract";
 
-export { getEmailPreferences } from "./server";
 
 
 export { updateEmailPreferencesAction } from "./actions/email-preference.actions";

@@ -9,3 +9,5 @@ export { getUserWishlist, isWishlisted, toggleWishlist } from "./repositories/wi
 // Service
 import { wishlistService as service } from "./services/wishlist.service";
 export { service };
+
+export * from './index';

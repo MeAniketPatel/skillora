@@ -1,5 +1,5 @@
 import db from "@/shared/lib/prisma";
-import { getTeacherEarnings } from "@/features/payments";
+import { getTeacherEarnings } from "@/features/payments/server";
 export async function getPayoutHistory(userId: string) {
   return db.payoutRequest.findMany({
     where: { userId },

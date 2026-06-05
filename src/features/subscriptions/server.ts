@@ -9,3 +9,5 @@ export { getUserSubscription, createSubscription } from "./repositories/subscrip
 // Service
 import { subscriptionsService as service } from "./services/subscriptions.service";
 export { service };
+
+export * from './index';
