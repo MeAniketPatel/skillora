@@ -1,6 +1,12 @@
 import db from "@/shared/lib/prisma";
+import { AuthAuditAction, AuthSessionRevocationReason } from "@prisma/client";
 import { APP } from "@/shared/constants/app";
 import type { Role } from "@/core/entities/role";
+
+// Re-export Prisma enums for cross-feature consumers.
+// Centralizing enum exports here keeps the rest of the codebase free of
+// direct @prisma/client imports (architecture boundary rule).
+export { AuthAuditAction, AuthSessionRevocationReason };
 
 export interface IUserRepository {
   getUserById(id: string): Promise<UserSummary | null>;

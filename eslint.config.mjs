@@ -1,13 +1,35 @@
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
+import boundaryRules from "./eslint-boundary-rules.cjs";
 
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  // Architecture boundary rules (ADR-004).
+  {
+    files: ["src/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@/data/*", "@/actions/*", "@/validations/*", "@/hooks/*", "@/stores/*"],
+              message:
+                "Legacy import path. Use the feature barrel @/features/<feature> or the matching shared module.",
+            },
+            {
+              group: ["@/features/*/repositories/*", "@/features/*/services/*", "@/features/*/components/*", "@/features/*/permissions/*", "@/features/*/contracts/*", "@/features/*/hooks/*"],
+              message: "Cross-feature deep import is forbidden. Use @/features/<feature> barrel only.",
+            },
+          ],
+        },
+      ],
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
-    // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
     "build/**",

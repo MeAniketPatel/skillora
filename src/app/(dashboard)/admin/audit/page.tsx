@@ -4,7 +4,7 @@ import { getAuditLogs } from "@/features/admin";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { AuditLogTable } from "@/features/admin";
 import { Pagination } from "@/shared/components/shared/pagination";
-import { AuthAuditAction } from "@prisma/client";
+import { AuthAuditAction } from "@/features/auth";
 
 interface PageProps {
   searchParams: Promise<{

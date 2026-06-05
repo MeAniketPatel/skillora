@@ -3,7 +3,7 @@
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 import { headers } from "next/headers";
-import { AuthAuditAction, AuthSessionRevocationReason } from "@prisma/client";
+import { AuthAuditAction, AuthSessionRevocationReason } from "@/features/auth";
 import { ZodError } from "zod";
 
 import { signIn, signOut, auth } from "@/auth";
