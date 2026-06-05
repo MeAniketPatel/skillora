@@ -1,8 +1,8 @@
 import React from "react";
 import { redirect } from "next/navigation";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
-import { getCourseByIdForOwner } from "@/features/courses/repositories/course.repository";
-import { getCoursePolls } from "@/features/polls/repositories/poll.repository";
+import { getCourseByIdForOwner } from "@/features/courses";
+import { getCoursePolls } from "@/features/polls";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { PollCreator } from "@/components/poll/poll-creator";
 import { PollList } from "@/components/poll/poll-list";

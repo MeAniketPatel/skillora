@@ -1,8 +1,8 @@
 import React from "react";
 import { redirect } from "next/navigation";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
-import { getCourseByIdForOwner } from "@/features/courses/repositories/course.repository";
-import { getAnnouncementsByCourseId } from "@/features/announcements/repositories/announcement.repository";
+import { getCourseByIdForOwner } from "@/features/courses";
+import { getAnnouncementsByCourseId } from "@/features/announcements";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { AnnouncementForm } from "@/components/teacher/announcement-form";
 import { AnnouncementList } from "@/components/teacher/announcement-list";

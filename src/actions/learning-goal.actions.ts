@@ -3,7 +3,7 @@
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { createGoalSchema, updateGoalProgressSchema } from "@/validations/learning-goal.schema";
-import { createGoal, updateGoalProgress, deleteGoal } from "@/features/students/repositories/learning-goal.repository";
+import { createGoal, updateGoalProgress, deleteGoal } from "@/features/students";
 import { revalidatePath } from "next/cache";
 
 export async function createGoalAction(values: any) {

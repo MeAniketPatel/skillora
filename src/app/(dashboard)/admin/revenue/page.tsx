@@ -1,11 +1,5 @@
 import { PageHeader } from "@/shared/components/shared/page-header";
-import {
-  getPlatformRevenue,
-  getRecentPurchases,
-  getRevenueTimeSeries,
-  getRevenueByTeacher,
-  getRevenueByCourse,
-} from "@/features/payments/repositories/payment.repository";
+import { getPlatformRevenue, getRecentPurchases, getRevenueTimeSeries, getRevenueByTeacher, getRevenueByCourse } from "@/features/payments";
 import { StatsCard } from "@/shared/components/shared/stats-card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";

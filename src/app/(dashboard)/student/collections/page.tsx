@@ -1,6 +1,6 @@
 import React from "react";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserCollections } from "@/features/students/repositories/collection.repository";
+import { getUserCollections } from "@/features/students";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/components/ui/card";
 import { CreateCollectionForm } from "@/components/student/create-collection-form";

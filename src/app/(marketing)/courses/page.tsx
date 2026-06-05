@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { GraduationCap, Search, Filter, BookOpen } from "lucide-react";
-import { getAllCategories } from "@/features/categories/repositories/category.repository";
-import { getPublishedCourses } from "@/features/courses/repositories/course.repository";
+import { getAllCategories } from "@/features/categories";
+import { getPublishedCourses } from "@/features/courses";
 import { Button } from "@/shared/components/ui/button";
 import LinkButton from "@/shared/components/ui/link-button";
 import { Input } from "@/shared/components/ui/input";

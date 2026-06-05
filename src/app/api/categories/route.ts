@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAllCategories } from "@/features/categories/repositories/category.repository";
+import { getAllCategories } from "@/features/categories";
 
 export async function GET() {
   try {

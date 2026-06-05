@@ -1,6 +1,6 @@
 import React from "react";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
-import { getAuditLogs } from "@/features/admin/repositories/audit.repository";
+import { getAuditLogs } from "@/features/admin";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { AuditLogTable } from "@/components/admin/audit-log-table";
 import { Pagination } from "@/shared/components/shared/pagination";

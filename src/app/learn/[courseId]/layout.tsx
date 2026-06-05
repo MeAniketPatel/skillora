@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { getCourseWithPublishedCurriculum } from "@/features/courses/repositories/course.repository";
-import { getEnrollmentWithProgress } from "@/features/enrollment/repositories/enrollment.repository";
+import { getCourseWithPublishedCurriculum } from "@/features/courses";
+import { getEnrollmentWithProgress } from "@/features/enrollment";
 import { Navbar } from "@/shared/components/layout/navbar";
 import { LessonSidebar } from "@/components/learn/lesson-sidebar";
 import type {

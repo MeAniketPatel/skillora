@@ -3,12 +3,7 @@
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { createCollectionSchema, courseToCollectionSchema } from "@/validations/collection.schema";
-import {
-  createCollection,
-  addCourseToCollection,
-  removeCourseFromCollection,
-  deleteCollection,
-} from "@/features/students/repositories/collection.repository";
+import { createCollection, addCourseToCollection, removeCourseFromCollection, deleteCollection } from "@/features/students";
 import { revalidatePath } from "next/cache";
 
 export async function createCollectionAction(values: any) {
