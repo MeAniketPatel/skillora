@@ -1,5 +1,4 @@
 // Auto-generated barrel: re-exports all repositories for the auth feature.
-export * from "./repositories/user.repository";
 
 // Components
 export { default as ForgotPasswordForm } from "./components/forgot-password-form";
@@ -7,6 +6,7 @@ export { default as LoginForm } from "./components/login-form";
 export { default as RegisterForm } from "./components/register-form";
 export { default as ResetPasswordForm } from "./components/reset-password-form";
 export { default as SignOutButton, default as SignoutButton } from "./components/signout-button";
+
 // Contracts
 export {
   registerSchema,
@@ -50,9 +50,8 @@ export type {
   InstructorProfile,
 } from "./repositories/user.repository";
 
-// Services
-export { authService } from "./services/auth.service";
-export type { AuthService } from "./services/auth.service";
+// Re-export Prisma enums through the feature boundary
+export { AuthAuditAction, AuthSessionRevocationReason } from "@prisma/client";
 
 // Permissions
 export { canAuth as canAuth, assertAuthAccess } from "./permissions/auth.permissions";

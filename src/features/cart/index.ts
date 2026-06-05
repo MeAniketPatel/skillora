@@ -1,10 +1,10 @@
 // cart feature barrel
-export * from "./repositories";
 
 // Components
 export { CartItem } from "./components/cart-item";
 export { CartSidebar } from "./components/cart-sidebar";
 export { CheckoutSummary } from "./components/checkout-summary";
+
 // Permissions
 export { canCart as canCart, assertCartAccess } from "./permissions/cart.permissions";
 
@@ -15,7 +15,3 @@ export type { CreateCartInput, UpdateCartInput, ListCartQuery } from "./contract
 // Hooks
 export {  useCartList, useCartDetail, useCartCreate, useCartUpdate, useCartDelete } from "./hooks/use-cart";
 
-
-// Services
-export { cartService } from "./services/cart.service";
-export type { CartService } from "./services/cart.service";

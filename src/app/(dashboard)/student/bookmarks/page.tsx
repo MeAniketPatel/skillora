@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Bookmark, ArrowRight, BookOpen } from "lucide-react";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserBookmarks } from "@/features/students";
+import { getUserBookmarks } from "@/features/students/server";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { EmptyState } from "@/shared/components/shared/empty-state";

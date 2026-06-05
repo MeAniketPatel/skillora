@@ -1,6 +1,6 @@
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { getAllUserNotes } from "@/features/students";
+import { getAllUserNotes } from "@/features/students/server";
 import {
   Card,
   CardContent,

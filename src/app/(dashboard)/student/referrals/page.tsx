@@ -1,4 +1,4 @@
-import { getReferralStats } from "@/features/referrals";
+import { getReferralStats } from "@/features/referrals/server";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { ReferralDashboard } from "@/features/referrals";

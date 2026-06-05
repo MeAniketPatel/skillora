@@ -3,8 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { awardXPPoints, unlockBadgeForUser } from "@/features/gamification";
-
+import { awardXPPoints, unlockBadgeForUser } from "@/features/gamification/server";
 export async function awardXPAction(amount: number, reason: string) {
   return actionHandler(async () => {
     const user = await requireAuth();

@@ -5,8 +5,7 @@ import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { directMessageSchema } from "@/validations/message.schema";
-import { getOrCreateConversation, sendDirectMessage } from "@/features/social";
-
+import { getOrCreateConversation, sendDirectMessage } from "@/features/social/server";
 export async function startConversationAction(targetUserId: string) {
   return actionHandler(async () => {
     const user = await requireAuth();

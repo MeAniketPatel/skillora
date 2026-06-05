@@ -1,5 +1,5 @@
 import { requireAdmin } from "@/shared/lib/auth-helpers";
-import { getContactMessages } from "@/features/contact";
+import { getContactMessages } from "@/features/contact/server";
 import { DataTable } from "@/shared/components/shared/data-table";
 import { MessageSquare } from "lucide-react";
 import { format } from "date-fns";

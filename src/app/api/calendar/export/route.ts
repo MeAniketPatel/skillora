@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getLiveSessions } from "@/features/courses";
+import { getLiveSessions } from "@/features/courses/server";
 import { generateICSFile, CalendarEvent } from "@/lib/calendar-export";
 import { auth } from "@/auth";
 

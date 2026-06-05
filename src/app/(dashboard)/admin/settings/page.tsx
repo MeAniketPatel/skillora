@@ -1,5 +1,5 @@
 import { requireAdmin } from "@/shared/lib/auth-helpers";
-import { getAllSettings } from "@/features/settings";
+import { getAllSettings } from "@/features/settings/server";
 import { updateSetting } from "@/actions";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";

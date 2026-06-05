@@ -3,7 +3,7 @@
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { toggleBookmarkSchema } from "@/validations/bookmark.schema";
-import { toggleBookmark } from "@/features/students";
+import { toggleBookmark } from "@/features/students/server";
 import { revalidatePath } from "next/cache";
 
 export async function toggleBookmarkAction(values: { lessonId: string }) {

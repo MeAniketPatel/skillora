@@ -2,8 +2,7 @@
 
 import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
-import { getSkillGapRecommendations } from "@/features/skill-gap";
-
+import { getSkillGapRecommendations } from "@/features/skill-gap/server";
 const skillGapSchema = z.object({
   skills: z
     .array(z.string().min(1).max(64))

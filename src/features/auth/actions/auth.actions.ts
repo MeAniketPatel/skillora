@@ -21,7 +21,7 @@ import {
 
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserByEmail, updateUser, createUser } from "@/features/auth";
+import { getUserByEmail, updateUser, createUser } from "@/features/auth/server";
 import { ConflictError, UnauthorizedError, ValidationError } from "@/shared/lib/errors";
 
 import {

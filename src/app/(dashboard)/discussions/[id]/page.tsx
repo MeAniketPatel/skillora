@@ -1,4 +1,4 @@
-import { getDiscussionThread } from "@/features/discussions";
+import { getDiscussionThread } from "@/features/discussions/server";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { DiscussionReply } from "@/features/discussions";

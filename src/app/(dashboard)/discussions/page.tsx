@@ -1,4 +1,4 @@
-import { getDiscussionsList } from "@/features/discussions";
+import { getDiscussionsList } from "@/features/discussions/server";
 import { DiscussionList } from "@/features/discussions";
 import { DiscussionEditor } from "@/features/discussions";
 import { auth } from "@/auth";

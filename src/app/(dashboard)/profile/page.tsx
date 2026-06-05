@@ -1,6 +1,6 @@
 import React from "react";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserProfileCard, getUserPortfolio, getUserActivities } from "@/features/social";
+import { getUserProfileCard, getUserPortfolio, getUserActivities } from "@/features/social/server";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { ProfileCard } from "@/features/social";
 import { ProfilePortfolio } from "@/features/social";

@@ -5,12 +5,11 @@ import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { ConflictError, NotFoundError, ValidationError } from "@/shared/lib/errors";
 import { triggerWebhook } from "@/lib/webhook-sender";
-import { getCourseWithCurriculum } from "@/features/courses";
-import { getEnrollment, createEnrollment as createEnrollmentData, updateEnrollmentProgress, getEnrollmentWithUserAndCourse } from "@/features/enrollment";
-import { upsertLessonProgress, calculateCourseProgress, initializeEnrollmentProgress } from "@/features/students";
-import { createCertificate } from "@/features/certificates";
-import { createNotification } from "@/features/notifications";
-
+import { getCourseWithCurriculum } from "@/features/courses/server";
+import { getEnrollment, createEnrollment as createEnrollmentData, updateEnrollmentProgress, getEnrollmentWithUserAndCourse } from "@/features/enrollment/server";
+import { upsertLessonProgress, calculateCourseProgress, initializeEnrollmentProgress } from "@/features/students/server";
+import { createCertificate } from "@/features/certificates/server";
+import { createNotification } from "@/features/notifications/server";
 export async function enrollInFreeCourse(courseId: string) {
   return actionHandler(async () => {
     const user = await requireAuth();

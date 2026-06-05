@@ -1,6 +1,6 @@
 import React from "react";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
-import { getFeatureFlags } from "@/features/feature-flags";
+import { getFeatureFlags } from "@/features/feature-flags/server";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { FeatureFlagsPanel } from "@/features/admin";
 

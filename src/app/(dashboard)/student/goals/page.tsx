@@ -1,6 +1,6 @@
 import React from "react";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserGoals } from "@/features/students";
+import { getUserGoals } from "@/features/students/server";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/components/ui/card";
 import { CreateGoalForm } from "@/features/students";

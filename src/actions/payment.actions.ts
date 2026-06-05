@@ -4,10 +4,9 @@ import { stripe } from "@/shared/lib/stripe";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { NotFoundError, ValidationError, ConflictError } from "@/shared/lib/errors";
-import { getCourseById } from "@/features/courses";
-import { getCouponByCode } from "@/features/admin";
-import { getEnrollment } from "@/features/enrollment";
-
+import { getCourseById } from "@/features/courses/server";
+import { getCouponByCode } from "@/features/admin/server";
+import { getEnrollment } from "@/features/enrollment/server";
 export async function createCheckoutSession(courseId: string, couponCode?: string) {
   return actionHandler(async () => {
     const user = await requireAuth();

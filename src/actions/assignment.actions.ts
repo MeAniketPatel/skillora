@@ -4,12 +4,11 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth, requireTeacher } from "@/shared/lib/auth-helpers";
 import { NotFoundError, ValidationError } from "@/shared/lib/errors";
-import { submitAssignment as submitAssignmentData, getSubmissionsForLesson, gradeSubmission as gradeSubmissionData } from "@/features/assignments";
-import { getLessonWithContent, getLessonWithCourse } from "@/features/courses";
-import { getEnrollment } from "@/features/enrollment";
-import { upsertLessonProgress } from "@/features/students";
-import { createNotification } from "@/features/notifications";
-
+import { submitAssignment as submitAssignmentData, getSubmissionsForLesson, gradeSubmission as gradeSubmissionData } from "@/features/assignments/server";
+import { getLessonWithContent, getLessonWithCourse } from "@/features/courses/server";
+import { getEnrollment } from "@/features/enrollment/server";
+import { upsertLessonProgress } from "@/features/students/server";
+import { createNotification } from "@/features/notifications/server";
 export async function submitAssignment(lessonId: string, content: string) {
   return actionHandler(async () => {
     const user = await requireAuth();

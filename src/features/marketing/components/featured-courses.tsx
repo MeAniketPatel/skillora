@@ -9,8 +9,7 @@ import {
 } from "@/shared/components/ui/card";
 import LinkButton from "@/shared/components/ui/link-button";
 import { ROUTES } from "@/shared/constants/routes";
-import type { FeaturedCourse } from "@/features/skill-gap";
-
+import type { FeaturedCourse } from "@/features/skill-gap/server";
 interface FeaturedCoursesProps {
   courses: FeaturedCourse[];
 }

@@ -3,8 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { enrollInLearningPath } from "@/features/learning-paths";
-
+import { enrollInLearningPath } from "@/features/learning-paths/server";
 export async function enrollInLearningPathAction(pathId: string) {
   return actionHandler(async () => {
     const user = await requireAuth();

@@ -4,7 +4,7 @@ import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { purchaseGiftCardSchema, redeemGiftCardSchema } from "@/validations/gift-card.schema";
-import { createGiftCard, redeemGiftCard } from "@/features/gift-cards";
+import { createGiftCard, redeemGiftCard } from "@/features/gift-cards/server";
 import { revalidatePath } from "next/cache";
 
 // Helper to generate a random 12 character code

@@ -1,5 +1,4 @@
 // marketing feature barrel
-export * from "./repositories";
 
 // Components
 export { CareerHub } from "./components/career-hub";
@@ -12,6 +11,7 @@ export { PricingTable } from "./components/pricing-table";
 export { SkillGapAnalyzer } from "./components/skill-gap-analyzer";
 export { TestimonialCard } from "./components/testimonial-card";
 export { TestimonialGrid } from "./components/testimonial-grid";
+
 // Permissions
 export { canMarketing as canMarketing, assertMarketingAccess } from "./permissions/marketing.permissions";
 
@@ -22,7 +22,3 @@ export type { CreateMarketingInput, UpdateMarketingInput, ListMarketingQuery } f
 // Hooks
 export {  useMarketingList, useMarketingDetail, useMarketingCreate, useMarketingUpdate, useMarketingDelete } from "./hooks/use-marketing";
 
-
-// Services
-export { marketingService } from "./services/marketing.service";
-export type { MarketingService } from "./services/marketing.service";

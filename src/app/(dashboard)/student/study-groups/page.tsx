@@ -1,6 +1,6 @@
 import React from "react";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getStudyGroups, getStudyGroupById, isGroupMember } from "@/features/social";
+import { getStudyGroups, getStudyGroupById, isGroupMember } from "@/features/social/server";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { GroupCard } from "@/features/study-groups";
 import { GroupChat } from "@/features/study-groups";

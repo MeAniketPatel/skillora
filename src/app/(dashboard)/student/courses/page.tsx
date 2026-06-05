@@ -1,5 +1,5 @@
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserEnrollments } from "@/features/enrollment";
+import { getUserEnrollments } from "@/features/enrollment/server";
 import { DataTable } from "@/shared/components/shared/data-table";
 import { ActionButton } from "@/shared/components/shared/action-button";
 import Link from "next/link";

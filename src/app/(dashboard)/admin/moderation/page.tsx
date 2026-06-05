@@ -1,6 +1,6 @@
 import React from "react";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
-import { getPendingModerationItems } from "@/features/admin";
+import { getPendingModerationItems } from "@/features/admin/server";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { ContentModerationQueue } from "@/features/admin";
 

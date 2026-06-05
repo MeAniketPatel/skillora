@@ -3,8 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserNotifications, markAsRead, markAllAsRead, createNotification as createNotificationData } from "@/features/notifications";
-
+import { getUserNotifications, markAsRead, markAllAsRead, createNotification as createNotificationData } from "@/features/notifications/server";
 export async function getNotifications() {
   return actionHandler(async () => {
     const user = await requireAuth();

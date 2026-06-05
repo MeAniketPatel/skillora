@@ -3,7 +3,7 @@
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { recordStudySessionSchema } from "@/validations/streak.schema";
-import { recordStudySession, buyStreakFreeze } from "@/features/students";
+import { recordStudySession, buyStreakFreeze } from "@/features/students/server";
 import { revalidatePath } from "next/cache";
 
 export async function recordStudyActivity(values: { durationSeconds: number }) {

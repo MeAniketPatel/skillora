@@ -1,4 +1,4 @@
-import { getDecksForUser } from "@/features/flashcards";
+import { getDecksForUser } from "@/features/flashcards/server";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { DeckList } from "@/features/flashcards";

@@ -5,8 +5,7 @@ import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { flagContentSchema } from "@/validations/moderation.schema";
-import { approveModerationItem, rejectModerationItem, createModerationItem } from "@/features/admin";
-
+import { approveModerationItem, rejectModerationItem, createModerationItem } from "@/features/admin/server";
 export async function approveModerationItemAction(id: string) {
   return actionHandler(async () => {
     const user = await requireAdmin();

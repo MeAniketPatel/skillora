@@ -11,7 +11,7 @@ import { FeaturedCourses } from "@/features/marketing";
 import { TestimonialGrid } from "@/features/marketing";
 import { SkillGapAnalyzer } from "@/features/marketing";
 import { CareerHub } from "@/features/marketing";
-import { getFeaturedCourses, getPlatformStats } from "@/features/skill-gap";
+import { getFeaturedCourses, getPlatformStats } from "@/features/skill-gap/server";
 import { TESTIMONIALS } from "@/shared/constants/marketing";
 import { ROUTES } from "@/shared/constants/routes";
 

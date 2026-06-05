@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getInstructorProfile } from "@/features/auth";
+import { getInstructorProfile } from "@/features/auth/server";
 import { Navbar } from "@/shared/components/layout/navbar";
 import { Footer } from "@/shared/components/layout/footer";
 import { InstructorProfile } from "@/features/marketing";

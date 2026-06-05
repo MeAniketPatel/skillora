@@ -1,10 +1,4 @@
 // Auto-generated barrel: re-exports all repositories for the students feature.
-export * from "./repositories/bookmark.repository";
-export * from "./repositories/collection.repository";
-export * from "./repositories/learning-goal.repository";
-export * from "./repositories/lesson-progress.repository";
-export * from "./repositories/note.repository";
-export * from "./repositories/streak.repository";
 
 // Components
 export { BookmarkButton } from "./components/bookmark-button";
@@ -19,10 +13,6 @@ export { StreakCalendar } from "./components/streak-calendar";
 export { StreakFreezeButton } from "./components/streak-freeze-button";
 export { StreakWidget } from "./components/streak-widget";
 export { WeeklyProgress } from "./components/weekly-progress";
-
-// Services
-export { studentsService } from "./services/students.service";
-export type { StudentsService } from "./services/students.service";
 
 // Permissions
 export { canStudents as canStudents, assertStudentsAccess } from "./permissions/students.permissions";

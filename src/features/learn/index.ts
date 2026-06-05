@@ -1,6 +1,4 @@
 // learn feature barrel
-export * from "./repositories";
-
 export type { LessonSidebarSection } from "./components/lesson-sidebar";
 
 // Components
@@ -17,7 +15,3 @@ export type { CreateLearnInput, UpdateLearnInput, ListLearnQuery } from "./contr
 // Hooks
 export {  useLearnList, useLearnDetail, useLearnCreate, useLearnUpdate, useLearnDelete } from "./hooks/use-learn";
 
-
-// Services
-export { learnService } from "./services/learn.service";
-export type { LearnService } from "./services/learn.service";

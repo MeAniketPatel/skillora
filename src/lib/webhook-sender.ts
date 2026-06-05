@@ -1,6 +1,5 @@
 import crypto from "crypto";
-import { getActiveWebhooksByEvent, logWebhookDelivery } from "@/features/webhooks";
-
+import { getActiveWebhooksByEvent, logWebhookDelivery } from "@/features/webhooks/server";
 export async function triggerWebhook(event: string, payload: any) {
   try {
     const webhooks = await getActiveWebhooksByEvent(event);

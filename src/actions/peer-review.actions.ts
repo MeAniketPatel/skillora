@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { peerReviewConfigSchema } from "@/validations/peer-review.schema";
-import { upsertPeerReviewConfig, getLessonWithCourse } from "@/features/courses";
+import { upsertPeerReviewConfig, getLessonWithCourse } from "@/features/courses/server";
 import { z } from "zod";
 
 export async function savePeerReviewConfig(

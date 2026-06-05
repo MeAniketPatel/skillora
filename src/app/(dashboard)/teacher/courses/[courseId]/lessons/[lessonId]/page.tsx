@@ -1,6 +1,6 @@
 import { requireTeacher } from "@/shared/lib/auth-helpers";
-import { getCourseByIdForOwner, getPeerReviewConfig } from "@/features/courses";
-import { getLessonWithContent } from "@/features/courses";
+import { getCourseByIdForOwner, getPeerReviewConfig } from "@/features/courses/server";
+import { getLessonWithContent } from "@/features/courses/server";
 import { redirect } from "next/navigation";
 import { LessonEditor } from "@/features/courses";
 import { PeerReviewConfig } from "@/features/teachers";

@@ -15,11 +15,7 @@ import { Sidebar } from "@/shared/components/layout/sidebar";
 import { cookies } from "next/headers";
 import { StopImpersonationBanner } from "@/features/admin";
 import { CartSidebar } from "@/features/cart";
-import { getUserXPPoints } from "@/features/gamification";
-
-
-
-
+import { getUserXPPoints } from "@/features/gamification/server";
 export default async function DashboardLayout({
   children,
 }: {
