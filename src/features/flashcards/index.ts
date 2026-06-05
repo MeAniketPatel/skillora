@@ -11,6 +11,3 @@ export { canFlashcards as canFlashcards, assertFlashcardsAccess } from "./permis
 export { createFlashcardsSchema, updateFlashcardsSchema, listFlashcardsQuerySchema } from "./contracts/flashcards.contract";
 export type { CreateFlashcardsInput, UpdateFlashcardsInput, ListFlashcardsQuery } from "./contracts/flashcards.contract";
 
-// Hooks
-export {  useFlashcardsList, useFlashcardsDetail, useFlashcardsCreate, useFlashcardsUpdate, useFlashcardsDelete } from "./hooks/use-flashcards";
-

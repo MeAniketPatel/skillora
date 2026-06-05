@@ -10,6 +10,3 @@ export { canContact as canContact, assertContactAccess } from "./permissions/con
 export { contactSchema } from "./contracts/contact.contract";
 export type { ContactInput } from "./contracts/contact.contract";
 
-// Hooks
-export {  useContactList, useContactDetail, useContactCreate, useContactUpdate, useContactDelete } from "./hooks/use-contact";
-

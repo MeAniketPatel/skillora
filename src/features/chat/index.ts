@@ -11,6 +11,3 @@ export { canChat as canChat, assertChatAccess } from "./permissions/chat.permiss
 export { createChatSchema, updateChatSchema, listChatQuerySchema } from "./contracts/chat.contract";
 export type { CreateChatInput, UpdateChatInput, ListChatQuery } from "./contracts/chat.contract";
 
-// Hooks
-export {  useChatList, useChatDetail, useChatCreate, useChatUpdate, useChatDelete } from "./hooks/use-chat";
-

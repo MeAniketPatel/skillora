@@ -7,6 +7,3 @@ export { canSkillGap as canSkillGap, assertSkillGapAccess } from "./permissions/
 export { createSkillGapSchema, updateSkillGapSchema, listSkillGapQuerySchema } from "./contracts/skill-gap.contract";
 export type { CreateSkillGapInput, UpdateSkillGapInput, ListSkillGapQuery } from "./contracts/skill-gap.contract";
 
-// Hooks
-export {  useSkillGapList, useSkillGapDetail, useSkillGapCreate, useSkillGapUpdate, useSkillGapDelete } from "./hooks/use-skill-gap";
-

@@ -10,6 +10,3 @@ export { canNotifications as canNotifications, assertNotificationsAccess } from 
 export { createNotificationsSchema, updateNotificationsSchema, listNotificationsQuerySchema } from "./contracts/notifications.contract";
 export type { CreateNotificationsInput, UpdateNotificationsInput, ListNotificationsQuery } from "./contracts/notifications.contract";
 
-// Hooks
-export {  useNotificationsList, useNotificationsDetail, useNotificationsCreate, useNotificationsUpdate, useNotificationsDelete } from "./hooks/use-notifications";
-

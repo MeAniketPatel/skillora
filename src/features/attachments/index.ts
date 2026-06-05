@@ -7,6 +7,3 @@ export { canAttachments as canAttachments, assertAttachmentsAccess } from "./per
 export { createAttachmentsSchema, updateAttachmentsSchema, listAttachmentsQuerySchema } from "./contracts/attachments.contract";
 export type { CreateAttachmentsInput, UpdateAttachmentsInput, ListAttachmentsQuery } from "./contracts/attachments.contract";
 
-// Hooks
-export {  useAttachmentsList, useAttachmentsDetail, useAttachmentsCreate, useAttachmentsUpdate, useAttachmentsDelete } from "./hooks/use-attachments";
-

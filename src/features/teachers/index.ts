@@ -22,6 +22,3 @@ export { canTeachers as canTeachers, assertTeachersAccess } from "./permissions/
 export { createTeachersSchema, updateTeachersSchema, listTeachersQuerySchema } from "./contracts/teachers.contract";
 export type { CreateTeachersInput, UpdateTeachersInput, ListTeachersQuery } from "./contracts/teachers.contract";
 
-// Hooks
-export {  useTeachersList, useTeachersDetail, useTeachersCreate, useTeachersUpdate, useTeachersDelete } from "./hooks/use-teachers";
-

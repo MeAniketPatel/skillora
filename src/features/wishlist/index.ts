@@ -7,6 +7,3 @@ export { canWishlist as canWishlist, assertWishlistAccess } from "./permissions/
 export { createWishlistSchema, updateWishlistSchema, listWishlistQuerySchema } from "./contracts/wishlist.contract";
 export type { CreateWishlistInput, UpdateWishlistInput, ListWishlistQuery } from "./contracts/wishlist.contract";
 
-// Hooks
-export {  useWishlistList, useWishlistDetail, useWishlistCreate, useWishlistUpdate, useWishlistDelete } from "./hooks/use-wishlist";
-

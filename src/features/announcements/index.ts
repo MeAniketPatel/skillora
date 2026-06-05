@@ -7,6 +7,3 @@ export { canAnnouncements as canAnnouncements, assertAnnouncementsAccess } from 
 export { createAnnouncementsSchema, updateAnnouncementsSchema, listAnnouncementsQuerySchema } from "./contracts/announcements.contract";
 export type { CreateAnnouncementsInput, UpdateAnnouncementsInput, ListAnnouncementsQuery } from "./contracts/announcements.contract";
 
-// Hooks
-export {  useAnnouncementsList, useAnnouncementsDetail, useAnnouncementsCreate, useAnnouncementsUpdate, useAnnouncementsDelete } from "./hooks/use-announcements";
-

@@ -7,6 +7,3 @@ export { canPayments as canPayments, assertPaymentsAccess } from "./permissions/
 export { createPaymentsSchema, updatePaymentsSchema, listPaymentsQuerySchema } from "./contracts/payments.contract";
 export type { CreatePaymentsInput, UpdatePaymentsInput, ListPaymentsQuery } from "./contracts/payments.contract";
 
-// Hooks
-export {  usePaymentsList, usePaymentsDetail, usePaymentsCreate, usePaymentsUpdate, usePaymentsDelete } from "./hooks/use-payments";
-

@@ -12,6 +12,3 @@ export { canDiscussions as canDiscussions, assertDiscussionsAccess } from "./per
 export { createDiscussionsSchema, updateDiscussionsSchema, listDiscussionsQuerySchema } from "./contracts/discussions.contract";
 export type { CreateDiscussionsInput, UpdateDiscussionsInput, ListDiscussionsQuery } from "./contracts/discussions.contract";
 
-// Hooks
-export {  useDiscussionsList, useDiscussionsDetail, useDiscussionsCreate, useDiscussionsUpdate, useDiscussionsDelete } from "./hooks/use-discussions";
-

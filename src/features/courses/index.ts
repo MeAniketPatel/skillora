@@ -27,6 +27,3 @@ export { canCourses as canCourses, assertCoursesAccess } from "./permissions/cou
 export { createCoursesSchema, updateCoursesSchema, listCoursesQuerySchema } from "./contracts/courses.contract";
 export type { CreateCoursesInput, UpdateCoursesInput, ListCoursesQuery } from "./contracts/courses.contract";
 
-// Hooks
-export {  useCoursesList, useCoursesDetail, useCoursesCreate, useCoursesUpdate, useCoursesDelete } from "./hooks/use-courses";
-

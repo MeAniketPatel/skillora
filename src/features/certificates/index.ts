@@ -7,6 +7,3 @@ export { canCertificates as canCertificates, assertCertificatesAccess } from "./
 export { createCertificatesSchema, updateCertificatesSchema, listCertificatesQuerySchema } from "./contracts/certificates.contract";
 export type { CreateCertificatesInput, UpdateCertificatesInput, ListCertificatesQuery } from "./contracts/certificates.contract";
 
-// Hooks
-export {  useCertificatesList, useCertificatesDetail, useCertificatesCreate, useCertificatesUpdate, useCertificatesDelete } from "./hooks/use-certificates";
-

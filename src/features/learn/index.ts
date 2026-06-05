@@ -12,6 +12,3 @@ export { canLearn as canLearn, assertLearnAccess } from "./permissions/learn.per
 export { createLearnSchema, updateLearnSchema, listLearnQuerySchema } from "./contracts/learn.contract";
 export type { CreateLearnInput, UpdateLearnInput, ListLearnQuery } from "./contracts/learn.contract";
 
-// Hooks
-export {  useLearnList, useLearnDetail, useLearnCreate, useLearnUpdate, useLearnDelete } from "./hooks/use-learn";
-

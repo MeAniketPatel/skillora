@@ -7,6 +7,3 @@ export { canEnrollment as canEnrollment, assertEnrollmentAccess } from "./permis
 export { createEnrollmentSchema, updateEnrollmentSchema, listEnrollmentQuerySchema } from "./contracts/enrollment.contract";
 export type { CreateEnrollmentInput, UpdateEnrollmentInput, ListEnrollmentQuery } from "./contracts/enrollment.contract";
 
-// Hooks
-export {  useEnrollmentList, useEnrollmentDetail, useEnrollmentCreate, useEnrollmentUpdate, useEnrollmentDelete } from "./hooks/use-enrollment";
-

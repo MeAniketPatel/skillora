@@ -21,6 +21,3 @@ export { canStudents as canStudents, assertStudentsAccess } from "./permissions/
 export { createStudentsSchema, updateStudentsSchema, listStudentsQuerySchema } from "./contracts/students.contract";
 export type { CreateStudentsInput, UpdateStudentsInput, ListStudentsQuery } from "./contracts/students.contract";
 
-// Hooks
-export {  useStudentsList, useStudentsDetail, useStudentsCreate, useStudentsUpdate, useStudentsDelete } from "./hooks/use-students";
-

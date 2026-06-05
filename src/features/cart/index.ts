@@ -12,6 +12,3 @@ export { canCart as canCart, assertCartAccess } from "./permissions/cart.permiss
 export { createCartSchema, updateCartSchema, listCartQuerySchema } from "./contracts/cart.contract";
 export type { CreateCartInput, UpdateCartInput, ListCartQuery } from "./contracts/cart.contract";
 
-// Hooks
-export {  useCartList, useCartDetail, useCartCreate, useCartUpdate, useCartDelete } from "./hooks/use-cart";
-

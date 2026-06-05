@@ -13,6 +13,3 @@ export { canPolls as canPolls, assertPollsAccess } from "./permissions/polls.per
 export { createPollsSchema, updatePollsSchema, listPollsQuerySchema } from "./contracts/polls.contract";
 export type { CreatePollsInput, UpdatePollsInput, ListPollsQuery } from "./contracts/polls.contract";
 
-// Hooks
-export {  usePollsList, usePollsDetail, usePollsCreate, usePollsUpdate, usePollsDelete } from "./hooks/use-polls";
-

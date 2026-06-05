@@ -7,6 +7,3 @@ export { canEmailPreferences as canEmailPreferences, assertEmailPreferencesAcces
 export { createEmailPreferencesSchema, updateEmailPreferencesSchema, listEmailPreferencesQuerySchema } from "./contracts/email-preferences.contract";
 export type { CreateEmailPreferencesInput, UpdateEmailPreferencesInput, ListEmailPreferencesQuery } from "./contracts/email-preferences.contract";
 
-// Hooks
-export {  useEmailPreferencesList, useEmailPreferencesDetail, useEmailPreferencesCreate, useEmailPreferencesUpdate, useEmailPreferencesDelete } from "./hooks/use-email-preferences";
-

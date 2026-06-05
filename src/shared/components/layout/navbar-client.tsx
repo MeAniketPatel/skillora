@@ -6,7 +6,7 @@ import { Menu, X, GraduationCap } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import LinkButton from "@/shared/components/ui/link-button";
 import { ThemeToggle } from "@/shared/components/shared/theme-toggle";
-import { logoutCurrentSession } from "@/features/auth/server";
+import { logoutCurrentSession } from "@/features/auth/actions/auth.actions";
 import { ROUTES } from "@/shared/constants/routes";
 
 type Session = {

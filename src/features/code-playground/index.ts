@@ -10,6 +10,3 @@ export { canCodePlayground as canCodePlayground, assertCodePlaygroundAccess } fr
 export { createCodePlaygroundSchema, updateCodePlaygroundSchema, listCodePlaygroundQuerySchema } from "./contracts/code-playground.contract";
 export type { CreateCodePlaygroundInput, UpdateCodePlaygroundInput, ListCodePlaygroundQuery } from "./contracts/code-playground.contract";
 
-// Hooks
-export {  useCodePlaygroundList, useCodePlaygroundDetail, useCodePlaygroundCreate, useCodePlaygroundUpdate, useCodePlaygroundDelete } from "./hooks/use-code-playground";
-

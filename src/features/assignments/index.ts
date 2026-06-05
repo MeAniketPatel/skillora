@@ -7,6 +7,3 @@ export { canAssignments as canAssignments, assertAssignmentsAccess } from "./per
 export { createAssignmentsSchema, updateAssignmentsSchema, listAssignmentsQuerySchema } from "./contracts/assignments.contract";
 export type { CreateAssignmentsInput, UpdateAssignmentsInput, ListAssignmentsQuery } from "./contracts/assignments.contract";
 
-// Hooks
-export {  useAssignmentsList, useAssignmentsDetail, useAssignmentsCreate, useAssignmentsUpdate, useAssignmentsDelete } from "./hooks/use-assignments";
-

@@ -12,6 +12,3 @@ export { canGamification as canGamification, assertGamificationAccess } from "./
 export { createGamificationSchema, updateGamificationSchema, listGamificationQuerySchema } from "./contracts/gamification.contract";
 export type { CreateGamificationInput, UpdateGamificationInput, ListGamificationQuery } from "./contracts/gamification.contract";
 
-// Hooks
-export {  useGamificationList, useGamificationDetail, useGamificationCreate, useGamificationUpdate, useGamificationDelete } from "./hooks/use-gamification";
-

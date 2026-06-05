@@ -12,6 +12,3 @@ export { canStudyGroups as canStudyGroups, assertStudyGroupsAccess } from "./per
 export { createStudyGroupsSchema, updateStudyGroupsSchema, listStudyGroupsQuerySchema } from "./contracts/study-groups.contract";
 export type { CreateStudyGroupsInput, UpdateStudyGroupsInput, ListStudyGroupsQuery } from "./contracts/study-groups.contract";
 
-// Hooks
-export {  useStudyGroupsList, useStudyGroupsDetail, useStudyGroupsCreate, useStudyGroupsUpdate, useStudyGroupsDelete } from "./hooks/use-study-groups";
-

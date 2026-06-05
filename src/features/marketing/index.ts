@@ -19,6 +19,3 @@ export { canMarketing as canMarketing, assertMarketingAccess } from "./permissio
 export { createMarketingSchema, updateMarketingSchema, listMarketingQuerySchema } from "./contracts/marketing.contract";
 export type { CreateMarketingInput, UpdateMarketingInput, ListMarketingQuery } from "./contracts/marketing.contract";
 
-// Hooks
-export {  useMarketingList, useMarketingDetail, useMarketingCreate, useMarketingUpdate, useMarketingDelete } from "./hooks/use-marketing";
-

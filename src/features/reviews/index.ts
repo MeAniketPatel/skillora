@@ -7,6 +7,3 @@ export { canReviews as canReviews, assertReviewsAccess } from "./permissions/rev
 export { createReviewsSchema, updateReviewsSchema, listReviewsQuerySchema } from "./contracts/reviews.contract";
 export type { CreateReviewsInput, UpdateReviewsInput, ListReviewsQuery } from "./contracts/reviews.contract";
 
-// Hooks
-export {  useReviewsList, useReviewsDetail, useReviewsCreate, useReviewsUpdate, useReviewsDelete } from "./hooks/use-reviews";
-

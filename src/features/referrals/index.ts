@@ -10,6 +10,3 @@ export { canReferrals as canReferrals, assertReferralsAccess } from "./permissio
 export { createReferralsSchema, updateReferralsSchema, listReferralsQuerySchema } from "./contracts/referrals.contract";
 export type { CreateReferralsInput, UpdateReferralsInput, ListReferralsQuery } from "./contracts/referrals.contract";
 
-// Hooks
-export {  useReferralsList, useReferralsDetail, useReferralsCreate, useReferralsUpdate, useReferralsDelete } from "./hooks/use-referrals";
-

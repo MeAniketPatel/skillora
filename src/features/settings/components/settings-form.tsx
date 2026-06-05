@@ -20,7 +20,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/sha
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
-import { logoutAllSessions, logoutSession, updateUserSettings } from "@/features/auth/server";
+import { logoutAllSessions, logoutSession, updateUserSettings } from "@/features/auth/actions/auth.actions";
 import { SignOutButton } from "@/features/auth";
 
 const settingsSchema = z.object({
