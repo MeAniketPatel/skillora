@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 import { CourseLevel } from "@prisma/client";
 
 export interface SearchFilters {

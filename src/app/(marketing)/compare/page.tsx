@@ -1,6 +1,6 @@
 import { getCoursesByIds } from "@/data";
 import { CourseComparison } from "@/components/course/course-comparison";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/shared/components/ui/badge";
 import { BarChart2 } from "lucide-react";
 
 interface ComparePageProps {

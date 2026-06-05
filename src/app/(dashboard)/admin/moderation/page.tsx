@@ -1,7 +1,7 @@
 import React from "react";
-import { requireAdmin } from "@/lib/auth-helpers";
+import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { getPendingModerationItems } from "@/data/moderation.data";
-import { PageHeader } from "@/components/shared/page-header";
+import { PageHeader } from "@/shared/components/shared/page-header";
 import { ContentModerationQueue } from "@/components/admin/content-moderation-queue";
 
 export default async function AdminModerationPage() {

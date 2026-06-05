@@ -2,11 +2,11 @@
 
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { actionHandler } from "@/lib/action-utils";
-import { requireAuth } from "@/lib/auth-helpers";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireAuth } from "@/shared/lib/auth-helpers";
 import { addResourceSchema } from "@/validations/resource.schema";
 import { createResource, deleteResource } from "@/data";
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function addCourseResourceAction(courseId: string, values: z.infer<typeof addResourceSchema>) {
   return actionHandler(async () => {

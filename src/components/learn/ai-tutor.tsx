@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect, useTransition } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Card, CardContent } from "@/shared/components/ui/card";
 import { Bot, User, Send, Loader2, Sparkles, X, Minimize2, Maximize2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";

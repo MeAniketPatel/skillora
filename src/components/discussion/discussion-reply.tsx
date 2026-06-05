@@ -6,9 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { discussionReplySchema } from "@/validations/discussion.schema";
 import { addDiscussionReplyAction } from "@/actions/discussion.actions";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Button } from "@/shared/components/ui/button";
+import { Textarea } from "@/shared/components/ui/textarea";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/shared/components/ui/form";
 import { toast } from "sonner";
 import { Reply } from "lucide-react";
 

@@ -2,18 +2,18 @@ import Link from "next/link";
 import { GraduationCap, Search, Filter, BookOpen } from "lucide-react";
 import { getAllCategories } from "@/data/category.data";
 import { getPublishedCourses } from "@/data/course.data";
-import { Button } from "@/components/ui/button";
-import LinkButton from "@/components/ui/link-button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/shared/components/ui/button";
+import LinkButton from "@/shared/components/ui/link-button";
+import { Input } from "@/shared/components/ui/input";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
+} from "@/shared/components/ui/card";
+import { Navbar } from "@/shared/components/layout/navbar";
+import { Footer } from "@/shared/components/layout/footer";
 
 interface CoursesPageProps {
   searchParams: Promise<{

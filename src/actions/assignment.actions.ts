@@ -1,9 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { actionHandler } from "@/lib/action-utils";
-import { requireAuth, requireTeacher } from "@/lib/auth-helpers";
-import { NotFoundError, ValidationError } from "@/lib/errors";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireAuth, requireTeacher } from "@/shared/lib/auth-helpers";
+import { NotFoundError, ValidationError } from "@/shared/lib/errors";
 import {
   submitAssignment as submitAssignmentData,
   getSubmissionsForLesson,

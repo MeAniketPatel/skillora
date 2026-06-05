@@ -3,10 +3,10 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { voteInPollAction } from "@/actions/poll.actions";
-import { Card, CardContent } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
+import { Card, CardContent } from "@/shared/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/shared/components/ui/radio-group";
+import { Label } from "@/shared/components/ui/label";
+import { cn } from "@/shared/lib/utils";
 import { Check } from "lucide-react";
 
 interface PollOption {

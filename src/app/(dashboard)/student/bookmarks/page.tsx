@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import { Bookmark, ArrowRight, BookOpen } from "lucide-react";
-import { requireAuth } from "@/lib/auth-helpers";
+import { requireAuth } from "@/shared/lib/auth-helpers";
 import { getUserBookmarks } from "@/data/bookmark.data";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { PageHeader } from "@/components/shared/page-header";
-import { EmptyState } from "@/components/shared/empty-state";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { PageHeader } from "@/shared/components/shared/page-header";
+import { EmptyState } from "@/shared/components/shared/empty-state";
 
 export default async function BookmarksPage() {
   const user = await requireAuth();

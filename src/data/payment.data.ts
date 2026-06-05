@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function createPurchase(data: any) {
   return db.purchase.create({ data });

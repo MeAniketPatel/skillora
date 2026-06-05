@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function getLiveSessions(courseId?: string) {
   return db.liveSession.findMany({

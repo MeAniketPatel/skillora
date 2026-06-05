@@ -6,8 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createGoalSchema } from "@/validations/learning-goal.schema";
 import { createGoalAction } from "@/actions/learning-goal.actions";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
 import {
   Form,
   FormControl,
@@ -16,14 +16,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/shared/components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/shared/components/ui/select";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 

@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function createDeck(userId: string, title: string, description?: string) {
   return db.flashcardDeck.create({

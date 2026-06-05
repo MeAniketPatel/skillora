@@ -7,9 +7,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { UploadDropzone } from "@/lib/uploadthing";
+} from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { UploadDropzone } from "@/shared/lib/uploadthing";
 import type { CourseEditorForm } from "./course-editor.shared";
 
 interface CourseEditorMediaProps {

@@ -1,6 +1,6 @@
-import { requireTeacher } from "@/lib/auth-helpers";
+import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getTeacherEarnings } from "@/data";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { BarChart, DollarSign, Users } from "lucide-react";
 
 export default async function TeacherEarningsPage() {

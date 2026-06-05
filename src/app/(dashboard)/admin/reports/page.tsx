@@ -1,10 +1,10 @@
-import { PageHeader } from "@/components/shared/page-header";
+import { PageHeader } from "@/shared/components/shared/page-header";
 import { getUserCountByRole, getUserGrowthTimeline } from "@/data/user.data";
 import { getCourseCountByStatus, getCourseCountByCategory } from "@/data/course.data";
 import { getEnrollmentTrends } from "@/data/enrollment.data";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Users, BookOpen } from "lucide-react";
-import { StatsCard } from "@/components/shared/stats-card";
+import { StatsCard } from "@/shared/components/shared/stats-card";
 import { ReportsDashboard } from "@/components/admin/reports-dashboard";
 
 export default async function AdminReportsPage() {

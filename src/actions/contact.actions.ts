@@ -1,8 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { actionHandler } from "@/lib/action-utils";
-import { requireAdmin } from "@/lib/auth-helpers";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { createContactMessage as createContactMessageData, markContactMessageReplied } from "@/data";
 import { contactSchema } from "@/validations";
 

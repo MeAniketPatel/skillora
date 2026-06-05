@@ -1,7 +1,7 @@
 "use client";
 
 import { BookOpen, FileSpreadsheet } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 
 interface AnalyticsFiltersProps {
   courses: { id: string; title: string }[];

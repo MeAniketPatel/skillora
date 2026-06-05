@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import { Button } from "@/shared/components/ui/button";
+import { Card } from "@/shared/components/ui/card";
+import { Progress } from "@/shared/components/ui/progress";
 import { reviewCardAction } from "@/actions/flashcard.actions";
 import { toast } from "sonner";
 import { ArrowLeft, RotateCw, CheckCircle2, Award, ChevronRight, HelpCircle } from "lucide-react";

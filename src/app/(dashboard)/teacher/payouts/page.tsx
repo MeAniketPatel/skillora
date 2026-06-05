@@ -1,7 +1,7 @@
 import React from "react";
-import { requireTeacher } from "@/lib/auth-helpers";
+import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getPayoutBalance, getPayoutHistory } from "@/data/payout.data";
-import { PageHeader } from "@/components/shared/page-header";
+import { PageHeader } from "@/shared/components/shared/page-header";
 import { PayoutDashboard } from "@/components/teacher/payout-dashboard";
 
 export default async function TeacherPayoutsPage() {

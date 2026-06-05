@@ -1,4 +1,4 @@
-import { PageHeader } from "@/components/shared/page-header";
+import { PageHeader } from "@/shared/components/shared/page-header";
 import {
   getPlatformRevenue,
   getRecentPurchases,
@@ -6,10 +6,10 @@ import {
   getRevenueByTeacher,
   getRevenueByCourse,
 } from "@/data/payment.data";
-import { StatsCard } from "@/components/shared/stats-card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatPrice } from "@/lib/utils";
+import { StatsCard } from "@/shared/components/shared/stats-card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/components/ui/table";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { formatPrice } from "@/shared/lib/utils";
 import { DollarSign, Percent, TrendingUp } from "lucide-react";
 import { RevenueCharts } from "@/components/admin/revenue-charts";
 

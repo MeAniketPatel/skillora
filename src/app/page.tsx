@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
 import { ArrowRight, ShieldCheck, Sparkles, Zap, BookOpen } from "lucide-react";
 import { auth } from "@/auth";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
-import LinkButton from "@/components/ui/link-button";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Navbar } from "@/shared/components/layout/navbar";
+import { Footer } from "@/shared/components/layout/footer";
+import LinkButton from "@/shared/components/ui/link-button";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { HeroSection } from "@/components/marketing/hero-section";
 import { PlatformStats } from "@/components/marketing/platform-stats";
 import { FeaturedCourses } from "@/components/marketing/featured-courses";

@@ -2,9 +2,9 @@
 
 import { useState, useTransition, useEffect } from "react";
 import { Plus, Trash2, CheckCircle2, Circle, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
 import { createQuiz, updateQuiz } from "@/actions/quiz.actions";
 import { generateAIQuizQuestions } from "@/actions/ai.actions";
 

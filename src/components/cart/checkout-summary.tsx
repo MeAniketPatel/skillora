@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useCartStore } from "@/stores/cart.store";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Badge } from "@/shared/components/ui/badge";
 import { toast } from "sonner";
 import { Ticket, CreditCard, Sparkles, Receipt, CheckCircle2 } from "lucide-react";
 import jsPDF from "jspdf";

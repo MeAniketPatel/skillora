@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { DeckList } from "@/components/flashcard/deck-list";
 import { HelpCircle, Sparkles } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/shared/components/ui/badge";
 
 export const metadata = {
   title: "Flashcards Study | Skillora",

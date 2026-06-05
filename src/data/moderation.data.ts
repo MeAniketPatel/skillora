@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 import { ModerationStatus, ModerationContentType } from "@prisma/client";
 
 export async function getPendingModerationItems(limit = 50) {

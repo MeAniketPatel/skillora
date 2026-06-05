@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import { Award, ShieldCheck, Calendar, User, GraduationCap } from "lucide-react";
 import { getCertificateById } from "@/data/certificate.data";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Navbar } from "@/shared/components/layout/navbar";
+import { Footer } from "@/shared/components/layout/footer";
 
 interface CertificatePageProps {
   params: Promise<{

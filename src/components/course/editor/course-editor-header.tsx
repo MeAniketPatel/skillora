@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { ArrowLeft, LayoutGrid, GraduationCap } from "lucide-react";
-import LinkButton from "@/components/ui/link-button";
-import { Button } from "@/components/ui/button";
+import LinkButton from "@/shared/components/ui/link-button";
+import { Button } from "@/shared/components/ui/button";
 
 interface CourseEditorHeaderProps {
   courseId: string;

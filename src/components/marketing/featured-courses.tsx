@@ -6,8 +6,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import LinkButton from "@/components/ui/link-button";
+} from "@/shared/components/ui/card";
+import LinkButton from "@/shared/components/ui/link-button";
 import { ROUTES } from "@/shared/constants/routes";
 import type { FeaturedCourse } from "@/data/skill-gap.data";
 

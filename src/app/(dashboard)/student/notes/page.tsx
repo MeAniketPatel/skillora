@@ -1,5 +1,5 @@
-import { requireAuth } from "@/lib/auth-helpers";
-import { PageHeader } from "@/components/shared/page-header";
+import { requireAuth } from "@/shared/lib/auth-helpers";
+import { PageHeader } from "@/shared/components/shared/page-header";
 import { getAllUserNotes } from "@/data";
 import {
   Card,
@@ -7,9 +7,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/shared/components/ui/card";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/shared/components/ui/button";
 import { ArrowRight, BookOpen, Clock, FileText } from "lucide-react";
 
 function formatTimestamp(seconds: number | null) {

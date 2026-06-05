@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Flame, Award, Calendar } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/shared/components/ui/card";
 import { formatDistanceToNow } from "date-fns";
 
 interface StudyStreak {

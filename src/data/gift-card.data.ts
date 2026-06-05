@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function createGiftCard(senderId: string, amount: number, code: string) {
   return db.giftCard.create({

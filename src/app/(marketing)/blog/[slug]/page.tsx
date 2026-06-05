@@ -2,14 +2,14 @@ import { getBlogPostDetail } from "@/data";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { BlogComments } from "@/components/blog/blog-comments";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent } from "@/components/ui/card";
+import { buttonVariants } from "@/shared/components/ui/button";
+import { cn } from "@/shared/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
+import { Card, CardContent } from "@/shared/components/ui/card";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 import { ArrowLeft, User, Calendar, MessageSquare } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/shared/components/ui/badge";
 
 interface BlogPostDetailPageProps {
   params: Promise<{

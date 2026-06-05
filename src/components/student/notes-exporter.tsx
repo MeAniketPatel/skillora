@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FileText, FileDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { generateNotesPDF } from "@/lib/pdf-generator";
 import { toast } from "sonner";
 

@@ -1,7 +1,7 @@
 import React from "react";
-import { requireAdmin } from "@/lib/auth-helpers";
+import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { getGlobalAnnouncements } from "@/data/announcement.data";
-import { PageHeader } from "@/components/shared/page-header";
+import { PageHeader } from "@/shared/components/shared/page-header";
 import { PlatformAnnouncements } from "@/components/admin/platform-announcements";
 
 export default async function AdminAnnouncementsPage() {

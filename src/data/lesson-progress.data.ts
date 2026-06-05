@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function upsertLessonProgress(enrollmentId: string, lessonId: string, data: { isCompleted?: boolean; completedAt?: Date | null; videoPosition?: number }) {
   return db.lessonProgress.upsert({

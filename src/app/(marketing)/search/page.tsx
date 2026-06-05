@@ -1,11 +1,11 @@
 import { globalSearch } from "@/data";
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 import { CourseFilters } from "@/components/course/course-filters";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice } from "@/shared/lib/utils";
 import Link from "next/link";
 import { Star, BookOpen, User, Calendar, Search, ArrowRight, MessageSquare, Award } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/shared/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 
 interface SearchPageProps {
   searchParams: Promise<{

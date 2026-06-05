@@ -1,13 +1,13 @@
 import React from "react";
 import { redirect } from "next/navigation";
-import { requireTeacher } from "@/lib/auth-helpers";
+import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getCourseByIdForOwner, getCourseEnrollments } from "@/data";
-import { PageHeader } from "@/components/shared/page-header";
-import { DataTable } from "@/components/shared/data-table";
-import { Pagination } from "@/components/shared/pagination";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
+import { PageHeader } from "@/shared/components/shared/page-header";
+import { DataTable } from "@/shared/components/shared/data-table";
+import { Pagination } from "@/shared/components/shared/pagination";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
+import { Badge } from "@/shared/components/ui/badge";
+import { Progress } from "@/shared/components/ui/progress";
 import { User, Calendar, GraduationCap, CheckCircle } from "lucide-react";
 
 interface PageProps {

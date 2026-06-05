@@ -1,5 +1,5 @@
-import { requireAuth } from "@/lib/auth-helpers";
-import { PageHeader } from "@/components/shared/page-header";
+import { requireAuth } from "@/shared/lib/auth-helpers";
+import { PageHeader } from "@/shared/components/shared/page-header";
 import { getUserNotifications } from "@/data";
 import { NotificationsClient } from "@/components/notifications/notifications-client";
 

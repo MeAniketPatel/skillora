@@ -1,11 +1,11 @@
-import { requireAdmin } from "@/lib/auth-helpers";
+import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { getUserCount } from "@/data/user.data";
 import { getCourseCount } from "@/data/course.data";
 import { getTotalEnrollmentCount } from "@/data/enrollment.data";
 import { getPlatformRevenue, getRecentPurchases } from "@/data/payment.data";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { formatPrice } from "@/lib/utils";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/components/ui/table";
+import { formatPrice } from "@/shared/lib/utils";
 import { APP } from "@/shared/constants/app";
 
 import { getSetting } from "@/data/settings.data";

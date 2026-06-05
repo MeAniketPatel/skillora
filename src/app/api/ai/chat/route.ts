@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { genAI } from "@/lib/ai-client";
-import { requireAuth } from "@/lib/auth-helpers";
+import { requireAuth } from "@/shared/lib/auth-helpers";
 
 export async function POST(req: NextRequest) {
   try {

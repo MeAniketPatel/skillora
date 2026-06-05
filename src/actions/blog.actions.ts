@@ -2,11 +2,11 @@
 
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { actionHandler } from "@/lib/action-utils";
-import { requireAuth } from "@/lib/auth-helpers";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireAuth } from "@/shared/lib/auth-helpers";
 import { createBlogPostSchema, blogCommentSchema } from "@/validations/blog.schema";
 import { createBlogPost, addBlogComment, togglePublishBlogPost, getBlogPostDetail } from "@/data";
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 // Helper to generate a URL friendly slug
 function slugify(text: string): string {

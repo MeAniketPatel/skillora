@@ -1,7 +1,7 @@
-import { PageHeader } from "@/components/shared/page-header";
+import { PageHeader } from "@/shared/components/shared/page-header";
 import { getAllCoupons } from "@/data/coupon.data";
 import { CouponManager } from "@/components/admin/coupon-manager";
-import { Pagination } from "@/components/shared/pagination";
+import { Pagination } from "@/shared/components/shared/pagination";
 
 interface AdminCouponsPageProps {
   searchParams: Promise<{

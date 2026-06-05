@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 import { PrivacySettings } from "@/components/settings/privacy-settings";
 import Link from "next/link";
 import { ROUTES } from "@/shared/constants/routes";

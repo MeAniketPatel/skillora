@@ -1,7 +1,7 @@
-import { requireTeacher } from "@/lib/auth-helpers";
+import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getCourseByIdForOwner } from "@/data";
 import { redirect } from "next/navigation";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/shared/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft, Plus } from "lucide-react";
 import { createSection } from "@/actions";

@@ -1,7 +1,7 @@
 import React from "react";
-import { requireAuth } from "@/lib/auth-helpers";
+import { requireAuth } from "@/shared/lib/auth-helpers";
 import { getUserProfileCard, getUserPortfolio, getUserActivities } from "@/data";
-import { PageHeader } from "@/components/shared/page-header";
+import { PageHeader } from "@/shared/components/shared/page-header";
 import { ProfileCard } from "@/components/profile/profile-card";
 import { ProfilePortfolio } from "@/components/profile/profile-portfolio";
 import { ProfileActivityFeed } from "@/components/profile/profile-activity-feed";

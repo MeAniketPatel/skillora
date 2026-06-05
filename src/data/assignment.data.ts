@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function submitAssignment(userId: string, lessonId: string, content: string, attachmentUrl?: string) {
   return db.assignmentSubmission.upsert({

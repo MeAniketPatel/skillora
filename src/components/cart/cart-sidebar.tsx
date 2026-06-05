@@ -7,8 +7,8 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
+} from "@/shared/components/ui/sheet";
+import { Button } from "@/shared/components/ui/button";
 import { CartItem } from "@/components/cart/cart-item";
 import { CheckoutSummary } from "@/components/cart/checkout-summary";
 import { ShoppingCart, HelpCircle, X } from "lucide-react";

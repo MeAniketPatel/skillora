@@ -2,8 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { actionHandler } from "@/lib/action-utils";
-import { requireAuth } from "@/lib/auth-helpers";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireAuth } from "@/shared/lib/auth-helpers";
 import { createDiscussionSchema, discussionReplySchema } from "@/validations/discussion.schema";
 import { createDiscussion, addDiscussionReply } from "@/data";
 

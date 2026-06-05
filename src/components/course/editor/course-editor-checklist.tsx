@@ -8,7 +8,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/shared/components/ui/card";
 import type { ChecklistItem } from "./course-editor.shared";
 
 interface CourseEditorChecklistProps {

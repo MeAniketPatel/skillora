@@ -5,7 +5,7 @@ import { Leaderboard } from "@/components/gamification/leaderboard";
 import { XPProgressBar } from "@/components/gamification/xp-progress-bar";
 import { BadgeShowcase } from "@/components/gamification/badge-showcase";
 import { Trophy, Sparkles } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/shared/components/ui/badge";
 
 export const metadata = {
   title: "Leaderboard & Achievements | Skillora",

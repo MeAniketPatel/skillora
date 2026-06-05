@@ -1,8 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { actionHandler } from "@/lib/action-utils";
-import { requireAuth } from "@/lib/auth-helpers";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireAuth } from "@/shared/lib/auth-helpers";
 import { noteCreateSchema, noteUpdateSchema } from "@/validations/note.schema";
 import { createNote as createNoteData, updateNote as updateNoteData, deleteNote as deleteNoteData } from "@/data";
 

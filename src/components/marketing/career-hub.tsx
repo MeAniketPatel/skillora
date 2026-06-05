@@ -16,8 +16,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+} from "@/shared/components/ui/card";
+import { Badge } from "@/shared/components/ui/badge";
 import { CAREER_PATHS } from "@/shared/constants/marketing";
 import { ROUTES } from "@/shared/constants/routes";
 import type { CareerPath } from "@/types/marketing.types";

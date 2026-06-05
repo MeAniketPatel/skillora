@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { BookMarked, GraduationCap, Mail, Star, Users } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import LinkButton from "@/components/ui/link-button";
+import { Card, CardContent } from "@/shared/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
+import LinkButton from "@/shared/components/ui/link-button";
 import { ROUTES } from "@/shared/constants/routes";
 import type { InstructorCardData } from "@/types/marketing.types";
 

@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 import { APP } from "@/shared/constants/app";
 import { SKILL_KEYWORDS } from "@/shared/constants/skill-keywords";
 import type {

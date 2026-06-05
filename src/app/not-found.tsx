@@ -5,8 +5,8 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-} from "@/components/ui/card";
-import LinkButton from "@/components/ui/link-button";
+} from "@/shared/components/ui/card";
+import LinkButton from "@/shared/components/ui/link-button";
 
 export default function NotFound() {
   return (

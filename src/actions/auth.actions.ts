@@ -7,7 +7,7 @@ import { AuthAuditAction, AuthSessionRevocationReason } from "@prisma/client";
 import { ZodError } from "zod";
 
 import { signIn, signOut, auth } from "@/auth";
-import { sendPasswordResetEmail } from "@/lib/mail";
+import { sendPasswordResetEmail } from "@/shared/lib/mail";
 import {
   PASSWORD_RESET_TOKEN_TTL_MINUTES,
   completePasswordReset,
@@ -17,12 +17,12 @@ import {
   logAuthAudit,
   revokeAllAuthSessions,
   revokeAuthSession,
-} from "@/lib/auth-security";
+} from "@/shared/lib/auth-security";
 
-import { actionHandler } from "@/lib/action-utils";
-import { requireAuth } from "@/lib/auth-helpers";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireAuth } from "@/shared/lib/auth-helpers";
 import { getUserByEmail, updateUser, createUser } from "@/data";
-import { ConflictError, UnauthorizedError, ValidationError } from "@/lib/errors";
+import { ConflictError, UnauthorizedError, ValidationError } from "@/shared/lib/errors";
 
 import {
   registerSchema,
@@ -75,7 +75,7 @@ export async function registerUser(values: RegisterInput) {
     });
 
     try {
-      const { sendWelcomeEmail } = await import("@/lib/mail");
+      const { sendWelcomeEmail } = await import("@/shared/lib/mail");
       await sendWelcomeEmail(email, name);
     } catch (err) {
       console.error("Failed to send welcome email:", err);

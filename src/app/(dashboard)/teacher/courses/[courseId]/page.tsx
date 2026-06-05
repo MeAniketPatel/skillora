@@ -1,4 +1,4 @@
-import { requireTeacher } from "@/lib/auth-helpers";
+import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getCourseByIdForOwner, getAllCategories } from "@/data";
 import { redirect } from "next/navigation";
 import CourseEditor from "@/components/course/editor";

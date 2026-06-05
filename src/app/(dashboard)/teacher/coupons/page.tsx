@@ -1,6 +1,6 @@
-import { requireTeacher } from "@/lib/auth-helpers";
+import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getTeacherCoupons } from "@/data";
-import { DataTable } from "@/components/shared/data-table";
+import { DataTable } from "@/shared/components/shared/data-table";
 import { Ticket } from "lucide-react";
 import { format } from "date-fns";
 

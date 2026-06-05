@@ -16,20 +16,20 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { Button, buttonVariants } from "@/components/ui/button";
-import LinkButton from "@/components/ui/link-button";
-import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button, buttonVariants } from "@/shared/components/ui/button";
+import LinkButton from "@/shared/components/ui/link-button";
+import { cn } from "@/shared/lib/utils";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import RichTextEditor from "@/components/shared/rich-text-editor";
-import { UploadDropzone } from "@/lib/uploadthing";
+} from "@/shared/components/ui/card";
+import RichTextEditor from "@/shared/components/shared/rich-text-editor";
+import { UploadDropzone } from "@/shared/lib/uploadthing";
 import {
   updateLesson,
   createAttachment,

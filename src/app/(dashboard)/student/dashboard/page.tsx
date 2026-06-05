@@ -1,5 +1,5 @@
-import { requireAuth } from "@/lib/auth-helpers";
-import { PageHeader } from "@/components/shared/page-header";
+import { requireAuth } from "@/shared/lib/auth-helpers";
+import { PageHeader } from "@/shared/components/shared/page-header";
 import { DashboardStats } from "@/components/student/dashboard-stats";
 import { ContinueLearning } from "@/components/student/continue-learning";
 import {
@@ -16,8 +16,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import LinkButton from "@/components/ui/link-button";
+} from "@/shared/components/ui/card";
+import LinkButton from "@/shared/components/ui/link-button";
 
 export default async function StudentDashboardPage() {
   const user = await requireAuth();

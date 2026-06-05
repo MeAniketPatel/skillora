@@ -2,9 +2,9 @@
 
 import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+import { Card, CardContent } from "@/shared/components/ui/card";
+import { Label } from "@/shared/components/ui/label";
+import { Switch } from "@/shared/components/ui/switch";
 import { updateSetting } from "@/actions/settings.actions";
 import { AlertTriangle, Wrench, ShieldAlert } from "lucide-react";
 

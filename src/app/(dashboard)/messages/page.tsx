@@ -1,10 +1,10 @@
 import React from "react";
-import { requireAuth } from "@/lib/auth-helpers";
+import { requireAuth } from "@/shared/lib/auth-helpers";
 import { getConversations, getMessages } from "@/data";
-import { PageHeader } from "@/components/shared/page-header";
+import { PageHeader } from "@/shared/components/shared/page-header";
 import { ChatSidebar } from "@/components/chat/chat-sidebar";
 import { ChatWindow } from "@/components/chat/chat-window";
-import { Card } from "@/components/ui/card";
+import { Card } from "@/shared/components/ui/card";
 
 interface MessagesPageProps {
   searchParams: Promise<{

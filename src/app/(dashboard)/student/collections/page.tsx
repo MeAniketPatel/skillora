@@ -1,8 +1,8 @@
 import React from "react";
-import { requireAuth } from "@/lib/auth-helpers";
+import { requireAuth } from "@/shared/lib/auth-helpers";
 import { getUserCollections } from "@/data/collection.data";
-import { PageHeader } from "@/components/shared/page-header";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { PageHeader } from "@/shared/components/shared/page-header";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/components/ui/card";
 import { CreateCollectionForm } from "@/components/student/create-collection-form";
 import { CourseCollections } from "@/components/student/course-collection";
 

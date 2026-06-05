@@ -1,8 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { actionHandler } from "@/lib/action-utils";
-import { requireTeacher, requireAdmin } from "@/lib/auth-helpers";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireTeacher, requireAdmin } from "@/shared/lib/auth-helpers";
 import { announcementSchema } from "@/validations/announcement.schema";
 import {
   createAnnouncement as createAnnouncementDAL,

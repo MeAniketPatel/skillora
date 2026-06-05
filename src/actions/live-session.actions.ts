@@ -1,13 +1,13 @@
 "use server";
 
 import { z } from "zod";
-import { actionHandler } from "@/lib/action-utils";
-import { requireTeacher } from "@/lib/auth-helpers";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { liveSessionSchema } from "@/validations";
 import { createLiveSession, deleteLiveSession, getLiveSessionById, getCourseByIdForOwner } from "@/data";
 import { triggerWebhook } from "@/lib/webhook-sender";
 import { revalidatePath } from "next/cache";
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function createLiveSessionAction(values: z.infer<typeof liveSessionSchema>) {
   return actionHandler(async () => {

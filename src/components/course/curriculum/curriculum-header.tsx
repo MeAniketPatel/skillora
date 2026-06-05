@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import LinkButton from "@/components/ui/link-button";
+import LinkButton from "@/shared/components/ui/link-button";
 
 export function CurriculumHeader({ courseId }: { courseId: string }) {
   return (

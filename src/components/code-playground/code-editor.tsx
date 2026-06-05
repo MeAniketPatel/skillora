@@ -2,9 +2,9 @@
 
 import { useState, useRef } from "react";
 import MonacoEditor from "@monaco-editor/react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/shared/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
 import { Play, RotateCcw, Terminal, Code, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 

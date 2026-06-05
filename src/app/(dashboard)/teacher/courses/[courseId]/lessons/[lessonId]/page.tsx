@@ -1,4 +1,4 @@
-import { requireTeacher } from "@/lib/auth-helpers";
+import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getCourseByIdForOwner, getPeerReviewConfig } from "@/data";
 import { getLessonWithContent } from "@/data/lesson.data";
 import { redirect } from "next/navigation";

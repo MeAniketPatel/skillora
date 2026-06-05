@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function createNote(userId: string, lessonId: string, content: string, timestamp?: number) {
   return db.note.create({

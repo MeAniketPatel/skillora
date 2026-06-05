@@ -1,6 +1,6 @@
 import { getLearningPaths } from "@/data";
-import { Card, CardContent } from "@/components/ui/card";
-import LinkButton from "@/components/ui/link-button";
+import { Card, CardContent } from "@/shared/components/ui/card";
+import LinkButton from "@/shared/components/ui/link-button";
 import { GraduationCap, ArrowRight, BookOpen, Users } from "lucide-react";
 
 export const metadata = {

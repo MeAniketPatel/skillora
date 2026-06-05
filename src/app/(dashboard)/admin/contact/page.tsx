@@ -1,11 +1,11 @@
-import { requireAdmin } from "@/lib/auth-helpers";
+import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { getContactMessages } from "@/data";
-import { DataTable } from "@/components/shared/data-table";
+import { DataTable } from "@/shared/components/shared/data-table";
 import { MessageSquare } from "lucide-react";
 import { format } from "date-fns";
 import { markContactReplied } from "@/actions";
-import { ActionButton } from "@/components/shared/action-button";
-import { Button } from "@/components/ui/button";
+import { ActionButton } from "@/shared/components/shared/action-button";
+import { Button } from "@/shared/components/ui/button";
 
 export default async function AdminContactPage() {
   await requireAdmin();

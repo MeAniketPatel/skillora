@@ -2,7 +2,7 @@ import { getBlogPosts } from "@/data";
 import { auth } from "@/auth";
 import { BlogCard } from "@/components/blog/blog-card";
 import { BlogEditor } from "@/components/blog/blog-editor";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/shared/components/ui/badge";
 import { PenTool, Sparkles, BookOpen } from "lucide-react";
 
 export const metadata = {

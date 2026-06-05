@@ -1,9 +1,9 @@
 import React from "react";
 import { redirect } from "next/navigation";
-import { requireTeacher } from "@/lib/auth-helpers";
+import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getCourseByIdForOwner } from "@/data/course.data";
 import { getAnnouncementsByCourseId } from "@/data/announcement.data";
-import { PageHeader } from "@/components/shared/page-header";
+import { PageHeader } from "@/shared/components/shared/page-header";
 import { AnnouncementForm } from "@/components/teacher/announcement-form";
 import { AnnouncementList } from "@/components/teacher/announcement-list";
 

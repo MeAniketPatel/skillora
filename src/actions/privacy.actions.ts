@@ -1,10 +1,10 @@
 "use server";
 
 import { z } from "zod";
-import { actionHandler } from "@/lib/action-utils";
-import { requireAuth } from "@/lib/auth-helpers";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireAuth } from "@/shared/lib/auth-helpers";
 import { privacySettingsSchema } from "@/validations";
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export async function updatePrivacySettingsAction(values: z.infer<typeof privacySettingsSchema>) {

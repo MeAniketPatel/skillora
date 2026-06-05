@@ -1,8 +1,8 @@
 "use server";
 
-import { actionHandler } from "@/lib/action-utils";
-import { requireAuth, requireTeacher } from "@/lib/auth-helpers";
-import { ConflictError, NotFoundError } from "@/lib/errors";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireAuth, requireTeacher } from "@/shared/lib/auth-helpers";
+import { ConflictError, NotFoundError } from "@/shared/lib/errors";
 import {
   createQuiz as createQuizData,
   updateQuizWithQuestions,

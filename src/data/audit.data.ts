@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 import { AuthAuditAction } from "@prisma/client";
 
 export async function getAuditLogs(params: { page?: number; limit?: number; action?: AuthAuditAction; userId?: string; startDate?: Date; endDate?: Date }) {

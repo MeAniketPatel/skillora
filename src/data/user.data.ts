@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 import { Role } from "@prisma/client";
 import { APP } from "@/shared/constants/app";
 

@@ -1,10 +1,10 @@
 import { GraduationCap, Search, UserSearch } from "lucide-react";
 import { getAllInstructors } from "@/data/user.data";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/shared/components/ui/card";
 import { InstructorCard } from "@/components/marketing/instructor-card";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
-import { Input } from "@/components/ui/input";
+import { Navbar } from "@/shared/components/layout/navbar";
+import { Footer } from "@/shared/components/layout/footer";
+import { Input } from "@/shared/components/ui/input";
 import { APP } from "@/shared/constants/app";
 import { ROUTES } from "@/shared/constants/routes";
 

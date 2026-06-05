@@ -2,11 +2,11 @@
 
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { actionHandler } from "@/lib/action-utils";
-import { requireAdmin, requireAuth } from "@/lib/auth-helpers";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireAdmin, requireAuth } from "@/shared/lib/auth-helpers";
 import { createBundleSchema } from "@/validations/bundle.schema";
 import { createCourseBundle, getCourseBundleDetail } from "@/data";
-import db from "@/lib/prisma"; // Direct db import allowed for multi-step transaction if needed, but we can do it via loop / DAL
+import db from "@/shared/lib/prisma"; // Direct db import allowed for multi-step transaction if needed, but we can do it via loop / DAL
 
 export async function createBundleAction(values: z.infer<typeof createBundleSchema>) {
   return actionHandler(async () => {

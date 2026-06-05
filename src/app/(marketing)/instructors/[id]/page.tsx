@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getInstructorProfile } from "@/data/user.data";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
+import { Navbar } from "@/shared/components/layout/navbar";
+import { Footer } from "@/shared/components/layout/footer";
 import { InstructorProfile } from "@/components/marketing/instructor-profile";
 
 interface InstructorPageProps {

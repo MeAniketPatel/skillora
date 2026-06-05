@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function getUserCollections(userId: string) {
   return db.courseCollection.findMany({

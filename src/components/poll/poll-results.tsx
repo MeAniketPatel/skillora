@@ -1,8 +1,8 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { cn } from "@/lib/utils";
+import { Card, CardContent } from "@/shared/components/ui/card";
+import { Progress } from "@/shared/components/ui/progress";
+import { cn } from "@/shared/lib/utils";
 import { CheckCircle2, BarChart2 } from "lucide-react";
 
 interface PollOption {

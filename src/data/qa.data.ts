@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function createQuestion(userId: string, lessonId: string, title: string, body: string) {
   return db.question.create({

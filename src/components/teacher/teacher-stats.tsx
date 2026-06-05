@@ -1,6 +1,6 @@
 import { BookOpen, Users, DollarSign, Star } from "lucide-react";
-import { StatsCard } from "@/components/shared/stats-card";
-import { formatPrice } from "@/lib/utils";
+import { StatsCard } from "@/shared/components/shared/stats-card";
+import { formatPrice } from "@/shared/lib/utils";
 
 interface TeacherStatsProps {
   coursesCount: number;

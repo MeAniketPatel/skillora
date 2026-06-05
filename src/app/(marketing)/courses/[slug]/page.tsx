@@ -5,10 +5,10 @@ import { GraduationCap, BookOpen, Layers, CheckCircle } from "lucide-react";
 import { auth } from "@/auth";
 import { getCourseWithFullDetails } from "@/data/course.data";
 import { getEnrollment } from "@/data/enrollment.data";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
+import { Button } from "@/shared/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Navbar } from "@/shared/components/layout/navbar";
+import { Footer } from "@/shared/components/layout/footer";
 import EnrollButton from "@/components/course/enroll-button";
 
 interface CourseDetailPageProps {

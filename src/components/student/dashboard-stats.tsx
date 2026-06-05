@@ -1,5 +1,5 @@
 import { BookOpen, CheckCircle, Award } from "lucide-react";
-import { StatsCard } from "@/components/shared/stats-card";
+import { StatsCard } from "@/shared/components/shared/stats-card";
 
 interface DashboardStatsProps {
   enrolledCount: number;

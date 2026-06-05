@@ -1,11 +1,11 @@
 import React from "react";
-import { requireAdmin } from "@/lib/auth-helpers";
-import { PageHeader } from "@/components/shared/page-header";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { requireAdmin } from "@/shared/lib/auth-helpers";
+import { PageHeader } from "@/shared/components/shared/page-header";
+import { Card, CardContent } from "@/shared/components/ui/card";
+import { Badge } from "@/shared/components/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/components/ui/table";
 import { Rss, Star, Calendar, FileText } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 
 export default async function AdminBlogPage() {
   await requireAdmin();

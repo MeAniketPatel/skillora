@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 import { getTeacherEarnings } from "./payment.data";
 
 export async function getPayoutHistory(userId: string) {

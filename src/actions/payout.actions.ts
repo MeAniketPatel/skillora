@@ -1,9 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { actionHandler } from "@/lib/action-utils";
-import { requireTeacher } from "@/lib/auth-helpers";
-import { ValidationError } from "@/lib/errors";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireTeacher } from "@/shared/lib/auth-helpers";
+import { ValidationError } from "@/shared/lib/errors";
 import { payoutSchema } from "@/validations/payout.schema";
 import { getPayoutBalance, createPayoutRequest } from "@/data";
 import { z } from "zod";

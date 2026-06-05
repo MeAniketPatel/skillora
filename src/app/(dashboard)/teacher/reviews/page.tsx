@@ -1,6 +1,6 @@
-import { requireTeacher } from "@/lib/auth-helpers";
+import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getTeacherReviews } from "@/data";
-import { DataTable } from "@/components/shared/data-table";
+import { DataTable } from "@/shared/components/shared/data-table";
 import { MessageSquareQuote, Star } from "lucide-react";
 import { format } from "date-fns";
 

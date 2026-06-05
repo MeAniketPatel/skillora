@@ -1,8 +1,8 @@
 "use server";
 
 import { z } from "zod";
-import { actionHandler } from "@/lib/action-utils";
-import { requireAuth } from "@/lib/auth-helpers";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireAuth } from "@/shared/lib/auth-helpers";
 import { purchaseGiftCardSchema, redeemGiftCardSchema } from "@/validations/gift-card.schema";
 import { createGiftCard, redeemGiftCard } from "@/data";
 import { revalidatePath } from "next/cache";

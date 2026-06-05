@@ -1,10 +1,10 @@
-import { requireAuth } from "@/lib/auth-helpers";
+import { requireAuth } from "@/shared/lib/auth-helpers";
 import { getUserEnrollments } from "@/data";
-import { DataTable } from "@/components/shared/data-table";
-import { ActionButton } from "@/components/shared/action-button";
+import { DataTable } from "@/shared/components/shared/data-table";
+import { ActionButton } from "@/shared/components/shared/action-button";
 import Link from "next/link";
 import { GraduationCap } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 
 export default async function StudentCoursesPage() {
   const user = await requireAuth();

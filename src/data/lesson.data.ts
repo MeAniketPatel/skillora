@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function createLesson(sectionId: string, title: string) {
   const lastLesson = await db.lesson.findFirst({

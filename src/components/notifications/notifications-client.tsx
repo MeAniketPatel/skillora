@@ -13,13 +13,13 @@ import {
   Loader2,
   ExternalLink,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Card, CardContent, CardDescription, CardTitle } from "@/shared/components/ui/card";
 import {
   markNotificationAsRead,
   markAllNotificationsAsRead,
 } from "@/actions/notification.actions";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 interface Notification {
   id: string;

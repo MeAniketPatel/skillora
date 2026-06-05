@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function createReferral(referrerId: string, referredId: string) {
   const existing = await db.referral.findFirst({

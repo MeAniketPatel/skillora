@@ -1,17 +1,17 @@
 "use client";
 
 import { Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import RichTextEditor from "@/components/shared/rich-text-editor";
+} from "@/shared/components/ui/card";
+import RichTextEditor from "@/shared/components/shared/rich-text-editor";
 import type {
   CourseEditorCategory,
   CourseEditorForm,

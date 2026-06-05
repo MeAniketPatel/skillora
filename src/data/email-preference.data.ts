@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 import { EmailPreferenceInput } from "@/validations";
 
 export async function getEmailPreferences(userId: string) {

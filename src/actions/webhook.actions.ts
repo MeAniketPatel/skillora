@@ -2,8 +2,8 @@
 
 import { z } from "zod";
 import crypto from "crypto";
-import { actionHandler } from "@/lib/action-utils";
-import { requireAdmin } from "@/lib/auth-helpers";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { webhookSchema } from "@/validations";
 import { createWebhook, deleteWebhook, getWebhookById, logWebhookDelivery } from "@/data";
 import { revalidatePath } from "next/cache";

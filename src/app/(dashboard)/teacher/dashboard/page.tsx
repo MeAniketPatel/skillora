@@ -1,5 +1,5 @@
-import { requireTeacher } from "@/lib/auth-helpers";
-import { PageHeader } from "@/components/shared/page-header";
+import { requireTeacher } from "@/shared/lib/auth-helpers";
+import { PageHeader } from "@/shared/components/shared/page-header";
 import { TeacherStats } from "@/components/teacher/teacher-stats";
 import { RecentEnrollments } from "@/components/teacher/recent-enrollments";
 import {
@@ -16,8 +16,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import LinkButton from "@/components/ui/link-button";
+} from "@/shared/components/ui/card";
+import LinkButton from "@/shared/components/ui/link-button";
 
 export default async function TeacherDashboardPage() {
   const user = await requireTeacher();

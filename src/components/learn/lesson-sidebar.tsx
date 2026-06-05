@@ -13,9 +13,9 @@ import {
   ListChecks,
   X,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { cn } from "@/lib/utils";
+import { Button } from "@/shared/components/ui/button";
+import { Progress } from "@/shared/components/ui/progress";
+import { cn } from "@/shared/lib/utils";
 
 export interface LessonSidebarSection {
   id: string;

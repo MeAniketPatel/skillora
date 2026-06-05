@@ -1,5 +1,5 @@
-import db from "@/lib/prisma";
-import { NotFoundError } from "@/lib/errors";
+import db from "@/shared/lib/prisma";
+import { NotFoundError } from "@/shared/lib/errors";
 
 export async function getCourseById(id: string) {
   return db.course.findUnique({ where: { id } });

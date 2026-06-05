@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function createContactMessage(data: { name: string; email: string; subject: string; message: string }) {
   return db.contactMessage.create({ data });

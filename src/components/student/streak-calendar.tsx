@@ -2,7 +2,7 @@
 
 import React from "react";
 import { format, subDays, isSameDay } from "date-fns";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/shared/components/ui/tooltip";
 
 interface StudySession {
   id: string;

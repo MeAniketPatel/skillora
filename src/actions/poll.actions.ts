@@ -1,8 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { actionHandler } from "@/lib/action-utils";
-import { requireAuth, requireTeacher } from "@/lib/auth-helpers";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireAuth, requireTeacher } from "@/shared/lib/auth-helpers";
 import { pollSchema } from "@/validations/poll.schema";
 import {
   createPoll as createPollDAL,

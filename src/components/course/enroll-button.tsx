@@ -2,7 +2,7 @@
 
 import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { enrollInFreeCourse } from "@/actions/enrollment.actions";
 import { createCheckoutSession } from "@/actions/payment.actions";
 

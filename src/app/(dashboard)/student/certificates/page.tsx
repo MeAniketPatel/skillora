@@ -1,10 +1,10 @@
-import { requireAuth } from "@/lib/auth-helpers";
+import { requireAuth } from "@/shared/lib/auth-helpers";
 import { getUserCertificates } from "@/data";
-import { DataTable } from "@/components/shared/data-table";
+import { DataTable } from "@/shared/components/shared/data-table";
 import { Award } from "lucide-react";
 import { format } from "date-fns";
 import Link from "next/link";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/shared/components/ui/button";
 
 export default async function StudentCertificatesPage() {
   const user = await requireAuth();

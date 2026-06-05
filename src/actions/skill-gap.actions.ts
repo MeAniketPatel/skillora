@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { actionHandler } from "@/lib/action-utils";
+import { actionHandler } from "@/shared/lib/action-utils";
 import { getSkillGapRecommendations } from "@/data/skill-gap.data";
 
 const skillGapSchema = z.object({

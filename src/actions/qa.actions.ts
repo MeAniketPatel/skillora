@@ -1,8 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { actionHandler } from "@/lib/action-utils";
-import { requireAuth } from "@/lib/auth-helpers";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireAuth } from "@/shared/lib/auth-helpers";
 import { questionCreateSchema, answerCreateSchema } from "@/validations/qa.schema";
 import { createQuestion as createQuestionData, createAnswer as createAnswerData, markQuestionResolved, acceptAnswer } from "@/data";
 

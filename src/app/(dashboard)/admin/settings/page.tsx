@@ -1,8 +1,8 @@
-import { requireAdmin } from "@/lib/auth-helpers";
+import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { getAllSettings } from "@/data";
 import { updateSetting } from "@/actions";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
 
 export default async function AdminSettingsPage() {
   await requireAdmin();

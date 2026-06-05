@@ -1,7 +1,7 @@
 "use server";
 
-import { actionHandler } from "@/lib/action-utils";
-import { requireTeacher } from "@/lib/auth-helpers";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getCourseInsights as getCourseInsightsDAL, getCourseByIdForOwner } from "@/data";
 
 export async function getCourseInsightsAction(courseId: string) {

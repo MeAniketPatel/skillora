@@ -1,10 +1,10 @@
-import { requireAdmin } from "@/lib/auth-helpers";
+import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { getAllCategories } from "@/data";
-import { DataTable } from "@/components/shared/data-table";
+import { DataTable } from "@/shared/components/shared/data-table";
 import { Tags, Plus } from "lucide-react";
 import { createCategory, deleteCategory } from "@/actions";
-import { Button } from "@/components/ui/button";
-import { ActionButton } from "@/components/shared/action-button";
+import { Button } from "@/shared/components/ui/button";
+import { ActionButton } from "@/shared/components/shared/action-button";
 
 export default async function AdminCategoriesPage() {
   await requireAdmin();

@@ -1,11 +1,11 @@
-import { requireAdmin } from "@/lib/auth-helpers";
+import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { getAllUsers } from "@/data";
-import { DataTable } from "@/components/shared/data-table";
+import { DataTable } from "@/shared/components/shared/data-table";
 import { Users } from "lucide-react";
 import { format } from "date-fns";
 import { updateUserRole, banUser, unbanUser } from "@/actions";
-import { ActionButton } from "@/components/shared/action-button";
-import { Button } from "@/components/ui/button";
+import { ActionButton } from "@/shared/components/shared/action-button";
+import { Button } from "@/shared/components/ui/button";
 import { ImpersonateButton } from "@/components/admin/user-impersonation";
 
 

@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function recordActivity(userId: string, type: string, metadata?: any) {
   return db.activity.create({

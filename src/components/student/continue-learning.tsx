@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { GraduationCap, ArrowRight } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import LinkButton from "@/components/ui/link-button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import LinkButton from "@/shared/components/ui/link-button";
 
 interface ContinueLearningItem {
   courseId: string;

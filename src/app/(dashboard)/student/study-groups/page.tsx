@@ -1,11 +1,11 @@
 import React from "react";
-import { requireAuth } from "@/lib/auth-helpers";
+import { requireAuth } from "@/shared/lib/auth-helpers";
 import { getStudyGroups, getStudyGroupById, isGroupMember } from "@/data";
-import { PageHeader } from "@/components/shared/page-header";
+import { PageHeader } from "@/shared/components/shared/page-header";
 import { GroupCard } from "@/components/study-group/group-card";
 import { GroupChat } from "@/components/study-group/group-chat";
 import { CreateGroupForm } from "@/components/study-group/create-group-form";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/shared/components/ui/card";
 import { Info, Sparkles } from "lucide-react";
 
 interface StudyGroupsPageProps {

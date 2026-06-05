@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { useTransition } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/shared/components/ui/card";
 import { gradeSubmission } from "@/actions/assignment.actions";
 import type { AnalyticsSubmission } from "./analytics.shared";
 

@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function getUserBookmarks(userId: string) {
   return db.bookmark.findMany({

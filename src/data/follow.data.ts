@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function isFollowing(followerId: string, followingId: string) {
   const follow = await db.follow.findFirst({

@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function createNotification(userId: string, type: string, title: string, message: string, link?: string) {
   return db.notification.create({

@@ -1,8 +1,8 @@
 "use server";
 
-import { actionHandler } from "@/lib/action-utils";
-import { requireTeacher } from "@/lib/auth-helpers";
-import { ValidationError } from "@/lib/errors";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireTeacher } from "@/shared/lib/auth-helpers";
+import { ValidationError } from "@/shared/lib/errors";
 
 export async function generateAICourseDescription(title: string) {
   return actionHandler(async () => {

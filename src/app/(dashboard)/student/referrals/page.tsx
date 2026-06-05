@@ -2,7 +2,7 @@ import { getReferralStats } from "@/data";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { ReferralDashboard } from "@/components/referral/referral-dashboard";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/shared/components/ui/badge";
 import { Users, Sparkles } from "lucide-react";
 
 export const metadata = {

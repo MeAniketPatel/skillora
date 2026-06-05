@@ -1,7 +1,7 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/shared/components/ui/card";
+import { Badge } from "@/shared/components/ui/badge";
 import { Sparkles, Trophy, Award, ShieldAlert, Star, Zap } from "lucide-react";
 
 interface UserBadge {

@@ -1,7 +1,7 @@
 import { getUserSubscription } from "@/data";
 import { auth } from "@/auth";
 import { PricingTable } from "@/components/marketing/pricing-table";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/shared/components/ui/badge";
 import { Sparkles } from "lucide-react";
 
 export const metadata = {

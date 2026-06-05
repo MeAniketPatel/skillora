@@ -1,9 +1,9 @@
 import { Briefcase, TrendingUp, Sparkles } from "lucide-react";
 import { CareerHub } from "@/components/marketing/career-hub";
 import { SkillGapAnalyzer } from "@/components/marketing/skill-gap-analyzer";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
-import LinkButton from "@/components/ui/link-button";
+import { Navbar } from "@/shared/components/layout/navbar";
+import { Footer } from "@/shared/components/layout/footer";
+import LinkButton from "@/shared/components/ui/link-button";
 import { ROUTES } from "@/shared/constants/routes";
 
 export const metadata = {

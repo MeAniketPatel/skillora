@@ -1,9 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { actionHandler } from "@/lib/action-utils";
-import { requireAuth } from "@/lib/auth-helpers";
-import { ConflictError, NotFoundError, ValidationError } from "@/lib/errors";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireAuth } from "@/shared/lib/auth-helpers";
+import { ConflictError, NotFoundError, ValidationError } from "@/shared/lib/errors";
 import { triggerWebhook } from "@/lib/webhook-sender";
 import {
   getCourseWithCurriculum,
@@ -115,7 +115,7 @@ export async function toggleLessonCompletion(
             `/certificates/${cert.certificateId}`
           );
 
-          const { sendCertificateEmail } = await import("@/lib/mail");
+          const { sendCertificateEmail } = await import("@/shared/lib/mail");
           await sendCertificateEmail(
             fullEnrollment.user.email,
             fullEnrollment.user.name || fullEnrollment.user.email,

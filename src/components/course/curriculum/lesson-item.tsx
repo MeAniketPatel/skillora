@@ -9,10 +9,10 @@ import {
   Settings,
   Trash2,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import LinkButton from "@/components/ui/link-button";
-import { cn } from "@/lib/utils";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import LinkButton from "@/shared/components/ui/link-button";
+import { cn } from "@/shared/lib/utils";
 import type { CurriculumLesson } from "./curriculum.shared";
 
 interface LessonItemProps {

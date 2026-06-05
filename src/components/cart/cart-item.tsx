@@ -1,7 +1,7 @@
 "use client";
 
 import { CartItem as CartItemType, useCartStore } from "@/stores/cart.store";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { Trash2, BookOpen } from "lucide-react";
 import Image from "next/image";
 

@@ -3,9 +3,9 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { deleteAnnouncement } from "@/actions/announcement.actions";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 import { Trash2, User, Calendar, Megaphone } from "lucide-react";
 
 interface Announcement {

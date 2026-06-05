@@ -1,7 +1,7 @@
-import { PageHeader } from "@/components/shared/page-header";
+import { PageHeader } from "@/shared/components/shared/page-header";
 import { getCoursesForAdmin } from "@/data/course.data";
 import { CourseModeration } from "@/components/admin/course-moderation";
-import { Pagination } from "@/components/shared/pagination";
+import { Pagination } from "@/shared/components/shared/pagination";
 
 interface AdminCoursesPageProps {
   searchParams: Promise<{

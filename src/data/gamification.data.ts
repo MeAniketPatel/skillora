@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function getUserXPPoints(userId: string) {
   const user = await db.user.findUnique({

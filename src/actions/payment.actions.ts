@@ -1,9 +1,9 @@
 "use server";
 
-import { stripe } from "@/lib/stripe";
-import { actionHandler } from "@/lib/action-utils";
-import { requireAuth } from "@/lib/auth-helpers";
-import { NotFoundError, ValidationError, ConflictError } from "@/lib/errors";
+import { stripe } from "@/shared/lib/stripe";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireAuth } from "@/shared/lib/auth-helpers";
+import { NotFoundError, ValidationError, ConflictError } from "@/shared/lib/errors";
 import { getCourseById, getCouponByCode, getEnrollment } from "@/data";
 
 export async function createCheckoutSession(courseId: string, couponCode?: string) {

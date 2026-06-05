@@ -1,4 +1,4 @@
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 
 export async function getBlogPosts(publishedOnly = true) {
   return db.blogPost.findMany({

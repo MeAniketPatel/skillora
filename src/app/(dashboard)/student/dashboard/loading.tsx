@@ -1,4 +1,4 @@
-import { CardSkeleton, TableSkeleton } from "@/components/shared/loading-skeleton";
+import { CardSkeleton, TableSkeleton } from "@/shared/components/shared/loading-skeleton";
 
 export default function StudentDashboardLoading() {
   return (

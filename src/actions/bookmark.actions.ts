@@ -1,7 +1,7 @@
 "use server";
 
-import { actionHandler } from "@/lib/action-utils";
-import { requireAuth } from "@/lib/auth-helpers";
+import { actionHandler } from "@/shared/lib/action-utils";
+import { requireAuth } from "@/shared/lib/auth-helpers";
 import { toggleBookmarkSchema } from "@/validations/bookmark.schema";
 import { toggleBookmark } from "@/data/bookmark.data";
 import { revalidatePath } from "next/cache";

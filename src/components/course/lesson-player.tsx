@@ -15,10 +15,10 @@ import {
   Download
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { toggleLessonCompletion } from "@/actions/enrollment.actions";
-import { VideoPlayer } from "@/components/shared/video-player";
+import { VideoPlayer } from "@/shared/components/shared/video-player";
 import QuizView from "@/components/course/quiz-view";
 import AssignmentView from "@/components/course/assignment-view";
 import { AITutor } from "@/components/learn/ai-tutor";

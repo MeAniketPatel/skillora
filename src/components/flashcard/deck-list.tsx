@@ -7,10 +7,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createDeckSchema, addCardSchema } from "@/validations/flashcard.schema";
 import { createDeckAction, addCardAction } from "@/actions/flashcard.actions";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Textarea } from "@/shared/components/ui/textarea";
+import { Card, CardContent } from "@/shared/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -18,8 +18,8 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogFooter,
-} from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+} from "@/shared/components/ui/dialog";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { toast } from "sonner";
 import { BookOpen, Plus, Play, FolderPlus, HelpCircle } from "lucide-react";
 

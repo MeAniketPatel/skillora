@@ -11,7 +11,7 @@ import {
   Role,
 } from "@prisma/client";
 
-import db from "@/lib/prisma";
+import db from "@/shared/lib/prisma";
 import { authConfig } from "./config/auth.config";
 import {
   AUTH_SESSION_MAX_AGE_SECONDS,
@@ -21,7 +21,7 @@ import {
   logAuthAudit,
   revokeAuthSession,
   validateAuthSession,
-} from "@/lib/auth-security";
+} from "@/shared/lib/auth-security";
 
 const credentialsSchema = z.object({
   email: z.string().email(),

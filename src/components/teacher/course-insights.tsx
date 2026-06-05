@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getCourseInsightsAction } from "@/actions/course-insights.actions";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/shared/components/ui/card";
 import { Users, GraduationCap, Star, DollarSign, Loader2 } from "lucide-react";
 import { AreaChart, Area, ResponsiveContainer } from "recharts";
 

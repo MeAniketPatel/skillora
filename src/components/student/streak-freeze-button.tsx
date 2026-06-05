@@ -2,7 +2,7 @@
 
 import React, { useTransition } from "react";
 import { Snowflake, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 import { purchaseStreakFreezeAction } from "@/actions/streak.actions";
 import { toast } from "sonner";
 

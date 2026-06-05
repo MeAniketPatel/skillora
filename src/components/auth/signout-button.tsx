@@ -4,7 +4,7 @@ import * as React from "react";
 import { LogOut } from "lucide-react";
 
 import { logoutCurrentSession } from "@/actions/auth.actions";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/shared/components/ui/button";
 
 export default function SignOutButton() {
   const [isPending, setPending] = React.useState(false);

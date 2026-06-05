@@ -2,9 +2,9 @@ import { getDiscussionThread } from "@/data";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { DiscussionReply } from "@/components/discussion/discussion-reply";
-import LinkButton from "@/components/ui/link-button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent } from "@/components/ui/card";
+import LinkButton from "@/shared/components/ui/link-button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
+import { Card, CardContent } from "@/shared/components/ui/card";
 import { formatDistanceToNow } from "date-fns";
 import { ArrowLeft, MessageSquare, ShieldAlert, Pin } from "lucide-react";
 

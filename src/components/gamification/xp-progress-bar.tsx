@@ -1,6 +1,6 @@
 "use client";
 
-import { Progress } from "@/components/ui/progress";
+import { Progress } from "@/shared/components/ui/progress";
 import { Sparkles, Trophy } from "lucide-react";
 
 interface XPProgressBarProps {
