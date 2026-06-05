@@ -4,8 +4,8 @@ import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getCourseByIdForOwner } from "@/features/courses";
 import { getAnnouncementsByCourseId } from "@/features/announcements";
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { AnnouncementForm } from "@/components/teacher/announcement-form";
-import { AnnouncementList } from "@/components/teacher/announcement-list";
+import { AnnouncementForm } from "@/features/teachers";
+import { AnnouncementList } from "@/features/teachers";
 
 interface PageProps {
   params: Promise<{ courseId: string }>;

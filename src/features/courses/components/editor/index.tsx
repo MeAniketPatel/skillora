@@ -15,7 +15,7 @@ import { CourseEditorHeader } from "./course-editor-header";
 import { CourseEditorFormSection } from "./course-editor-form";
 import { CourseEditorMediaSection } from "./course-editor-media";
 import { CourseEditorChecklist } from "./course-editor-checklist";
-import { CourseInsights } from "@/components/teacher/course-insights";
+import { CourseInsights } from "@/features/teachers";
 import { generateAICourseDescription } from "@/actions/ai.actions";
 import {
   publishCourse,

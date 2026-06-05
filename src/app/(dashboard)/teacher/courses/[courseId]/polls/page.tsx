@@ -4,8 +4,8 @@ import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getCourseByIdForOwner } from "@/features/courses";
 import { getCoursePolls } from "@/features/polls";
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { PollCreator } from "@/components/poll/poll-creator";
-import { PollList } from "@/components/poll/poll-list";
+import { PollCreator } from "@/features/polls";
+import { PollList } from "@/features/polls";
 
 interface PageProps {
   params: Promise<{ courseId: string }>;

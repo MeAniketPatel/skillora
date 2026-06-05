@@ -13,8 +13,8 @@ import { NotificationsMenu } from "@/shared/components/shared/notifications-menu
 import { ROUTES } from "@/shared/constants/routes";
 import { Sidebar } from "@/shared/components/layout/sidebar";
 import { cookies } from "next/headers";
-import { StopImpersonationBanner } from "@/components/admin/user-impersonation";
-import { CartSidebar } from "@/components/cart/cart-sidebar";
+import { StopImpersonationBanner } from "@/features/admin";
+import { CartSidebar } from "@/features/cart";
 import { getUserXPPoints } from "@/features/gamification";
 
 

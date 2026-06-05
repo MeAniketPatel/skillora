@@ -1,6 +1,6 @@
 import { getDiscussionsList } from "@/features/discussions";
-import { DiscussionList } from "@/components/discussion/discussion-list";
-import { DiscussionEditor } from "@/components/discussion/discussion-editor";
+import { DiscussionList } from "@/features/discussions";
+import { DiscussionEditor } from "@/features/discussions";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { MessageSquare, Flame } from "lucide-react";

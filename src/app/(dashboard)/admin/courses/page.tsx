@@ -1,6 +1,6 @@
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { getCoursesForAdmin } from "@/features/courses";
-import { CourseModeration } from "@/components/admin/course-moderation";
+import { CourseModeration } from "@/features/admin";
 import { Pagination } from "@/shared/components/shared/pagination";
 
 interface AdminCoursesPageProps {

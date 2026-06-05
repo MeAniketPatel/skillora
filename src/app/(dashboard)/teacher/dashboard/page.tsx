@@ -1,7 +1,7 @@
 import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { TeacherStats } from "@/components/teacher/teacher-stats";
-import { RecentEnrollments } from "@/components/teacher/recent-enrollments";
+import { TeacherStats } from "@/features/teachers";
+import { RecentEnrollments } from "@/features/teachers";
 import { getTeacherCourses } from "@/features/courses";
 import { getTeacherStudentCount, getTeacherRecentEnrollments } from "@/features/enrollment";
 import { getTeacherEarnings } from "@/features/payments";

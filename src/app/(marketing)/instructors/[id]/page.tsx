@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getInstructorProfile } from "@/features/auth";
 import { Navbar } from "@/shared/components/layout/navbar";
 import { Footer } from "@/shared/components/layout/footer";
-import { InstructorProfile } from "@/components/marketing/instructor-profile";
+import { InstructorProfile } from "@/features/marketing";
 
 interface InstructorPageProps {
   params: Promise<{ id: string }>;

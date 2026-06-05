@@ -1,7 +1,7 @@
 import { getLearningPathDetail, isEnrolledInPath } from "@/features/learning-paths";
 import { auth } from "@/auth";
 import { notFound, redirect } from "next/navigation";
-import { PathTimeline } from "@/components/learning-path/path-timeline";
+import { PathTimeline } from "@/features/learning-paths";
 import { Badge } from "@/shared/components/ui/badge";
 import { Sparkles, Calendar, BookOpen } from "lucide-react";
 

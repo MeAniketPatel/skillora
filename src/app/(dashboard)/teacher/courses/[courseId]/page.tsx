@@ -2,8 +2,7 @@ import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getCourseByIdForOwner } from "@/features/courses";
 import { getAllCategories } from "@/features/categories";
 import { redirect } from "next/navigation";
-import CourseEditor from "@/components/course/editor";
-
+import { CourseEditor } from "@/features/courses";
 export default async function TeacherCourseDashboard({
   params,
 }: {

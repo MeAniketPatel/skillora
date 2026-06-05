@@ -9,8 +9,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Navbar } from "@/shared/components/layout/navbar";
 import { Footer } from "@/shared/components/layout/footer";
-import EnrollButton from "@/components/course/enroll-button";
-
+import { EnrollButton } from "@/features/courses";
 interface CourseDetailPageProps {
   params: Promise<{
     slug: string;

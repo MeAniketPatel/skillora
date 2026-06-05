@@ -1,5 +1,5 @@
 import { getCoursesByIds } from "@/features/courses";
-import { CourseComparison } from "@/components/course/course-comparison";
+import { CourseComparison } from "@/features/courses";
 import { Badge } from "@/shared/components/ui/badge";
 import { BarChart2 } from "lucide-react";
 

@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import db from "@/shared/lib/prisma";
-import { PrivacySettings } from "@/components/settings/privacy-settings";
+import { PrivacySettings } from "@/features/settings";
 import Link from "next/link";
 import { ROUTES } from "@/shared/constants/routes";
 import { Shield, Bell, User } from "lucide-react";

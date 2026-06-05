@@ -1,6 +1,6 @@
 import { Briefcase, TrendingUp, Sparkles } from "lucide-react";
-import { CareerHub } from "@/components/marketing/career-hub";
-import { SkillGapAnalyzer } from "@/components/marketing/skill-gap-analyzer";
+import { CareerHub } from "@/features/marketing";
+import { SkillGapAnalyzer } from "@/features/marketing";
 import { Navbar } from "@/shared/components/layout/navbar";
 import { Footer } from "@/shared/components/layout/footer";
 import LinkButton from "@/shared/components/ui/link-button";

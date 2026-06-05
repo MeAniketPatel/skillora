@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { formatPrice } from "@/shared/lib/utils";
 import { DollarSign, Percent, TrendingUp } from "lucide-react";
-import { RevenueCharts } from "@/components/admin/revenue-charts";
+import { RevenueCharts } from "@/features/admin";
 
 export default async function AdminRevenuePage() {
   const { grossSales, platformRevenue, totalTransactions } = await getPlatformRevenue();

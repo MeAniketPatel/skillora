@@ -1,7 +1,7 @@
 import { getDiscussionThread } from "@/features/discussions";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { DiscussionReply } from "@/components/discussion/discussion-reply";
+import { DiscussionReply } from "@/features/discussions";
 import LinkButton from "@/shared/components/ui/link-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 import { Card, CardContent } from "@/shared/components/ui/card";

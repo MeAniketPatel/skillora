@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getTeacherAnalyticsCourses } from "@/features/courses";
 import { getAllTeacherSubmissions } from "@/features/assignments";
-import { AnalyticsClient } from "@/components/teacher/analytics";
+import { AnalyticsClient } from "@/features/teachers";
 
 export default async function TeacherAnalyticsPage() {
   const session = await auth();

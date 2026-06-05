@@ -1,9 +1,9 @@
 import { getLeaderboardRankings, getUserXPPoints, getUserBadgesList } from "@/features/gamification";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { Leaderboard } from "@/components/gamification/leaderboard";
-import { XPProgressBar } from "@/components/gamification/xp-progress-bar";
-import { BadgeShowcase } from "@/components/gamification/badge-showcase";
+import { Leaderboard } from "@/features/gamification";
+import { XPProgressBar } from "@/features/gamification";
+import { BadgeShowcase } from "@/features/gamification";
 import { Trophy, Sparkles } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 

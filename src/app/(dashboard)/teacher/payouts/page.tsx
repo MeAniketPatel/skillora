@@ -2,7 +2,7 @@ import React from "react";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getPayoutBalance, getPayoutHistory } from "@/features/teachers";
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { PayoutDashboard } from "@/components/teacher/payout-dashboard";
+import { PayoutDashboard } from "@/features/teachers";
 
 export default async function TeacherPayoutsPage() {
   const user = await requireTeacher();

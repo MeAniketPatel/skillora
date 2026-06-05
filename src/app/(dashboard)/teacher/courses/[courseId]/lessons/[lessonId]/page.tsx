@@ -2,8 +2,8 @@ import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getCourseByIdForOwner, getPeerReviewConfig } from "@/features/courses";
 import { getLessonWithContent } from "@/features/courses";
 import { redirect } from "next/navigation";
-import LessonEditor from "@/components/course/lesson-editor";
-import { PeerReviewConfig } from "@/components/teacher/peer-review-config";
+import { LessonEditor } from "@/features/courses";
+import { PeerReviewConfig } from "@/features/teachers";
 
 export default async function LessonEditPage({
   params,

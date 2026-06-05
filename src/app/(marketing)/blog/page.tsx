@@ -1,7 +1,7 @@
 import { getBlogPosts } from "@/features/blog";
 import { auth } from "@/auth";
-import { BlogCard } from "@/components/blog/blog-card";
-import { BlogEditor } from "@/components/blog/blog-editor";
+import { BlogCard } from "@/features/blog";
+import { BlogEditor } from "@/features/blog";
 import { Badge } from "@/shared/components/ui/badge";
 import { PenTool, Sparkles, BookOpen } from "lucide-react";
 

@@ -19,9 +19,9 @@ import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { toggleLessonCompletion } from "@/actions/enrollment.actions";
 import { VideoPlayer } from "@/shared/components/shared/video-player";
-import QuizView from "@/components/course/quiz-view";
-import AssignmentView from "@/components/course/assignment-view";
-import { AITutor } from "@/components/learn/ai-tutor";
+import { QuizView } from "@/features/courses";
+import { AssignmentView } from "@/features/courses";
+import { AITutor } from "@/features/learn";
 
 interface Lesson {
   id: string;

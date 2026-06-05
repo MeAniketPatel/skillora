@@ -2,12 +2,11 @@
 export * from "./repositories/user.repository";
 
 // Components
+export { default as ForgotPasswordForm } from "./components/forgot-password-form";
 export { default as LoginForm } from "./components/login-form";
 export { default as RegisterForm } from "./components/register-form";
-export { default as ForgotPasswordForm } from "./components/forgot-password-form";
 export { default as ResetPasswordForm } from "./components/reset-password-form";
-export { default as SignOutButton } from "./components/signout-button";
-
+export { default as SignOutButton, default as SignoutButton } from "./components/signout-button";
 // Contracts
 export {
   registerSchema,
@@ -23,7 +22,6 @@ export type {
   ResetPasswordInput,
   RevokeSessionInput,
 } from "./contracts/auth.contract";
-
 // Actions
 export {
   loginUser,
@@ -36,7 +34,6 @@ export {
   updateUserSettings,
   getSessionSecurityOverview,
 } from "./actions/auth.actions";
-
 // Repository types
 export type {
   IUserRepository,

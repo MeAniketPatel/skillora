@@ -5,7 +5,7 @@ import { getEnrollmentTrends } from "@/features/enrollment";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Users, BookOpen } from "lucide-react";
 import { StatsCard } from "@/shared/components/shared/stats-card";
-import { ReportsDashboard } from "@/components/admin/reports-dashboard";
+import { ReportsDashboard } from "@/features/admin";
 
 export default async function AdminReportsPage() {
   const roleCounts = await getUserCountByRole();

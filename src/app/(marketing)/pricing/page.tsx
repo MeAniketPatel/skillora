@@ -1,6 +1,6 @@
 import { getUserSubscription } from "@/features/subscriptions";
 import { auth } from "@/auth";
-import { PricingTable } from "@/components/marketing/pricing-table";
+import { PricingTable } from "@/features/marketing";
 import { Badge } from "@/shared/components/ui/badge";
 import { Sparkles } from "lucide-react";
 

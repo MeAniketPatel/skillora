@@ -1,7 +1,7 @@
 import { getReferralStats } from "@/features/referrals";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { ReferralDashboard } from "@/components/referral/referral-dashboard";
+import { ReferralDashboard } from "@/features/referrals";
 import { Badge } from "@/shared/components/ui/badge";
 import { Users, Sparkles } from "lucide-react";
 

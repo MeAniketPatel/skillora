@@ -1,7 +1,7 @@
 import { getDecksForUser } from "@/features/flashcards";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { DeckList } from "@/components/flashcard/deck-list";
+import { DeckList } from "@/features/flashcards";
 import { HelpCircle, Sparkles } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 

@@ -9,8 +9,8 @@ import {
   SheetTrigger,
 } from "@/shared/components/ui/sheet";
 import { Button } from "@/shared/components/ui/button";
-import { CartItem } from "@/components/cart/cart-item";
-import { CheckoutSummary } from "@/components/cart/checkout-summary";
+import { CartItem } from "@/features/cart";
+import { CheckoutSummary } from "@/features/cart";
 import { ShoppingCart, HelpCircle, X } from "lucide-react";
 import { useState, useEffect } from "react";
 

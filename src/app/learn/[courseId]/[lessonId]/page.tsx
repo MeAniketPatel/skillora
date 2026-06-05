@@ -6,8 +6,7 @@ import { getCourseWithPublishedCurriculum } from "@/features/courses";
 import { getLearningLesson } from "@/features/courses";
 import { getLessonProgress } from "@/features/students";
 import { getSubmission } from "@/features/assignments";
-import LessonPlayer from "@/components/course/lesson-player";
-
+import { LessonPlayer } from "@/features/courses";
 interface LearnPageProps {
   params: Promise<{
     courseId: string;

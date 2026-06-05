@@ -2,9 +2,9 @@ import React from "react";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { getUserProfileCard, getUserPortfolio, getUserActivities } from "@/features/social";
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { ProfileCard } from "@/components/profile/profile-card";
-import { ProfilePortfolio } from "@/components/profile/profile-portfolio";
-import { ProfileActivityFeed } from "@/components/profile/profile-activity-feed";
+import { ProfileCard } from "@/features/social";
+import { ProfilePortfolio } from "@/features/social";
+import { ProfileActivityFeed } from "@/features/social";
 
 export default async function OwnProfilePage() {
   const user = await requireAuth();

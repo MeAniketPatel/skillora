@@ -1,7 +1,7 @@
 import { getBlogPostDetail } from "@/features/blog";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { BlogComments } from "@/components/blog/blog-comments";
+import { BlogComments } from "@/features/blog";
 import { buttonVariants } from "@/shared/components/ui/button";
 import { cn } from "@/shared/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";

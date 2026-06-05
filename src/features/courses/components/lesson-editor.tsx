@@ -35,8 +35,7 @@ import {
   createAttachment,
   deleteAttachment,
 } from "@/actions/course.actions";
-import QuizBuilder from "@/components/course/quiz-builder";
-
+import { QuizBuilder } from "@/features/courses";
 const lessonSchema = z.object({
   title: z.string().min(1, "Title is required"),
   type: z.enum(["VIDEO", "ARTICLE", "QUIZ"]),

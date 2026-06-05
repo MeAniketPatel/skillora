@@ -3,10 +3,10 @@ import { auth } from "@/auth";
 import { getCourseWithPublishedCurriculum } from "@/features/courses";
 import { getEnrollmentWithProgress } from "@/features/enrollment";
 import { Navbar } from "@/shared/components/layout/navbar";
-import { LessonSidebar } from "@/components/learn/lesson-sidebar";
+import { LessonSidebar } from "@/features/learn";
 import type {
   LessonSidebarSection,
-} from "@/components/learn/lesson-sidebar";
+} from "@/features/learn";
 
 interface LearnCourseLayoutProps {
   children: React.ReactNode;

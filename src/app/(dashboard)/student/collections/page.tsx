@@ -3,8 +3,8 @@ import { requireAuth } from "@/shared/lib/auth-helpers";
 import { getUserCollections } from "@/features/students";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/components/ui/card";
-import { CreateCollectionForm } from "@/components/student/create-collection-form";
-import { CourseCollections } from "@/components/student/course-collection";
+import { CreateCollectionForm } from "@/features/students";
+import { CourseCollections } from "@/features/students";
 
 export default async function CollectionsPage() {
   const user = await requireAuth();

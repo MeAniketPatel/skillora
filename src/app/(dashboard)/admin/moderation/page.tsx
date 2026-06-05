@@ -2,7 +2,7 @@ import React from "react";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { getPendingModerationItems } from "@/features/admin";
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { ContentModerationQueue } from "@/components/admin/content-moderation-queue";
+import { ContentModerationQueue } from "@/features/admin";
 
 export default async function AdminModerationPage() {
   await requireAdmin();

@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import { updateUserRole, banUser, unbanUser } from "@/actions";
 import { ActionButton } from "@/shared/components/shared/action-button";
 import { Button } from "@/shared/components/ui/button";
-import { ImpersonateButton } from "@/components/admin/user-impersonation";
+import { ImpersonateButton } from "@/features/admin";
 
 
 export default async function AdminUsersPage() {

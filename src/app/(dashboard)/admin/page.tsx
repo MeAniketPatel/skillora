@@ -9,7 +9,7 @@ import { formatPrice } from "@/shared/lib/utils";
 import { APP } from "@/shared/constants/app";
 
 import { getSetting } from "@/features/settings";
-import { MaintenanceBanner } from "@/components/admin/maintenance-banner";
+import { MaintenanceBanner } from "@/features/admin";
 
 export default async function AdminDashboardPage() {
   await requireAdmin();

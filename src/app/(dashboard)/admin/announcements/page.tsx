@@ -2,7 +2,7 @@ import React from "react";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { getGlobalAnnouncements } from "@/features/announcements";
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { PlatformAnnouncements } from "@/components/admin/platform-announcements";
+import { PlatformAnnouncements } from "@/features/admin";
 
 export default async function AdminAnnouncementsPage() {
   // Enforce Admin guard
