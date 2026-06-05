@@ -3,7 +3,7 @@ import { BookMarked, GraduationCap, Mail, Star, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import LinkButton from "@/components/ui/link-button";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/shared/constants/routes";
 import type { InstructorCardData } from "@/types/marketing.types";
 
 export function InstructorCard({ instructor }: { instructor: InstructorCardData }) {

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { GraduationCap, Star, Users, BookOpen } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/shared/constants/routes";
 import type { Testimonial } from "@/types/marketing.types";
 
 export function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {

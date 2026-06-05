@@ -12,8 +12,8 @@ import { TestimonialGrid } from "@/components/marketing/testimonial-card";
 import { SkillGapAnalyzer } from "@/components/marketing/skill-gap-analyzer";
 import { CareerHub } from "@/components/marketing/career-hub";
 import { getFeaturedCourses, getPlatformStats } from "@/data/skill-gap.data";
-import { TESTIMONIALS } from "@/constants/marketing";
-import { ROUTES } from "@/constants/routes";
+import { TESTIMONIALS } from "@/shared/constants/marketing";
+import { ROUTES } from "@/shared/constants/routes";
 
 export default async function HomePage() {
   const session = await auth();

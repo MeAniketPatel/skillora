@@ -21,7 +21,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { NotificationsMenu } from "@/components/shared/notifications-menu";
 import { logoutCurrentSession } from "@/actions/auth.actions";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/shared/constants/routes";
 
 interface SidebarProps {
   session: {

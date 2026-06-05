@@ -1,6 +1,6 @@
 import db from "@/lib/prisma";
-import { APP } from "@/constants/app";
-import { SKILL_KEYWORDS } from "@/constants/skill-keywords";
+import { APP } from "@/shared/constants/app";
+import { SKILL_KEYWORDS } from "@/shared/constants/skill-keywords";
 import type {
   SkillGapRecommendation,
   SkillNode,
@@ -107,12 +107,12 @@ export async function getSkillGapRecommendations(
 }
 
 export async function getSkillNodeById(id: string): Promise<SkillNode | null> {
-  const { SKILL_CATALOG } = await import("@/constants/marketing");
-  return SKILL_CATALOG.find((s) => s.id === id) ?? null;
+  const { SKILL_CATALOG } = await import("@/shared/constants/marketing");
+  return SKILL_CATALOG.find((s: { id: string }) => s.id === id) ?? null;
 }
 
 export async function getFeaturedSkillsCatalog(): Promise<SkillNode[]> {
-  const { SKILL_CATALOG } = await import("@/constants/marketing");
+  const { SKILL_CATALOG } = await import("@/shared/constants/marketing");
   return SKILL_CATALOG;
 }
 

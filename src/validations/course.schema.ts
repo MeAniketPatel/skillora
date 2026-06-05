@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { APP } from "@/constants/app";
+import { APP } from "@/shared/constants/app";
 
 export const courseCreateSchema = z.object({
   title: z.string().min(APP.COURSE_TITLE_MIN_LENGTH).max(APP.COURSE_TITLE_MAX_LENGTH),

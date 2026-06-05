@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 import { getEmailPreferences } from "@/data";
 import { NotificationSettings } from "@/components/settings/notification-settings";
 import Link from "next/link";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/shared/constants/routes";
 import { Shield, Bell, User } from "lucide-react";
 
 export const metadata = {

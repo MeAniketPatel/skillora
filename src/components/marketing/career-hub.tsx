@@ -18,8 +18,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CAREER_PATHS } from "@/constants/marketing";
-import { ROUTES } from "@/constants/routes";
+import { CAREER_PATHS } from "@/shared/constants/marketing";
+import { ROUTES } from "@/shared/constants/routes";
 import type { CareerPath } from "@/types/marketing.types";
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {

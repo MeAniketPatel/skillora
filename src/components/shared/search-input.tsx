@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { APP } from "@/constants/app";
+import { APP } from "@/shared/constants/app";
 
 interface SearchInputProps {
   placeholder?: string;

@@ -3,7 +3,7 @@ import { GraduationCap, BookOpen, Mail, Star, Users, BookMarked } from "lucide-r
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import LinkButton from "@/components/ui/link-button";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/shared/constants/routes";
 
 interface InstructorProfileViewModel {
   id: string;

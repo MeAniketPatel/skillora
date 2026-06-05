@@ -1,6 +1,6 @@
 import db from "@/lib/prisma";
 import { Role } from "@prisma/client";
-import { APP } from "@/constants/app";
+import { APP } from "@/shared/constants/app";
 
 export async function getUserById(id: string) {
   return db.user.findUnique({

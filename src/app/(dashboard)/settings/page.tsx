@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 import { getSessionSecurityOverview } from "@/actions/auth.actions";
 import SettingsClientForm from "@/components/settings/settings-form";
 import Link from "next/link";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/shared/constants/routes";
 import { Shield, Bell, User } from "lucide-react";
 
 export const metadata = {

@@ -6,7 +6,7 @@ import { getPlatformRevenue, getRecentPurchases } from "@/data/payment.data";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatPrice } from "@/lib/utils";
-import { APP } from "@/constants/app";
+import { APP } from "@/shared/constants/app";
 
 import { getSetting } from "@/data/settings.data";
 import { MaintenanceBanner } from "@/components/admin/maintenance-banner";

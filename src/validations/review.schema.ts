@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { APP } from "@/constants/app";
+import { APP } from "@/shared/constants/app";
 
 export const reviewCreateSchema = z.object({
   courseId: z.string().min(1),

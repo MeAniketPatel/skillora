@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { APP } from "@/constants/app";
+import { APP } from "@/shared/constants/app";
 
 export function usePagination(defaultLimit = APP.PAGINATION_DEFAULT || 10) {
   const searchParams = useSearchParams();

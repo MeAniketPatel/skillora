@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import LinkButton from "@/components/ui/link-button";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { logoutCurrentSession } from "@/actions/auth.actions";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/shared/constants/routes";
 
 type Session = {
   user?: { id?: string; role?: string; name?: string | null } | null;

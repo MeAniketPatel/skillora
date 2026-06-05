@@ -9,9 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { SKILL_CATALOG } from "@/constants/marketing";
+import { SKILL_CATALOG } from "@/shared/constants/marketing";
 import { recommendSkillGapAction } from "@/actions/skill-gap.actions";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/shared/constants/routes";
 
 interface SkillGapAnalyzerProps {
   initialSkillIds?: string[];

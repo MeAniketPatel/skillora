@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { APP } from "@/constants/app";
+import { APP } from "@/shared/constants/app";
 
 export const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),

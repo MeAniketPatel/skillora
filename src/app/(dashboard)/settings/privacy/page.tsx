@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 import db from "@/lib/prisma";
 import { PrivacySettings } from "@/components/settings/privacy-settings";
 import Link from "next/link";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/shared/constants/routes";
 import { Shield, Bell, User } from "lucide-react";
 
 export const metadata = {

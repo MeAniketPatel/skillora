@@ -5,8 +5,8 @@ import { InstructorCard } from "@/components/marketing/instructor-card";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Input } from "@/components/ui/input";
-import { APP } from "@/constants/app";
-import { ROUTES } from "@/constants/routes";
+import { APP } from "@/shared/constants/app";
+import { ROUTES } from "@/shared/constants/routes";
 
 export const metadata = {
   title: "Browse Instructors | Skillora",

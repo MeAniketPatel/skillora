@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import LinkButton from "@/components/ui/link-button";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/shared/constants/routes";
 
 export function HeroSection() {
   return (

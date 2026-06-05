@@ -4,7 +4,7 @@ import { SkillGapAnalyzer } from "@/components/marketing/skill-gap-analyzer";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import LinkButton from "@/components/ui/link-button";
-import { ROUTES } from "@/constants/routes";
+import { ROUTES } from "@/shared/constants/routes";
 
 export const metadata = {
   title: "Career Paths | Skillora",
