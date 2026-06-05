@@ -3,7 +3,7 @@ import {
   createUploadthing,
   type FileRouter,
 } from "uploadthing/next";
-import { ensureUploadThingToken } from "@/shared/lib/uploadthing";
+import { ensureUploadThingToken } from "@/shared/lib/uploadthing-token";
 import { auth } from "@/auth";
 
 // Note: do not validate UPLOADTHING_TOKEN at module init to avoid build-time
