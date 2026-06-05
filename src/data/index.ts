@@ -34,4 +34,7 @@ export * from "./follow.data";
 export * from "./activity.data";
 export * from "./study-group.data";
 export * from "./message.data";
-
+export * from "./gamification.data";
+export * from "./learning-path.data";
+export * from "./discussion.data";
+export * from "./flashcard.data";
