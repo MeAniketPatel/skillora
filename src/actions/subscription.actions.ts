@@ -2,7 +2,7 @@
 
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { createSubscription } from "@/data";
+import { createSubscription } from "@/features/subscriptions";
 import { revalidatePath } from "next/cache";
 
 export async function subscribeToPlanAction(plan: "FREE" | "PRO" | "ENTERPRISE") {

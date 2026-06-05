@@ -5,7 +5,7 @@ import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { createDiscussionSchema, discussionReplySchema } from "@/validations/discussion.schema";
-import { createDiscussion, addDiscussionReply } from "@/data";
+import { createDiscussion, addDiscussionReply } from "@/features/discussions";
 
 export async function createDiscussionAction(values: z.infer<typeof createDiscussionSchema>) {
   return actionHandler(async () => {

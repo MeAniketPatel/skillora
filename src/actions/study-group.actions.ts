@@ -5,12 +5,7 @@ import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { createStudyGroupSchema, studyGroupMessageSchema } from "@/validations/study-group.schema";
-import {
-  createStudyGroup,
-  joinStudyGroup,
-  leaveStudyGroup,
-  sendStudyGroupMessage,
-} from "@/data";
+import { createStudyGroup, joinStudyGroup, leaveStudyGroup, sendStudyGroupMessage } from "@/features/social";
 
 export async function createStudyGroupAction(values: z.infer<typeof createStudyGroupSchema>) {
   return actionHandler(async () => {

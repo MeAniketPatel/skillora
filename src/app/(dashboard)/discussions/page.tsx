@@ -1,4 +1,4 @@
-import { getDiscussionsList } from "@/data";
+import { getDiscussionsList } from "@/features/discussions";
 import { DiscussionList } from "@/components/discussion/discussion-list";
 import { DiscussionEditor } from "@/components/discussion/discussion-editor";
 import { auth } from "@/auth";

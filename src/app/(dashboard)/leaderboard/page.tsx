@@ -1,4 +1,4 @@
-import { getLeaderboardRankings, getUserXPPoints, getUserBadgesList } from "@/data";
+import { getLeaderboardRankings, getUserXPPoints, getUserBadgesList } from "@/features/gamification";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { Leaderboard } from "@/components/gamification/leaderboard";

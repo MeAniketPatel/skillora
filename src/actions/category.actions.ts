@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { categoryCreateSchema, categoryUpdateSchema } from "@/validations/admin.schema";
-import { createCategory as createCategoryData, updateCategory as updateCategoryData, deleteCategory as deleteCategoryData } from "@/data";
+import { createCategory as createCategoryData, updateCategory as updateCategoryData, deleteCategory as deleteCategoryData } from "@/features/categories";
 
 export async function createCategory(values: any) {
   return actionHandler(async () => {

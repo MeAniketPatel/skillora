@@ -1,5 +1,5 @@
 import { requireTeacher } from "@/shared/lib/auth-helpers";
-import { getTeacherCoupons } from "@/data";
+import { getTeacherCoupons } from "@/features/admin";
 import { DataTable } from "@/shared/components/shared/data-table";
 import { Ticket } from "lucide-react";
 import { format } from "date-fns";

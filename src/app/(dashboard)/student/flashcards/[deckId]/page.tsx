@@ -1,4 +1,4 @@
-import { getDeckDetails } from "@/data";
+import { getDeckDetails } from "@/features/flashcards";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { FlashcardReviewer } from "@/components/flashcard/flashcard-reviewer";

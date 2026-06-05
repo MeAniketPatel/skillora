@@ -1,5 +1,5 @@
 import { requireTeacher } from "@/shared/lib/auth-helpers";
-import { getTeacherCourses } from "@/data";
+import { getTeacherCourses } from "@/features/courses";
 import { DataTable } from "@/shared/components/shared/data-table";
 import { BookOpen, Plus } from "lucide-react";
 import Link from "next/link";

@@ -1,4 +1,4 @@
-import { globalSearch } from "@/data";
+import { globalSearch } from "@/features/search";
 import db from "@/shared/lib/prisma";
 import { CourseFilters } from "@/components/course/course-filters";
 import { formatPrice } from "@/shared/lib/utils";

@@ -15,7 +15,7 @@ import { Sidebar } from "@/shared/components/layout/sidebar";
 import { cookies } from "next/headers";
 import { StopImpersonationBanner } from "@/components/admin/user-impersonation";
 import { CartSidebar } from "@/components/cart/cart-sidebar";
-import { getUserXPPoints } from "@/data";
+import { getUserXPPoints } from "@/features/gamification";
 
 
 

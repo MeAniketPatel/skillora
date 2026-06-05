@@ -3,12 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import {
-  getUserNotifications,
-  markAsRead,
-  markAllAsRead,
-  createNotification as createNotificationData
-} from "@/data";
+import { getUserNotifications, markAsRead, markAllAsRead, createNotification as createNotificationData } from "@/features/notifications";
 
 export async function getNotifications() {
   return actionHandler(async () => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getConversations, getMessages } from "@/data";
+import { getConversations, getMessages } from "@/features/social";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { ChatSidebar } from "@/components/chat/chat-sidebar";
 import { ChatWindow } from "@/components/chat/chat-window";

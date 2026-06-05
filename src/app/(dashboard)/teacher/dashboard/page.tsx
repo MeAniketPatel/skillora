@@ -2,14 +2,10 @@ import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { TeacherStats } from "@/components/teacher/teacher-stats";
 import { RecentEnrollments } from "@/components/teacher/recent-enrollments";
-import {
-  getTeacherCourses,
-  getTeacherStudentCount,
-  getTeacherEarnings,
-  getTeacherAverageRating,
-  getTeacherRecentEnrollments,
-  getTeacherReviews,
-} from "@/data";
+import { getTeacherCourses } from "@/features/courses";
+import { getTeacherStudentCount, getTeacherRecentEnrollments } from "@/features/enrollment";
+import { getTeacherEarnings } from "@/features/payments";
+import { getTeacherAverageRating, getTeacherReviews } from "@/features/reviews";
 import {
   Card,
   CardContent,

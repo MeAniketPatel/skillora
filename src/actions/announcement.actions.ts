@@ -4,14 +4,10 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireTeacher, requireAdmin } from "@/shared/lib/auth-helpers";
 import { announcementSchema } from "@/validations/announcement.schema";
-import {
-  createAnnouncement as createAnnouncementDAL,
-  getAnnouncementById,
-  deleteAnnouncement as deleteAnnouncementDAL,
-  getCourseByIdForOwner,
-  getEnrolledStudentIds,
-  createNotification
-} from "@/data";
+import { createAnnouncement as createAnnouncementDAL, getAnnouncementById, deleteAnnouncement as deleteAnnouncementDAL } from "@/features/announcements";
+import { getCourseByIdForOwner } from "@/features/courses";
+import { getEnrolledStudentIds } from "@/features/enrollment";
+import { createNotification } from "@/features/notifications";
 import { z } from "zod";
 
 export async function createAnnouncement(

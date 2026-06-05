@@ -5,7 +5,7 @@ import { actionHandler } from "@/shared/lib/action-utils";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { ValidationError } from "@/shared/lib/errors";
 import { payoutSchema } from "@/validations/payout.schema";
-import { getPayoutBalance, createPayoutRequest } from "@/data";
+import { getPayoutBalance, createPayoutRequest } from "@/features/teachers";
 import { z } from "zod";
 
 export async function requestPayoutAction(values: z.infer<typeof payoutSchema>) {

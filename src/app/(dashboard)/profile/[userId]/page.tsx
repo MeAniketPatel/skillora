@@ -1,7 +1,7 @@
 import React from "react";
 import { redirect } from "next/navigation";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserProfileCard, getUserPortfolio, getUserActivities, isFollowing } from "@/data";
+import { getUserProfileCard, getUserPortfolio, getUserActivities, isFollowing } from "@/features/social";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { ProfileCard } from "@/components/profile/profile-card";
 import { ProfilePortfolio } from "@/components/profile/profile-portfolio";

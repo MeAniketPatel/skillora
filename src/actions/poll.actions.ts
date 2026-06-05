@@ -4,14 +4,8 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth, requireTeacher } from "@/shared/lib/auth-helpers";
 import { pollSchema } from "@/validations/poll.schema";
-import {
-  createPoll as createPollDAL,
-  voteInPoll as voteInPollDAL,
-  closePoll as closePollDAL,
-  deletePoll as deletePollDAL,
-  getCourseByIdForOwner,
-  getPollById
-} from "@/data";
+import { createPoll as createPollDAL, voteInPoll as voteInPollDAL, closePoll as closePollDAL, deletePoll as deletePollDAL, getPollById } from "@/features/polls";
+import { getCourseByIdForOwner } from "@/features/courses";
 import { z } from "zod";
 
 export async function createPollAction(

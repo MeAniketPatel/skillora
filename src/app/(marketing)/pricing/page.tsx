@@ -1,4 +1,4 @@
-import { getUserSubscription } from "@/data";
+import { getUserSubscription } from "@/features/subscriptions";
 import { auth } from "@/auth";
 import { PricingTable } from "@/components/marketing/pricing-table";
 import { Badge } from "@/shared/components/ui/badge";

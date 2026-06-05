@@ -10,21 +10,8 @@ import {
   CourseCreateInput,
   CourseUpdateInput,
 } from "@/validations/course.schema";
-import {
-  createCourse as createCourseData,
-  updateCourse as updateCourseData,
-  getCourseByIdForOwner,
-  createSection as createSectionData,
-  updateSection as updateSectionData,
-  deleteSection as deleteSectionData,
-  createLesson as createLessonData,
-  updateLesson as updateLessonData,
-  deleteLesson as deleteLessonData,
-  reorderSections as reorderSectionsData,
-  reorderLessons as reorderLessonsData,
-  createAttachment as createAttachmentData,
-  deleteAttachment as deleteAttachmentData,
-} from "@/data";
+import { createCourse as createCourseData, updateCourse as updateCourseData, getCourseByIdForOwner, createSection as createSectionData, updateSection as updateSectionData, deleteSection as deleteSectionData, createLesson as createLessonData, updateLesson as updateLessonData, deleteLesson as deleteLessonData, reorderSections as reorderSectionsData, reorderLessons as reorderLessonsData } from "@/features/courses";
+import { createAttachment as createAttachmentData, deleteAttachment as deleteAttachmentData } from "@/features/attachments";
 import { getCourseForPublishing } from "@/features/courses/repositories/course.repository";
 
 

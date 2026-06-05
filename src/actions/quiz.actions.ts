@@ -3,13 +3,7 @@
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth, requireTeacher } from "@/shared/lib/auth-helpers";
 import { ConflictError, NotFoundError } from "@/shared/lib/errors";
-import {
-  createQuiz as createQuizData,
-  updateQuizWithQuestions,
-  createQuizAttempt,
-  getQuizByLessonId,
-  getQuizWithQuestions
-} from "@/data";
+import { createQuiz as createQuizData, updateQuizWithQuestions, createQuizAttempt, getQuizByLessonId, getQuizWithQuestions } from "@/features/courses";
 
 export async function createQuiz(lessonId: string, title: string, passingScore = 70) {
   return actionHandler(async () => {

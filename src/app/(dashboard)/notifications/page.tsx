@@ -1,6 +1,6 @@
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { getUserNotifications } from "@/data";
+import { getUserNotifications } from "@/features/notifications";
 import { NotificationsClient } from "@/components/notifications/notifications-client";
 
 export default async function NotificationsPage() {

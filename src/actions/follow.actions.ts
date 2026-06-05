@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { followUser, unfollowUser, isFollowing } from "@/data";
+import { followUser, unfollowUser, isFollowing } from "@/features/social";
 
 export async function toggleFollowAction(targetUserId: string) {
   return actionHandler(async () => {

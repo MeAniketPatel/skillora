@@ -1,4 +1,4 @@
-import { getCoursesByIds } from "@/data";
+import { getCoursesByIds } from "@/features/courses";
 import { CourseComparison } from "@/components/course/course-comparison";
 import { Badge } from "@/shared/components/ui/badge";
 import { BarChart2 } from "lucide-react";

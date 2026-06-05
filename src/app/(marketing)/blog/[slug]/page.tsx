@@ -1,4 +1,4 @@
-import { getBlogPostDetail } from "@/data";
+import { getBlogPostDetail } from "@/features/blog";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { BlogComments } from "@/components/blog/blog-comments";

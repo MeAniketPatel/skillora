@@ -5,11 +5,7 @@ import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { createDeckSchema, addCardSchema } from "@/validations/flashcard.schema";
-import {
-  createDeck,
-  addCardToDeck,
-  updateCardRepetitionProgress,
-} from "@/data";
+import { createDeck, addCardToDeck, updateCardRepetitionProgress } from "@/features/flashcards";
 
 export async function createDeckAction(values: z.infer<typeof createDeckSchema>) {
   return actionHandler(async () => {

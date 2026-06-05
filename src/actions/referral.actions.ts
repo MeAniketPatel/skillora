@@ -2,7 +2,7 @@
 
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { createReferral, convertReferral } from "@/data";
+import { createReferral, convertReferral } from "@/features/referrals";
 import { revalidatePath } from "next/cache";
 
 export async function trackReferralSignupAction(referrerId: string) {

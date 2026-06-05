@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { noteCreateSchema, noteUpdateSchema } from "@/validations/note.schema";
-import { createNote as createNoteData, updateNote as updateNoteData, deleteNote as deleteNoteData } from "@/data";
+import { createNote as createNoteData, updateNote as updateNoteData, deleteNote as deleteNoteData } from "@/features/students";
 
 export async function createNote(values: any) {
   return actionHandler(async () => {

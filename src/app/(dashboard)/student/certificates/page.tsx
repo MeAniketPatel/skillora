@@ -1,5 +1,5 @@
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserCertificates } from "@/data";
+import { getUserCertificates } from "@/features/certificates";
 import { DataTable } from "@/shared/components/shared/data-table";
 import { Award } from "lucide-react";
 import { format } from "date-fns";

@@ -2,14 +2,10 @@ import { requireAuth } from "@/shared/lib/auth-helpers";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { DashboardStats } from "@/components/student/dashboard-stats";
 import { ContinueLearning } from "@/components/student/continue-learning";
-import {
-  getUserEnrollmentCount,
-  getUserCompletedLessonsCount,
-  getUserCertificatesCount,
-  getUserEnrollments,
-  getResumeLessonId,
-  getUserNotifications,
-} from "@/data";
+import { getUserEnrollmentCount, getUserEnrollments, getResumeLessonId } from "@/features/enrollment";
+import { getUserCompletedLessonsCount } from "@/features/students";
+import { getUserCertificatesCount } from "@/features/certificates";
+import { getUserNotifications } from "@/features/notifications";
 import {
   Card,
   CardContent,

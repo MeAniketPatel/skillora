@@ -1,5 +1,5 @@
 import { requireTeacher } from "@/shared/lib/auth-helpers";
-import { getQuestionsForTeacher } from "@/data";
+import { getQuestionsForTeacher } from "@/features/discussions";
 import { DataTable } from "@/shared/components/shared/data-table";
 import { HelpCircle } from "lucide-react";
 import { format } from "date-fns";

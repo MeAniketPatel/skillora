@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { toggleWishlist as toggleWishlistData } from "@/data";
+import { toggleWishlist as toggleWishlistData } from "@/features/wishlist";
 
 export async function toggleWishlist(courseId: string) {
   return actionHandler(async () => {

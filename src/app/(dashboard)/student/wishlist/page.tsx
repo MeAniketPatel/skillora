@@ -1,5 +1,5 @@
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserWishlist } from "@/data";
+import { getUserWishlist } from "@/features/wishlist";
 import { DataTable } from "@/shared/components/shared/data-table";
 import { Heart } from "lucide-react";
 import Link from "next/link";

@@ -1,5 +1,5 @@
 import { requireTeacher } from "@/shared/lib/auth-helpers";
-import { getCourseByIdForOwner } from "@/data";
+import { getCourseByIdForOwner } from "@/features/courses";
 import { redirect } from "next/navigation";
 import { Button, buttonVariants } from "@/shared/components/ui/button";
 import Link from "next/link";

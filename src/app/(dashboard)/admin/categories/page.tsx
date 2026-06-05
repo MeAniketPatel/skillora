@@ -1,5 +1,5 @@
 import { requireAdmin } from "@/shared/lib/auth-helpers";
-import { getAllCategories } from "@/data";
+import { getAllCategories } from "@/features/categories";
 import { DataTable } from "@/shared/components/shared/data-table";
 import { Tags, Plus } from "lucide-react";
 import { createCategory, deleteCategory } from "@/actions";

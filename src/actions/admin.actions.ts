@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { userRoleUpdateSchema } from "@/validations/admin.schema";
-import { updateUser, banUser as banUserData, unbanUser as unbanUserData } from "@/data";
+import { updateUser, banUser as banUserData, unbanUser as unbanUserData } from "@/features/auth";
 
 export async function updateUserRole(values: any) {
   return actionHandler(async () => {
@@ -41,7 +41,8 @@ export async function approveCourse(courseId: string) {
   return actionHandler(async () => {
     await requireAdmin();
     
-    const { updateCourse, createNotification } = await import("@/data");
+    const { updateCourse } = await import("@/features/courses");
+    const { createNotification } = await import("@/features/notifications");
     const updated = await updateCourse(courseId, {
       status: "PUBLISHED",
       publishedAt: new Date(),
@@ -68,7 +69,8 @@ export async function rejectCourse(courseId: string, reason: string) {
   return actionHandler(async () => {
     await requireAdmin();
     
-    const { updateCourse, createNotification } = await import("@/data");
+    const { updateCourse } = await import("@/features/courses");
+    const { createNotification } = await import("@/features/notifications");
     const updated = await updateCourse(courseId, {
       status: "DRAFT",
     });

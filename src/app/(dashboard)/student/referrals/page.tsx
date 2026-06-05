@@ -1,4 +1,4 @@
-import { getReferralStats } from "@/data";
+import { getReferralStats } from "@/features/referrals";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { ReferralDashboard } from "@/components/referral/referral-dashboard";

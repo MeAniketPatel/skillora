@@ -4,7 +4,7 @@ import { z } from "zod";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { emailPreferenceSchema } from "@/validations";
-import { updateEmailPreferences } from "@/data";
+import { updateEmailPreferences } from "@/features/email-preferences";
 import { revalidatePath } from "next/cache";
 
 export async function updateEmailPreferencesAction(values: z.infer<typeof emailPreferenceSchema>) {

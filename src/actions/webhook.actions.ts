@@ -5,7 +5,7 @@ import crypto from "crypto";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { webhookSchema } from "@/validations";
-import { createWebhook, deleteWebhook, getWebhookById, logWebhookDelivery } from "@/data";
+import { createWebhook, deleteWebhook, getWebhookById, logWebhookDelivery } from "@/features/webhooks";
 import { revalidatePath } from "next/cache";
 
 export async function registerWebhookAction(values: z.infer<typeof webhookSchema>) {

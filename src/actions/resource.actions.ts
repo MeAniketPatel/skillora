@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { addResourceSchema } from "@/validations/resource.schema";
-import { createResource, deleteResource } from "@/data";
+import { createResource, deleteResource } from "@/features/courses";
 import db from "@/shared/lib/prisma";
 
 export async function addCourseResourceAction(courseId: string, values: z.infer<typeof addResourceSchema>) {
