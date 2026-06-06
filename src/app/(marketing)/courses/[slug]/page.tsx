@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/sha
 import { Navbar } from "@/shared/components/layout/navbar";
 import { Footer } from "@/shared/components/layout/footer";
 import { EnrollButton } from "@/features/courses/server";
+import { sanitizeRichHtml } from "@/shared/lib/sanitize";
 interface CourseDetailPageProps {
   params: Promise<{
     slug: string;
@@ -30,6 +31,8 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
   const firstSection = course.sections[0];
   const firstLesson = firstSection?.lessons[0];
   const firstLessonId = firstLesson?.id || null;
+
+  const safeDescription = sanitizeRichHtml(course.description || "No description provided.");
 
   // Check enrollment
   let isEnrolled = false;
@@ -63,7 +66,7 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
                 <CardTitle className="text-xl">About this course</CardTitle>
               </CardHeader>
               <CardContent className="prose dark:prose-invert max-w-none text-neutral-600 dark:text-neutral-300">
-                <div dangerouslySetInnerHTML={{ __html: course.description || "No description provided." }} />
+                <div dangerouslySetInnerHTML={{ __html: safeDescription }} />
               </CardContent>
             </Card>
 
