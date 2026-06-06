@@ -3,7 +3,7 @@ export class Money {
     public readonly amount: number,
     public readonly currency: string,
   ) {
-    if (Number.isNaN(amount) || amount < 0) {
+    if (!Number.isFinite(amount) || Number.isNaN(amount) || amount < 0) {
       throw new Error(`Invalid money amount: ${amount}`);
     }
     if (!currency || currency.length !== 3) {
@@ -25,7 +25,9 @@ export class Money {
   }
 
   multiply(factor: number): Money {
-    if (factor < 0) throw new Error("Factor must be non-negative");
+    if (!Number.isFinite(factor) || factor < 0) {
+      throw new Error("Factor must be a finite non-negative number");
+    }
     return new Money(this.amount * factor, this.currency);
   }
 
