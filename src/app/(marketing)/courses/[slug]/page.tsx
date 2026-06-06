@@ -9,7 +9,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Navbar } from "@/shared/components/layout/navbar";
 import { Footer } from "@/shared/components/layout/footer";
-import { EnrollButton } from "@/features/courses/server";
+import { EnrollButton } from "@/features/courses";
 import { sanitizeRichHtml } from "@/shared/lib/sanitize";
 interface CourseDetailPageProps {
   params: Promise<{
