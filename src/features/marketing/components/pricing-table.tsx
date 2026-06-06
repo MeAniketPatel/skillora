@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { subscribeToPlanAction } from "@/features/subscriptions";
 import { toast } from "sonner";

@@ -2,7 +2,7 @@
 
 import React, { useTransition } from "react";
 import Link from "next/link";
-import { Trash2, Plus, Calendar, Target, Loader2 } from "lucide-react";
+import { Trash2, Calendar, Target, Loader2 } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { Progress } from "@/shared/components/ui/progress";
 import { Card, CardContent } from "@/shared/components/ui/card";

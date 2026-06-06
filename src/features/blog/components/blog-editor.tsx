@@ -12,7 +12,7 @@ import { Input } from "@/shared/components/ui/input";
 import { Textarea } from "@/shared/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/shared/components/ui/form";
 import { toast } from "sonner";
-import { PenTool, Sparkles } from "lucide-react";
+import { PenTool } from "lucide-react";
 
 type FormValues = z.infer<typeof createBlogPostSchema>;
 

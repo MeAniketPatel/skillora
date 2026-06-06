@@ -1,7 +1,7 @@
 import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getTeacherEarnings } from "@/features/payments/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
-import { BarChart, DollarSign, Users } from "lucide-react";
+import { DollarSign } from "lucide-react";
 
 export default async function TeacherEarningsPage() {
   const user = await requireTeacher();

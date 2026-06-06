@@ -8,7 +8,6 @@ import {
   Award,
   FileText,
   DollarSign,
-  CheckCircle,
   Inbox,
   Loader2,
   ExternalLink,

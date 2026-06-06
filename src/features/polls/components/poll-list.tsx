@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Badge } from "@/shared/components/ui/badge";
 import { PollResults } from "./poll-results";
-import { Trash2, Lock, Eye, BarChart3, HelpCircle } from "lucide-react";
+import { Trash2, Lock, HelpCircle } from "lucide-react";
 
 interface PollOption {
   id: string;

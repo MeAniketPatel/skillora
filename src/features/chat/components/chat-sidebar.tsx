@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Card, CardContent } from "@/shared/components/ui/card";
+import { Card } from "@/shared/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
-import { MessageSquare, User, CheckCheck, Clock } from "lucide-react";
+import { MessageSquare, User, Clock } from "lucide-react";
 
 interface Participant {
   userId: string;

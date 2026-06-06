@@ -23,7 +23,7 @@ import {
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 
-import { ConflictError, UnauthorizedError, ValidationError } from "@/shared/lib/errors";
+import { ConflictError, ValidationError } from "@/shared/lib/errors";
 
 import {
   registerSchema,
@@ -40,7 +40,6 @@ import {
 
 
 
-import { assertAuthAccess } from "@/features/auth/permissions/auth.permissions";
 async function getActionRequestMetadata() {
   const requestHeaders = await headers();
   return getAuthRequestMetadata(requestHeaders);

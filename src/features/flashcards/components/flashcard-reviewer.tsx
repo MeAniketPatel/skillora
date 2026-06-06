@@ -7,7 +7,7 @@ import { Card } from "@/shared/components/ui/card";
 import { Progress } from "@/shared/components/ui/progress";
 import { reviewCardAction } from "../actions/flashcard.actions";
 import { toast } from "sonner";
-import { ArrowLeft, RotateCw, CheckCircle2, Award, ChevronRight, HelpCircle } from "lucide-react";
+import { ArrowLeft, RotateCw, CheckCircle2, Award, HelpCircle } from "lucide-react";
 
 interface Flashcard {
   id: string;

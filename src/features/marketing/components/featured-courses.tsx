@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GraduationCap, BookOpen, Star, ArrowRight, Users } from "lucide-react";
+import { GraduationCap, Star, ArrowRight, Users } from "lucide-react";
 import {
   Card,
   CardContent,

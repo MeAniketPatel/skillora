@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/shared/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/components/ui/table";
 import { Button } from "@/shared/components/ui/button";
 import { Badge } from "@/shared/components/ui/badge";
-import { ShoppingCart, Star, CheckCircle, BookOpen } from "lucide-react";
+import { ShoppingCart, BookOpen } from "lucide-react";
 import { toast } from "sonner";
 
 interface Course {

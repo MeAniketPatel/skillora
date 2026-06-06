@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Badge } from "@/shared/components/ui/badge";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/shared/components/ui/hover-card";
-import { Calendar, User, Info, ShieldAlert } from "lucide-react";
+import { Calendar, Info, ShieldAlert } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 
 

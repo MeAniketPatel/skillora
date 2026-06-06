@@ -8,8 +8,8 @@ import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/components/ui/table";
-import { Trash2, Loader2, Percent, DollarSign, Calendar, RefreshCw } from "lucide-react";
-import { cn, formatPrice } from "@/shared/lib/utils";
+import { Trash2, Loader2, Percent, DollarSign, Calendar } from "lucide-react";
+import { formatPrice } from "@/shared/lib/utils";
 
 interface Coupon {
   id: string;

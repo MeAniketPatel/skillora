@@ -1,13 +1,11 @@
 "use client";
 
 import { useTransition, useState } from "react";
-import { useSettings } from "@/features/settings";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/shared/components/ui/card";
-import { Label } from "@/shared/components/ui/label";
 import { Switch } from "@/shared/components/ui/switch";
 import { updateSetting } from "@/features/settings";
-import { AlertTriangle, Wrench, ShieldAlert } from "lucide-react";
+import { AlertTriangle, Wrench } from "lucide-react";
 
 interface MaintenanceBannerProps {
   isEnabled: boolean;

@@ -10,7 +10,6 @@ import { auth } from "@/auth";
 import { ThemeToggle } from "@/shared/components/shared/theme-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 import { NotificationsMenu } from "@/shared/components/shared/notifications-menu";
-import { ROUTES } from "@/shared/constants/routes";
 import { Sidebar } from "@/shared/components/layout/sidebar";
 import { cookies } from "next/headers";
 import { StopImpersonationBanner } from "@/features/admin/server";

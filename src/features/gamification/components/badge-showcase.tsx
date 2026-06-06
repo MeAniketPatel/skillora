@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Badge } from "@/shared/components/ui/badge";
-import { Sparkles, Trophy, Award, ShieldAlert, Star, Zap } from "lucide-react";
+import { Trophy, Award, Star, Zap } from "lucide-react";
 
 interface UserBadge {
   badgeId: string;

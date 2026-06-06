@@ -1,7 +1,6 @@
 "use client";
 
-import { useTransition, useState } from "react";
-import { useAdminActions } from "@/features/admin/hooks/use-admin";
+import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
@@ -10,7 +9,7 @@ import {
   approveModerationItemAction,
   rejectModerationItemAction,
 } from "@/features/moderation";
-import { ShieldCheck, ShieldAlert, Check, X, Shield, AlertTriangle } from "lucide-react";
+import { ShieldCheck, Check, X, Shield, AlertTriangle } from "lucide-react";
 
 interface ModerationItemType {
   id: string;

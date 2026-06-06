@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { service as gamificationService } from "@/features/gamification/server";
-import { assertGamificationAccess } from "@/features/gamification/permissions/gamification.permissions";
 export async function awardXPAction(amount: number, reason: string) {
   return actionHandler(async () => {
     const user = await requireAuth();

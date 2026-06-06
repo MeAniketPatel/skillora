@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { formatDistanceToNow } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Badge } from "@/shared/components/ui/badge";

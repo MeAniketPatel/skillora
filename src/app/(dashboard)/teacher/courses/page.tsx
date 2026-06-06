@@ -3,7 +3,7 @@ import { getTeacherCourses } from "@/features/courses/server";
 import { DataTable } from "@/shared/components/shared/data-table";
 import { BookOpen, Plus } from "lucide-react";
 import Link from "next/link";
-import { Button, buttonVariants } from "@/shared/components/ui/button";
+import { buttonVariants } from "@/shared/components/ui/button";
 
 export default async function TeacherCoursesPage() {
   const user = await requireTeacher();

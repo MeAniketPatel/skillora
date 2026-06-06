@@ -7,7 +7,6 @@ import { liveSessionSchema } from "@/features/live-sessions/contracts/live-sessi
 import { service as coursesService } from "@/features/courses/server";
 import { triggerWebhook } from "@/lib/webhook-sender";
 import { revalidatePath } from "next/cache";
-import db from "@/shared/lib/prisma";
 
 import { assertLiveSessionDeleteAccess } from "../permissions/live-sessions.permissions";
 export async function createLiveSessionAction(values: z.infer<typeof liveSessionSchema>) {

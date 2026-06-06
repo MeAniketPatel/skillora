@@ -3,7 +3,7 @@ import db from "@/shared/lib/prisma";
 import { CourseFilters } from "@/features/courses";
 import { formatPrice } from "@/shared/lib/utils";
 import Link from "next/link";
-import { Star, BookOpen, User, Calendar, Search, ArrowRight, MessageSquare, Award } from "lucide-react";
+import { Star, BookOpen, User, Search, ArrowRight, Award } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 

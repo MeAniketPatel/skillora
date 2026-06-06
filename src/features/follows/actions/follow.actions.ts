@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { service as socialService } from "@/features/social/server";
-import { assertSocialAccess } from "@/features/social/server";
 export async function toggleFollowAction(targetUserId: string) {
   return actionHandler(async () => {
     const user = await requireAuth();

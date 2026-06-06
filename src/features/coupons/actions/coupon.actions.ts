@@ -5,7 +5,6 @@ import { actionHandler } from "@/shared/lib/action-utils";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { couponCreateSchema } from "@/features/admin/server";
 import { service as adminService } from "@/features/admin/server";
-import { assertAdminAccess } from "@/features/admin/server";
 export async function createCoupon(values: any) {
   return actionHandler(async () => {
     await requireTeacher(); // Teachers can create coupons, or admins

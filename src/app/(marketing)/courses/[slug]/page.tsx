@@ -1,12 +1,10 @@
 import { redirect } from "next/navigation";
-import Link from "next/link";
-import { GraduationCap, BookOpen, Layers, CheckCircle } from "lucide-react";
+import { GraduationCap, BookOpen, Layers } from "lucide-react";
 
 import { auth } from "@/auth";
 import { getCourseWithFullDetails } from "@/features/courses/server";
 import { getEnrollment } from "@/features/enrollment/server";
-import { Button } from "@/shared/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Navbar } from "@/shared/components/layout/navbar";
 import { Footer } from "@/shared/components/layout/footer";
 import { EnrollButton } from "@/features/courses";

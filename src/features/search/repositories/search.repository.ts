@@ -43,7 +43,7 @@ export async function globalSearch(query: string, filters: SearchFilters = {}) {
     courseConditions.price = { gt: 0 };
   }
 
-  let courses = await db.course.findMany({
+  const courses = await db.course.findMany({
     where: courseConditions,
     include: {
       category: true,

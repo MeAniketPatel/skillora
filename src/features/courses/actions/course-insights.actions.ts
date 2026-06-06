@@ -3,7 +3,6 @@
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { service as coursesService } from "@/features/courses/server";
-import { assertCoursesAccess } from "@/features/courses/permissions/courses.permissions";
 export async function getCourseInsightsAction(courseId: string) {
   return actionHandler(async () => {
     const user = await requireTeacher();

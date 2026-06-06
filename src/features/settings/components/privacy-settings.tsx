@@ -10,7 +10,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Switch } from "@/shared/components/ui/switch";
 import { Label } from "@/shared/components/ui/label";
 import { toast } from "sonner";
-import { Shield, Eye, MessageSquare, ShieldAlert, Users, Ban } from "lucide-react";
+import { Shield, Eye, MessageSquare, Users, Ban } from "lucide-react";
 
 interface PrivacySettingsProps {
   initialSettings: {

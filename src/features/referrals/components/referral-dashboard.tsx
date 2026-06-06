@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
@@ -8,7 +7,7 @@ import { Badge } from "@/shared/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/components/ui/table";
 import { useClipboard } from "../hooks/use-clipboard";
 import { toast } from "sonner";
-import { Share2, Copy, Users, Trophy, CheckCircle, ArrowRight } from "lucide-react";
+import { Share2, Copy, Users, Trophy, CheckCircle } from "lucide-react";
 
 interface ReferralUser {
   id: string;

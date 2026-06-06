@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import LinkButton from "@/shared/components/ui/link-button";
 import { ROUTES } from "@/shared/constants/routes";

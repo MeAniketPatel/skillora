@@ -2,7 +2,7 @@ import { getDecksForUser } from "@/features/flashcards/server";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { DeckList } from "@/features/flashcards/server";
-import { HelpCircle, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 
 export const metadata = {

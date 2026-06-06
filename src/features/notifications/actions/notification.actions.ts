@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { service as notificationsService } from "@/features/notifications/server";
-import { assertNotificationsAccess } from "@/features/notifications/permissions/notifications.permissions";
 export async function getNotifications() {
   return actionHandler(async () => {
     const user = await requireAuth();

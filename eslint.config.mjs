@@ -2,6 +2,7 @@ import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 import boundaryRules from "./eslint-boundary-rules.cjs";
+import unusedImports from "eslint-plugin-unused-imports";
 
 const eslintConfig = defineConfig([
   ...nextVitals,
@@ -9,7 +10,11 @@ const eslintConfig = defineConfig([
   // Architecture boundary rules (ADR-004).
   {
     files: ["src/**/*.{ts,tsx}"],
+    plugins: {
+      "unused-imports": unusedImports,
+    },
     rules: {
+      "unused-imports/no-unused-imports": "error",
       "no-restricted-imports": [
         "warn",
         {

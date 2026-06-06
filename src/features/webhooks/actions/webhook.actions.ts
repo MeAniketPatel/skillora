@@ -8,7 +8,6 @@ import { webhookSchema } from "@/features/webhooks/contracts/webhook.contract";;
 import { service as webhooksService } from "@/features/webhooks/server";
 import { revalidatePath } from "next/cache";
 
-import { assertWebhooksAccess } from "@/features/webhooks/permissions/webhooks.permissions";
 export async function registerWebhookAction(values: z.infer<typeof webhookSchema>) {
   return actionHandler(async () => {
     await requireAdmin();

@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { ReferralDashboard } from "@/features/referrals/server";
 import { Badge } from "@/shared/components/ui/badge";
-import { Users, Sparkles } from "lucide-react";
+import { Users } from "lucide-react";
 
 export const metadata = {
   title: "Referral Program | Skillora",

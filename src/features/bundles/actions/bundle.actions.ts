@@ -8,7 +8,6 @@ import { createBundleSchema } from "@/features/bundles/contracts/bundle.contract
 import { service as bundlesService } from "@/features/bundles/server";
 import db from "@/shared/lib/prisma"; // Direct db import allowed for multi-step transaction if needed, but we can do it via loop / DAL
 
-import { assertBundlesAccess } from "@/features/bundles/permissions/bundles.permissions";
 export async function createBundleAction(values: z.infer<typeof createBundleSchema>) {
   return actionHandler(async () => {
     await requireAdmin();

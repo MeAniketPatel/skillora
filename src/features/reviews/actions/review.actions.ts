@@ -5,7 +5,7 @@ import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { reviewCreateSchema, reviewUpdateSchema } from "@/features/reviews/contracts/review.contract";
 import { service as reviewsService } from "@/features/reviews/server";
-import { ConflictError, NotFoundError } from "@/shared/lib/errors";
+import { ConflictError } from "@/shared/lib/errors";
 
 import { assertReviewsAccess } from "@/features/reviews/permissions/reviews.permissions";
 export async function createReview(values: any) {

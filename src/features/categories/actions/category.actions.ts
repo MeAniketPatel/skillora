@@ -5,7 +5,6 @@ import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { categoryCreateSchema, categoryUpdateSchema } from "@/features/admin";
 import { service as categoriesService } from "@/features/categories/server";
-import { assertCategoriesAccess } from "@/features/categories/permissions/categories.permissions";
 export async function createCategory(values: any) {
   return actionHandler(async () => {
     await requireAdmin();

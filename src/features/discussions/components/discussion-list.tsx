@@ -8,7 +8,7 @@ import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
-import { Pin, MessageSquare, Search, Flame, Filter, Heart, Eye } from "lucide-react";
+import { Pin, MessageSquare, Search } from "lucide-react";
 
 interface DiscussionUser {
   id: string;

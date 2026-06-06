@@ -2,7 +2,6 @@
 
 import { useTransition, useState } from "react";
 import {
-  useFeatureFlag,
   featureFlagSchema,
   createFeatureFlagAction,
   toggleFeatureFlagAction,
@@ -18,8 +17,7 @@ import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import { Switch } from "@/shared/components/ui/switch";
 import { Slider } from "@/shared/components/ui/slider";
-import { Loader2, Trash2, Key, Info, Check, Plus } from "lucide-react";
-import { z } from "zod";
+import { Loader2, Trash2, Key, Info, Plus } from "lucide-react";
 
 interface FormValues {
   key: string;

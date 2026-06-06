@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import LinkButton from "@/shared/components/ui/link-button";
 

@@ -2,12 +2,9 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import {
   ArrowLeft,
   Trash2,
-  Video,
-  FileText,
   File,
   Download,
   Loader2,

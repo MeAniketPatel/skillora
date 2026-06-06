@@ -1,7 +1,6 @@
 "use client";
 
 import { Card, CardContent } from "@/shared/components/ui/card";
-import { Badge } from "@/shared/components/ui/badge";
 import { Rss, Star, Calendar, Sparkles, BookOpen, Layers } from "lucide-react";
 
 interface Activity {

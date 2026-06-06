@@ -6,7 +6,6 @@ import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { service as contactService } from "@/features/contact/server";
 import { contactSchema } from "@/features/contact/contracts/contact.contract";;
 
-import { assertContactAccess } from "@/features/contact/permissions/contact.permissions";
 export async function submitContactForm(values: any) {
   return actionHandler(async () => {
     const validated = contactSchema.parse(values);

@@ -3,7 +3,7 @@
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
-import { Trophy, Star, Sparkles, User } from "lucide-react";
+import { Trophy, User } from "lucide-react";
 
 interface LeaderboardUser {
   id: string;

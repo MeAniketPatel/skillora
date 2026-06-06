@@ -5,7 +5,7 @@ import MonacoEditor from "./lazy-monaco-editor";
 import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
-import { Play, RotateCcw, Terminal, Code, Sparkles } from "lucide-react";
+import { Play, RotateCcw, Terminal, Code } from "lucide-react";
 import { toast } from "sonner";
 
 const DEFAULT_CODE = {

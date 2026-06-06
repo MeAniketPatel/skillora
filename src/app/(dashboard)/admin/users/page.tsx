@@ -1,10 +1,10 @@
+import Image from "next/image";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { getAllUsers } from "@/features/auth/server";
 import { DataTable } from "@/shared/components/shared/data-table";
 import { Users } from "lucide-react";
 import { format } from "date-fns";
 import { updateUserRole, banUser, unbanUser } from "@/features/admin/server";
-import { ActionButton } from "@/shared/components/shared/action-button";
 import { Button } from "@/shared/components/ui/button";
 import { ImpersonateButton } from "@/features/admin/server";
 
@@ -19,7 +19,7 @@ export default async function AdminUsersPage() {
       cell: (item: any) => (
         <div className="flex items-center gap-2">
           {item.image ? (
-            <img src={item.image} className="w-8 h-8 rounded-full" alt={item.name} />
+            <Image src={item.image} width={32} height={32} className="rounded-full object-cover" alt={item.name} />
           ) : (
             <div className="w-8 h-8 bg-muted rounded-full flex items-center justify-center">
               {item.name?.charAt(0) || "U"}

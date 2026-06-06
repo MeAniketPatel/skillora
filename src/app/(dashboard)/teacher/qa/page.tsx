@@ -4,7 +4,7 @@ import { DataTable } from "@/shared/components/shared/data-table";
 import { HelpCircle } from "lucide-react";
 import { format } from "date-fns";
 import Link from "next/link";
-import { Button, buttonVariants } from "@/shared/components/ui/button";
+import { buttonVariants } from "@/shared/components/ui/button";
 
 export default async function TeacherQAPage() {
   const user = await requireTeacher();

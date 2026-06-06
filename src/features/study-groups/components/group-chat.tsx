@@ -2,11 +2,11 @@
 
 import { useTransition, useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent } from "@/shared/components/ui/card";
+import { Card } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { sendStudyGroupMessageAction } from "../actions/study-group.actions";
-import { Send, User, Calendar, Loader2, Sparkles } from "lucide-react";
+import { Send, Loader2, Sparkles } from "lucide-react";
 
 interface Message {
   id: string;

@@ -6,7 +6,6 @@ import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { service as settingsService } from "@/features/settings/server";
 import { settingSchema } from "@/features/settings/contracts/settings.contract";;
 
-import { assertSettingsAccess } from "@/features/settings/permissions/settings.permissions";
 export async function updateSetting(values: any) {
   return actionHandler(async () => {
     await requireAdmin();

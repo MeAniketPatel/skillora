@@ -11,7 +11,7 @@ import {
 import { Button } from "@/shared/components/ui/button";
 import { CartItem } from "@/features/cart";
 import { CheckoutSummary } from "@/features/cart";
-import { ShoppingCart, HelpCircle, X } from "lucide-react";
+import { ShoppingCart, HelpCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 
 interface CartSidebarProps {

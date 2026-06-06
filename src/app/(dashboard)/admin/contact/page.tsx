@@ -4,7 +4,6 @@ import { DataTable } from "@/shared/components/shared/data-table";
 import { MessageSquare } from "lucide-react";
 import { format } from "date-fns";
 import { markContactReplied } from "@/features/contact/server";
-import { ActionButton } from "@/shared/components/shared/action-button";
 import { Button } from "@/shared/components/ui/button";
 
 export default async function AdminContactPage() {

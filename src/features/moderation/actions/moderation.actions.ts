@@ -6,7 +6,6 @@ import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAdmin } from "@/shared/lib/auth-helpers";
 import { flagContentSchema } from "@/features/moderation/contracts/moderation.contract";
 import { service as adminService } from "@/features/admin/server";
-import { assertAdminAccess } from "@/features/admin/server";
 export async function approveModerationItemAction(id: string) {
   return actionHandler(async () => {
     const user = await requireAdmin();

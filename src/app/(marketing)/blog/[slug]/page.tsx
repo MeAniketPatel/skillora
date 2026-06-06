@@ -5,10 +5,10 @@ import { BlogComments } from "@/features/blog/server";
 import { buttonVariants } from "@/shared/components/ui/button";
 import { cn } from "@/shared/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
-import { Card, CardContent } from "@/shared/components/ui/card";
+import { Card } from "@/shared/components/ui/card";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
-import { ArrowLeft, User, Calendar, MessageSquare } from "lucide-react";
+import { ArrowLeft, Calendar } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 
 interface BlogPostDetailPageProps {

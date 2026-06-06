@@ -6,7 +6,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Badge } from "@/shared/components/ui/badge";
 import { enrollInLearningPathAction } from "../actions/learning-path.actions";
-import { Play, Check, ChevronRight, Lock, BookOpen, Loader2 } from "lucide-react";
+import { Check, ChevronRight, BookOpen, Loader2 } from "lucide-react";
 
 interface PathCourse {
   id: string;

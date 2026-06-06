@@ -2,7 +2,7 @@
 
 import { useTransition, useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardContent } from "@/shared/components/ui/card";
+import { Card } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
