@@ -46,6 +46,9 @@ export async function requireAdmin() {
 
 export async function requireStudent() {
   const user = await requireAuth();
+  if (user.role !== "STUDENT" && user.role !== "ADMIN") {
+    throw new ForbiddenError("Student access required");
+  }
   return user;
 }
 
