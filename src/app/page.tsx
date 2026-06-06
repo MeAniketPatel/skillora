@@ -40,7 +40,7 @@ export default async function HomePage() {
         <FeaturedCourses courses={featuredCourses} />
 
         <section className="bg-background">
-          <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
             <div className="mb-10 max-w-2xl">
               <span className="text-xs font-bold uppercase tracking-widest text-primary">
                 Built for serious learning
@@ -80,7 +80,7 @@ export default async function HomePage() {
         <SkillGapAnalyzer />
 
         <section className="border-t border-border/60 bg-gradient-to-br from-primary/10 via-background to-blue-500/10">
-          <div className="mx-auto max-w-5xl px-4 py-20 text-center sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-4 py-20 text-center sm:px-6 lg:px-8">
             <h2 className="font-heading text-3xl font-extrabold tracking-tight sm:text-4xl">
               Ready to start teaching — or learning?
             </h2>

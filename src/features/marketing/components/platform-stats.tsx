@@ -67,7 +67,7 @@ const DEFAULT_STATS: PlatformStatItem[] = [
 export function PlatformStats({ stats = DEFAULT_STATS }: PlatformStatsProps) {
   return (
     <section className="border-y border-border/60 bg-muted/30">
-      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-12 sm:px-6 md:grid-cols-4 lg:px-8">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-20 sm:px-6 md:grid-cols-4 lg:px-8">
         {stats.map((stat) => (
           <div key={stat.id} className="text-center md:text-left">
             <div className="text-3xl font-extrabold tracking-tight sm:text-4xl">
