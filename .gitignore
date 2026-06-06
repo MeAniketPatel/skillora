@@ -64,4 +64,8 @@ Thumbs.db
 *.log
 npm-debug.log*
 
+# Generated tooling output
+/lint_results.txt
+
+# Prisma generated
 /src/generated/prisma
