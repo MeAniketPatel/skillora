@@ -8,7 +8,7 @@ import { DollarSign, Percent, TrendingUp } from "lucide-react";
 import { RevenueCharts } from "@/features/admin/server";
 
 export default async function AdminRevenuePage() {
-  const { grossSales, platformRevenue, totalTransactions } = await getPlatformRevenue();
+  const { grossSales, platformRevenue, totalTransactions, feePercentage } = await getPlatformRevenue();
   const transactions = await getRecentPurchases(25);
 
   // Get data for past 30 days
@@ -25,6 +25,8 @@ export default async function AdminRevenuePage() {
   const byTeacher = await getRevenueByTeacher();
   const byCourse = await getRevenueByCourse();
 
+  const cutRatio = feePercentage / 100;
+
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
       <PageHeader
@@ -39,7 +41,7 @@ export default async function AdminRevenuePage() {
           icon={DollarSign}
         />
         <StatsCard
-          label="Platform Revenue (10%)"
+          label={`Platform Revenue (${feePercentage}%)`}
           value={formatPrice(platformRevenue)}
           icon={Percent}
         />
@@ -96,7 +98,7 @@ export default async function AdminRevenuePage() {
                         {formatPrice(t.amount)}
                       </TableCell>
                       <TableCell className="py-4 pr-6 text-right text-xs font-bold text-green-600 dark:text-green-400">
-                        {formatPrice(t.amount * 0.1)}
+                        {formatPrice(t.amount * cutRatio)}
                       </TableCell>
                     </TableRow>
                   ))}

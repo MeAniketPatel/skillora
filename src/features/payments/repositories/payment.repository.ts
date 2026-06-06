@@ -1,4 +1,5 @@
 import db from "@/shared/lib/prisma";
+import { getPlatformFeePercentage } from "@/features/settings/server";
 
 export async function createPurchase(data: any) {
   return db.purchase.create({ data });
@@ -84,16 +85,24 @@ export async function getPlatformRevenue(params?: { startDate?: Date; endDate?: 
     if (params.endDate) where.createdAt.lte = params.endDate;
   }
 
-  const result = await db.purchase.aggregate({
-    where,
-    _sum: { amount: true },
-    _count: { id: true },
-  });
+  const [result, feePercentage] = await Promise.all([
+    db.purchase.aggregate({
+      where,
+      _sum: { amount: true },
+      _count: { id: true },
+    }),
+    getPlatformFeePercentage(),
+  ]);
 
   const grossSales = result._sum.amount || 0;
-  const platformRevenue = grossSales * 0.1; // 10% platform fee
-  
-  return { grossSales, platformRevenue, totalTransactions: result._count.id };
+  const platformRevenue = grossSales * (feePercentage / 100);
+
+  return {
+    grossSales,
+    platformRevenue,
+    totalTransactions: result._count.id,
+    feePercentage,
+  };
 }
 
 export async function getRevenueTimeSeries(params: { startDate: Date; endDate: Date; groupBy: "day" | "week" | "month" }) {

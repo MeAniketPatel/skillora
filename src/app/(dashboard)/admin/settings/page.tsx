@@ -1,6 +1,5 @@
 import { requireAdmin } from "@/shared/lib/auth-helpers";
-import { getAllSettings } from "@/features/settings/server";
-import { updateSetting } from "@/features/settings/server";
+import { getAllSettings, updateSetting, PLATFORM_SETTINGS_DEFAULTS, PLATFORM_SETTINGS_KEYS } from "@/features/settings/server";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 
@@ -9,9 +8,9 @@ export default async function AdminSettingsPage() {
   const settings = await getAllSettings();
 
   const keys = [
-    { key: "SITE_NAME", label: "Site Name", default: "Skillora" },
-    { key: "PLATFORM_FEE_PERCENTAGE", label: "Platform Fee (%)", default: "15" },
-    { key: "ALLOW_REGISTRATION", label: "Allow New Registrations (true/false)", default: "true" },
+    { key: PLATFORM_SETTINGS_KEYS.SITE_NAME, label: "Site Name", default: PLATFORM_SETTINGS_DEFAULTS[PLATFORM_SETTINGS_KEYS.SITE_NAME] },
+    { key: PLATFORM_SETTINGS_KEYS.PLATFORM_FEE_PERCENTAGE, label: "Platform Fee (%)", default: PLATFORM_SETTINGS_DEFAULTS[PLATFORM_SETTINGS_KEYS.PLATFORM_FEE_PERCENTAGE] },
+    { key: PLATFORM_SETTINGS_KEYS.ALLOW_REGISTRATION, label: "Allow New Registrations (true/false)", default: PLATFORM_SETTINGS_DEFAULTS[PLATFORM_SETTINGS_KEYS.ALLOW_REGISTRATION] },
   ];
 
   return (
