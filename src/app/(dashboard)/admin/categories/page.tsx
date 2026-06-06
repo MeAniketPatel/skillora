@@ -4,7 +4,7 @@ import { DataTable } from "@/shared/components/shared/data-table";
 import { Tags, Plus } from "lucide-react";
 import { createCategory, deleteCategory } from "@/features/categories";
 import { Button } from "@/shared/components/ui/button";
-import { ActionButton } from "@/shared/components/shared/action-button";
+import { slugify } from "@/shared/lib/utils";
 
 export default async function AdminCategoriesPage() {
   await requireAdmin();
@@ -16,8 +16,10 @@ export default async function AdminCategoriesPage() {
       cell: (item: any) => <span className="font-medium">{item.name}</span>,
     },
     {
-      header: "Description",
-      cell: (item: any) => <span className="text-muted-foreground">{item.description || "-"}</span>,
+      header: "Slug",
+      cell: (item: any) => (
+        <code className="rounded bg-muted px-1.5 py-0.5 text-xs">{item.slug}</code>
+      ),
     },
     {
       header: "Courses",
@@ -47,19 +49,25 @@ export default async function AdminCategoriesPage() {
           <h1 className="text-2xl font-bold tracking-tight">Categories</h1>
           <p className="text-muted-foreground">Manage course categories for the platform.</p>
         </div>
-        <form action={async (formData) => {
-          "use server";
-          await createCategory({ name: formData.get("name") as string, description: (formData.get("description") as string) || undefined });
-        }} className="flex items-center gap-2">
-          <input 
-            name="name" 
-            placeholder="Category name" 
+        <form
+          action={async (formData) => {
+            "use server";
+            const name = (formData.get("name") as string | null)?.trim();
+            if (!name) return;
+            const slug = (formData.get("slug") as string | null)?.trim() || slugify(name);
+            await createCategory({ name, slug });
+          }}
+          className="flex items-center gap-2"
+        >
+          <input
+            name="name"
+            placeholder="Category name"
             className="flex h-9 w-40 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
             required
           />
-          <input 
-            name="description" 
-            placeholder="Description (opt)" 
+          <input
+            name="slug"
+            placeholder="Slug (auto)"
             className="flex h-9 w-40 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm"
           />
           <Button type="submit" size="sm">
@@ -67,9 +75,9 @@ export default async function AdminCategoriesPage() {
           </Button>
         </form>
       </div>
-      <DataTable 
-        data={categories} 
-        columns={columns} 
+      <DataTable
+        data={categories}
+        columns={columns}
         emptyIcon={Tags}
         emptyTitle="No categories found"
         emptyDescription="Create a category to get started."
