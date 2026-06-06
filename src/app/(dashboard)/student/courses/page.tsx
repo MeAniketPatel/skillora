@@ -1,7 +1,6 @@
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserEnrollments } from "@/features/enrollment/server";
+import { getUserEnrollments, getResumeLessonId } from "@/features/enrollment/server";
 import { DataTable } from "@/shared/components/shared/data-table";
-import { ActionButton } from "@/shared/components/shared/action-button";
 import Link from "next/link";
 import { GraduationCap } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
@@ -9,6 +8,13 @@ import { Button } from "@/shared/components/ui/button";
 export default async function StudentCoursesPage() {
   const user = await requireAuth();
   const enrollments = await getUserEnrollments(user.id, {});
+
+  const enrollmentsWithResume = await Promise.all(
+    enrollments.map(async (e) => ({
+      ...e,
+      resumeLessonId: await getResumeLessonId(user.id, e.courseId),
+    })),
+  );
 
   const columns = [
     {
@@ -40,13 +46,18 @@ export default async function StudentCoursesPage() {
     },
     {
       header: "Actions",
-      cell: (item: any) => (
-        <Link href={`/learn/${item.course.id}`}>
-          <Button>
-            {item.progress === 0 ? "Start Course" : "Continue"}
-          </Button>
-        </Link>
-      ),
+      cell: (item: any) => {
+        const href = item.resumeLessonId
+          ? `/learn/${item.course.id}/${item.resumeLessonId}`
+          : `/courses/${item.course.slug}`;
+        return (
+          <Link href={href}>
+            <Button>
+              {item.progress === 0 ? "Start Course" : "Continue"}
+            </Button>
+          </Link>
+        );
+      },
     },
   ];
 
@@ -57,7 +68,7 @@ export default async function StudentCoursesPage() {
         <p className="text-muted-foreground">Continue learning your enrolled courses.</p>
       </div>
       <DataTable 
-        data={enrollments} 
+        data={enrollmentsWithResume} 
         columns={columns} 
         emptyIcon={GraduationCap}
         emptyTitle="No courses yet"
