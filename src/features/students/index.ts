@@ -3,7 +3,7 @@
 // Components
 export { BookmarkButton } from "./components/bookmark-button";
 export { ContinueLearning } from "./components/continue-learning";
-export { CourseCollections as CourseCollection, CourseCollections as CourseCollections } from "./components/course-collection";
+export { CourseCollections } from "./components/course-collection";
 export { CreateCollectionForm } from "./components/create-collection-form";
 export { CreateGoalForm } from "./components/create-goal-form";
 export { DashboardStats } from "./components/dashboard-stats";
@@ -15,12 +15,9 @@ export { StreakWidget } from "./components/streak-widget";
 export { WeeklyProgress } from "./components/weekly-progress";
 
 // Permissions
-export { canStudents as canStudents, assertStudentsAccess } from "./permissions/students.permissions";
-
-
-
+export { canStudents, assertStudentsAccess } from "./permissions/students.permissions";
 
 // Contracts
 export { createStudentsSchema, updateStudentsSchema, listStudentsQuerySchema } from "./contracts/students.contract";
-export type { CreateStudentsInput, UpdateStudentsInput } from "./contracts/students.contract";
+export type { CreateStudentsInput, UpdateStudentsInput, ListStudentsQuery } from "./contracts/students.contract";
 

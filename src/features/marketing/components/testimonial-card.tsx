@@ -1,8 +1,6 @@
-import Link from "next/link";
-import { GraduationCap, Star, Users, BookOpen } from "lucide-react";
+import { Star } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 import { Card, CardContent } from "@/shared/components/ui/card";
-import { ROUTES } from "@/shared/constants/routes";
 import type { Testimonial } from "@/types/marketing.types";
 
 export function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
@@ -54,28 +52,5 @@ export function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
         </div>
       </CardContent>
     </Card>
-  );
-}
-
-export function TestimonialGrid({ testimonials }: { testimonials: Testimonial[] }) {
-  return (
-    <section className="bg-background">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="mb-10 max-w-2xl">
-          <span className="text-xs font-bold uppercase tracking-widest text-primary">
-            Loved by learners and teachers
-          </span>
-          <h2 className="mt-2 font-heading text-3xl font-extrabold tracking-tight sm:text-4xl">
-            Real stories from the Skillora community
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {testimonials.map((t) => (
-            <TestimonialCard key={t.id} testimonial={t} />
-          ))}
-        </div>
-      </div>
-    </section>
   );
 }
