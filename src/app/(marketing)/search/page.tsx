@@ -1,6 +1,6 @@
 import { globalSearch } from "@/features/search/server";
 import db from "@/shared/lib/prisma";
-import { CourseFilters } from "@/features/courses/server";
+import { CourseFilters } from "@/features/courses";
 import { formatPrice } from "@/shared/lib/utils";
 import Link from "next/link";
 import { Star, BookOpen, User, Calendar, Search, ArrowRight, MessageSquare, Award } from "lucide-react";

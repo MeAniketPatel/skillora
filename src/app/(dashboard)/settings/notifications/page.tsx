@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getEmailPreferences } from "@/features/email-preferences/server";
-import { NotificationSettings } from "@/features/settings/server";
+import { NotificationSettings } from "@/features/settings";
 import Link from "next/link";
 import { ROUTES } from "@/shared/constants/routes";
 import { Shield, Bell, User } from "lucide-react";

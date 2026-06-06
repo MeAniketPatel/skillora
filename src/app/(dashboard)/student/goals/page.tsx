@@ -3,8 +3,7 @@ import { requireAuth } from "@/shared/lib/auth-helpers";
 import { getUserGoals } from "@/features/students/server";
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/components/ui/card";
-import { CreateGoalForm } from "@/features/students/server";
-import { LearningGoals } from "@/features/students/server";
+import { CreateGoalForm, LearningGoals } from "@/features/students";
 
 export default async function GoalsPage() {
   const user = await requireAuth();

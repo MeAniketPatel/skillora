@@ -1,5 +1,6 @@
 // Server-only barrel. Import this from server actions, route handlers,
 // server components, and middleware. NEVER import from "use client" files.
+// Client components (cards, forms, widgets) must be imported from "@/features/students".
 
 // Repository functions
 export { getUserBookmarks, isBookmarked, toggleBookmark } from "./repositories/bookmark.repository";
@@ -10,11 +11,20 @@ export { createNote, updateNote, deleteNote, getNotesForLesson, getAllUserNotes 
 export { getStudyStreak, getStudySessions, recordStudySession, buyStreakFreeze } from "./repositories/streak.repository";
 
 // Service
-
-// Service
 import { studentsService as service } from "./services/students.service";
 export { service };
 
-export * from './permissions/students.permissions';
+// Permissions (server-safe pure functions)
+export * from "./permissions/students.permissions";
 
-export * from './index';
+// Contracts (schemas + types — safe in both contexts)
+export {
+  createStudentsSchema,
+  updateStudentsSchema,
+  listStudentsQuerySchema,
+} from "./contracts/students.contract";
+export type {
+  CreateStudentsInput,
+  UpdateStudentsInput,
+  ListStudentsQuery,
+} from "./contracts/students.contract";

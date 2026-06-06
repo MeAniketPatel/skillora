@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getSessionSecurityOverview } from "@/features/auth/server";
-import { SettingsClientForm } from "@/features/settings/server";
+import { SettingsClientForm } from "@/features/settings";
 import Link from "next/link";
 import { ROUTES } from "@/shared/constants/routes";
 import { Shield, Bell, User } from "lucide-react";

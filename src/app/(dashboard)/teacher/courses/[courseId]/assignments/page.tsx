@@ -4,7 +4,7 @@ import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getCourseByIdForOwner } from "@/features/courses/server";
 import { getCourseSubmissions } from "@/features/assignments/server";
 import { PageHeader } from "@/shared/components/shared/page-header";
-import { SubmissionTable } from "@/features/teachers/server";
+import { SubmissionTable } from "@/features/teachers";
 
 interface PageProps {
   params: Promise<{ courseId: string }>;

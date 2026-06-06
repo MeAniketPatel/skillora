@@ -1,5 +1,5 @@
 import React from "react";
-import { RegisterForm } from "@/features/auth/server";
+import { RegisterForm } from "@/features/auth";
 
 export const metadata = {
   title: "Register - Skillora",

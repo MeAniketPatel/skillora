@@ -1,4 +1,4 @@
-import { LoginForm } from "@/features/auth/server";
+import { LoginForm } from "@/features/auth";
 
 export const metadata = {
   title: "Login - Skillora",

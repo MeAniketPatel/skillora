@@ -5,7 +5,7 @@ import { getEnrollmentWithProgress } from "@/features/enrollment/server";
 import { getCourseWithPublishedCurriculum, getLearningLesson } from "@/features/courses/server";
 import { getLessonProgress } from "@/features/students/server";
 import { getSubmission } from "@/features/assignments/server";
-import { LessonPlayer } from "@/features/courses/server";
+import { LessonPlayer } from "@/features/courses";
 interface LearnPageProps {
   params: Promise<{
     courseId: string;
