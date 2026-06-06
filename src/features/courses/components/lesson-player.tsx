@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { 
@@ -22,6 +22,7 @@ import { VideoPlayer } from "@/shared/components/shared/video-player";
 import { QuizView } from "@/features/courses";
 import { AssignmentView } from "@/features/courses";
 import { AITutor } from "@/features/learn";
+import { sanitizeRichHtml } from "@/shared/lib/sanitize";
 
 interface Lesson {
   id: string;
@@ -79,6 +80,15 @@ export default function LessonPlayer({
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const isCompleted = completedLessonIds.includes(lesson.id);
+  const safeArticleHtml = useMemo(
+    () =>
+      sanitizeRichHtml(
+        lesson.content && lesson.content.trim().length > 0
+          ? lesson.content
+          : "<p>This lesson has no written content.</p>",
+      ),
+    [lesson.content],
+  );
 
   const handleToggleCompletion = () => {
     startTransition(async () => {
@@ -192,7 +202,7 @@ export default function LessonPlayer({
           {lesson.type === "ARTICLE" && (
             <Card className="bg-white dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50 shadow-sm">
               <CardContent className="p-6 prose dark:prose-invert max-w-none text-neutral-700 dark:text-neutral-300">
-                <div dangerouslySetInnerHTML={{ __html: lesson.content || "<p>This lesson has no written content.</p>" }} />
+                <div dangerouslySetInnerHTML={{ __html: safeArticleHtml }} />
               </CardContent>
             </Card>
           )}

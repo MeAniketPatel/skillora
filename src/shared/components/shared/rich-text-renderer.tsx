@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { sanitizeRichHtml } from "@/shared/lib/sanitize";
 
 interface RichTextRendererProps {
   content: string;
@@ -15,6 +16,8 @@ export function RichTextRenderer({
   isMarkdown = false,
   className = "",
 }: RichTextRendererProps) {
+  const sanitized = useMemo(() => (isMarkdown ? "" : sanitizeRichHtml(content)), [content, isMarkdown]);
+
   if (!content) return null;
 
   return (
@@ -22,7 +25,7 @@ export function RichTextRenderer({
       {isMarkdown ? (
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
       ) : (
-        <div dangerouslySetInnerHTML={{ __html: content }} />
+        <div dangerouslySetInnerHTML={{ __html: sanitized }} />
       )}
     </div>
   );
