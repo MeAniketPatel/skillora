@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { getUserWishlist } from "@/features/wishlist/server";
 import { DataTable } from "@/shared/components/shared/data-table";
@@ -16,7 +17,7 @@ export default async function StudentWishlistPage() {
       cell: (item: any) => (
         <div className="flex items-center gap-4">
           {item.course.thumbnail && (
-            <img src={item.course.thumbnail} alt={item.course.title} className="w-16 h-12 object-cover rounded" />
+            <Image src={item.course.thumbnail} alt={item.course.title} width={64} height={48} className="object-cover rounded" />
           )}
           <div>
             <div className="font-medium">{item.course.title}</div>

@@ -1,3 +1,4 @@
+import Image from "next/image";
 "use client";
 
 import { useTransition, useState } from "react";
@@ -161,7 +162,7 @@ export function ProfilePortfolio({ projects, isOwnProfile }: ProfilePortfolioPro
             >
               {project.imageUrl && (
                 <div className="h-40 overflow-hidden relative">
-                  <img src={project.imageUrl} alt={project.title} className="w-full h-full object-cover" />
+                  <Image src={project.imageUrl} alt={project.title} fill className="object-cover" />
                 </div>
               )}
               <CardContent className="p-5 flex-1 flex flex-col justify-between gap-4">

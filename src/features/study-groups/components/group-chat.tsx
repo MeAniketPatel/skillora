@@ -1,3 +1,4 @@
+import Image from "next/image";
 "use client";
 
 import { useTransition, useState, useEffect, useRef } from "react";
@@ -78,13 +79,12 @@ export function GroupChat({ groupId, groupName, initialMessages, currentUserId, 
 
             return (
               <div key={msg.id} className={`flex items-start gap-2.5 ${isMe ? "flex-row-reverse" : "flex-row"}`}>
-                <img
+                <Image
                   src={sender.image || "/placeholder-avatar.png"}
                   alt={sender.name}
-                  className="h-7 w-7 rounded-full object-cover shrink-0 mt-0.5"
-                  onError={(e) => {
-                    e.currentTarget.src = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
-                  }}
+                  width={28}
+                  height={28}
+                  className="rounded-full object-cover shrink-0 mt-0.5"
                 />
                 <div className={`flex flex-col space-y-0.5 max-w-[70%] ${isMe ? "items-end" : "items-start"}`}>
                   <span className="text-[10px] text-neutral-400 font-bold">{sender.name}</span>
