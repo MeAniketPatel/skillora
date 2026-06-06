@@ -5,7 +5,12 @@ export async function getUserWishlist(userId: string) {
     where: { userId },
     include: {
       course: {
-        include: {
+        select: {
+          id: true,
+          slug: true,
+          title: true,
+          thumbnail: true,
+          price: true,
           teacher: { select: { name: true } },
           _count: { select: { reviews: true, enrollments: true } },
         },

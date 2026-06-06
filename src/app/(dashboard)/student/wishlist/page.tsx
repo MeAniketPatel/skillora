@@ -37,7 +37,7 @@ export default async function StudentWishlistPage() {
       header: "Actions",
       cell: (item: any) => (
         <div className="flex gap-2">
-          <Link href={`/courses/${item.course.id}`} className={buttonVariants({ size: "sm" })}>
+          <Link href={`/courses/${item.course.slug}`} className={buttonVariants({ size: "sm" })}>
             View Course
           </Link>
           <form action={async () => {
