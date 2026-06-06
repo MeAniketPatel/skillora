@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import MonacoEditor from "@monaco-editor/react";
+import MonacoEditor from "./lazy-monaco-editor";
 import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/components/ui/select";
