@@ -32,7 +32,7 @@ export default async function CurriculumBuilderPage({
         </h1>
         <form action={async (formData) => {
           "use server";
-          await createSection(courseId, formData.get("title") as string);
+          await createSection(courseId, formData.get("title") as string, user.id);
         }} className="flex items-center gap-2">
           <input 
             name="title" 

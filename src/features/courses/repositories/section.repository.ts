@@ -1,6 +1,18 @@
 import db from "@/shared/lib/prisma";
+import { ForbiddenError, NotFoundError } from "@/shared/lib/errors";
 
-export async function createSection(courseId: string, title: string) {
+export async function createSection(courseId: string, title: string, ownerId?: string) {
+  if (ownerId) {
+    const course = await db.course.findUnique({
+      where: { id: courseId },
+      select: { teacherId: true },
+    });
+    if (!course) throw new NotFoundError("Course not found");
+    if (course.teacherId !== ownerId) {
+      throw new ForbiddenError("You do not own this course");
+    }
+  }
+
   const lastSection = await db.section.findFirst({
     where: { courseId },
     orderBy: { position: "desc" },
