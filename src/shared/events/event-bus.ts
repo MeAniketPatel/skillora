@@ -24,11 +24,16 @@ export const eventBus = {
     }
   },
   async emit<T extends DomainEvent>(event: T): Promise<void> {
-    const eventName = event.type;
+    const eventName = (event as { name?: string; type?: string }).name ?? event.type;
+    if (!eventName) {
+      console.warn("[event-bus] emit called without name/type field", event);
+      return;
+    }
     const arr = listeners.get(eventName) ?? [];
-    for (const entry of arr) {
-      const start = Date.now();
-      try {
+    if (arr.length === 0) return;
+    const results = await Promise.allSettled(
+      arr.map(async (entry) => {
+        const start = Date.now();
         await entry.listener(event);
         const duration = Date.now() - start;
         if (duration > 500) {
@@ -36,9 +41,26 @@ export const eventBus = {
             `[event-bus] listener for ${eventName} from ${entry.feature} took ${duration}ms (>500ms); consider migrating to async queue`,
           );
         }
-      } catch (err) {
-        console.error(`[event-bus] listener for ${eventName} from ${entry.feature} threw`, err);
+      }),
+    );
+    results.forEach((result, idx) => {
+      if (result.status === "rejected") {
+        const entry = arr[idx];
+        console.error(
+          `[event-bus] listener for ${eventName} from ${entry.feature} threw`,
+          result.reason,
+        );
       }
+    });
+  },
+  off(eventName: string, listener: Listener) {
+    const arr = listeners.get(eventName);
+    if (!arr) return;
+    const filtered = arr.filter((entry) => entry.listener !== listener);
+    if (filtered.length === 0) {
+      listeners.delete(eventName);
+    } else {
+      listeners.set(eventName, filtered);
     }
   },
   listenerCount(eventName: string): number {
