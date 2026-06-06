@@ -102,6 +102,7 @@ export interface InstructorListItem {
   headline: string | null;
   publishedCourseCount: number;
   totalStudents: number;
+  averageRating: number;
 }
 
 export interface GetAllInstructorsParams {
@@ -272,13 +273,23 @@ export const userRepository: IUserRepository = {
       db.user.count({ where }),
     ]);
     const instructorIds = instructors.map((i) => i.id);
-    const enrollmentCounts = instructorIds.length
-      ? await db.enrollment.groupBy({
-          by: ["courseId"],
-          where: { course: { teacherId: { in: instructorIds } } },
-          _count: { id: true },
-        })
-      : [];
+    const [enrollmentCounts, ratingGroups] = await Promise.all([
+      instructorIds.length
+        ? db.enrollment.groupBy({
+            by: ["courseId"],
+            where: { course: { teacherId: { in: instructorIds } } },
+            _count: { id: true },
+          })
+        : Promise.resolve([]),
+      instructorIds.length
+        ? db.review.groupBy({
+            by: ["courseId"],
+            where: { course: { teacherId: { in: instructorIds } } },
+            _avg: { rating: true },
+            _count: { id: true },
+          })
+        : Promise.resolve([]),
+    ]);
     const courseTeacherMap = instructorIds.length
       ? await db.course.findMany({
           where: { teacherId: { in: instructorIds } },
@@ -286,21 +297,36 @@ export const userRepository: IUserRepository = {
         })
       : [];
     const totalStudentsByInstructor: Record<string, number> = {};
+    const ratingSumByInstructor: Record<string, { sum: number; count: number }> = {};
     courseTeacherMap.forEach((c) => {
-      const count = enrollmentCounts.find((e) => e.courseId === c.id)?._count.id ?? 0;
+      const enrollmentCount = enrollmentCounts.find((e) => e.courseId === c.id)?._count.id ?? 0;
       totalStudentsByInstructor[c.teacherId] =
-        (totalStudentsByInstructor[c.teacherId] || 0) + count;
+        (totalStudentsByInstructor[c.teacherId] || 0) + enrollmentCount;
+
+      const ratingEntry = ratingGroups.find((r) => r.courseId === c.id);
+      if (ratingEntry && ratingEntry._avg.rating != null) {
+        const bucket = ratingSumByInstructor[c.teacherId] ?? { sum: 0, count: 0 };
+        bucket.sum += ratingEntry._avg.rating * ratingEntry._count.id;
+        bucket.count += ratingEntry._count.id;
+        ratingSumByInstructor[c.teacherId] = bucket;
+      }
     });
     return {
-      instructors: instructors.map((i) => ({
-        id: i.id,
-        name: i.name,
-        image: i.image,
-        bio: i.bio,
-        headline: i.headline,
-        publishedCourseCount: i._count.courses,
-        totalStudents: totalStudentsByInstructor[i.id] || 0,
-      })),
+      instructors: instructors.map((i) => {
+        const rating = ratingSumByInstructor[i.id];
+        const averageRating =
+          rating && rating.count > 0 ? Math.round((rating.sum / rating.count) * 10) / 10 : 0;
+        return {
+          id: i.id,
+          name: i.name,
+          image: i.image,
+          bio: i.bio,
+          headline: i.headline,
+          publishedCourseCount: i._count.courses,
+          totalStudents: totalStudentsByInstructor[i.id] || 0,
+          averageRating,
+        };
+      }),
       total,
       pages: Math.ceil(total / limit),
     };

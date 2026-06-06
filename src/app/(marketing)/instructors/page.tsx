@@ -75,10 +75,7 @@ export default async function InstructorsPage({
               {instructors.map((instructor) => (
                 <InstructorCard
                   key={instructor.id}
-                  instructor={{
-                    ...instructor,
-                    averageRating: 0,
-                  }}
+                  instructor={instructor}
                 />
               ))}
             </div>
