@@ -86,7 +86,7 @@ export async function registerUser(values: RegisterInput) {
     // Since actionHandler wraps, and signIn can throw redirects/errors, we don't catch it
     // Wait, signIn throws an error to redirect. We should return a success, or let it throw.
     // Actually next-auth's signIn in server actions throws to redirect.
-    return { success: "Account created successfully!", email, password };
+    return { success: "Account created successfully!", email };
   });
 }
 
