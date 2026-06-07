@@ -6,7 +6,6 @@ export { CourseComparison } from "./components/course-comparison";
 export { CourseFilters } from "./components/course-filters";
 export { default as CreateCourseForm } from "./components/create-course-form";
 export { AddSectionForm } from "./components/curriculum/add-section-form";
-export { CurriculumHeader } from "./components/curriculum/curriculum-header";
 export { LessonItem } from "./components/curriculum/lesson-item";
 export { SectionCard } from "./components/curriculum/section-card";
 export { CourseEditorChecklist } from "./components/editor/course-editor-checklist";

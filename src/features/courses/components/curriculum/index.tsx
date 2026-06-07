@@ -12,7 +12,6 @@ import {
   updateLesson,
   updateSection,
 } from "../../actions/course.actions";
-import { CurriculumHeader } from "./curriculum-header";
 import { SectionCard } from "./section-card";
 import { AddSectionForm } from "./add-section-form";
 import type { CurriculumSection } from "./curriculum.shared";
@@ -247,46 +246,43 @@ export default function CurriculumBuilder({
   };
 
   return (
-    <div className="space-y-6">
-      <CurriculumHeader courseId={courseId} />
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
-          {sections.map((section, sIdx) => (
-            <SectionCard
-              key={section.id}
-              section={section}
-              index={sIdx}
-              totalSections={sections.length}
-              courseId={courseId}
-              isPending={isPending}
-              onUpdateTitle={(title) => handleUpdateSectionTitle(section.id, title)}
-              onDelete={() => handleDeleteSection(section.id)}
-              onMove={(direction) => moveSection(sIdx, direction)}
-              onAddLesson={(title) => handleAddLesson(section.id, title)}
-              onUpdateLessonTitle={(lessonId, title) =>
-                handleUpdateLessonTitle(section.id, lessonId, title)
-              }
-              onToggleLessonFree={(lessonId, val) =>
-                handleToggleLessonFree(section.id, lessonId, val)
-              }
-              onToggleLessonPublish={(lessonId, val) =>
-                handleToggleLessonPublish(section.id, lessonId, val)
-              }
-              onDeleteLesson={(lessonId) => handleDeleteLesson(section.id, lessonId)}
-              onMoveLesson={(lessonId, direction) =>
-                moveLesson(section.id, lessonId, direction)
-              }
-            />
-          ))}
-        </div>
-        <div className="space-y-6">
-          <AddSectionForm
-            value={newSectionTitle}
-            onChange={setNewSectionTitle}
-            onSubmit={handleAddSection}
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="lg:col-span-2 space-y-6">
+        {sections.map((section, sIdx) => (
+          <SectionCard
+            key={section.id}
+            section={section}
+            index={sIdx}
+            totalSections={sections.length}
+            courseId={courseId}
             isPending={isPending}
+            onUpdateTitle={(title) => handleUpdateSectionTitle(section.id, title)}
+            onDelete={() => handleDeleteSection(section.id)}
+            onMove={(direction) => moveSection(sIdx, direction)}
+            onAddLesson={(title) => handleAddLesson(section.id, title)}
+            onUpdateLessonTitle={(lessonId, title) =>
+              handleUpdateLessonTitle(section.id, lessonId, title)
+            }
+            onToggleLessonFree={(lessonId, val) =>
+              handleToggleLessonFree(section.id, lessonId, val)
+            }
+            onToggleLessonPublish={(lessonId, val) =>
+              handleToggleLessonPublish(section.id, lessonId, val)
+            }
+            onDeleteLesson={(lessonId) => handleDeleteLesson(section.id, lessonId)}
+            onMoveLesson={(lessonId, direction) =>
+              moveLesson(section.id, lessonId, direction)
+            }
           />
-        </div>
+        ))}
+      </div>
+      <div className="space-y-6">
+        <AddSectionForm
+          value={newSectionTitle}
+          onChange={setNewSectionTitle}
+          onSubmit={handleAddSection}
+          isPending={isPending}
+        />
       </div>
     </div>
   );
