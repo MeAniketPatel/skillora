@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Plus, Trash2, CheckCircle2, Circle, Sparkles } from "lucide-react";
+import { Plus, Trash2, CheckCircle2, Circle, Sparkles, Loader2 } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import { createQuiz, updateQuiz } from "@/features/quizzes";
 import { generateAIQuizQuestions } from "@/features/ai";
+import { toast } from "sonner";
 
 interface QuestionOption {
   text: string;
@@ -32,9 +33,10 @@ interface QuizBuilderProps {
       explanation: string | null;
     }[];
   } | null;
+  aiEnabled: boolean;
 }
 
-export default function QuizBuilder({ lessonId, initialQuiz }: QuizBuilderProps) {
+export default function QuizBuilder({ lessonId, initialQuiz, aiEnabled }: QuizBuilderProps) {
   const [isPending, startTransition] = useTransition();
   const [quizId, setQuizId] = useState<string | null>(initialQuiz?.id || null);
   const [title, setTitle] = useState(initialQuiz?.title || "Lesson Quiz");
@@ -42,24 +44,32 @@ export default function QuizBuilder({ lessonId, initialQuiz }: QuizBuilderProps)
   const [isGeneratingAI, setIsGeneratingAI] = useState(false);
 
   const handleAIQuestions = async () => {
-    if (!title || !title.trim()) return;
+    if (!title || !title.trim()) {
+      toast.error("Please set a quiz title first");
+      return;
+    }
     setIsGeneratingAI(true);
     try {
       const res = await generateAIQuizQuestions(title);
-      if (res.success && res.data.questions) {
-        setQuestions([...questions, ...res.data.questions]);
+      if (res.success) {
+        setQuestions((prev) => [...prev, ...res.data.questions]);
+        toast.success(`Generated ${res.data.questions.length} AI questions`);
+      } else {
+        toast.error(res.error || "AI generation failed");
       }
     } catch (err) {
-      console.error(err);
+      toast.error(
+        err instanceof Error ? err.message : "AI generation failed",
+      );
     } finally {
       setIsGeneratingAI(false);
     }
   };
   
   const [questions, setQuestions] = useState<Question[]>(
-    initialQuiz?.questions.map((q) => ({
+    (initialQuiz?.questions ?? []).map((q) => ({
       question: q.question,
-      options: q.options as QuestionOption[],
+      options: (q.options as QuestionOption[]) ?? [],
       explanation: q.explanation || "",
     })) || []
   );
@@ -211,17 +221,36 @@ export default function QuizBuilder({ lessonId, initialQuiz }: QuizBuilderProps)
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h4 className="font-semibold text-sm">Questions</h4>
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={handleAIQuestions}
-                disabled={isPending || isGeneratingAI}
-                className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center gap-1 h-7 font-bold px-2 hover:bg-indigo-50/20"
-              >
-                <Sparkles className="h-3 w-3" /> {isGeneratingAI ? "Generating..." : "Generate AI Questions"}
-              </Button>
+              {aiEnabled && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleAIQuestions}
+                  disabled={isPending || isGeneratingAI}
+                  className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 flex items-center gap-1 h-7 font-bold px-2 hover:bg-indigo-50/20"
+                >
+                  {isGeneratingAI ? (
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                  ) : (
+                    <Sparkles className="h-3 w-3" />
+                  )}
+                  {isGeneratingAI ? "Generating..." : "Generate AI Questions"}
+                </Button>
+              )}
             </div>
+            {isGeneratingAI && (
+              <div className="p-4 rounded-lg border border-indigo-200 dark:border-indigo-900 bg-indigo-50/50 dark:bg-indigo-950/30 flex items-center gap-3">
+                <Loader2 className="h-5 w-5 animate-spin text-indigo-600 dark:text-indigo-400 shrink-0" />
+                <div className="flex flex-col gap-0.5 min-w-0">
+                  <span className="text-sm font-semibold text-indigo-900 dark:text-indigo-200 flex items-center gap-1.5">
+                    <Sparkles className="h-3 w-3 animate-pulse" />
+                    Generating quiz questions
+                  </span>
+                  <span className="text-xs text-indigo-700/70 dark:text-indigo-300/70">Crafting 3 contextual questions with AI...</span>
+                </div>
+              </div>
+            )}
             {questions.map((q, qIdx) => (
               <div
                 key={qIdx}

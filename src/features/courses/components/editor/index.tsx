@@ -26,9 +26,10 @@ import {
 interface CourseEditorProps {
   course: CourseEditorCourse;
   categories: CourseEditorCategory[];
+  aiEnabled: boolean;
 }
 
-export default function CourseEditor({ course, categories }: CourseEditorProps) {
+export default function CourseEditor({ course, categories, aiEnabled }: CourseEditorProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isGeneratingAI, setIsGeneratingAI] = useState(false);
@@ -217,6 +218,7 @@ export default function CourseEditor({ course, categories }: CourseEditorProps) 
             categories={categories}
             isPending={isPending}
             isGeneratingAI={isGeneratingAI}
+            aiEnabled={aiEnabled}
             onGenerateAI={handleAIDescription}
             onSubmit={onSubmit}
           />

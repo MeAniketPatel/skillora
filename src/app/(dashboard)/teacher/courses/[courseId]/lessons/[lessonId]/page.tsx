@@ -1,6 +1,7 @@
 import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getCourseByIdForOwner, getPeerReviewConfig } from "@/features/courses/server";
 import { getLessonWithContent } from "@/features/courses/server";
+import { isAIEnabled } from "@/features/ai";
 import { redirect } from "next/navigation";
 import { LessonEditor } from "@/features/courses";
 import { PeerReviewConfig } from "@/features/teachers";
@@ -12,7 +13,7 @@ export default async function LessonEditPage({
 }) {
   const user = await requireTeacher();
   const { courseId, lessonId } = await params;
-  
+
   let course;
   try {
     course = await getCourseByIdForOwner(courseId, user.id);
@@ -34,13 +35,13 @@ export default async function LessonEditPage({
     redirect(`/teacher/courses/${courseId}/curriculum`);
   }
 
-  const peerReviewConfig = lesson.type === "ASSIGNMENT" 
-    ? await getPeerReviewConfig(lessonId) 
+  const peerReviewConfig = lesson.type === "ASSIGNMENT"
+    ? await getPeerReviewConfig(lessonId)
     : null;
 
   return (
     <div className="max-w-7xl mx-auto py-2 space-y-6">
-      <LessonEditor courseId={courseId} lesson={lesson} />
+      <LessonEditor courseId={courseId} lesson={lesson} aiEnabled={isAIEnabled()} />
       {lesson.type === "ASSIGNMENT" && (
         <div className="max-w-xl">
           <PeerReviewConfig lessonId={lessonId} initialConfig={peerReviewConfig} />

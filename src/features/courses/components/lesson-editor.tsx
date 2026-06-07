@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   ArrowLeft,
@@ -64,9 +64,10 @@ interface LessonEditorProps {
     attachments: Attachment[];
     quiz?: any;
   };
+  aiEnabled: boolean;
 }
 
-export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
+export default function LessonEditor({ courseId, lesson, aiEnabled }: LessonEditorProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -74,12 +75,15 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
   const [attachments, setAttachments] = useState<Attachment[]>(
     lesson.attachments,
   );
+  const [isUploadingVideo, setIsUploadingVideo] = useState(false);
+  const [isUploadingAttachment, setIsUploadingAttachment] = useState(false);
 
   const {
     register,
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm<LessonFormValues>({
     resolver: zodResolver(lessonSchema),
@@ -97,6 +101,22 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
     },
   });
 
+  useEffect(() => {
+    reset({
+      title: lesson.title,
+      type:
+        lesson.type === "VIDEO"
+          ? "VIDEO"
+          : lesson.type === "QUIZ"
+            ? "QUIZ"
+            : "ARTICLE",
+      content: lesson.content || "",
+      videoUrl: lesson.videoUrl || "",
+      videoDuration: lesson.videoDuration || null,
+    });
+    setAttachments(lesson.attachments);
+  }, [lesson.id, lesson.title, lesson.type, lesson.content, lesson.videoUrl, lesson.videoDuration, lesson.attachments, reset]);
+
   const watchType = watch("type");
   const watchVideoUrl = watch("videoUrl");
   const watchContent = watch("content");
@@ -108,9 +128,9 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
       const res = await updateLesson(courseId, lesson.sectionId, lesson.id, {
         title: values.title,
         type: values.type,
-        content: values.type === "ARTICLE" ? values.content : "",
-        videoUrl: values.type === "VIDEO" ? values.videoUrl : null,
-        videoDuration: values.type === "VIDEO" ? values.videoDuration : null,
+        content: values.type === "ARTICLE" ? values.content || "" : "",
+        videoUrl: values.type === "VIDEO" ? values.videoUrl || null : null,
+        videoDuration: values.type === "VIDEO" ? values.videoDuration ?? null : null,
       });
 
       if (!res.success) {
@@ -145,7 +165,7 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
       if (!res.success) {
         setError(res.error);
       } else {
-        setAttachments([res.data, ...attachments]);
+        setAttachments((prev) => [res.data, ...prev]);
         setSuccess("Attachment added successfully!");
         router.refresh();
       }
@@ -159,7 +179,7 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
       if (!res.success) {
         setError(res.error);
       } else {
-        setAttachments(attachments.filter((a) => a.id !== attachmentId));
+        setAttachments((prev) => prev.filter((a) => a.id !== attachmentId));
         setSuccess("Attachment removed successfully!");
         router.refresh();
       }
@@ -276,30 +296,46 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
                         </Button>
                       </div>
                     ) : (
-                      <div className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg p-6 flex flex-col items-center justify-center min-h-[200px] bg-neutral-50/50 dark:bg-neutral-950/20">
-                        <UploadDropzone
-                          endpoint="lessonVideo"
-                          onClientUploadComplete={(res) => {
-                            const fileUrl = res?.[0]?.ufsUrl || res?.[0]?.url;
-                            if (fileUrl) {
-                              setValue("videoUrl", fileUrl);
-                              setValue("videoDuration", 0);
-                              setSuccess(
-                                "Video uploaded successfully! Make sure to save details.",
-                              );
-                            }
-                          }}
-                          onUploadError={(error: Error) => {
-                            setError(`Upload failed: ${error.message}`);
-                          }}
-                        />
+                      <div className="relative border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg bg-neutral-50/50 dark:bg-neutral-950/20 overflow-hidden">
+                        {isUploadingVideo ? (
+                          <div className="flex flex-col items-center justify-center min-h-[200px] gap-3">
+                            <div className="animate-spin rounded-full h-10 w-10 border-[3px] border-indigo-600 border-t-transparent" />
+                            <div className="flex flex-col items-center gap-0.5">
+                              <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                                Uploading video...
+                              </span>
+                              <span className="text-xs text-neutral-500">Please don't close this tab</span>
+                            </div>
+                          </div>
+                        ) : (
+                          <UploadDropzone
+                            endpoint="lessonVideo"
+                            config={{ mode: "auto" }}
+                            onUploadBegin={() => setIsUploadingVideo(true)}
+                            onClientUploadComplete={(res) => {
+                              setIsUploadingVideo(false);
+                              const fileUrl = res?.[0]?.ufsUrl || res?.[0]?.url;
+                              if (fileUrl) {
+                                setValue("videoUrl", fileUrl);
+                                setValue("videoDuration", 0);
+                                setSuccess(
+                                  "Video uploaded successfully! Don't forget to save details.",
+                                );
+                              }
+                            }}
+                            onUploadError={(error: Error) => {
+                              setIsUploadingVideo(false);
+                              setError(`Upload failed: ${error.message}`);
+                            }}
+                          />
+                        )}
                       </div>
                     )}
                   </div>
                 )}
 
                 {watchType === "QUIZ" && (
-                  <QuizBuilder lessonId={lesson.id} initialQuiz={lesson.quiz} />
+                  <QuizBuilder lessonId={lesson.id} initialQuiz={lesson.quiz} aiEnabled={aiEnabled} />
                 )}
 
                 <Button
@@ -327,24 +363,40 @@ export default function LessonEditor({ courseId, lesson }: LessonEditorProps) {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg p-4 flex flex-col items-center justify-center bg-neutral-50/50 dark:bg-neutral-950/20">
-                <UploadDropzone
-                  endpoint="lessonAttachment"
-                  onClientUploadComplete={(res) => {
-                    if (res) {
-                      res.forEach((file) => {
-                        handleAddAttachment({
-                          name: file.name,
-                          url: file.url,
-                          size: file.size,
+              <div className="relative border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg bg-neutral-50/50 dark:bg-neutral-950/20 overflow-hidden">
+                {isUploadingAttachment ? (
+                  <div className="flex flex-col items-center justify-center min-h-[160px] gap-3">
+                    <div className="animate-spin rounded-full h-10 w-10 border-[3px] border-indigo-600 border-t-transparent" />
+                    <div className="flex flex-col items-center gap-0.5">
+                      <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                        Uploading attachment...
+                      </span>
+                      <span className="text-xs text-neutral-500">Please don't close this tab</span>
+                    </div>
+                  </div>
+                ) : (
+                  <UploadDropzone
+                    endpoint="lessonAttachment"
+                    config={{ mode: "auto" }}
+                    onUploadBegin={() => setIsUploadingAttachment(true)}
+                    onClientUploadComplete={(res) => {
+                      setIsUploadingAttachment(false);
+                      if (res) {
+                        res.forEach((file) => {
+                          handleAddAttachment({
+                            name: file.name,
+                            url: file.ufsUrl || file.url,
+                            size: file.size,
+                          });
                         });
-                      });
-                    }
-                  }}
-                  onUploadError={(error: Error) => {
-                    setError(`Upload failed: ${error.message}`);
-                  }}
-                />
+                      }
+                    }}
+                    onUploadError={(error: Error) => {
+                      setIsUploadingAttachment(false);
+                      setError(`Upload failed: ${error.message}`);
+                    }}
+                  />
+                )}
               </div>
 
               <div className="space-y-2">

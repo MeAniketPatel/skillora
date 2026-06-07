@@ -198,41 +198,49 @@ function Dropzone({
       }}
       onDragLeave={() => setIsDragging(false)}
       onDrop={() => setIsDragging(false)}
-      className={`relative border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center min-h-[200px] transition-all duration-200 overflow-hidden ${
+      className={`relative border-2 border-dashed rounded-lg transition-all duration-200 overflow-hidden ${
         isDragging
-          ? "border-indigo-500 bg-indigo-50/10 dark:bg-indigo-950/10 scale-[1.02]"
+          ? "border-indigo-500 bg-indigo-50/30 dark:bg-indigo-950/20"
           : "border-neutral-300 dark:border-neutral-700 bg-neutral-50/50 dark:bg-neutral-950/20"
-      } aria-invalid:border-destructive`}
+      } aria-invalid:border-red-500`}
     >
-      {isDragging && (
-        <div className="absolute inset-0 bg-indigo-500/10 dark:bg-indigo-950/20 z-20 flex flex-col items-center justify-center pointer-events-none border-2 border-indigo-500 rounded-lg animate-pulse">
-          <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
-            Drop to upload {label}!
+      {isUploading ? (
+        <div className="flex flex-col items-center justify-center min-h-[200px] gap-3 backdrop-blur-sm bg-white/90 dark:bg-neutral-950/90">
+          <div className="animate-spin rounded-full h-10 w-10 border-[3px] border-indigo-600 border-t-transparent" />
+          <div className="flex flex-col items-center gap-0.5">
+            <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+              Uploading {label}...
+            </span>
+            <span className="text-xs text-neutral-500">Please don't close this tab</span>
+          </div>
+        </div>
+      ) : isDragging ? (
+        <div className="flex flex-col items-center justify-center min-h-[200px] gap-2">
+          <div className="h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-950/40 flex items-center justify-center">
+            <svg className="h-5 w-5 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+            </svg>
+          </div>
+          <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">
+            Drop to upload {label}
           </span>
         </div>
+      ) : (
+        <UploadDropzone
+          endpoint={endpoint}
+          config={{ mode: "auto" }}
+          onUploadBegin={() => setIsUploading(true)}
+          onClientUploadComplete={(res) => {
+            setIsUploading(false);
+            const fileUrl = res?.[0]?.ufsUrl || res?.[0]?.url;
+            if (fileUrl) onComplete(fileUrl);
+          }}
+          onUploadError={(error: Error) => {
+            setIsUploading(false);
+            onError(`Upload failed: ${error.message}`);
+          }}
+        />
       )}
-      {isUploading && (
-        <div className="absolute inset-0 bg-white/80 dark:bg-neutral-950/80 z-10 flex flex-col items-center justify-center gap-2">
-          <div className="animate-spin rounded-full h-8 w-8 border-2 border-indigo-600 border-t-transparent" />
-          <span className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">
-            Uploading {label}...
-          </span>
-        </div>
-      )}
-      <UploadDropzone
-        endpoint={endpoint}
-        config={{ mode: "auto" }}
-        onUploadBegin={() => setIsUploading(true)}
-        onClientUploadComplete={(res) => {
-          setIsUploading(false);
-          const fileUrl = res?.[0]?.ufsUrl || res?.[0]?.url;
-          if (fileUrl) onComplete(fileUrl);
-        }}
-        onUploadError={(error: Error) => {
-          setIsUploading(false);
-          onError(`Upload failed: ${error.message}`);
-        }}
-      />
     </div>
   );
 }
