@@ -54,6 +54,11 @@ export default async function LearnPage({ params }: LearnPageProps) {
   const prevLessonId = currentIdx > 0 ? allLessons[currentIdx - 1].id : null;
   const nextLessonId = currentIdx < allLessons.length - 1 ? allLessons[currentIdx + 1].id : null;
 
+  // Find current section for breadcrumb
+  const currentSection = course.sections.find((s) =>
+    s.lessons.some((l) => l.id === lessonId),
+  );
+
   const completedLessonIds = enrollment.lessonProgress
     .filter((lp) => lp.isCompleted)
     .map((lp) => lp.lessonId);
@@ -62,6 +67,13 @@ export default async function LearnPage({ params }: LearnPageProps) {
     <LessonPlayer
       courseId={courseId}
       courseTitle={course.title}
+      breadcrumb={{
+        sectionTitle: currentSection?.title ?? "",
+        sectionIndex: course.sections.findIndex((s) => s.id === currentSection?.id) + 1,
+        totalSections: course.sections.length,
+        lessonPosition: currentIdx + 1,
+        totalLessons: allLessons.length,
+      }}
       lesson={{
         id: lesson.id,
         title: lesson.title,
@@ -74,12 +86,9 @@ export default async function LearnPage({ params }: LearnPageProps) {
         quiz: lesson.quiz,
         submission: assignmentSubmission,
       }}
-      sections={course.sections as any}
       completedLessonIds={completedLessonIds}
       prevLessonId={prevLessonId}
       nextLessonId={nextLessonId}
     />
   );
 }
-
-

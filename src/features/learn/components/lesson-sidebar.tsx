@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import {
   ChevronDown,
   ChevronUp,
@@ -33,7 +34,6 @@ export interface LessonSidebarItem {
 
 export interface LessonSidebarProps {
   courseId: string;
-  activeLessonId: string;
   sections: LessonSidebarSection[];
   progressPercent: number;
 }
@@ -47,10 +47,14 @@ const LESSON_TYPE_ICONS = {
 
 export function LessonSidebar({
   courseId,
-  activeLessonId,
   sections,
   progressPercent,
 }: LessonSidebarProps) {
+  const pathname = usePathname() ?? "";
+  const activeLessonId = pathname.startsWith(`/learn/${courseId}/`)
+    ? pathname.split(`/learn/${courseId}/`)[1]?.split("/")[0] ?? ""
+    : "";
+
   const [openSections, setOpenSections] = useState<Set<string>>(() => {
     const initial = new Set<string>();
     sections.forEach((s) => {
@@ -81,21 +85,23 @@ export function LessonSidebar({
       <Button
         onClick={() => setIsMobileOpen(true)}
         variant="outline"
-        className="fixed bottom-4 right-4 z-40 rounded-full shadow-lg lg:hidden"
+        size="sm"
+        className="fixed bottom-4 right-4 z-40 rounded-full shadow-lg lg:hidden gap-2"
       >
-        Course Content
+        <ListChecks className="h-4 w-4" />
+        Content ({completedLessons}/{totalLessons})
       </Button>
 
       {isMobileOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
           onClick={() => setIsMobileOpen(false)}
         />
       )}
 
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-80 flex-col border-r border-border bg-card transition-transform lg:static lg:z-auto lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-50 flex w-80 flex-col border-r border-border bg-card transition-transform duration-300 lg:sticky lg:top-16 lg:z-30 lg:h-[calc(100vh-4rem)] lg:translate-x-0 lg:self-start",
           isMobileOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
@@ -152,7 +158,7 @@ export function LessonSidebar({
 
                   {isOpen && (
                     <ul className="space-y-1 border-t border-border/60 p-1.5">
-                      {section.lessons.map((lesson) => {
+                      {section.lessons.map((lesson, lIdx) => {
                         const Icon =
                           LESSON_TYPE_ICONS[lesson.type] ?? PlayCircle;
                         const isActive = lesson.id === activeLessonId;
@@ -162,23 +168,51 @@ export function LessonSidebar({
                               href={`/learn/${courseId}/${lesson.id}`}
                               onClick={() => setIsMobileOpen(false)}
                               className={cn(
-                                "flex items-center gap-2 rounded-lg px-2.5 py-2 text-xs transition",
+                                "flex items-center gap-2 rounded-lg px-2.5 py-2 text-xs transition-colors",
                                 isActive
-                                  ? "bg-primary/10 text-primary"
+                                  ? "bg-primary text-primary-foreground hover:bg-primary"
                                   : "hover:bg-muted",
                               )}
                             >
                               {lesson.isCompleted ? (
-                                <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
+                                <CheckCircle2
+                                  className={cn(
+                                    "h-4 w-4 shrink-0",
+                                    isActive
+                                      ? "text-primary-foreground"
+                                      : "text-emerald-500",
+                                  )}
+                                />
                               ) : (
-                                <Circle className="h-4 w-4 shrink-0 text-muted-foreground/40" />
+                                <Circle
+                                  className={cn(
+                                    "h-4 w-4 shrink-0",
+                                    isActive
+                                      ? "text-primary-foreground/60"
+                                      : "text-muted-foreground/40",
+                                  )}
+                                />
                               )}
-                              <Icon className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
-                              <span className="line-clamp-1 flex-1">
-                                {lesson.title}
+                              <Icon
+                                className={cn(
+                                  "h-3.5 w-3.5 shrink-0",
+                                  isActive
+                                    ? "text-primary-foreground"
+                                    : "text-muted-foreground",
+                                )}
+                              />
+                              <span className="line-clamp-1 flex-1 font-medium">
+                                {lIdx + 1}. {lesson.title}
                               </span>
                               {lesson.isFree && (
-                                <span className="rounded-md bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
+                                <span
+                                  className={cn(
+                                    "rounded-md px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider",
+                                    isActive
+                                      ? "bg-primary-foreground/20 text-primary-foreground"
+                                      : "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300",
+                                  )}
+                                >
                                   Free
                                 </span>
                               )}

@@ -1,18 +1,24 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useMemo, useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { 
-  CheckCircle, 
-  Circle, 
-  ArrowLeft, 
-  ArrowRight, 
-  Layers,
-  Menu,
+import {
+  CheckCircle2,
+  ArrowLeft,
+  ArrowRight,
+  PlayCircle,
+  FileText,
+  ListChecks,
+  ClipboardList,
   File,
-  Download
+  Download,
+  ChevronRight,
+  Home,
+  Clock,
+  Sparkles,
 } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent } from "@/shared/components/ui/card";
@@ -22,19 +28,7 @@ import { QuizView } from "@/features/courses";
 import { AssignmentView } from "@/features/courses";
 import { AITutor } from "@/features/learn";
 import { sanitizeRichHtml } from "@/shared/lib/sanitize";
-
-interface Lesson {
-  id: string;
-  title: string;
-  isFree: boolean;
-  isPublished: boolean;
-}
-
-interface Section {
-  id: string;
-  title: string;
-  lessons: Lesson[];
-}
+import { cn } from "@/shared/lib/utils";
 
 interface Attachment {
   id: string;
@@ -47,6 +41,13 @@ interface Attachment {
 interface LessonPlayerProps {
   courseId: string;
   courseTitle: string;
+  breadcrumb: {
+    sectionTitle: string;
+    sectionIndex: number;
+    totalSections: number;
+    lessonPosition: number;
+    totalLessons: number;
+  };
   lesson: {
     id: string;
     title: string;
@@ -59,130 +60,208 @@ interface LessonPlayerProps {
     quiz: any;
     submission: any;
   };
-  sections: Section[];
   completedLessonIds: string[];
   nextLessonId: string | null;
   prevLessonId: string | null;
 }
 
+const LESSON_TYPE_META = {
+  VIDEO: {
+    label: "Video",
+    icon: PlayCircle,
+    color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
+  },
+  ARTICLE: {
+    label: "Article",
+    icon: FileText,
+    color:
+      "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300",
+  },
+  QUIZ: {
+    label: "Quiz",
+    icon: ListChecks,
+    color:
+      "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300",
+  },
+  ASSIGNMENT: {
+    label: "Assignment",
+    icon: ClipboardList,
+    color:
+      "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300",
+  },
+} as const;
+
+function formatDuration(seconds: number | null): string {
+  if (!seconds || seconds <= 0) return "";
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  if (m === 0) return `${s}s`;
+  if (s === 0) return `${m} min`;
+  return `${m}m ${s}s`;
+}
+
+function formatBytes(bytes: number | null): string {
+  if (!bytes || bytes <= 0) return "";
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 export default function LessonPlayer({
   courseId,
   courseTitle,
+  breadcrumb,
   lesson,
-  sections,
   completedLessonIds,
   nextLessonId,
   prevLessonId,
 }: LessonPlayerProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const isCompleted = completedLessonIds.includes(lesson.id);
+  const isLast = !nextLessonId;
+  const meta = LESSON_TYPE_META[lesson.type];
+  const TypeIcon = meta.icon;
+
   const safeArticleHtml = useMemo(
     () =>
       sanitizeRichHtml(
         lesson.content && lesson.content.trim().length > 0
           ? lesson.content
-          : "<p>This lesson has no written content.</p>",
+          : "<p class='italic text-neutral-500'>This lesson has no written content yet.</p>",
       ),
     [lesson.content],
   );
 
+  // Track when lesson changes to fade-in animation
+  useEffect(() => {
+    setIsTransitioning(true);
+    const t = setTimeout(() => setIsTransitioning(false), 200);
+    return () => clearTimeout(t);
+  }, [lesson.id]);
+
   const handleToggleCompletion = () => {
-    startTransition(async () => {
-      const res = await toggleLessonCompletion(courseId, lesson.id, !isCompleted);
-      if (res.success) {
-        router.refresh();
-        if (!isCompleted && nextLessonId) {
-          router.push(`/learn/${courseId}/${nextLessonId}`);
+    if (isCompleted) {
+      startTransition(async () => {
+        const res = await toggleLessonCompletion(courseId, lesson.id, false);
+        if (res.success) {
+          toast.success("Marked as incomplete");
+          router.refresh();
+        } else {
+          toast.error(res.error || "Failed to update");
         }
+      });
+      return;
+    }
+
+    startTransition(async () => {
+      const res = await toggleLessonCompletion(courseId, lesson.id, true);
+      if (res.success) {
+        toast.success("Lesson complete! 🎉", {
+          description: nextLessonId
+            ? "Loading next lesson..."
+            : "You finished the course!",
+        });
+        router.refresh();
+        if (nextLessonId) {
+          setTimeout(() => router.push(`/learn/${courseId}/${nextLessonId}`), 600);
+        }
+      } else {
+        toast.error(res.error || "Failed to update");
       }
     });
   };
 
   const handleVideoComplete = () => {
-    // Refresh player progress state
     router.refresh();
   };
 
+  const goPrev = () => {
+    if (prevLessonId) router.push(`/learn/${courseId}/${prevLessonId}`);
+  };
+
+  const goNext = () => {
+    if (nextLessonId) router.push(`/learn/${courseId}/${nextLessonId}`);
+  };
+
   return (
-    <div className="flex h-[calc(100vh-4rem)] bg-neutral-50 dark:bg-neutral-950 overflow-hidden relative">
-      
-      {/* Sidebar - Course Index */}
-      <aside className={`shrink-0 border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 transition-all duration-300 flex flex-col ${
-        sidebarOpen ? "w-80" : "w-0 -translate-x-full md:w-0 md:-translate-x-full"
-      } h-full overflow-hidden absolute md:relative z-20`}>
-        <div className="p-4 border-b border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
-          <h2 className="font-bold text-sm truncate">{courseTitle}</h2>
-          <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(false)} className="md:hidden">
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-        </div>
+    <div
+      className={cn(
+        "flex flex-1 flex-col min-h-0 transition-opacity duration-200",
+        isTransitioning ? "opacity-0" : "opacity-100",
+      )}
+    >
+      {/* Top: Breadcrumb + Title + Meta */}
+      <div className="border-b border-border bg-card/40 backdrop-blur">
+        <div className="mx-auto max-w-4xl px-4 py-5 sm:px-6 lg:px-8">
+          {/* Breadcrumb */}
+          <nav className="mb-3 flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Link
+              href="/student/courses"
+              className="flex items-center gap-1 hover:text-foreground transition-colors"
+            >
+              <Home className="h-3 w-3" />
+              My Courses
+            </Link>
+            <ChevronRight className="h-3 w-3" />
+            <span className="truncate max-w-[180px] font-medium text-foreground/80">
+              {courseTitle}
+            </span>
+            {breadcrumb.sectionTitle && (
+              <>
+                <ChevronRight className="h-3 w-3" />
+                <span className="truncate max-w-[180px] font-medium text-foreground/80">
+                  {breadcrumb.sectionTitle}
+                </span>
+              </>
+            )}
+          </nav>
 
-        <nav className="flex-1 overflow-y-auto p-4 space-y-4">
-          {sections.map((section) => (
-            <div key={section.id} className="space-y-1.5">
-              <div className="flex items-center gap-1 text-xs font-bold text-neutral-400 uppercase tracking-wider">
-                <Layers className="h-3.5 w-3.5" />
-                <span>{section.title}</span>
-              </div>
-              <div className="space-y-1">
-                {section.lessons.map((les) => {
-                  const lesCompleted = completedLessonIds.includes(les.id);
-                  const isCurrent = les.id === lesson.id;
-
-                  return (
-                    <Link
-                      key={les.id}
-                      href={`/learn/${courseId}/${les.id}`}
-                      className={`flex items-center gap-2 px-3 py-2 text-xs rounded-lg transition-colors ${
-                        isCurrent 
-                          ? "bg-neutral-900 text-white dark:bg-neutral-50 dark:text-neutral-900 font-semibold"
-                          : "hover:bg-neutral-100 dark:hover:bg-neutral-800/50"
-                      }`}
-                    >
-                      {lesCompleted ? (
-                        <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />
-                      ) : (
-                        <Circle className="h-4 w-4 text-neutral-300 dark:text-neutral-700 shrink-0" />
-                      )}
-                      <span className="truncate">{les.title}</span>
-                    </Link>
-                  );
-                })}
+          {/* Title + Meta row */}
+          <div className="flex flex-wrap items-start gap-3">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
+                {lesson.title}
+              </h1>
+              <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                <span
+                  className={cn(
+                    "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold",
+                    meta.color,
+                  )}
+                >
+                  <TypeIcon className="h-3 w-3" />
+                  {meta.label}
+                </span>
+                <span className="font-medium">
+                  Lesson {breadcrumb.lessonPosition} of {breadcrumb.totalLessons}
+                </span>
+                {lesson.videoDuration ? (
+                  <span className="inline-flex items-center gap-1 font-medium">
+                    <Clock className="h-3 w-3" />
+                    {formatDuration(lesson.videoDuration)}
+                  </span>
+                ) : null}
+                {isCompleted && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-1 text-[11px] font-bold text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
+                    <CheckCircle2 className="h-3 w-3" />
+                    Completed
+                  </span>
+                )}
               </div>
             </div>
-          ))}
-        </nav>
-      </aside>
-
-      {/* Main learning container */}
-      <div className="flex-1 flex flex-col h-full min-w-0 bg-neutral-50 dark:bg-neutral-950 overflow-y-auto">
-        {/* Top toolbar */}
-        <div className="h-14 border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 flex items-center px-6 justify-between shrink-0">
-          <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(!sidebarOpen)}>
-            <Menu className="h-5 w-5" />
-          </Button>
-
-          <div className="flex gap-2">
-            {prevLessonId && (
-              <Button variant="outline" size="sm" onClick={() => router.push(`/learn/${courseId}/${prevLessonId}`)}>
-                <ArrowLeft className="h-4 w-4 mr-1" /> Prev
-              </Button>
-            )}
-            {nextLessonId && (
-              <Button variant="outline" size="sm" onClick={() => router.push(`/learn/${courseId}/${nextLessonId}`)}>
-                Next <ArrowRight className="h-4 w-4 ml-1" />
-              </Button>
-            )}
           </div>
         </div>
+      </div>
 
-        {/* Video Player Header (if lesson is video type) */}
-        {lesson.type === "VIDEO" && lesson.videoUrl && (
-          <div className="bg-black w-full flex justify-center border-b border-neutral-200 dark:border-neutral-800">
-            <div className="w-full max-w-5xl p-4 md:p-6">
+      {/* Scrollable content area */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 lg:px-8 space-y-6">
+          {/* Video Player */}
+          {lesson.type === "VIDEO" && lesson.videoUrl && (
+            <div className="overflow-hidden rounded-2xl border border-border bg-black shadow-sm">
               <VideoPlayer
                 courseId={courseId}
                 lessonId={lesson.id}
@@ -191,21 +270,21 @@ export default function LessonPlayer({
                 onComplete={handleVideoComplete}
               />
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Lesson Body Content */}
-        <div className="flex-1 p-6 md:p-10 max-w-3xl mx-auto w-full space-y-6">
-          <h1 className="text-3xl font-extrabold tracking-tight">{lesson.title}</h1>
-          
+          {/* Article Content */}
           {lesson.type === "ARTICLE" && (
-            <Card className="bg-white dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50 shadow-sm">
-              <CardContent className="p-6 prose dark:prose-invert max-w-none text-neutral-700 dark:text-neutral-300">
-                <div dangerouslySetInnerHTML={{ __html: safeArticleHtml }} />
+            <Card className="border-border bg-card shadow-sm">
+              <CardContent className="p-6 sm:p-8">
+                <div
+                  className="prose prose-neutral max-w-none dark:prose-invert prose-headings:font-extrabold prose-headings:tracking-tight prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg prose-p:leading-relaxed prose-p:text-foreground/90 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-code:rounded prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:text-sm prose-code:before:content-none prose-code:after:content-none prose-pre:bg-muted prose-pre:border prose-pre:border-border prose-blockquote:border-l-primary prose-blockquote:not-italic prose-blockquote:text-muted-foreground prose-img:rounded-lg prose-img:border prose-img:border-border prose-li:my-1"
+                  dangerouslySetInnerHTML={{ __html: safeArticleHtml }}
+                />
               </CardContent>
             </Card>
           )}
 
+          {/* Quiz */}
           {lesson.type === "QUIZ" && lesson.quiz && (
             <QuizView
               courseId={courseId}
@@ -214,6 +293,7 @@ export default function LessonPlayer({
             />
           )}
 
+          {/* Assignment */}
           {lesson.type === "ASSIGNMENT" && (
             <AssignmentView
               lessonId={lesson.id}
@@ -221,46 +301,108 @@ export default function LessonPlayer({
             />
           )}
 
-          {/* Attachments Section */}
+          {/* Attachments */}
           {lesson.attachments && lesson.attachments.length > 0 && (
-            <div className="space-y-3 pt-4 border-t border-neutral-200 dark:border-neutral-800">
-              <h3 className="font-bold text-sm text-neutral-700 dark:text-neutral-300">Resources & Materials</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="space-y-3">
+              <h3 className="flex items-center gap-2 text-sm font-bold">
+                <File className="h-4 w-4 text-muted-foreground" />
+                Resources & Materials
+                <span className="text-xs font-medium text-muted-foreground">
+                  ({lesson.attachments.length})
+                </span>
+              </h3>
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {lesson.attachments.map((file) => (
                   <a
                     key={file.id}
                     href={file.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-between p-3 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800/40 transition-colors group"
+                    className="group flex items-center gap-3 rounded-lg border border-border bg-card p-3 transition-all hover:border-primary/50 hover:bg-muted/50 hover:shadow-sm"
                   >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <File className="h-5 w-5 text-primary shrink-0" />
-                      <span className="text-sm font-medium truncate text-neutral-700 dark:text-neutral-300">
-                        {file.name}
-                      </span>
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+                      <File className="h-5 w-5" />
                     </div>
-                    <Download className="h-4 w-4 text-neutral-400 group-hover:text-primary transition-colors shrink-0 ml-2" />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-semibold text-foreground group-hover:text-primary">
+                        {file.name}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {file.type?.toUpperCase() || "File"}
+                        {file.size ? ` · ${formatBytes(file.size)}` : ""}
+                      </p>
+                    </div>
+                    <Download className="h-4 w-4 shrink-0 text-muted-foreground group-hover:text-primary" />
                   </a>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Completion controls */}
-          {lesson.type !== "QUIZ" && lesson.type !== "ASSIGNMENT" && (
-            <div className="flex justify-end pt-4 border-t border-neutral-200 dark:border-neutral-800">
-              <Button
-                onClick={handleToggleCompletion}
-                disabled={isPending}
-                className={`font-semibold ${isCompleted ? "bg-green-600 hover:bg-green-700" : ""}`}
-              >
-                {isCompleted ? "Completed" : "Mark as Complete"}
-              </Button>
-            </div>
-          )}
+          {/* Spacer to prevent content being hidden behind sticky action bar */}
+          <div className="h-4" />
         </div>
       </div>
+
+      {/* Sticky bottom action bar */}
+      <div className="sticky bottom-0 z-30 border-t border-border bg-card/95 backdrop-blur shadow-[0_-4px_20px_rgba(0,0,0,0.05)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.3)]">
+        <div className="mx-auto flex max-w-4xl items-center gap-2 px-4 py-3 sm:gap-3 sm:px-6 lg:px-8">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={goPrev}
+            disabled={!prevLessonId || isPending}
+            className="shrink-0"
+          >
+            <ArrowLeft className="mr-1 h-4 w-4" />
+            <span className="hidden sm:inline">Previous</span>
+          </Button>
+
+          {/* Mark as Complete (only for VIDEO and ARTICLE) */}
+          {lesson.type !== "QUIZ" && lesson.type !== "ASSIGNMENT" ? (
+            <Button
+              onClick={handleToggleCompletion}
+              disabled={isPending}
+              size="sm"
+              className={cn(
+                "flex-1 font-semibold sm:flex-none sm:px-8",
+                isCompleted
+                  ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                  : "bg-primary text-primary-foreground hover:bg-primary/90",
+              )}
+            >
+              <CheckCircle2 className="mr-2 h-4 w-4" />
+              {isCompleted
+                ? "Completed"
+                : isLast
+                  ? "Complete Course"
+                  : "Mark as Complete"}
+            </Button>
+          ) : (
+            <div className="flex flex-1 items-center justify-center gap-2 text-xs text-muted-foreground sm:flex-none sm:px-8">
+              <Sparkles className="h-3.5 w-3.5" />
+              {lesson.type === "QUIZ"
+                ? "Pass the quiz to continue"
+                : "Submit to complete"}
+            </div>
+          )}
+
+          <Button
+            variant={isCompleted || !nextLessonId ? "default" : "outline"}
+            size="sm"
+            onClick={goNext}
+            disabled={!nextLessonId || isPending}
+            className={cn(
+              "shrink-0",
+              isCompleted && nextLessonId && "bg-primary text-primary-foreground hover:bg-primary/90",
+            )}
+          >
+            <span className="hidden sm:inline">Next</span>
+            <ArrowRight className="ml-1 h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+
       <AITutor courseTitle={courseTitle} lessonTitle={lesson.title} />
     </div>
   );
