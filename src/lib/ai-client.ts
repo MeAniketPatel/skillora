@@ -1,16 +1,21 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const apiKey = process.env.GEMINI_API_KEY || "mock-api-key";
+const DEFAULT_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 
 // Initialize the Google Generative AI client
 export const genAI = new GoogleGenerativeAI(apiKey);
 
+export function getModel(systemInstruction?: string) {
+  return genAI.getGenerativeModel({
+    model: DEFAULT_MODEL,
+    systemInstruction,
+  });
+}
+
 export async function askGemini(prompt: string, systemInstruction?: string) {
   try {
-    const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
-      systemInstruction,
-    });
+    const model = getModel(systemInstruction);
 
     const result = await model.generateContent(prompt);
     const response = await result.response;

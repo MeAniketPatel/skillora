@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { genAI } from "@/lib/ai-client";
+import { getModel } from "@/lib/ai-client";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 
 export async function POST(req: NextRequest) {
@@ -17,10 +17,7 @@ export async function POST(req: NextRequest) {
 You are helping the student study the course "${courseTitle || "General studies"}" and specifically the lesson "${lessonTitle || "General topic"}".
 Answer their question professionally, keep it relatively concise and helpful, and use clear markdown spacing.`;
 
-    const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
-      systemInstruction,
-    });
+    const model = getModel(systemInstruction);
 
     // Request stream from Gemini
     const result = await model.generateContentStream(prompt);

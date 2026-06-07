@@ -3,65 +3,79 @@
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { ValidationError } from "@/shared/lib/errors";
+import { callGemini, isAIEnabled } from "../lib/gemini";
+import { revalidatePath } from "next/cache";
+
+export { isAIEnabled };
 
 export async function generateAICourseDescription(title: string) {
   return actionHandler(async () => {
     await requireTeacher();
 
     if (!title || !title.trim()) {
-      throw new ValidationError("Course title is required to generate description");
+      throw new ValidationError(
+        "Course title is required to generate description",
+      );
     }
 
-    if (process.env.OPENAI_API_KEY) {
-      try {
-        const response = await fetch("https://api.openai.com/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-          },
-          body: JSON.stringify({
-            model: "gpt-4o-mini",
-            messages: [
-              {
-                role: "system",
-                content: "You are an expert online curriculum designer. Generate a professional, comprehensive, and engaging course description in HTML format. Use paragraph tags, list items, and strong tags. Do not wrap in a markdown block, just output raw HTML.",
-              },
-              {
-                role: "user",
-                content: `Generate a course description for: "${title}"`,
-              },
-            ],
-            temperature: 0.7,
-            max_tokens: 500,
-          }),
-        });
+    const systemPrompt = `You are an expert online curriculum designer. Generate a professional, comprehensive, and engaging course description in HTML format.
 
-        const data = await response.json();
-        const htmlDescription = data.choices?.[0]?.message?.content;
-        if (htmlDescription) {
-          return { description: htmlDescription.trim() };
-        }
-      } catch (err) {
-        console.error("OpenAI request failed, falling back to mock generator:", err);
-      }
-    }
+Rules:
+- Use <p> tags for paragraphs
+- Use <h3> for section headings
+- Use <ul> and <li> for bullet lists
+- Use <strong> for emphasis
+- Tailor the content specifically to the course title — do not use generic filler
+- Do not wrap the output in a markdown code block
+- Output ONLY the raw HTML, no preamble or explanation
+- Aim for 3-5 paragraphs and 4-6 bullet points covering what the student will learn`;
 
-    const fallbackHTML = `
-      <p>Welcome to <strong>${title}</strong>! This comprehensive curriculum program has been carefully structured to take you from a baseline understanding to an advanced operational proficiency.</p>
-      <p>Through interactive modules and structured labs, you will master the core foundations, design principles, and optimization strategies required in industry environments today.</p>
-      <h3>What you will learn:</h3>
-      <ul>
-        <li><strong>Core Foundations:</strong> Learn the essential mechanics, paradigms, and syntax constructs.</li>
-        <li><strong>Advanced Architectures:</strong> Apply design systems and modular design patterns to keep projects scalable.</li>
-        <li><strong>Performance Tuning:</strong> Debug runtime bottlenecks, optimize execution cycles, and refine deployment files.</li>
-        <li><strong>Real-World Integrations:</strong> Build real-world portfolio deliverables and get evaluation feedback.</li>
-      </ul>
-      <p>No prior specialist expertise is required, though basic literacy in the technology stack is highly recommended. Join us and upgrade your skill profile!</p>
-    `;
+    const userPrompt = `Generate a course description for: "${title.trim()}"`;
 
-    return { description: fallbackHTML.trim() };
+    const html = await callGemini({ systemPrompt, userPrompt, temperature: 0.7 });
+
+    return { description: html.trim() };
   });
+}
+
+interface GeminiQuizQuestion {
+  question: string;
+  options: { text: string; isCorrect: boolean }[];
+  explanation: string;
+}
+
+function normalizeQuizQuestions(
+  raw: unknown,
+  topic: string,
+): GeminiQuizQuestion[] {
+  let arr: unknown[] = [];
+  if (Array.isArray(raw)) {
+    arr = raw;
+  } else if (raw && typeof raw === "object") {
+    const obj = raw as Record<string, unknown>;
+    if (Array.isArray(obj.questions)) arr = obj.questions;
+    else if (Array.isArray(obj.quiz)) arr = obj.quiz;
+    else {
+      const firstArray = Object.values(obj).find((v) => Array.isArray(v));
+      if (Array.isArray(firstArray)) arr = firstArray;
+    }
+  }
+
+  return arr
+    .filter((q): q is Record<string, unknown> => !!q && typeof q === "object")
+    .map((q) => {
+      const text = String(q.question ?? q.prompt ?? "").trim();
+      const optionsRaw = Array.isArray(q.options) ? q.options : [];
+      const options = optionsRaw
+        .filter((o): o is Record<string, unknown> => !!o && typeof o === "object")
+        .map((o) => ({
+          text: String(o.text ?? o.answer ?? "").trim(),
+          isCorrect: Boolean(o.isCorrect ?? o.correct ?? false),
+        }));
+      const explanation = String(q.explanation ?? q.rationale ?? "").trim();
+      return { question: text || `Question about ${topic}`, options, explanation };
+    })
+    .filter((q) => q.options.length > 0);
 }
 
 export async function generateAIQuizQuestions(topic: string) {
@@ -72,78 +86,69 @@ export async function generateAIQuizQuestions(topic: string) {
       throw new ValidationError("Quiz topic is required to generate questions");
     }
 
-    if (process.env.OPENAI_API_KEY) {
-      try {
-        const response = await fetch("https://api.openai.com/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-          },
-          body: JSON.stringify({
-            model: "gpt-4o-mini",
-            messages: [
-              {
-                role: "system",
-                content: "You are an educator. Generate 3 multiple choice questions for a quiz on the specified topic. Output the result ONLY as a JSON array of objects. Each object must have: 'question' (string), 'options' (array of objects with: 'text' (string) and 'isCorrect' (boolean)), and 'explanation' (string). Ensure exactly one option is marked correct.",
-              },
-              {
-                role: "user",
-                content: `Generate questions on: "${topic}"`,
-              },
-            ],
-            temperature: 0.7,
-            response_format: { type: "json_object" },
-          }),
-        });
+    const systemPrompt = `You are an expert educator. Generate exactly 3 multiple-choice quiz questions on the topic provided.
 
-        const data = await response.json();
-        const jsonStr = data.choices?.[0]?.message?.content;
-        if (jsonStr) {
-          const parsed = JSON.parse(jsonStr);
-          const questions = parsed.questions || parsed;
-          if (Array.isArray(questions)) {
-            return { questions };
-          }
-        }
-      } catch (err) {
-        console.error("OpenAI quiz request failed, falling back to mock generator:", err);
+Output format (strict JSON, no markdown):
+{
+  "questions": [
+    {
+      "question": "string",
+      "options": [
+        { "text": "string", "isCorrect": boolean },
+        { "text": "string", "isCorrect": boolean },
+        { "text": "string", "isCorrect": boolean },
+        { "text": "string", "isCorrect": boolean }
+      ],
+      "explanation": "string explaining the correct answer"
+    }
+  ]
+}
+
+Rules:
+- Exactly 3 questions
+- Exactly 4 options per question
+- Exactly 1 option per question has isCorrect: true
+- Questions must be specifically about the topic — not generic
+- Distractors should be plausible but clearly wrong
+- Explanations should teach, not just confirm`;
+
+    const userPrompt = `Generate 3 quiz questions on the topic: "${topic.trim()}"`;
+
+    const raw = await callGemini({
+      systemPrompt,
+      userPrompt,
+      jsonMode: true,
+      temperature: 0.7,
+    });
+
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      const match = raw.match(/\{[\s\S]*\}/);
+      if (!match) {
+        throw new Error("Gemini returned invalid JSON for quiz questions");
       }
+      parsed = JSON.parse(match[0]);
     }
 
-    const fallbackQuestions = [
-      {
-        question: `What is the primary architectural concept when learning ${topic}?`,
-        options: [
-          { text: "Separation of concerns and modular code distribution", isCorrect: true },
-          { text: "Monolithic file pooling without imports", isCorrect: false },
-          { text: "Dynamic layout manipulation without compile checking", isCorrect: false },
-          { text: "Server-side routing exclusion models", isCorrect: false },
-        ],
-        explanation: "Modern development paradigms prioritize splitting systems into distinct modules with dedicated responsibilities.",
-      },
-      {
-        question: `Which of the following describes a key performance best-practice in ${topic}?`,
-        options: [
-          { text: "Excessive polling cycles over standard database triggers", isCorrect: false },
-          { text: "Caching static configurations and optimizing payload states", isCorrect: true },
-          { text: "Executing database queries directly within client-side markup renders", isCorrect: false },
-          { text: "Disabling types and lint checking prior to build execution", isCorrect: false },
-        ],
-        explanation: "Caching immutable states and pruning network payloads significantly improves rendering latency and resource conservation.",
-      },
-      {
-        question: `How does one verify correctness of implementation modules in ${topic}?`,
-        options: [
-          { text: "Conducting unit tests, compiler checks, and manual walkthrough builds", isCorrect: true },
-          { text: "Relying on user bug logs after publishing directly to main branches", isCorrect: false },
-          { text: "Restricting compilation tests to local development run loops", isCorrect: false },
-          { text: "Using print statements without test assertions", isCorrect: false },
-        ],
-        explanation: "A robust verification lifecycle employs automated unit testing, strict type assertions, and staging environment verification.",
-      },
-    ];
+    const questions = normalizeQuizQuestions(parsed, topic.trim());
+    if (questions.length === 0) {
+      throw new Error("Gemini returned no usable questions");
+    }
 
-    return { questions: fallbackQuestions };
+    return { questions };
   });
 }
+
+export async function getAIConfigStatus() {
+  return actionHandler(async () => {
+    return {
+      enabled: isAIEnabled(),
+      provider: "gemini" as const,
+    };
+  });
+}
+
+// Re-export revalidatePath helper if other actions need it
+export { revalidatePath };

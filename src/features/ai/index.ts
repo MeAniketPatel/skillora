@@ -1,2 +1,6 @@
-
-export { generateAICourseDescription, generateAIQuizQuestions } from "./actions/ai.actions";
+export {
+  generateAICourseDescription,
+  generateAIQuizQuestions,
+  isAIEnabled,
+  getAIConfigStatus,
+} from "./actions/ai.actions";
