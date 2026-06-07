@@ -5,6 +5,7 @@ import { SettingsClientForm } from "@/features/settings";
 import Link from "next/link";
 import { ROUTES } from "@/shared/constants/routes";
 import { Shield, Bell, User } from "lucide-react";
+import db from "@/shared/lib/prisma";
 
 export const metadata = {
   title: "Account Settings",
@@ -23,6 +24,12 @@ export default async function SettingsPage() {
   const role = session.user.role ?? null;
   const sessionSecurity = await getSessionSecurityOverview();
   const authSessions = "data" in sessionSecurity ? sessionSecurity.data ?? [] : [];
+
+  const dbUser = await db.user.findUnique({
+    where: { id: session.user.id },
+    select: { password: true },
+  });
+  const hasPassword = !!dbUser?.password;
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto py-6">
@@ -56,7 +63,7 @@ export default async function SettingsPage() {
       </div>
 
       <SettingsClientForm
-        user={{ name, email, role }}
+        user={{ name, email, role, hasPassword }}
         authSessions={authSessions}
       />
     </div>

@@ -13,6 +13,10 @@ import {
   ShieldAlert,
   ShieldCheck,
   User,
+  Eye,
+  EyeOff,
+  CheckCircle2,
+  Circle,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -23,11 +27,26 @@ import { Label } from "@/shared/components/ui/label";
 import { logoutAllSessions, logoutSession, updateUserSettings } from "@/features/auth";
 import { SignOutButton } from "@/features/auth";
 
-const settingsSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().optional().or(z.literal("")),
-});
+const settingsSchema = z
+  .object({
+    name: z.string().min(2, "Name must be at least 2 characters"),
+    email: z.string().email("Invalid email address"),
+    oldPassword: z.string().optional().or(z.literal("")),
+    newPassword: z.string().optional().or(z.literal("")),
+    confirmNewPassword: z.string().optional().or(z.literal("")),
+  })
+  .refine(
+    (values) => {
+      if (values.newPassword && values.newPassword.length > 0) {
+        return values.newPassword === values.confirmNewPassword;
+      }
+      return true;
+    },
+    {
+      message: "Passwords do not match",
+      path: ["confirmNewPassword"],
+    }
+  );
 
 type SettingsValues = z.infer<typeof settingsSchema>;
 
@@ -49,6 +68,7 @@ interface SettingsClientFormProps {
     name: string | null;
     email: string | null;
     role: string | null;
+    hasPassword: boolean;
   };
   authSessions: AuthSessionSummary[];
 }
@@ -83,31 +103,65 @@ export default function SettingsClientForm({
   const [securityError, setSecurityError] = React.useState<string | null>(null);
   const [securitySuccess, setSecuritySuccess] = React.useState<string | null>(null);
   const [pendingSessionId, setPendingSessionId] = React.useState<string | null>(null);
+  const [showOldPassword, setShowOldPassword] = React.useState(false);
+  const [showNewPassword, setShowNewPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<SettingsValues>({
     resolver: zodResolver(settingsSchema),
+    mode: "onChange",
     defaultValues: {
       name: user.name || "",
       email: user.email || "",
-      password: "",
+      oldPassword: "",
+      newPassword: "",
+      confirmNewPassword: "",
     },
   });
+
+  const newPasswordValue = watch("newPassword") || "";
+  const confirmNewPasswordValue = watch("confirmNewPassword") || "";
+
+  const passwordsMismatch =
+    newPasswordValue.length > 0 &&
+    confirmNewPasswordValue.length > 0 &&
+    newPasswordValue !== confirmNewPasswordValue;
+
+  const strengthChecks = [
+    { label: "At least 12 characters", met: newPasswordValue.length >= 12 },
+    { label: "Contains a number", met: /\d/.test(newPasswordValue) },
+    { label: "Contains a special character", met: /[^A-Za-z0-9]/.test(newPasswordValue) },
+    { label: "Contains a lowercase letter", met: /[a-z]/.test(newPasswordValue) },
+    { label: "Contains an uppercase letter", met: /[A-Z]/.test(newPasswordValue) },
+  ];
+
+  const strengthScore = strengthChecks.filter(c => c.met).length;
 
   const onSubmit = (values: SettingsValues) => {
     setError(null);
     setSuccess(null);
 
     startTransition(async () => {
-      const payload: { name?: string; email?: string; password?: string } = {
+      const payload: {
+        name?: string;
+        email?: string;
+        password?: string;
+        oldPassword?: string;
+      } = {
         name: values.name,
         email: values.email,
       };
-      if (values.password && values.password.trim() !== "") {
-        payload.password = values.password;
+
+      if (values.newPassword && values.newPassword.trim() !== "") {
+        payload.password = values.newPassword;
+        if (values.oldPassword) {
+          payload.oldPassword = values.oldPassword;
+        }
       }
 
       const res = await updateUserSettings(payload);
@@ -222,22 +276,109 @@ export default function SettingsClientForm({
                 )}
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password">New Password (leave blank to keep current)</Label>
-                <div className="relative">
-                  <KeyRound className="absolute left-3 top-2.5 h-4 w-4 text-neutral-400" />
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder="••••••••"
-                    {...register("password")}
-                    disabled={isPending}
-                    className="pl-10 bg-white/50 dark:bg-neutral-950/50 h-9"
-                  />
-                </div>
-                {errors.password && (
-                  <p className="text-xs text-red-500 font-medium">{errors.password.message}</p>
+              <div className="border-t border-neutral-100 pt-4 dark:border-neutral-800/50">
+                <h3 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
+                  Change Password
+                </h3>
+
+                {user.hasPassword && (
+                  <div className="space-y-2 mb-3">
+                    <Label htmlFor="oldPassword">Current Password</Label>
+                    <div className="relative">
+                      <KeyRound className="absolute left-3 top-2.5 h-4 w-4 text-neutral-400" />
+                      <Input
+                        id="oldPassword"
+                        type={showOldPassword ? "text" : "password"}
+                        placeholder="Enter current password"
+                        {...register("oldPassword")}
+                        disabled={isPending}
+                        className="pl-10 pr-10 bg-white/50 dark:bg-neutral-950/50 h-9"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowOldPassword(!showOldPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300"
+                      >
+                        {showOldPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </button>
+                    </div>
+                    {errors.oldPassword && (
+                      <p className="text-xs text-red-500 font-medium">{errors.oldPassword.message}</p>
+                    )}
+                  </div>
                 )}
+
+                <div className="space-y-2">
+                  <Label htmlFor="newPassword">
+                    {user.hasPassword ? "New Password" : "Set a Password"}
+                  </Label>
+                  <div className="relative">
+                    <KeyRound className="absolute left-3 top-2.5 h-4 w-4 text-neutral-400" />
+                    <Input
+                      id="newPassword"
+                      type={showNewPassword ? "text" : "password"}
+                      placeholder={user.hasPassword ? "Enter new password" : "Create a password"}
+                      {...register("newPassword")}
+                      disabled={isPending}
+                      className="pl-10 pr-10 bg-white/50 dark:bg-neutral-950/50 h-9"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300"
+                    >
+                      {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                  {errors.newPassword && (
+                    <p className="text-xs text-red-500 font-medium">{errors.newPassword.message}</p>
+                  )}
+
+                  {newPasswordValue.length > 0 && (
+                    <div className="space-y-2 mt-2 pt-1">
+                      <div className="flex gap-1 h-1 w-full rounded-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
+                        <div className={`h-full transition-all duration-500 ${strengthScore <= 1 ? 'w-0' : strengthScore === 2 ? 'bg-red-500 w-1/3' : strengthScore === 3 ? 'bg-yellow-500 w-2/3' : strengthScore === 4 ? 'bg-yellow-500 w-full' : 'bg-green-500 w-full'}`} />
+                      </div>
+                      <div className="grid grid-cols-1 gap-1 text-xs text-neutral-500">
+                        {strengthChecks.map((check, idx) => (
+                          <div key={idx} className="flex items-center gap-1.5 transition-colors duration-300">
+                            {check.met ? (
+                              <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
+                            ) : (
+                              <Circle className="h-3.5 w-3.5 opacity-40" />
+                            )}
+                            <span className={check.met ? "text-neutral-700 dark:text-neutral-300" : ""}>{check.label}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-2 mt-3">
+                  <Label htmlFor="confirmNewPassword">Confirm New Password</Label>
+                  <div className="relative">
+                    <KeyRound className="absolute left-3 top-2.5 h-4 w-4 text-neutral-400" />
+                    <Input
+                      id="confirmNewPassword"
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="Confirm new password"
+                      {...register("confirmNewPassword")}
+                      disabled={isPending}
+                      className="pl-10 pr-10 bg-white/50 dark:bg-neutral-950/50 h-9"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300"
+                    >
+                      {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                  {(errors.confirmNewPassword || passwordsMismatch) && (
+                    <p className="text-xs text-red-500 font-medium">Passwords do not match</p>
+                  )}
+                </div>
               </div>
 
               {error && (
