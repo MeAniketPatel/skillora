@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getDecksForUser } from "@/features/flashcards/server";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
@@ -5,8 +6,8 @@ import { DeckList } from "@/features/flashcards/server";
 import { Sparkles } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 
-export const metadata = {
-  title: "Flashcards Study | Skillora",
+export const metadata: Metadata = {
+  title: "Flashcards Study",
   description: "Improve learning retention using spaced repetition flashcards.",
 };
 

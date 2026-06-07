@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { globalSearch } from "@/features/search/server";
 import db from "@/shared/lib/prisma";
 import { CourseFilters } from "@/features/courses";
@@ -17,8 +18,8 @@ interface SearchPageProps {
   }>;
 }
 
-export const metadata = {
-  title: "Search Courses & Articles | Skillora",
+export const metadata: Metadata = {
+  title: "Search Courses & Articles",
   description: "Faceted search matching courses, lectures, teachers, and blogs on Skillora.",
 };
 

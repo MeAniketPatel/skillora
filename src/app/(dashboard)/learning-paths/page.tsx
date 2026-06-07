@@ -1,10 +1,11 @@
+import type { Metadata } from "next";
 import { getLearningPaths } from "@/features/learning-paths/server";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import LinkButton from "@/shared/components/ui/link-button";
 import { GraduationCap, ArrowRight, BookOpen, Users } from "lucide-react";
 
-export const metadata = {
-  title: "Learning Paths | Skillora",
+export const metadata: Metadata = {
+  title: "Learning Paths",
   description: "Browse curated collections of courses to master specific learning paths.",
 };
 

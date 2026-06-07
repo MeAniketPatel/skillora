@@ -1,9 +1,6 @@
-/**
- * Global site configuration.
- * Used across layouts, metadata, and components.
- */
 export const siteConfig = {
   name: "Skillora",
+  titleSuffix: " | Skillora",
   description:
     "Skillora is a modern e-learning platform where expert teachers create world-class courses and students learn at their own pace.",
   url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
@@ -19,7 +16,7 @@ export const siteConfig = {
     "video courses",
   ],
   links: {
-    github: "https://github.com/YOUR_USERNAME/skillora",
+    github: "https://github.com/meaniketpatel/skillora",
   },
 } as const;
 

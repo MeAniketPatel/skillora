@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Briefcase, TrendingUp, Sparkles } from "lucide-react";
 import { CareerHub } from "@/features/marketing/server";
 import { SkillGapAnalyzer } from "@/features/marketing/server";
@@ -6,8 +7,8 @@ import { Footer } from "@/shared/components/layout/footer";
 import LinkButton from "@/shared/components/ui/link-button";
 import { ROUTES } from "@/shared/constants/routes";
 
-export const metadata = {
-  title: "Career Paths | Skillora",
+export const metadata: Metadata = {
+  title: "Career Paths",
   description:
     "Explore curated learning tracks for the most in-demand careers in tech, design, and product.",
 };

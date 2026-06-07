@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getInstructorProfile } from "@/features/auth/server";
 import { Navbar } from "@/shared/components/layout/navbar";
@@ -8,8 +9,8 @@ interface InstructorPageProps {
   params: Promise<{ id: string }>;
 }
 
-export const metadata = {
-  title: "Instructor Profile | Skillora",
+export const metadata: Metadata = {
+  title: "Instructor Profile",
   description:
     "View the instructor's bio, published courses, and student reviews on Skillora.",
 };

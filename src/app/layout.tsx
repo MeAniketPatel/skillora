@@ -3,6 +3,7 @@ import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/shared/components/providers";
 import { Toaster } from "@/shared/components/ui/sonner";
+import { siteConfig } from "@/config/site";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -16,12 +17,11 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   title: {
-    default: "Skillora — Learn Without Limits",
-    template: "%s | Skillora",
+    default: `${siteConfig.name} | Learn Without Limits`,
+    template: `%s${siteConfig.titleSuffix}`,
   },
-  description:
-    "Skillora is a modern e-learning platform where expert teachers create world-class courses and students learn at their own pace.",
-  keywords: ["e-learning", "online courses", "education", "skillora", "teaching platform"],
+  description: siteConfig.description,
+  keywords: [...siteConfig.keywords],
 };
 
 export default function RootLayout({

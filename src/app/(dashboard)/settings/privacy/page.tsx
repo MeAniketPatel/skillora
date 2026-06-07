@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import db from "@/shared/lib/prisma";
@@ -6,8 +7,8 @@ import Link from "next/link";
 import { ROUTES } from "@/shared/constants/routes";
 import { Shield, Bell, User } from "lucide-react";
 
-export const metadata = {
-  title: "Privacy Settings | Skillora",
+export const metadata: Metadata = {
+  title: "Privacy Settings",
   description: "Manage who can see your profile, achievements, and direct message you.",
 };
 

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { GraduationCap, Search, UserSearch } from "lucide-react";
 import { getAllInstructors } from "@/features/auth/server";
 import { Card, CardContent } from "@/shared/components/ui/card";
@@ -8,8 +9,8 @@ import { Input } from "@/shared/components/ui/input";
 import { APP } from "@/shared/constants/app";
 import { ROUTES } from "@/shared/constants/routes";
 
-export const metadata = {
-  title: "Browse Instructors | Skillora",
+export const metadata: Metadata = {
+  title: "Browse Instructors",
   description:
     "Discover the world's best instructors teaching on Skillora. Filter by topic, rating, and expertise.",
 };

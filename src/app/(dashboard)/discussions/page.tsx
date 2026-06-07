@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getDiscussionsList } from "@/features/discussions/server";
 import { DiscussionList } from "@/features/discussions/server";
 import { DiscussionEditor } from "@/features/discussions/server";
@@ -5,8 +6,8 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { MessageSquare, Flame } from "lucide-react";
 
-export const metadata = {
-  title: "Discussions Forum | Skillora",
+export const metadata: Metadata = {
+  title: "Discussions Forum",
   description: "Join community discussions, ask questions, and share knowledge with other learners.",
 };
 

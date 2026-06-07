@@ -1,11 +1,12 @@
+import type { Metadata } from "next";
 import { getUserSubscription } from "@/features/subscriptions/server";
 import { auth } from "@/auth";
 import { PricingTable } from "@/features/marketing/server";
 import { Badge } from "@/shared/components/ui/badge";
 import { Sparkles } from "lucide-react";
 
-export const metadata = {
-  title: "Pricing Plans | Skillora",
+export const metadata: Metadata = {
+  title: "Pricing Plans",
   description: "Find the plan that matches your study goals on Skillora.",
 };
 

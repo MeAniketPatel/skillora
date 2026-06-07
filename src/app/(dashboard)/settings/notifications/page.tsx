@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { getEmailPreferences } from "@/features/email-preferences/server";
@@ -6,8 +7,8 @@ import Link from "next/link";
 import { ROUTES } from "@/shared/constants/routes";
 import { Shield, Bell, User } from "lucide-react";
 
-export const metadata = {
-  title: "Notification Settings | Skillora",
+export const metadata: Metadata = {
+  title: "Notification Settings",
   description: "Manage your email digest schedules and notification topics.",
 };
 

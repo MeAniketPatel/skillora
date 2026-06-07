@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getLeaderboardRankings, getUserXPPoints, getUserBadgesList } from "@/features/gamification/server";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
@@ -7,8 +8,8 @@ import { BadgeShowcase } from "@/features/gamification/server";
 import { Trophy, Sparkles } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 
-export const metadata = {
-  title: "Leaderboard & Achievements | Skillora",
+export const metadata: Metadata = {
+  title: "Leaderboard & Achievements",
   description: "View global rankings, track your XP study points, and unlock learning badges.",
 };
 

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getBlogPosts } from "@/features/blog/server";
 import { auth } from "@/auth";
 import { BlogCard } from "@/features/blog/server";
@@ -5,8 +6,8 @@ import { BlogEditor } from "@/features/blog/server";
 import { Badge } from "@/shared/components/ui/badge";
 import { PenTool, Sparkles, BookOpen } from "lucide-react";
 
-export const metadata = {
-  title: "Blog & Insights | Skillora",
+export const metadata: Metadata = {
+  title: "Blog & Insights",
   description: "Read technical articles, platform updates, and learning summaries from the Skillora community.",
 };
 

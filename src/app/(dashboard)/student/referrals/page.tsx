@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getReferralStats } from "@/features/referrals/server";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
@@ -5,8 +6,8 @@ import { ReferralDashboard } from "@/features/referrals/server";
 import { Badge } from "@/shared/components/ui/badge";
 import { Users } from "lucide-react";
 
-export const metadata = {
-  title: "Referral Program | Skillora",
+export const metadata: Metadata = {
+  title: "Referral Program",
   description: "Invite your friends to learn on Skillora and earn study points.",
 };
 

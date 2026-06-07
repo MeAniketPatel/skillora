@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getCoursesByIds } from "@/features/courses/server";
 import { CourseComparison } from "@/features/courses";
 import { Badge } from "@/shared/components/ui/badge";
@@ -9,8 +10,8 @@ interface ComparePageProps {
   }>;
 }
 
-export const metadata = {
-  title: "Compare Courses | Skillora",
+export const metadata: Metadata = {
+  title: "Compare Courses",
   description: "Compare curriculum details, prices, and levels side-by-side.",
 };
 
