@@ -60,6 +60,7 @@ model User {
   bannedAt         DateTime?
   bannedReason     String?
   points           Int       @default(0)
+  onboarded        Boolean   @default(false)
 
   // NextAuth
   accounts            Account[]

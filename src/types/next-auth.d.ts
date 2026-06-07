@@ -7,6 +7,7 @@ declare module "next-auth" {
       id: string;
       role: Role;
       sessionId?: string;
+      isNewOAuthUser?: boolean;
     } & DefaultSession["user"];
   }
 
@@ -21,5 +22,6 @@ declare module "next-auth/jwt" {
     role: Role;
     sessionId?: string;
     authSessionExpires?: string;
+    isNewOAuthUser?: boolean;
   }
 }

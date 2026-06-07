@@ -39,10 +39,12 @@ export const { auth, handlers, signIn, signOut } = NextAuth((request) => {
       Google({
         clientId: process.env.AUTH_GOOGLE_ID,
         clientSecret: process.env.AUTH_GOOGLE_SECRET,
+        allowDangerousEmailAccountLinking: true,
       }),
       Github({
         clientId: process.env.AUTH_GITHUB_ID,
         clientSecret: process.env.AUTH_GITHUB_SECRET,
+        allowDangerousEmailAccountLinking: true,
       }),
       Credentials({
         async authorize(credentials) {
@@ -89,6 +91,10 @@ export const { auth, handlers, signIn, signOut } = NextAuth((request) => {
     ],
     callbacks: {
       ...authConfig.callbacks,
+      async signIn({ account }) {
+        if (account?.provider !== "credentials") return true;
+        return true;
+      },
       async jwt({ token, user, account }) {
         const userId = (user?.id || token.id) as string | undefined;
 
@@ -97,7 +103,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth((request) => {
         if (user) {
           const dbUser = await db.user.findUnique({
             where: { id: userId },
-            select: { id: true, email: true, role: true },
+            select: { id: true, email: true, role: true, onboarded: true },
           });
           const authSession = await createAuthSession({
             userId,
@@ -109,6 +115,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth((request) => {
           token.role = user.role ?? dbUser?.role ?? "STUDENT";
           token.sessionId = authSession.sessionId;
           token.authSessionExpires = authSession.expiresAt.toISOString();
+          token.isNewOAuthUser = !!(account && account.provider !== "credentials" && dbUser && !dbUser.onboarded);
 
           await logAuthAudit({
             action: AuthAuditAction.LOGIN_SUCCESS,
@@ -132,6 +139,15 @@ export const { auth, handlers, signIn, signOut } = NextAuth((request) => {
         token.sessionId = authSession.sessionId;
         token.authSessionExpires = authSession.expiresAt.toISOString();
 
+        const refreshedUser = await db.user.findUnique({
+          where: { id: userId },
+          select: { role: true, onboarded: true },
+        });
+        if (refreshedUser) {
+          token.role = refreshedUser.role;
+          token.isNewOAuthUser = !refreshedUser.onboarded;
+        }
+
         const isValid = await validateAuthSession({
           sessionId: token.sessionId as string,
           userId,
@@ -146,6 +162,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth((request) => {
           session.user.id = token.id as string;
           session.user.role = token.role as Role;
           session.user.sessionId = token.sessionId as string | undefined;
+          session.user.isNewOAuthUser = token.isNewOAuthUser as boolean | undefined;
         }
         return session;
       },

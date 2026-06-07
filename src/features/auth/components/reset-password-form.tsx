@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { KeyRound } from "lucide-react";
+import { KeyRound, Eye, EyeOff, CheckCircle2, Circle } from "lucide-react";
 import { z } from "zod";
 
 import { resetPassword } from "../actions/auth.actions";
@@ -42,18 +42,41 @@ export default function ResetPasswordForm() {
     token ? null : "This password reset link is missing a token."
   );
   const [success, setSuccess] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
+    watch,
+    trigger,
     formState: { errors },
   } = useForm<ResetPasswordValues>({
     resolver: zodResolver(resetPasswordSchema),
+    mode: "onChange",
     defaultValues: {
       password: "",
       confirmPassword: "",
     },
   });
+
+  const passwordValue = watch("password") || "";
+
+  useEffect(() => {
+    if (watch("confirmPassword")) {
+      trigger("confirmPassword");
+    }
+  }, [passwordValue, trigger, watch]);
+
+  const strengthChecks = [
+    { label: "At least 12 characters", met: passwordValue.length >= 12 },
+    { label: "Contains a number", met: /\d/.test(passwordValue) },
+    { label: "Contains a special character", met: /[^A-Za-z0-9]/.test(passwordValue) },
+    { label: "Contains a lowercase letter", met: /[a-z]/.test(passwordValue) },
+    { label: "Contains an uppercase letter", met: /[A-Z]/.test(passwordValue) },
+  ];
+
+  const strengthScore = strengthChecks.filter(c => c.met).length;
 
   const onSubmit = (values: ResetPasswordValues) => {
     if (!token) {
@@ -98,17 +121,44 @@ export default function ResetPasswordForm() {
               <KeyRound className="absolute left-3 top-2.5 h-4 w-4 text-neutral-400" />
               <Input
                 id="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="********"
                 {...register("password")}
                 disabled={isPending || !token}
-                className="bg-white/50 pl-10 dark:bg-neutral-950/50"
+                className="bg-white/50 pl-10 pr-10 dark:bg-neutral-950/50"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300"
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
             </div>
             {errors.password && (
               <p className="text-sm font-medium text-red-500">
                 {errors.password.message}
               </p>
+            )}
+
+            {passwordValue.length > 0 && (
+              <div className="space-y-2 mt-2 pt-1">
+                <div className="flex gap-1 h-1 w-full rounded-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
+                  <div className={`h-full transition-all duration-500 ${strengthScore <= 1 ? 'w-0' : strengthScore === 2 ? 'bg-red-500 w-1/3' : strengthScore === 3 ? 'bg-yellow-500 w-2/3' : strengthScore === 4 ? 'bg-yellow-500 w-full' : 'bg-green-500 w-full'}`} />
+                </div>
+                <div className="grid grid-cols-1 gap-1 text-xs text-neutral-500">
+                  {strengthChecks.map((check, idx) => (
+                    <div key={idx} className="flex items-center gap-1.5 transition-colors duration-300">
+                      {check.met ? (
+                        <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
+                      ) : (
+                        <Circle className="h-3.5 w-3.5 opacity-40" />
+                      )}
+                      <span className={check.met ? "text-neutral-700 dark:text-neutral-300" : ""}>{check.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
 
@@ -118,12 +168,19 @@ export default function ResetPasswordForm() {
               <KeyRound className="absolute left-3 top-2.5 h-4 w-4 text-neutral-400" />
               <Input
                 id="confirmPassword"
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 placeholder="********"
                 {...register("confirmPassword")}
                 disabled={isPending || !token}
-                className="bg-white/50 pl-10 dark:bg-neutral-950/50"
+                className="bg-white/50 pl-10 pr-10 dark:bg-neutral-950/50"
               />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300"
+              >
+                {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
             </div>
             {errors.confirmPassword && (
               <p className="text-sm font-medium text-red-500">

@@ -37,6 +37,7 @@ export default function ForgotPasswordForm() {
     formState: { errors },
   } = useForm<ForgotPasswordValues>({
     resolver: zodResolver(forgotPasswordSchema),
+    mode: "onChange",
     defaultValues: {
       email: "",
     },

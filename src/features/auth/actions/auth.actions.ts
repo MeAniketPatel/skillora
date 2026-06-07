@@ -8,6 +8,7 @@ import { service as authService, AuthAuditAction, AuthSessionRevocationReason } 
 import { ZodError } from "zod";
 
 import { signIn, signOut, auth } from "@/auth";
+import db from "@/shared/lib/prisma";
 import { sendPasswordResetEmail } from "@/shared/lib/mail";
 import {
   PASSWORD_RESET_TOKEN_TTL_MINUTES,
@@ -24,6 +25,8 @@ import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 
 import { ConflictError, ValidationError } from "@/shared/lib/errors";
+import type { Role } from "@/core/entities/role";
+import { APP } from "@/shared/constants/app";
 
 import {
   registerSchema,
@@ -128,12 +131,13 @@ export async function updateUserSettings(values: {
   name?: string;
   email?: string;
   password?: string;
+  oldPassword?: string;
 }) {
   return actionHandler(async () => {
     const requestMetadata = await getActionRequestMetadata();
     const user = await requireAuth();
 
-    const { name, password } = values;
+    const { name, password, oldPassword } = values;
     const email = values.email?.toLowerCase();
     const updateData: { name?: string; email?: string; password?: string } = {};
 
@@ -148,8 +152,23 @@ export async function updateUserSettings(values: {
     }
 
     if (password) {
-      if (password.length < 6) {
-        throw new ValidationError("Password must be at least 6 characters.");
+      const dbUser = await db.user.findUnique({
+        where: { id: user.id },
+        select: { password: true },
+      });
+
+      if (dbUser?.password) {
+        if (!oldPassword) {
+          throw new ValidationError("Current password is required to set a new password.");
+        }
+        const isValid = await bcrypt.compare(oldPassword, dbUser.password);
+        if (!isValid) {
+          throw new ValidationError("Current password is incorrect.");
+        }
+      }
+
+      if (password.length < APP.PASSWORD_MIN_LENGTH) {
+        throw new ValidationError(`Password must be at least ${APP.PASSWORD_MIN_LENGTH} characters.`);
       }
       updateData.password = await bcrypt.hash(password, 10);
     }
@@ -326,4 +345,25 @@ export async function logoutAllSessions() {
   }
 
   await signOut({ redirectTo: "/" });
+}
+
+export async function completeOnboarding(values: { role: Role }) {
+  return actionHandler(async () => {
+    const user = await requireAuth();
+
+    const validRoles: Role[] = ["STUDENT", "TEACHER"];
+    if (!validRoles.includes(values.role)) {
+      throw new ValidationError("Invalid role selected");
+    }
+
+    await db.user.update({
+      where: { id: user.id },
+      data: {
+        role: values.role,
+        onboarded: true,
+      },
+    });
+
+    return { role: values.role };
+  });
 }

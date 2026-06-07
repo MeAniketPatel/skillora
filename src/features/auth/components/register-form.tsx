@@ -6,6 +6,7 @@ import { z } from "zod";
 import { useState, useTransition, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 import { GraduationCap, School, Eye, EyeOff, CheckCircle2, Circle } from "lucide-react";
 
 import { Button } from "@/shared/components/ui/button";
@@ -47,6 +48,7 @@ export default function RegisterForm() {
     handleSubmit,
     setValue,
     watch,
+    trigger,
     formState: { errors },
   } = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
@@ -62,13 +64,15 @@ export default function RegisterForm() {
 
   const selectedRole = watch("role");
   const passwordValue = watch("password") || "";
-  
+
   const strengthChecks = [
-    { label: "At least 6 characters", met: passwordValue.length >= 6 },
+    { label: "At least 12 characters", met: passwordValue.length >= 12 },
     { label: "Contains a number", met: /\d/.test(passwordValue) },
     { label: "Contains a special character", met: /[^A-Za-z0-9]/.test(passwordValue) },
+    { label: "Contains a lowercase letter", met: /[a-z]/.test(passwordValue) },
+    { label: "Contains an uppercase letter", met: /[A-Z]/.test(passwordValue) },
   ];
-  
+
   const strengthScore = strengthChecks.filter(c => c.met).length;
 
   const searchParams = useSearchParams();
@@ -84,11 +88,22 @@ export default function RegisterForm() {
     }
   }, [searchParams, setValue]);
 
+  useEffect(() => {
+    if (watch("confirmPassword")) {
+      trigger("confirmPassword");
+    }
+  }, [passwordValue, trigger, watch]);
+
   const onSubmit = (values: RegisterValues) => {
     setError(null);
     setSuccess(null);
 
     startTransition(async () => {
+      if (strengthScore < 5) {
+        setError("Please meet all password requirements before creating an account.");
+        return;
+      }
+
       const res = await registerUser(values);
       if (!res.success) {
         setError(res.error);
@@ -133,11 +148,10 @@ export default function RegisterForm() {
               <button
                 type="button"
                 onClick={() => setValue("role", "STUDENT")}
-                className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 text-center transition-all ${
-                  selectedRole === "STUDENT"
-                    ? "border-neutral-950 bg-neutral-50/50 dark:border-neutral-50 dark:bg-neutral-800/50 font-semibold"
-                    : "border-neutral-200 hover:border-neutral-300 dark:border-neutral-800 dark:hover:border-neutral-700 bg-transparent"
-                }`}
+                className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 text-center transition-all ${selectedRole === "STUDENT"
+                  ? "border-neutral-950 bg-neutral-50/50 dark:border-neutral-50 dark:bg-neutral-800/50 font-semibold"
+                  : "border-neutral-200 hover:border-neutral-300 dark:border-neutral-800 dark:hover:border-neutral-700 bg-transparent"
+                  }`}
               >
                 <GraduationCap
                   className={`h-6 w-6 mb-2 ${selectedRole === "STUDENT" ? "text-neutral-950 dark:text-neutral-50" : "text-neutral-400"}`}
@@ -151,11 +165,10 @@ export default function RegisterForm() {
               <button
                 type="button"
                 onClick={() => setValue("role", "TEACHER")}
-                className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 text-center transition-all ${
-                  selectedRole === "TEACHER"
-                    ? "border-neutral-950 bg-neutral-50/50 dark:border-neutral-50 dark:bg-neutral-800/50 font-semibold"
-                    : "border-neutral-200 hover:border-neutral-300 dark:border-neutral-800 dark:hover:border-neutral-700 bg-transparent"
-                }`}
+                className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 text-center transition-all ${selectedRole === "TEACHER"
+                  ? "border-neutral-950 bg-neutral-50/50 dark:border-neutral-50 dark:bg-neutral-800/50 font-semibold"
+                  : "border-neutral-200 hover:border-neutral-300 dark:border-neutral-800 dark:hover:border-neutral-700 bg-transparent"
+                  }`}
               >
                 <School
                   className={`h-6 w-6 mb-2 ${selectedRole === "TEACHER" ? "text-neutral-950 dark:text-neutral-50" : "text-neutral-400"}`}
@@ -220,12 +233,12 @@ export default function RegisterForm() {
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
-            
+
             {/* Password Strength Indicator */}
             {passwordValue.length > 0 && (
               <div className="space-y-2 mt-2 pt-1">
                 <div className="flex gap-1 h-1 w-full rounded-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
-                  <div className={`h-full transition-all duration-500 ${strengthScore >= 1 ? (strengthScore === 1 ? 'bg-red-500 w-1/3' : strengthScore === 2 ? 'bg-yellow-500 w-2/3' : 'bg-green-500 w-full') : 'w-0'}`} />
+                  <div className={`h-full transition-all duration-500 ${strengthScore <= 1 ? 'w-0' : strengthScore === 2 ? 'bg-red-500 w-1/3' : strengthScore === 3 ? 'bg-yellow-500 w-2/3' : strengthScore === 4 ? 'bg-yellow-500 w-full' : 'bg-green-500 w-full'}`} />
                 </div>
                 <div className="grid grid-cols-1 gap-1 text-xs text-neutral-500">
                   {strengthChecks.map((check, idx) => (
@@ -241,7 +254,7 @@ export default function RegisterForm() {
                 </div>
               </div>
             )}
-            
+
             {errors.password && (
               <p className="text-sm text-red-500 font-medium">
                 {errors.password.message}
@@ -309,7 +322,7 @@ export default function RegisterForm() {
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          <Button variant="outline" className="w-full" disabled={isPending}>
+          <Button variant="outline" className="w-full" disabled={isPending} onClick={() => signIn("google")}>
             <svg
               className="mr-2 h-4 w-4"
               aria-hidden="true"
@@ -327,7 +340,7 @@ export default function RegisterForm() {
             </svg>
             Google
           </Button>
-          <Button variant="outline" className="w-full" disabled={isPending}>
+          <Button variant="outline" className="w-full" disabled={isPending} onClick={() => signIn("github")}>
             <svg
               className="mr-2 h-4 w-4"
               aria-hidden="true"
