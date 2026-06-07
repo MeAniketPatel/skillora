@@ -33,16 +33,16 @@ export default async function DashboardLayout({
   const isImpersonating = cookieStore.has("impersonate_user_id");
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex flex-col">
+    <div className="h-screen bg-neutral-50 dark:bg-neutral-950 flex flex-col overflow-hidden">
       {isImpersonating && <StopImpersonationBanner />}
-      <div className="flex-1 flex flex-col md:flex-row">
+      <div className="flex-1 flex flex-col md:flex-row min-h-0">
         <Sidebar session={session} />
 
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 min-h-0">
         {/* Header Mobile */}
-        <header className="md:hidden flex h-16 items-center justify-between px-6 border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+        <header className="md:hidden flex h-16 shrink-0 items-center justify-between px-6 border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
           <Link href="/" className="flex items-center gap-2 font-heading text-lg font-bold tracking-tight text-primary">
             <GraduationCap className="h-6 w-6 text-primary" />
             <span>Skillora</span>
@@ -61,7 +61,7 @@ export default async function DashboardLayout({
         </header>
 
         {/* Main Content Body */}
-        <main className="flex-1 overflow-y-auto p-6 md:p-10">
+        <main className="flex-1 overflow-y-auto p-6 md:p-10 min-h-0">
           {children}
         </main>
       </div>

@@ -72,15 +72,15 @@ export function Sidebar({ session }: SidebarProps) {
   };
 
   return (
-    <aside className="hidden md:flex flex-col w-64 border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
-      <div className="flex h-16 items-center px-6 border-b border-neutral-200 dark:border-neutral-800">
+    <aside className="hidden md:flex flex-col w-64 shrink-0 h-full border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 min-h-0">
+      <div className="flex h-16 shrink-0 items-center px-6 border-b border-neutral-200 dark:border-neutral-800">
         <Link href="/" className="flex items-center gap-2 font-heading text-xl font-bold tracking-tight text-primary">
           <GraduationCap className="h-7 w-7 text-primary" />
           <span>Skillora</span>
         </Link>
       </div>
 
-      <nav className="flex-1 space-y-1 px-4 py-6">
+      <nav className="flex-1 space-y-1 overflow-y-auto px-4 py-6 min-h-0">
         {navigation.map((item) => {
           const isActive = pathname === item.href;
           return (
@@ -100,7 +100,7 @@ export function Sidebar({ session }: SidebarProps) {
         })}
       </nav>
 
-      <div className="p-4 border-t border-neutral-200 dark:border-neutral-800">
+      <div className="shrink-0 p-4 border-t border-neutral-200 dark:border-neutral-800">
         <div className="flex items-center gap-3 mb-3">
           <Avatar className="h-9 w-9">
             <AvatarImage src={session.user.image || ""} />
