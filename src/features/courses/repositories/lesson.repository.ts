@@ -47,7 +47,13 @@ export async function getLessonWithContent(lessonId: string) {
     where: { id: lessonId },
     include: {
       attachments: true,
-      quiz: true,
+      quiz: {
+        include: {
+          questions: {
+            orderBy: { position: "asc" },
+          },
+        },
+      },
     },
   });
 }
