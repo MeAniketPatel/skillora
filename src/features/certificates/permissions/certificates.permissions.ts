@@ -1,6 +1,5 @@
-// Auto-generated permission map for the certificates feature.
-// Override individual entries by exporting a const with the same name.
 import type { Role } from "@/core/entities";
+import { ForbiddenError } from "@/shared/lib/errors";
 
 export type AccessRule = Role[] | "PUBLIC";
 
@@ -15,6 +14,6 @@ export function assertCertificatesAccess(role: Role | null | undefined, action: 
   const rule = canCertificates[action];
   if (rule === "PUBLIC") return;
   if (!role || !rule.includes(role)) {
-    throw new Error(`Access denied: role '${role ?? "anonymous"}' cannot ${action} certificates`);
+    throw new ForbiddenError(`Access denied: role '${role ?? "anonymous"}' cannot ${action} certificates`);
   }
 }
