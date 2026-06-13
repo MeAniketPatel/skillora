@@ -1,9 +1,9 @@
 import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getCourseByIdForOwner } from "@/features/courses/server";
 import { getAllCategories } from "@/features/categories/server";
-import { isAIEnabled } from "@/features/ai";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { CourseEditor } from "@/features/courses";
+
 export default async function TeacherCourseDashboard({
   params,
 }: {
@@ -12,11 +12,10 @@ export default async function TeacherCourseDashboard({
   const user = await requireTeacher();
   const { courseId } = await params;
 
-  let course;
-  try {
-    course = await getCourseByIdForOwner(courseId, user.id);
-  } catch {
-    redirect("/teacher/courses");
+  const course = await getCourseByIdForOwner(courseId, user.id);
+  
+  if (!course) {
+    notFound();
   }
 
   const categories = await getAllCategories();
@@ -39,7 +38,6 @@ export default async function TeacherCourseDashboard({
       <CourseEditor
         course={formattedCourse}
         categories={categories}
-        aiEnabled={isAIEnabled()}
       />
     </div>
   );

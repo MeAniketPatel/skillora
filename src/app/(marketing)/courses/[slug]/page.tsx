@@ -1,13 +1,13 @@
 import { redirect } from "next/navigation";
 import { GraduationCap, BookOpen, Layers } from "lucide-react";
+import Link from "next/link";
 
 import { auth } from "@/auth";
 import { getCourseWithFullDetails } from "@/features/courses/server";
 import { getEnrollment } from "@/features/enrollment/server";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
-import { Navbar } from "@/shared/components/layout/navbar";
-import { Footer } from "@/shared/components/layout/footer";
 import { EnrollButton } from "@/features/courses";
+import ReviewSection from "@/features/reviews/components/review-section";
 import { sanitizeRichHtml } from "@/shared/lib/sanitize";
 interface CourseDetailPageProps {
   params: Promise<{
@@ -21,7 +21,10 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
 
   const course = await getCourseWithFullDetails(slug);
 
-  if (!course || course.status !== "PUBLISHED") {
+  const isTeacher = session?.user?.id && session.user.id === course?.teacherId;
+  const isPublished = course?.status === "PUBLISHED";
+
+  if (!course || (!isPublished && !isTeacher)) {
     redirect("/courses");
   }
 
@@ -40,10 +43,7 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-neutral-50 dark:bg-neutral-950">
-      <Navbar />
-
-      <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Left Column: Metadata & Syllabus */}
@@ -81,15 +81,27 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
                     {section.lessons.length > 0 && (
                       <CardContent className="p-4 pt-0 space-y-2 border-t border-neutral-100 dark:border-neutral-800/50">
                         {section.lessons.map((lesson) => (
-                          <div key={lesson.id} className="flex items-center justify-between p-2 rounded bg-neutral-50/50 dark:bg-neutral-950/20 text-xs">
-                            <div className="flex items-center gap-x-2 truncate">
-                              <BookOpen className="h-3.5 w-3.5 text-neutral-400" />
-                              <span className="truncate">{lesson.title}</span>
-                            </div>
-                            {lesson.isFree && (
-                              <span className="px-1.5 py-0.5 rounded bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 font-bold uppercase text-[9px]">
-                                Free Preview
-                              </span>
+                          <div key={lesson.id}>
+                            {lesson.isFree ? (
+                              <Link
+                                href={`/learn/${course.id}/${lesson.id}`}
+                                className="flex items-center justify-between p-2 rounded bg-neutral-50/50 dark:bg-neutral-950/20 text-xs hover:bg-neutral-100 dark:hover:bg-neutral-800/50 transition-colors w-full cursor-pointer"
+                              >
+                                <div className="flex items-center gap-x-2 truncate">
+                                  <BookOpen className="h-3.5 w-3.5 text-primary shrink-0" />
+                                  <span className="truncate font-semibold text-primary hover:underline">{lesson.title}</span>
+                                </div>
+                                <span className="px-1.5 py-0.5 rounded bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300 font-bold uppercase text-[9px] shrink-0">
+                                  Free Preview
+                                </span>
+                              </Link>
+                            ) : (
+                              <div className="flex items-center justify-between p-2 rounded bg-neutral-50/50 dark:bg-neutral-950/20 text-xs">
+                                <div className="flex items-center gap-x-2 truncate text-neutral-500 dark:text-neutral-400">
+                                  <BookOpen className="h-3.5 w-3.5 text-neutral-400 shrink-0" />
+                                  <span className="truncate">{lesson.title}</span>
+                                </div>
+                              </div>
                             )}
                           </div>
                         ))}
@@ -99,6 +111,13 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
                 ))}
               </div>
             </div>
+
+            {/* Reviews */}
+            <ReviewSection
+              courseId={course.id}
+              userId={session?.user?.id || undefined}
+              isEnrolled={isEnrolled}
+            />
           </div>
 
           {/* Right Column: Pricing & Enrollment Action card */}
@@ -142,9 +161,6 @@ export default async function CourseDetailPage({ params }: CourseDetailPageProps
           </div>
 
         </div>
-      </main>
-
-      <Footer />
     </div>
   );
 }

@@ -4,7 +4,7 @@ import db from "@/shared/lib/prisma";
 import { CourseFilters } from "@/features/courses";
 import { formatPrice } from "@/shared/lib/utils";
 import Link from "next/link";
-import { Star, BookOpen, User, Search, ArrowRight, Award } from "lucide-react";
+import { Star, BookOpen, User, Search, ArrowRight } from "lucide-react";
 import { Badge } from "@/shared/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 
@@ -20,7 +20,7 @@ interface SearchPageProps {
 
 export const metadata: Metadata = {
   title: "Search Courses & Articles",
-  description: "Faceted search matching courses, lectures, teachers, and blogs on Skillora.",
+  description: "Faceted search matching courses and teachers on Skillora.",
 };
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
@@ -41,9 +41,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   };
 
   // Run search
-  const { courses, teachers, blogPosts } = await globalSearch(q, filters);
+  const { courses, teachers } = await globalSearch(q, filters);
 
-  const totalResults = courses.length + teachers.length + blogPosts.length;
+  const totalResults = courses.length + teachers.length;
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 space-y-8 min-h-screen">
@@ -206,47 +206,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
               )}
             </div>
 
-            {/* 3. Blogs Section */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-neutral-100 dark:border-neutral-800 pb-2">
-                <h2 className="text-base font-extrabold text-neutral-800 dark:text-neutral-200 flex items-center gap-2">
-                  <Award className="h-4 w-4 text-amber-500" /> Blog Articles ({blogPosts.length})
-                </h2>
-              </div>
-
-              {blogPosts.length === 0 ? (
-                <div className="p-6 text-center rounded-xl border border-dashed border-neutral-200 dark:border-neutral-800 bg-neutral-50/20">
-                  <p className="text-xs text-neutral-400 font-medium">No articles match this query.</p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {blogPosts.map((post: any) => (
-                    <Link
-                      key={post.id}
-                      href={`/blog/${post.slug}`}
-                      className="block p-4 bg-white dark:bg-neutral-900 border border-neutral-250/50 dark:border-neutral-800/60 rounded-xl shadow-sm hover:shadow hover:border-blue-500/50 transition-all duration-300"
-                    >
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-[9px] font-bold text-neutral-400 uppercase font-mono">
-                            {new Date(post.createdAt).toLocaleDateString()}
-                          </span>
-                          <Badge variant="outline" className="text-[8px] font-bold py-0 px-1">
-                            {post.author.role}
-                          </Badge>
-                        </div>
-                        <h4 className="text-xs font-bold text-neutral-800 dark:text-neutral-200 line-clamp-1 hover:text-blue-500 transition-colors">
-                          {post.title}
-                        </h4>
-                        <p className="text-[11px] text-neutral-450 line-clamp-2 leading-relaxed">
-                          {post.excerpt || post.content}
-                        </p>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
           </div>
         </div>
       </div>

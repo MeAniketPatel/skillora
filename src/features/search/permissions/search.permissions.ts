@@ -1,6 +1,5 @@
-// Auto-generated permission map for the search feature.
-// Override individual entries by exporting a const with the same name.
 import type { Role } from "@/core/entities";
+import { ForbiddenError } from "@/shared/lib/errors";
 
 export type AccessRule = Role[] | "PUBLIC";
 
@@ -15,6 +14,6 @@ export function assertSearchAccess(role: Role | null | undefined, action: keyof 
   const rule = canSearch[action];
   if (rule === "PUBLIC") return;
   if (!role || !rule.includes(role)) {
-    throw new Error(`Access denied: role '${role ?? "anonymous"}' cannot ${action} search`);
+    throw new ForbiddenError(`Access denied: role '${role ?? "anonymous"}' cannot ${action} search`);
   }
 }

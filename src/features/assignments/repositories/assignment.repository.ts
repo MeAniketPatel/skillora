@@ -118,6 +118,13 @@ export async function getAllTeacherSubmissions(lessonIds: string[]) {
   });
 }
 
+export async function getSubmissionById(id: string) {
+  return db.assignmentSubmission.findUnique({
+    where: { id },
+    include: { lesson: { include: { section: { include: { course: { select: { teacherId: true } } } } } } },
+  });
+}
+
 export async function getCourseSubmissions(courseId: string) {
   return db.assignmentSubmission.findMany({
     where: {

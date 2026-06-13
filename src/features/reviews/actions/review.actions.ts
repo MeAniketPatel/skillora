@@ -1,13 +1,14 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { auth } from "@/auth";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { reviewCreateSchema, reviewUpdateSchema } from "@/features/reviews/contracts/review.contract";
+import { reviewCreateSchema, reviewUpdateSchema } from "../contracts/review.contract";
 import { service as reviewsService } from "@/features/reviews/server";
 import { ConflictError } from "@/shared/lib/errors";
 
-import { assertReviewsAccess } from "@/features/reviews/permissions/reviews.permissions";
+import { assertReviewsAccess } from "../permissions/reviews.permissions";
 export async function createReview(values: any) {
   return actionHandler(async () => {
     const user = await requireAuth();
@@ -44,4 +45,18 @@ export async function deleteReview(reviewId: string) {
     revalidatePath(`/courses`);
     return true;
   });
+}
+
+export async function getCourseReviews(courseId: string, page = 1, limit = 50) {
+  return reviewsService.getCourseReviews(courseId, { page, limit });
+}
+
+export async function getCourseRatingStats(courseId: string) {
+  return reviewsService.getCourseRatingStats(courseId);
+}
+
+export async function getUserReviewForCourse(courseId: string) {
+  const session = await auth();
+  if (!session?.user?.id) return null;
+  return reviewsService.getUserReviewForCourse(session.user.id, courseId);
 }

@@ -18,6 +18,10 @@ export function BookmarkButton({
   const [isPending, startTransition] = useTransition();
   const [bookmarked, setBookmarked] = React.useState(initialBookmarked);
 
+  React.useEffect(() => {
+    setBookmarked(initialBookmarked);
+  }, [lessonId, initialBookmarked]);
+
   const handleToggle = () => {
     // Optimistic update
     setBookmarked(!bookmarked);

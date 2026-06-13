@@ -103,17 +103,17 @@ export function LessonItem({
           Free
         </Button>
         <Button
-          variant="ghost"
+          variant={lesson.isPublished ? "outline" : "default"}
           size="sm"
           onClick={onTogglePublish}
           className={cn(
             "h-7 px-2 text-[10px] uppercase font-bold",
             lesson.isPublished
-              ? "text-blue-600 bg-blue-50 dark:bg-blue-950/20"
-              : "text-neutral-500",
+              ? "text-blue-600 border-blue-200 dark:border-blue-800"
+              : "text-white bg-blue-600 hover:bg-blue-700",
           )}
         >
-          {lesson.isPublished ? "Published" : "Draft"}
+          {lesson.isPublished ? "Unpublish" : "Publish"}
         </Button>
         <LinkButton
           variant="ghost"

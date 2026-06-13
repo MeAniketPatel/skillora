@@ -3,12 +3,14 @@
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth, requireTeacher } from "@/shared/lib/auth-helpers";
-import { NotFoundError, ValidationError } from "@/shared/lib/errors";
+import { ForbiddenError, NotFoundError, ValidationError } from "@/shared/lib/errors";
 import { service as assignmentsService } from "@/features/assignments/server";
 import { service as coursesService } from "@/features/courses/server";
 import { service as enrollmentService } from "@/features/enrollment/server";
 import { service as studentsService } from "@/features/students/server";
 import { service as notificationsService } from "@/features/notifications/server";
+import { gradeSubmissionSchema } from "@/features/assignments/contracts/assignments.contract";
+
 export async function submitAssignment(lessonId: string, content: string) {
   return actionHandler(async () => {
     const user = await requireAuth();
@@ -46,7 +48,14 @@ export async function submitAssignment(lessonId: string, content: string) {
 
 export async function getLessonSubmissions(lessonId: string) {
   return actionHandler(async () => {
-    await requireTeacher();
+    const user = await requireTeacher();
+
+    const lesson = await coursesService.getLessonWithCourse(lessonId);
+    if (!lesson) throw new NotFoundError("Lesson");
+    if (lesson.section.course.teacherId !== user.id) {
+      throw new ForbiddenError("You do not own this course");
+    }
+
     const submissions = await assignmentsService.getSubmissionsForLesson(lessonId);
     return submissions;
   });
@@ -58,9 +67,16 @@ export async function gradeSubmission(
   feedback?: string
 ) {
   return actionHandler(async () => {
-    await requireTeacher();
+    const user = await requireTeacher();
+    const validated = gradeSubmissionSchema.parse({ submissionId, score, feedback });
 
-    const submission = await assignmentsService.gradeSubmission(submissionId, score, feedback);
+    const submission = await assignmentsService.getSubmissionById(submissionId);
+    if (!submission) throw new NotFoundError("Submission");
+    if (submission.lesson.section.course.teacherId !== user.id) {
+      throw new ForbiddenError("You do not own this course");
+    }
+
+    const graded = await assignmentsService.gradeSubmission(submissionId, validated.score, validated.feedback);
 
     try {
       await notificationsService.createNotification(
@@ -75,6 +91,6 @@ export async function gradeSubmission(
     }
 
     revalidatePath(`/learn/${submission.lesson.section.courseId}/${submission.lessonId}`);
-    return submission;
+    return graded;
   });
 }

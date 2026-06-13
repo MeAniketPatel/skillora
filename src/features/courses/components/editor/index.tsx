@@ -16,7 +16,6 @@ import { CourseEditorFormSection } from "./course-editor-form";
 import { CourseEditorMediaSection } from "./course-editor-media";
 import { CourseEditorChecklist } from "./course-editor-checklist";
 import { CourseInsights } from "@/features/teachers";
-import { generateAICourseDescription } from "@/features/ai";
 import {
   publishCourse,
   unpublishCourse,
@@ -26,13 +25,11 @@ import {
 interface CourseEditorProps {
   course: CourseEditorCourse;
   categories: CourseEditorCategory[];
-  aiEnabled: boolean;
 }
 
-export default function CourseEditor({ course, categories, aiEnabled }: CourseEditorProps) {
+export default function CourseEditor({ course, categories }: CourseEditorProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [isGeneratingAI, setIsGeneratingAI] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
@@ -46,6 +43,7 @@ export default function CourseEditor({ course, categories, aiEnabled }: CourseEd
       price: course.price || 0,
       categoryId: course.categoryId || "",
       level: course.level as CourseValues["level"],
+      language: (course as any).language || "en",
     },
   });
 
@@ -54,30 +52,6 @@ export default function CourseEditor({ course, categories, aiEnabled }: CourseEd
   const completedFields = checklist.filter((i) => i.completed).length;
   const totalFields = checklist.length;
   const isComplete = checklist.every((i) => i.completed);
-
-  const handleAIDescription = async () => {
-    const titleVal = form.getValues("title");
-    if (!titleVal || !titleVal.trim()) {
-      setError("Please fill in the course title first.");
-      return;
-    }
-    setIsGeneratingAI(true);
-    setError(null);
-    setSuccess(null);
-    try {
-      const res = await generateAICourseDescription(titleVal);
-      if (!res.success) {
-        setError(res.error);
-      } else if (res.data.description) {
-        form.setValue("description", res.data.description);
-        setSuccess("AI Description generated successfully! Save your changes below.");
-      }
-    } catch {
-      setError("AI generation failed.");
-    } finally {
-      setIsGeneratingAI(false);
-    }
-  };
 
   const onSubmit = (values: CourseValues) => {
     setError(null);
@@ -217,9 +191,6 @@ export default function CourseEditor({ course, categories, aiEnabled }: CourseEd
             form={form}
             categories={categories}
             isPending={isPending}
-            isGeneratingAI={isGeneratingAI}
-            aiEnabled={aiEnabled}
-            onGenerateAI={handleAIDescription}
             onSubmit={onSubmit}
           />
         </div>

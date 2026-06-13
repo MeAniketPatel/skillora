@@ -5,7 +5,7 @@ import { useState, useTransition } from "react";
 import { GraduationCap, Users, ArrowRight } from "lucide-react";
 import { useSession } from "next-auth/react";
 
-import { completeOnboarding } from "@/features/auth/actions/auth.actions";
+import { updateUserRole } from "@/features/auth/actions/auth.actions";
 import { Button } from "@/shared/components/ui/button";
 import {
   Card,
@@ -29,7 +29,7 @@ export default function WelcomeForm() {
 
     setError(null);
     startTransition(async () => {
-      const res = await completeOnboarding({ role: selectedRole });
+      const res = await updateUserRole({ role: selectedRole });
       if (!res.success) {
         setError(res.error);
       } else {

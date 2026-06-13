@@ -11,8 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
-import { Navbar } from "@/shared/components/layout/navbar";
-import { Footer } from "@/shared/components/layout/footer";
 
 interface CoursesPageProps {
   searchParams: Promise<{
@@ -34,11 +32,8 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
   });
 
   return (
-    <div className="flex flex-col min-h-screen bg-neutral-50/50 dark:bg-neutral-950/50">
-      <Navbar />
-
-      <main className="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="space-y-8">
+    <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="space-y-8">
           {/* Header */}
           <div className="relative">
             <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-neutral-900 to-neutral-600 dark:from-neutral-50 dark:to-neutral-400 bg-clip-text text-transparent">
@@ -164,10 +159,7 @@ export default async function CoursesPage({ searchParams }: CoursesPageProps) {
               })}
             </div>
           )}
-        </div>
-      </main>
-
-      <Footer />
+      </div>
     </div>
   );
 }

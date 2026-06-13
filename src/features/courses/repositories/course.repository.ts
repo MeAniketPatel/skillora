@@ -61,7 +61,7 @@ export async function getCourseWithCurriculum(courseId: string) {
 
 export async function getCourseWithFullDetails(slug: string) {
   return db.course.findUnique({
-    where: { slug, status: "PUBLISHED" },
+    where: { slug },
     include: {
       teacher: true,
       category: true,

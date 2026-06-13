@@ -21,14 +21,7 @@ export default async function LearnPage({ params }: LearnPageProps) {
     redirect("/login");
   }
 
-  // Check enrollment
-  const enrollment = await getEnrollmentWithProgress(session.user.id, courseId);
-
-  if (!enrollment) {
-    redirect(`/courses`);
-  }
-
-  // Retrieve course content
+  // Retrieve course content first (needed for both free and enrolled access)
   const course = await getCourseWithPublishedCurriculum(courseId);
 
   if (!course) {
@@ -41,8 +34,22 @@ export default async function LearnPage({ params }: LearnPageProps) {
     redirect(`/student/courses`);
   }
 
+  // Allow unenrolled users to view free lessons
+  const isFreeLesson = lesson.isFree;
+
+  // Check enrollment
+  const enrollment = isFreeLesson
+    ? null
+    : await getEnrollmentWithProgress(session.user.id, courseId);
+
+  if (!isFreeLesson && !enrollment) {
+    redirect(`/courses`);
+  }
+
   // Find user's progress for this specific lesson
-  const currentProgress = await getLessonProgress(enrollment.id, lessonId);
+  const currentProgress = enrollment
+    ? await getLessonProgress(enrollment.id, lessonId)
+    : null;
 
   const assignmentSubmission = lesson.type === "ASSIGNMENT"
     ? await getSubmission(session.user.id, lessonId)
@@ -59,9 +66,9 @@ export default async function LearnPage({ params }: LearnPageProps) {
     s.lessons.some((l) => l.id === lessonId),
   );
 
-  const completedLessonIds = enrollment.lessonProgress
-    .filter((lp) => lp.isCompleted)
-    .map((lp) => lp.lessonId);
+  const completedLessonIds = enrollment?.lessonProgress
+    ?.filter((lp) => lp.isCompleted)
+    .map((lp) => lp.lessonId) ?? [];
 
   return (
     <LessonPlayer

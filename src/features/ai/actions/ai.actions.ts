@@ -86,7 +86,7 @@ export async function generateAIQuizQuestions(topic: string) {
       throw new ValidationError("Quiz topic is required to generate questions");
     }
 
-    const systemPrompt = `You are an expert educator. Generate exactly 3 multiple-choice quiz questions on the topic provided.
+    const systemPrompt = `You are an expert educator. Generate exactly 5 multiple-choice quiz questions on the topic provided.
 
 Output format (strict JSON, no markdown):
 {
@@ -105,14 +105,14 @@ Output format (strict JSON, no markdown):
 }
 
 Rules:
-- Exactly 3 questions
+- Exactly 5 questions
 - Exactly 4 options per question
 - Exactly 1 option per question has isCorrect: true
 - Questions must be specifically about the topic — not generic
 - Distractors should be plausible but clearly wrong
 - Explanations should teach, not just confirm`;
 
-    const userPrompt = `Generate 3 quiz questions on the topic: "${topic.trim()}"`;
+    const userPrompt = `Generate 5 quiz questions on the topic: "${topic.trim()}"`;
 
     const raw = await callGemini({
       systemPrompt,

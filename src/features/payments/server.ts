@@ -1,13 +1,7 @@
-// Server-only barrel. Import this from server actions, route handlers,
-// server components, and middleware. NEVER import from "use client" files.
+export { createPurchase, getPurchaseByMockId, getUserPurchases, getTeacherEarnings, getPlatformRevenue, getRevenueTimeSeries, getRecentPurchases, getRevenueByTeacher, getRevenueByCourse } from "./repositories/payment.repository";
 
-// Repository functions
-export { createPurchase, getPurchaseByStripeId, getUserPurchases, getTeacherEarnings, getPlatformRevenue, getRevenueTimeSeries, getRecentPurchases, getRevenueByTeacher, getRevenueByCourse } from "./repositories/payment.repository";
-
-// Service
-
-// Service
 import { paymentsService as service } from "./services/payments.service";
 export { service };
 
-export * from './index';
+export { checkoutSchema } from "./contracts/payments.contract";
+export type { CheckoutInput } from "./contracts/payments.contract";

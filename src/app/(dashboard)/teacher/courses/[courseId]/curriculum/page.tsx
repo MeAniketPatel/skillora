@@ -1,6 +1,6 @@
 import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getCourseByIdForOwner } from "@/features/courses/server";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import CurriculumBuilder from "@/features/courses/components/curriculum";
 import { CurriculumPublishButton } from "@/features/courses/components/curriculum/curriculum-publish-button";
 import LinkButton from "@/shared/components/ui/link-button";
@@ -16,11 +16,10 @@ export default async function CurriculumBuilderPage({
   const user = await requireTeacher();
   const { courseId } = await params;
 
-  let course;
-  try {
-    course = await getCourseByIdForOwner(courseId, user.id);
-  } catch {
-    redirect(`/teacher/courses/${courseId}`);
+  const course = await getCourseByIdForOwner(courseId, user.id);
+  
+  if (!course) {
+    notFound();
   }
 
   const sortedSections = [...course.sections]

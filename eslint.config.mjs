@@ -7,7 +7,6 @@ import unusedImports from "eslint-plugin-unused-imports";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
-  // Architecture boundary rules (ADR-004).
   {
     files: ["src/**/*.{ts,tsx}"],
     plugins: {

@@ -1,104 +1,69 @@
 # Skillora
 
-> **The modern e-learning platform where teachers create, students thrive..**
+A full-stack e-learning platform — teachers create courses, students take them. Built because I wanted to understand how platforms like Udemy/Coursera actually work under the hood.
 
-Skillora is a full-stack, production-grade e-learning platform built with modern web technologies. Teachers can create and sell courses with rich content (video, text, quizzes), and students can discover, enroll, learn, and earn certificates.
+## Tech
 
-## Tech Stack
+- **Framework:** Next.js (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS + shadcn/ui
+- **Database:** PostgreSQL + Prisma
+- **Auth:** NextAuth.js v5 (credentials + Google + GitHub)
+- **Payments:** Stripe (Checkout + Connect for teacher payouts)
+- **File storage:** UploadThing
+- **Email:** Resend
+- **AI:** Gemini (course descriptions, quiz generation)
+- **State:** Zustand
+- **Testing:** Vitest
+- **Deployment:** Vercel
 
-| Layer            | Technology                  |
-| ---------------- | --------------------------- |
-| **Framework**    | Next.js 15 (App Router)     |
-| **Language**     | TypeScript (strict mode)    |
-| **Styling**      | Tailwind CSS + shadcn/ui    |
-| **Database**     | PostgreSQL + Prisma ORM     |
-| **Auth**         | NextAuth.js v5              |
-| **Payments**     | Stripe (Checkout + Connect) |
-| **File Storage** | UploadThing / S3            |
-| **Email**        | Resend                      |
-| **Deployment**   | Vercel                      |
+## What it does
 
-## Features
+**Teachers** can create courses with video lessons, quizzes, assignments, and rich text content. There's an analytics dashboard, student management, and payout tracking.
 
-### For Teachers
+**Students** can browse/search courses, enroll, track progress, take quizzes, earn certificates, bookmark lessons, take notes, and leave reviews.
 
-- Course creation with rich text editor
-- Video lesson uploads with streaming
-- Quiz and assessment builder
-- Student management & analytics
-- Revenue dashboard & payouts
+**Platform** has role-based access (student/teacher/admin), Stripe payment processing, dark/light theme, and full responsive design.
 
-### For Students
+The thing I spent the most time on was the course editor — syncing state between the curriculum builder, lesson editor, and quiz builder while keeping everything debounced and performant was a headache.
 
-- Course discovery with search & filters
-- Video player with progress tracking
-- Quiz taking with instant grading
-- Certificates on completion
-- Personal notes & bookmarks
-
-### Platform
-
-- Role-based access (Student / Teacher / Admin)
-- Stripe payments with teacher payouts
-- SEO-optimized public pages
-- Dark/light theme
-- Fully responsive (mobile-first)
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- PostgreSQL (or use Docker)
-- npm
-
-### Installation
+## Running it
 
 ```bash
-# Clone the repository
 git clone https://github.com/YOUR_USERNAME/skillora.git
 cd skillora
-
-# Install dependencies
 npm install
-
-# Set up environment variables
-cp .env.example .env.local
-# Edit .env.local with your values
-
-# Run prisma generate
-npm run prisma:generate
-
-# Start the development server
+cp .env.example .env.local   # fill in your keys
+npm run db:push
 npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to see the app.
-
-## Project Structure
-
-```
-src/
-├── app/              # Next.js App Router (pages & layouts)
-├── components/       # Reusable UI components
-│   ├── ui/           # Primitive components (shadcn/ui)
-│   ├── layout/       # Layout components (navbar, sidebar, footer)
-│   └── shared/       # Shared business components
-├── lib/              # Utility functions & configurations
-├── actions/          # Server Actions (data mutations)
-├── hooks/            # Custom React hooks
-├── stores/           # Zustand state stores
-├── types/            # TypeScript type definitions
-└── config/           # App configuration
 ```
 
 ## Scripts
 
-```bash
-npm run dev       # Start development server
-npm run build     # Build for production
-npm run start     # Start production server
-npm run lint      # Run ESLint
+| Script | What it does |
+|---|---|
+| `npm run dev` | Start dev server |
+| `npm run build` | Production build |
+| `npm run lint` | ESLint |
+| `npm run type-check` | TypeScript check |
+| `npm run test` | Run tests |
+| `npm run db:migrate` | Prisma migration |
+| `npm run db:seed` | Seed sample data |
+
+## Structure
+
+```
+src/
+├── app/            # Next.js App Router pages & API routes
+├── features/       # Feature modules (courses, auth, payments, etc.)
+│   ├── actions/    # Server Actions
+│   ├── components/ # React components
+│   ├── contracts/  # Zod schemas
+│   ├── permissions/# Access control
+│   ├── repositories/# Data access (Prisma)
+│   └── services/   # Business logic
+├── shared/         # Shared UI, hooks, lib, types
+└── core/           # Domain entities & events
 ```
 
 ## License

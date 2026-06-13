@@ -1,7 +1,3 @@
-// Auto-generated service wrapper for the auth feature.
-// Delegates to the repositories by default (DI via default-param pattern
-// per ADR-007). Mutation methods emit domain events on the in-process
-// event bus for cross-feature side effects.
 import { eventBus } from "@/shared/events";
 import * as userRepo from "../repositories/user.repository";
 
@@ -35,6 +31,11 @@ export const authService = {
   getUserGrowthTimeline: userRepo.getUserGrowthTimeline,
   getAllInstructors: userRepo.getAllInstructors,
   getInstructorProfile: userRepo.getInstructorProfile,
+  getUserPasswordHash: userRepo.getUserPasswordHash,
+  getVerificationToken: userRepo.getVerificationToken,
+  markEmailVerified: userRepo.markEmailVerified,
+  deleteVerificationToken: userRepo.deleteVerificationToken,
+  updateUserRoleById: userRepo.updateUserRoleById,
 };
 
 export type AuthService = typeof authService;

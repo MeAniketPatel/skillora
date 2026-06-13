@@ -100,26 +100,26 @@ export async function recordStudySession(userId: string, durationSeconds: number
   });
 }
 
-export async function buyStreakFreeze(userId: string, costPoints = 100, tx?: any) {
-  const client = tx || db;
-  const user = await client.user.findUnique({
-    where: { id: userId },
-    select: { points: true },
-  });
-
-  if (!user || user.points < costPoints) {
-    throw new Error("Insufficient points to buy streak freeze");
-  }
-
-  // Deduct points and increment freeze count
-  return Promise.all([
-    client.user.update({
+export async function buyStreakFreeze(userId: string, costPoints = 100) {
+  return db.$transaction(async (tx) => {
+    const user = await tx.user.findUnique({
       where: { id: userId },
-      data: { points: { decrement: costPoints } },
-    }),
-    client.studyStreak.update({
-      where: { userId },
-      data: { freezeCount: { increment: 1 } },
-    }),
-  ]);
+      select: { points: true },
+    });
+
+    if (!user || user.points < costPoints) {
+      throw new Error("Insufficient points to buy streak freeze");
+    }
+
+    return Promise.all([
+      tx.user.update({
+        where: { id: userId },
+        data: { points: { decrement: costPoints } },
+      }),
+      tx.studyStreak.update({
+        where: { userId },
+        data: { freezeCount: { increment: 1 } },
+      }),
+    ]);
+  });
 }

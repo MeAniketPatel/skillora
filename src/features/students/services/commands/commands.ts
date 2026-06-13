@@ -1,5 +1,4 @@
 import { eventBus } from "@/shared/events";
-import db from "@/shared/lib/prisma";
 import * as bookmarkRepo from "../../repositories/bookmark.repository";
 import * as collectionRepo from "../../repositories/collection.repository";
 import * as learningGoalRepo from "../../repositories/learning-goal.repository";
@@ -86,9 +85,7 @@ export async function recordStudySession(...args: Parameters<typeof streakRepo.r
 }
 
 export async function buyStreakFreeze(userId: string, costPoints = 100): Promise<any> {
-  const result = await db.$transaction(async (tx) => {
-    return streakRepo.buyStreakFreeze(userId, costPoints, tx);
-  });
+  const result = await streakRepo.buyStreakFreeze(userId, costPoints);
   await eventBus.emit({ name: "students.buyStreakFreeze", feature: "students", payload: { result, args: [userId, costPoints] }, occurredAt: new Date() } as any);
   return result;
 }

@@ -24,7 +24,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { toggleLessonCompletion } from "@/features/enrollment";
 import { VideoPlayer } from "@/shared/components/shared/video-player";
-import { QuizView } from "@/features/courses";
+import { QuizView } from "@/features/quizzes";
 import { AssignmentView } from "@/features/courses";
 import { AITutor } from "@/features/learn";
 import { sanitizeRichHtml } from "@/shared/lib/sanitize";
@@ -119,8 +119,8 @@ export default function LessonPlayer({
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(completedLessonIds.includes(lesson.id));
 
-  const isCompleted = completedLessonIds.includes(lesson.id);
   const isLast = !nextLessonId;
   const meta = LESSON_TYPE_META[lesson.type];
   const TypeIcon = meta.icon;
@@ -135,6 +135,11 @@ export default function LessonPlayer({
     [lesson.content],
   );
 
+  // Sync state with props when lesson or completed list changes
+  useEffect(() => {
+    setIsCompleted(completedLessonIds.includes(lesson.id));
+  }, [lesson.id, completedLessonIds]);
+
   // Track when lesson changes to fade-in animation
   useEffect(() => {
     setIsTransitioning(true);
@@ -143,32 +148,27 @@ export default function LessonPlayer({
   }, [lesson.id]);
 
   const handleToggleCompletion = () => {
-    if (isCompleted) {
-      startTransition(async () => {
-        const res = await toggleLessonCompletion(courseId, lesson.id, false);
-        if (res.success) {
-          toast.success("Marked as incomplete");
-          router.refresh();
-        } else {
-          toast.error(res.error || "Failed to update");
-        }
-      });
-      return;
-    }
+    const newState = !isCompleted;
+    setIsCompleted(newState);
 
     startTransition(async () => {
-      const res = await toggleLessonCompletion(courseId, lesson.id, true);
+      const res = await toggleLessonCompletion(courseId, lesson.id, newState);
       if (res.success) {
-        toast.success("Lesson complete! 🎉", {
-          description: nextLessonId
-            ? "Loading next lesson..."
-            : "You finished the course!",
-        });
+        if (newState) {
+          toast.success("Lesson complete! 🎉", {
+            description: nextLessonId
+              ? "Loading next lesson..."
+              : "You finished the course!",
+          });
+        } else {
+          toast.success("Marked as incomplete");
+        }
         router.refresh();
-        if (nextLessonId) {
+        if (newState && nextLessonId) {
           setTimeout(() => router.push(`/learn/${courseId}/${nextLessonId}`), 600);
         }
       } else {
+        setIsCompleted(!newState);
         toast.error(res.error || "Failed to update");
       }
     });

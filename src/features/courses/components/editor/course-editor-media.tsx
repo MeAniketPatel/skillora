@@ -188,6 +188,8 @@ function Dropzone({
   hasError,
   fieldId,
 }: DropzoneProps) {
+  const [progress, setProgress] = useState(0);
+
   return (
     <div
       id={fieldId}
@@ -204,18 +206,19 @@ function Dropzone({
           : "border-neutral-300 dark:border-neutral-700 bg-neutral-50/50 dark:bg-neutral-950/20"
       } aria-invalid:border-red-500`}
     >
-      {isUploading ? (
-        <div className="flex flex-col items-center justify-center min-h-[200px] gap-3 backdrop-blur-sm bg-white/90 dark:bg-neutral-950/90">
+      {isUploading && (
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center min-h-[200px] gap-3 backdrop-blur-sm bg-white/90 dark:bg-neutral-950/90">
           <div className="animate-spin rounded-full h-10 w-10 border-[3px] border-indigo-600 border-t-transparent" />
           <div className="flex flex-col items-center gap-0.5">
             <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-              Uploading {label}...
+              Uploading {label}... ({progress}% complete)
             </span>
             <span className="text-xs text-neutral-500">Please don't close this tab</span>
           </div>
         </div>
-      ) : isDragging ? (
-        <div className="flex flex-col items-center justify-center min-h-[200px] gap-2">
+      )}
+      {isDragging && !isUploading && (
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center min-h-[200px] gap-2 bg-indigo-50/50 dark:bg-indigo-950/40 pointer-events-none">
           <div className="h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-950/40 flex items-center justify-center">
             <svg className="h-5 w-5 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
@@ -225,22 +228,27 @@ function Dropzone({
             Drop to upload {label}
           </span>
         </div>
-      ) : (
-        <UploadDropzone
-          endpoint={endpoint}
-          config={{ mode: "auto" }}
-          onUploadBegin={() => setIsUploading(true)}
-          onClientUploadComplete={(res) => {
-            setIsUploading(false);
-            const fileUrl = res?.[0]?.ufsUrl || res?.[0]?.url;
-            if (fileUrl) onComplete(fileUrl);
-          }}
-          onUploadError={(error: Error) => {
-            setIsUploading(false);
-            onError(`Upload failed: ${error.message}`);
-          }}
-        />
       )}
+      <UploadDropzone
+        endpoint={endpoint}
+        config={{ mode: "auto" }}
+        onUploadProgress={(p) => setProgress(p)}
+        onUploadBegin={() => {
+          setIsUploading(true);
+          setProgress(0);
+        }}
+        onClientUploadComplete={(res) => {
+          setIsUploading(false);
+          setProgress(0);
+          const fileUrl = res?.[0]?.ufsUrl || res?.[0]?.url;
+          if (fileUrl) onComplete(fileUrl);
+        }}
+        onUploadError={(error: Error) => {
+          setIsUploading(false);
+          setProgress(0);
+          onError(`Upload failed: ${error.message}`);
+        }}
+      />
     </div>
   );
 }

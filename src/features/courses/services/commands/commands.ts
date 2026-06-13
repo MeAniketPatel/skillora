@@ -1,12 +1,8 @@
 import { eventBus } from "@/shared/events";
-import db from "@/shared/lib/prisma";
 import * as courseRepo from "../../repositories/course.repository";
 import * as lessonRepo from "../../repositories/lesson.repository";
-import * as liveSessionRepo from "../../repositories/live-session.repository";
-import * as peerReviewRepo from "../../repositories/peer-review.repository";
-import * as quizRepo from "../../repositories/quiz.repository";
-import * as resourceRepo from "../../repositories/resource.repository";
 import * as sectionRepo from "../../repositories/section.repository";
+import { NotFoundError, ValidationError } from "@/shared/lib/errors";
 
 export async function createCourse(...args: Parameters<typeof courseRepo.createCourse>): Promise<Awaited<ReturnType<typeof courseRepo.createCourse>>> {
   const result = await courseRepo.createCourse(...args);
@@ -45,66 +41,8 @@ export async function deleteLesson(...args: Parameters<typeof lessonRepo.deleteL
 }
 
 export async function reorderLessons(sectionId: string, items: { id: string; position: number }[]): Promise<any> {
-  const result = await db.$transaction(async (tx) => {
-    return lessonRepo.reorderLessons(sectionId, items, tx);
-  });
+  const result = await lessonRepo.reorderLessons(sectionId, items);
   await eventBus.emit({ name: "courses.reorderLessons", feature: "courses", payload: { result, args: [sectionId, items] }, occurredAt: new Date() } as any);
-  return result;
-}
-
-export async function createLiveSession(...args: Parameters<typeof liveSessionRepo.createLiveSession>): Promise<Awaited<ReturnType<typeof liveSessionRepo.createLiveSession>>> {
-  const result = await liveSessionRepo.createLiveSession(...args);
-  await eventBus.emit({ name: "courses.createLiveSession", feature: "courses", payload: { result, args }, occurredAt: new Date() } as any);
-  return result;
-}
-
-export async function deleteLiveSession(...args: Parameters<typeof liveSessionRepo.deleteLiveSession>): Promise<Awaited<ReturnType<typeof liveSessionRepo.deleteLiveSession>>> {
-  const result = await liveSessionRepo.deleteLiveSession(...args);
-  await eventBus.emit({ name: "courses.deleteLiveSession", feature: "courses", payload: { result, args }, occurredAt: new Date() } as any);
-  return result;
-}
-
-export async function upsertPeerReviewConfig(...args: Parameters<typeof peerReviewRepo.upsertPeerReviewConfig>): Promise<Awaited<ReturnType<typeof peerReviewRepo.upsertPeerReviewConfig>>> {
-  const result = await peerReviewRepo.upsertPeerReviewConfig(...args);
-  await eventBus.emit({ name: "courses.upsertPeerReviewConfig", feature: "courses", payload: { result, args }, occurredAt: new Date() } as any);
-  return result;
-}
-
-export async function deletePeerReviewConfig(...args: Parameters<typeof peerReviewRepo.deletePeerReviewConfig>): Promise<Awaited<ReturnType<typeof peerReviewRepo.deletePeerReviewConfig>>> {
-  const result = await peerReviewRepo.deletePeerReviewConfig(...args);
-  await eventBus.emit({ name: "courses.deletePeerReviewConfig", feature: "courses", payload: { result, args }, occurredAt: new Date() } as any);
-  return result;
-}
-
-export async function createQuiz(...args: Parameters<typeof quizRepo.createQuiz>): Promise<Awaited<ReturnType<typeof quizRepo.createQuiz>>> {
-  const result = await quizRepo.createQuiz(...args);
-  await eventBus.emit({ name: "courses.createQuiz", feature: "courses", payload: { result, args }, occurredAt: new Date() } as any);
-  return result;
-}
-
-export async function updateQuizWithQuestions(quizId: string, data: any, questions: any[]): Promise<any> {
-  const result = await db.$transaction(async (tx) => {
-    return quizRepo.updateQuizWithQuestions(quizId, data, questions, tx);
-  });
-  await eventBus.emit({ name: "courses.updateQuizWithQuestions", feature: "courses", payload: { result, args: [quizId, data, questions] }, occurredAt: new Date() } as any);
-  return result;
-}
-
-export async function createQuizAttempt(...args: Parameters<typeof quizRepo.createQuizAttempt>): Promise<Awaited<ReturnType<typeof quizRepo.createQuizAttempt>>> {
-  const result = await quizRepo.createQuizAttempt(...args);
-  await eventBus.emit({ name: "courses.createQuizAttempt", feature: "courses", payload: { result, args }, occurredAt: new Date() } as any);
-  return result;
-}
-
-export async function createResource(...args: Parameters<typeof resourceRepo.createResource>): Promise<Awaited<ReturnType<typeof resourceRepo.createResource>>> {
-  const result = await resourceRepo.createResource(...args);
-  await eventBus.emit({ name: "courses.createResource", feature: "courses", payload: { result, args }, occurredAt: new Date() } as any);
-  return result;
-}
-
-export async function deleteResource(...args: Parameters<typeof resourceRepo.deleteResource>): Promise<Awaited<ReturnType<typeof resourceRepo.deleteResource>>> {
-  const result = await resourceRepo.deleteResource(...args);
-  await eventBus.emit({ name: "courses.deleteResource", feature: "courses", payload: { result, args }, occurredAt: new Date() } as any);
   return result;
 }
 
@@ -127,9 +65,30 @@ export async function deleteSection(...args: Parameters<typeof sectionRepo.delet
 }
 
 export async function reorderSections(courseId: string, items: { id: string; position: number }[]): Promise<any> {
-  const result = await db.$transaction(async (tx) => {
-    return sectionRepo.reorderSections(courseId, items, tx);
-  });
+  const result = await sectionRepo.reorderSections(courseId, items);
   await eventBus.emit({ name: "courses.reorderSections", feature: "courses", payload: { result, args: [courseId, items] }, occurredAt: new Date() } as any);
+  return result;
+}
+
+export async function publishCourse(courseId: string, teacherId: string): Promise<any> {
+  const course = await courseRepo.getCourseForPublishing(courseId, teacherId);
+  if (!course) throw new NotFoundError("Course");
+
+  const hasPublishedLessons = course.sections.some((s: any) =>
+    s.lessons.some((l: any) => l.isPublished)
+  );
+
+  const missingFields: string[] = [];
+  if (!course.title) missingFields.push("title");
+  if (!course.description) missingFields.push("description");
+  if (!course.thumbnail) missingFields.push("thumbnail");
+  if (!course.categoryId) missingFields.push("categoryId");
+
+  if (missingFields.length || !hasPublishedLessons) {
+    throw new ValidationError(`Cannot publish: Missing ${missingFields.join(", ")} or published lessons`);
+  }
+
+  const result = await courseRepo.updateCourse(courseId, { status: "PUBLISHED", publishedAt: new Date() });
+  await eventBus.emit({ name: "courses.publishCourse", feature: "courses", payload: { result, args: { courseId, teacherId } }, occurredAt: new Date() } as any);
   return result;
 }

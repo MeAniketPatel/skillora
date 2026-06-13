@@ -107,34 +107,8 @@ export async function globalSearch(query: string, filters: SearchFilters = {}) {
     });
   }
 
-  // 3. Blog post search
-  let blogPosts: any[] = [];
-  if (cleanQuery) {
-    blogPosts = await db.blogPost.findMany({
-      where: {
-        published: true,
-        OR: [
-          { title: { contains: cleanQuery, mode: "insensitive" } },
-          { content: { contains: cleanQuery, mode: "insensitive" } },
-          { excerpt: { contains: cleanQuery, mode: "insensitive" } },
-        ],
-      },
-      include: {
-        author: {
-          select: {
-            name: true,
-            image: true,
-            role: true,
-          },
-        },
-      },
-      take: 5,
-    });
-  }
-
   return {
     courses: filteredCourses,
     teachers,
-    blogPosts,
   };
 }

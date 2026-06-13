@@ -8,7 +8,6 @@ import { service as authService, AuthAuditAction, AuthSessionRevocationReason } 
 import { ZodError } from "zod";
 
 import { signIn, signOut, auth } from "@/auth";
-import db from "@/shared/lib/prisma";
 import { sendPasswordResetEmail } from "@/shared/lib/mail";
 import {
   PASSWORD_RESET_TOKEN_TTL_MINUTES,
@@ -132,16 +131,41 @@ export async function updateUserSettings(values: {
   email?: string;
   password?: string;
   oldPassword?: string;
+  image?: string | null;
+  headline?: string | null;
+  bio?: string | null;
+  twitter?: string | null;
+  linkedin?: string | null;
+  github?: string | null;
 }) {
   return actionHandler(async () => {
     const requestMetadata = await getActionRequestMetadata();
     const user = await requireAuth();
 
-    const { name, password, oldPassword } = values;
+    const { name, password, oldPassword, image, headline, bio, twitter, linkedin, github } = values;
     const email = values.email?.toLowerCase();
-    const updateData: { name?: string; email?: string; password?: string } = {};
+    const updateData: {
+      name?: string;
+      email?: string;
+      password?: string;
+      image?: string | null;
+      headline?: string | null;
+      bio?: string | null;
+      socialLinks?: { twitter?: string | null; linkedin?: string | null; github?: string | null };
+    } = {};
 
     if (name) updateData.name = name;
+    if (image !== undefined) updateData.image = image;
+    if (headline !== undefined) updateData.headline = headline;
+    if (bio !== undefined) updateData.bio = bio;
+
+    if (twitter !== undefined || linkedin !== undefined || github !== undefined) {
+      updateData.socialLinks = {
+        twitter: twitter || null,
+        linkedin: linkedin || null,
+        github: github || null,
+      };
+    }
 
     if (email && email !== user.email) {
       const existingUser = await authService.getUserByEmail(email);
@@ -152,10 +176,7 @@ export async function updateUserSettings(values: {
     }
 
     if (password) {
-      const dbUser = await db.user.findUnique({
-        where: { id: user.id },
-        select: { password: true },
-      });
+      const dbUser = await authService.getUserPasswordHash(user.id);
 
       if (dbUser?.password) {
         if (!oldPassword) {
@@ -192,7 +213,14 @@ export async function updateUserSettings(values: {
       });
     }
 
-    if (updateData.name || updateData.email) {
+    if (
+      updateData.name ||
+      updateData.email ||
+      updateData.image !== undefined ||
+      updateData.headline !== undefined ||
+      updateData.bio !== undefined ||
+      updateData.socialLinks !== undefined
+    ) {
       await logAuthAudit({
         action: AuthAuditAction.PROFILE_UPDATED,
         userId: user.id,
@@ -201,6 +229,12 @@ export async function updateUserSettings(values: {
         metadata: {
           changedName: Boolean(updateData.name),
           changedEmail: Boolean(updateData.email),
+          changedProfileDetails: Boolean(
+            updateData.image !== undefined ||
+              updateData.headline !== undefined ||
+              updateData.bio !== undefined ||
+              updateData.socialLinks !== undefined
+          ),
         },
       });
     }
@@ -347,7 +381,38 @@ export async function logoutAllSessions() {
   await signOut({ redirectTo: "/" });
 }
 
-export async function completeOnboarding(values: { role: Role }) {
+export async function verifyEmail(token: string) {
+  return actionHandler(async () => {
+    const record = await authService.getVerificationToken(token);
+
+    if (!record) {
+      throw new ValidationError("Invalid or expired verification token.");
+    }
+
+    if (record.expires < new Date()) {
+      throw new ValidationError("Verification token has expired.");
+    }
+
+    await authService.markEmailVerified(record.identifier);
+    await authService.deleteVerificationToken(record.identifier, token);
+
+    return { success: "Email verified successfully!" };
+  });
+}
+
+export async function sendVerificationEmail(email: string) {
+  return actionHandler(async () => {
+    const user = await authService.getUserByEmail(email);
+    if (!user) {
+      throw new ValidationError("User not found.");
+    }
+
+    console.log(`[MAIL MOCK] Verification email sent to ${email}`);
+    return { success: "Verification email sent." };
+  });
+}
+
+export async function updateUserRole(values: { role: Role }) {
   return actionHandler(async () => {
     const user = await requireAuth();
 
@@ -356,14 +421,9 @@ export async function completeOnboarding(values: { role: Role }) {
       throw new ValidationError("Invalid role selected");
     }
 
-    await db.user.update({
-      where: { id: user.id },
-      data: {
-        role: values.role,
-        onboarded: true,
-      },
-    });
+    await authService.updateUserRoleById(user.id, values.role);
 
     return { role: values.role };
   });
 }
+

@@ -1,6 +1,5 @@
 
 
-// Components
 export { default as AssignmentView } from "./components/assignment-view";
 export { CourseComparison } from "./components/course-comparison";
 export { CourseFilters } from "./components/course-filters";
@@ -16,16 +15,10 @@ export { default as CourseEditor } from "./components/editor";
 export { default as EnrollButton } from "./components/enroll-button";
 export { default as LessonEditor } from "./components/lesson-editor";
 export { default as LessonPlayer } from "./components/lesson-player";
-export { default as QuizBuilder } from "./components/quiz-builder";
-export { default as QuizView } from "./components/quiz-view";
-
-// Permissions
 export { canCourses as canCourses, assertCoursesAccess } from "./permissions/courses.permissions";
 
 
 
-
-// Contracts
 export { courseCreateSchema, courseUpdateSchema, sectionCreateSchema, lessonUpdateSchema } from "./contracts/course.contract";
 export type { CourseCreateInput, CourseUpdateInput, SectionCreateInput, LessonUpdateInput } from "./contracts/course.contract";
 export { createCoursesSchema, updateCoursesSchema, listCoursesQuerySchema } from "./contracts/courses.contract";

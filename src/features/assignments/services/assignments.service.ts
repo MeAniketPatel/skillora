@@ -1,7 +1,3 @@
-// Auto-generated service wrapper for the assignments feature.
-// Delegates to the repositories by default (DI via default-param pattern
-// per ADR-007). Mutation methods emit domain events on the in-process
-// event bus for cross-feature side effects.
 import { eventBus } from "@/shared/events";
 import * as assignmentRepo from "../repositories/assignment.repository";
 
@@ -12,6 +8,7 @@ export const assignmentsService = {
     return result;
   },
   getSubmission: assignmentRepo.getSubmission,
+  getSubmissionById: assignmentRepo.getSubmissionById,
   getSubmissionsForLesson: assignmentRepo.getSubmissionsForLesson,
   gradeSubmission: assignmentRepo.gradeSubmission,
   getTeacherPendingSubmissions: assignmentRepo.getTeacherPendingSubmissions,

@@ -1,39 +1,22 @@
-import React from "react";
 import { requireAuth } from "@/shared/lib/auth-helpers";
-import { getUserProfileCard, getUserPortfolio, getUserActivities } from "@/features/social/server";
-import { PageHeader } from "@/shared/components/shared/page-header";
-import { ProfileCard } from "@/features/social/server";
-import { ProfilePortfolio } from "@/features/social/server";
-import { ProfileActivityFeed } from "@/features/social/server";
+import { getUserProfile } from "@/features/auth/server";
+import { ProfileForm } from "./profile-form";
 
 export default async function OwnProfilePage() {
   const user = await requireAuth();
-
-  const profile = await getUserProfileCard(user.id!);
-  if (!profile) {
-    throw new Error("User profile not found.");
-  }
-
-  const projects = await getUserPortfolio(user.id!);
-  const activities = await getUserActivities(user.id!);
+  const profile = await getUserProfile(user.id);
 
   return (
-    <div className="p-6 max-w-5xl mx-auto space-y-8">
-      <PageHeader
-        title="My Profile & Portfolio"
-        description="View and update your display information, social handles, achievements and projects."
-      />
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        <div className="lg:col-span-1">
-          <ProfileCard user={profile as any} isOwnProfile={true} initialFollowing={false} />
-        </div>
-        <div className="lg:col-span-2 space-y-8">
-          <ProfilePortfolio projects={projects} isOwnProfile={true} />
-          <ProfileActivityFeed activities={activities as any} />
-        </div>
-      </div>
-    </div>
+    <ProfileForm
+      user={{
+        id: user.id,
+        name: profile?.name ?? null,
+        email: user.email ?? "",
+        image: profile?.image ?? null,
+        headline: profile?.headline ?? null,
+        bio: profile?.bio ?? null,
+        socialLinks: (profile?.socialLinks as { twitter?: string; linkedin?: string; github?: string }) || {},
+      }}
+    />
   );
 }
-

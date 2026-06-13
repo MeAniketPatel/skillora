@@ -103,7 +103,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth((request) => {
         if (user) {
           const dbUser = await db.user.findUnique({
             where: { id: userId },
-            select: { id: true, email: true, role: true, onboarded: true },
+            select: { id: true, email: true, role: true, name: true, image: true },
           });
           const authSession = await createAuthSession({
             userId,
@@ -113,10 +113,10 @@ export const { auth, handlers, signIn, signOut } = NextAuth((request) => {
 
           token.id = userId;
           token.role = user.role ?? dbUser?.role ?? "STUDENT";
+          token.name = dbUser?.name ?? user.name ?? null;
+          token.picture = dbUser?.image ?? user.image ?? null;
           token.sessionId = authSession.sessionId;
           token.authSessionExpires = authSession.expiresAt.toISOString();
-          token.isNewOAuthUser = !!(account && account.provider !== "credentials" && dbUser && !dbUser.onboarded);
-
           await logAuthAudit({
             action: AuthAuditAction.LOGIN_SUCCESS,
             userId,
@@ -141,11 +141,12 @@ export const { auth, handlers, signIn, signOut } = NextAuth((request) => {
 
         const refreshedUser = await db.user.findUnique({
           where: { id: userId },
-          select: { role: true, onboarded: true },
+          select: { role: true, name: true, image: true },
         });
         if (refreshedUser) {
           token.role = refreshedUser.role;
-          token.isNewOAuthUser = !refreshedUser.onboarded;
+          token.name = refreshedUser.name;
+          token.picture = refreshedUser.image;
         }
 
         const isValid = await validateAuthSession({
@@ -162,7 +163,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth((request) => {
           session.user.id = token.id as string;
           session.user.role = token.role as Role;
           session.user.sessionId = token.sessionId as string | undefined;
-          session.user.isNewOAuthUser = token.isNewOAuthUser as boolean | undefined;
+          if (token.name) session.user.name = token.name as string;
+          if (token.picture) session.user.image = token.picture as string;
         }
         return session;
       },

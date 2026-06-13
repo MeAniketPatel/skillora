@@ -3,13 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
-import { triggerWebhook } from "@/lib/webhook-sender";
 import {
   courseCreateSchema,
   courseUpdateSchema,
   CourseCreateInput,
   CourseUpdateInput,
-} from "@/features/courses/contracts/course.contract";
+} from "../contracts/course.contract";
 import { service as coursesService } from "@/features/courses/server";
 import { service as attachmentsService } from "@/features/attachments/server";
 export async function createCourse(values: CourseCreateInput) {
@@ -30,6 +29,7 @@ export async function createCourse(values: CourseCreateInput) {
       teacherId: user.id,
     });
 
+    revalidatePath("/teacher/courses");
     return course;
   });
 }
@@ -51,38 +51,8 @@ export async function updateCourse(courseId: string, values: CourseUpdateInput) 
 export async function publishCourse(courseId: string) {
   return actionHandler(async () => {
     const user = await requireTeacher();
-    const course = await coursesService.getCourseForPublishing(courseId, user.id);
 
-    if (!course) throw new Error("Course not found");
-
-    const hasPublishedLessons = course.sections.some((s) =>
-      s.lessons.some((l) => l.isPublished)
-    );
-
-    const missingFields: string[] = [];
-    if (!course.title) missingFields.push("title");
-    if (!course.description) missingFields.push("description");
-    if (!course.thumbnail) missingFields.push("thumbnail");
-    if (!course.categoryId) missingFields.push("categoryId");
-
-    if (missingFields.length || !hasPublishedLessons) {
-      throw new Error(`Cannot publish: Missing ${missingFields.join(", ")} or published lessons`);
-    }
-
-    const updated = await coursesService.updateCourse(courseId, { status: "PUBLISHED", publishedAt: new Date() });
-    
-    try {
-      await triggerWebhook("course.published", {
-        courseId: updated.id,
-        title: updated.title,
-        slug: updated.slug,
-        price: updated.price,
-        teacherId: updated.teacherId,
-        publishedAt: updated.publishedAt,
-      });
-    } catch (whErr) {
-      console.error("Failed to trigger webhook on course publish:", whErr);
-    }
+    const updated = await coursesService.publishCourse(courseId, user.id);
 
     revalidatePath(`/teacher/courses/${courseId}`);
     return updated;
@@ -200,6 +170,7 @@ export async function createAttachment(courseId: string, lessonId: string, name:
 
     const attachment = await attachmentsService.createAttachment({ name, url, size, type, lessonId });
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
+    revalidatePath(`/teacher/courses/${courseId}/lessons/${lessonId}`);
     return attachment;
   });
 }
@@ -211,6 +182,7 @@ export async function deleteAttachment(courseId: string, lessonId: string, attac
 
     await attachmentsService.deleteAttachment(attachmentId, lessonId);
     revalidatePath(`/teacher/courses/${courseId}/curriculum`);
+    revalidatePath(`/teacher/courses/${courseId}/lessons/${lessonId}`);
     return true;
   });
 }

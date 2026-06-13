@@ -1,9 +1,6 @@
-// ESLint boundary rules for the enterprise architecture migration.
-// Ensures:
-// - Cross-feature imports go through feature barrels, not deep paths.
-// - Repositories are the only place that imports from @/shared/lib/prisma.
-// - App pages can only import from @/features/* and @/shared/*.
-// - Components cannot import from @/data (legacy).
+// Import boundary rules to keep the architecture clean.
+// Cross-feature imports must go through feature barrels, and
+// only repositories should import Prisma directly.
 module.exports = {
   rules: {
     "no-restricted-imports": [

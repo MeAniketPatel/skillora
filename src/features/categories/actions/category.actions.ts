@@ -28,10 +28,7 @@ export async function updateCategory(id: string, values: any) {
 }
 
 export async function deleteCategory(id: string) {
-  return actionHandler(async () => {
-    await requireAdmin();
-    await categoriesService.deleteCategory(id);
-    revalidatePath(`/admin/categories`);
-    return true;
-  });
+  await requireAdmin();
+  await categoriesService.deleteCategory(id);
+  revalidatePath(`/admin/categories`);
 }

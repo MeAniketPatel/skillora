@@ -1,5 +1,5 @@
 import React from "react";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { requireTeacher } from "@/shared/lib/auth-helpers";
 import { getCourseByIdForOwner } from "@/features/courses/server";
 import { getCourseEnrollments } from "@/features/enrollment/server";
@@ -21,11 +21,10 @@ export default async function CourseStudentsPage({ params, searchParams }: PageP
   const { courseId } = await params;
   const resolvedSearchParams = await searchParams;
 
-  let course;
-  try {
-    course = await getCourseByIdForOwner(courseId, user.id);
-  } catch {
-    redirect("/teacher/courses");
+  const course = await getCourseByIdForOwner(courseId, user.id);
+  
+  if (!course) {
+    notFound();
   }
 
   const page = resolvedSearchParams.page ? parseInt(resolvedSearchParams.page, 10) : 1;

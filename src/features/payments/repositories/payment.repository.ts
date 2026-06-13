@@ -5,9 +5,9 @@ export async function createPurchase(data: any) {
   return db.purchase.create({ data });
 }
 
-export async function getPurchaseByStripeId(stripePaymentId: string) {
+export async function getPurchaseByMockId(mockPaymentId: string) {
   return db.purchase.findUnique({
-    where: { stripePaymentId },
+    where: { mockPaymentId },
   });
 }
 

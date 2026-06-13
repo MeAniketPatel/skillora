@@ -6,7 +6,6 @@ import { Users } from "lucide-react";
 import { format } from "date-fns";
 import { updateUserRole, banUser, unbanUser } from "@/features/admin/server";
 import { Button } from "@/shared/components/ui/button";
-import { ImpersonateButton } from "@/features/admin/server";
 
 
 export default async function AdminUsersPage() {
@@ -62,13 +61,12 @@ export default async function AdminUsersPage() {
       header: "Actions",
       cell: (item: any) => (
         <div className="flex gap-2">
-          <ImpersonateButton userId={item.id} />
           <form action={async () => {
             "use server";
             await updateUserRole({ userId: item.id, role: item.role === "TEACHER" ? "STUDENT" : "TEACHER" });
           }}>
             <Button type="submit" variant="outline" size="sm">
-              {item.role === "ADMIN" ? "Remove Admin" : "Make Admin"}
+              {item.role === "TEACHER" ? "Make Student" : "Make Teacher"}
             </Button>
           </form>
           <form action={async () => {

@@ -12,7 +12,7 @@ export function HeroSection() {
         <div className="space-y-8">
           <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/50 px-3 py-1 text-xs font-semibold text-muted-foreground backdrop-blur">
             <Sparkles className="h-3.5 w-3.5 text-primary" />
-            <span>New: AI tutor + spaced-repetition flashcards</span>
+            <span>Learn at your own pace</span>
           </div>
 
           <h1 className="font-heading text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">

@@ -1,9 +1,8 @@
 import { notFound } from "next/navigation";
 import { Award, ShieldCheck } from "lucide-react";
 import { getCertificateById } from "@/features/certificates/server";
+import { CertificateActions } from "@/features/certificates";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
-import { Navbar } from "@/shared/components/layout/navbar";
-import { Footer } from "@/shared/components/layout/footer";
 
 interface CertificatePageProps {
   params: Promise<{
@@ -30,17 +29,27 @@ export default async function CertificateVerificationPage({ params }: Certificat
     day: "numeric",
   });
 
-  return (
-    <div className="flex flex-col min-h-screen bg-neutral-50 dark:bg-neutral-950">
-      <Navbar />
+  const verifyUrl = `https://skillora.vercel.app/certificates/${certificateId}`;
 
-      <main className="flex-grow flex items-center justify-center p-6 md:p-10">
+  return (
+    <>
+      <main className="flex items-center justify-center p-6 md:p-10">
         <Card className="max-w-3xl w-full bg-white dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-800 shadow-2xl relative overflow-hidden p-8 md:p-12 text-center rounded-2xl">
           {/* Decorative Corner Borders */}
           <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-primary rounded-tl-xl" />
           <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-primary rounded-tr-xl" />
           <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-primary rounded-bl-xl" />
           <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-primary rounded-br-xl" />
+
+          {/* Skillora Branding at Top */}
+          <div className="mb-6 flex items-center justify-center gap-2">
+            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-primary to-primary/80">
+              <Award className="h-6 w-6 text-white" />
+            </div>
+            <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              Skillora
+            </span>
+          </div>
 
           <CardHeader className="space-y-2 pb-6">
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary mb-4 animate-pulse">
@@ -83,11 +92,20 @@ export default async function CertificateVerificationPage({ params }: Certificat
               <ShieldCheck className="h-4 w-4" />
               <span>Verifiable Credential ID: {certificateId}</span>
             </div>
+
+            <div className="flex flex-col items-center gap-4 mt-6 pt-6 border-t border-neutral-100 dark:border-neutral-800/80">
+              <CertificateActions
+                studentName={studentName}
+                courseTitle={courseTitle}
+                instructorName={teacherName}
+                issueDate={completionDate}
+                certificateId={certificateId}
+                verifyUrl={verifyUrl}
+              />
+            </div>
           </CardContent>
         </Card>
       </main>
-
-      <Footer />
-    </div>
+    </>
   );
 }

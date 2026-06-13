@@ -9,6 +9,7 @@ export const courseSchema = z.object({
   price: z.number().min(0, "Price must be positive"),
   categoryId: z.string().min(1, "Category is required"),
   level: z.enum(["BEGINNER", "INTERMEDIATE", "ADVANCED", "ALL_LEVELS"]),
+  language: z.string().optional(),
 });
 
 export type CourseValues = z.infer<typeof courseSchema>;

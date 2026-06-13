@@ -37,18 +37,31 @@ export async function updateSection(sectionId: string, courseId: string, data: {
 }
 
 export async function deleteSection(sectionId: string, courseId: string) {
-  return db.section.delete({
-    where: { id: sectionId, courseId },
+  return db.$transaction(async (tx) => {
+    const lessons = await tx.lesson.findMany({
+      where: { sectionId },
+      select: { id: true },
+    });
+    const lessonIds = lessons.map((l) => l.id);
+    if (lessonIds.length > 0) {
+      await tx.lessonProgress.deleteMany({ where: { lessonId: { in: lessonIds } } });
+      await tx.note.deleteMany({ where: { lessonId: { in: lessonIds } } });
+      await tx.question.deleteMany({ where: { lessonId: { in: lessonIds } } });
+    }
+    return tx.section.delete({
+      where: { id: sectionId, courseId },
+    });
   });
 }
 
-export async function reorderSections(courseId: string, items: { id: string; position: number }[], tx?: any) {
-  const client = tx || db;
-  const updates = items.map((item) =>
-    client.section.update({
-      where: { id: item.id, courseId },
-      data: { position: item.position },
-    })
-  );
-  return Promise.all(updates);
+export async function reorderSections(courseId: string, items: { id: string; position: number }[]) {
+  return db.$transaction(async (tx) => {
+    const updates = items.map((item) =>
+      tx.section.update({
+        where: { id: item.id, courseId },
+        data: { position: item.position },
+      })
+    );
+    return Promise.all(updates);
+  });
 }

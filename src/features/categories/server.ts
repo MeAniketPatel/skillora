@@ -1,13 +1,5 @@
-// Server-only barrel. Import this from server actions, route handlers,
-// server components, and middleware. NEVER import from "use client" files.
-
-// Repository functions
 export { getAllCategories, getCategoriesWithCounts, getCategoryBySlug, createCategory, updateCategory, deleteCategory } from "./repositories/category.repository";
 
-// Service
-
-// Service
 import { categoriesService as service } from "./services/categories.service";
 export { service };
 
-export * from './index';

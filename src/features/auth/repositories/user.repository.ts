@@ -55,7 +55,6 @@ export interface UserWithPassword {
   isBanned: boolean;
   bannedAt: Date | null;
   bannedReason: string | null;
-  points: number;
 }
 
 export interface CreateUserInput {
@@ -412,4 +411,37 @@ export async function getAllInstructors(params: GetAllInstructorsParams) {
 }
 export async function getInstructorProfile(userId: string) {
   return userRepository.getInstructorProfile(userId);
+}
+
+export async function getUserPasswordHash(id: string) {
+  return db.user.findUnique({
+    where: { id },
+    select: { password: true },
+  });
+}
+
+export async function getVerificationToken(token: string) {
+  return db.verificationToken.findFirst({
+    where: { token },
+  });
+}
+
+export async function markEmailVerified(email: string) {
+  return db.user.update({
+    where: { email },
+    data: { emailVerified: new Date() },
+  });
+}
+
+export async function deleteVerificationToken(identifier: string, token: string) {
+  return db.verificationToken.delete({
+    where: { identifier_token: { identifier, token } },
+  });
+}
+
+export async function updateUserRoleById(id: string, role: Role) {
+  return db.user.update({
+    where: { id },
+    data: { role },
+  });
 }

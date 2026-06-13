@@ -26,20 +26,26 @@ export async function updateLesson(lessonId: string, sectionId: string, data: an
 }
 
 export async function deleteLesson(lessonId: string, sectionId: string) {
-  return db.lesson.delete({
-    where: { id: lessonId, sectionId },
+  return db.$transaction(async (tx) => {
+    await tx.lessonProgress.deleteMany({ where: { lessonId } });
+    await tx.note.deleteMany({ where: { lessonId } });
+    await tx.question.deleteMany({ where: { lessonId } });
+    return tx.lesson.delete({
+      where: { id: lessonId, sectionId },
+    });
   });
 }
 
-export async function reorderLessons(sectionId: string, items: { id: string; position: number }[], tx?: any) {
-  const client = tx || db;
-  const updates = items.map((item) =>
-    client.lesson.update({
-      where: { id: item.id, sectionId },
-      data: { position: item.position },
-    })
-  );
-  return Promise.all(updates);
+export async function reorderLessons(sectionId: string, items: { id: string; position: number }[]) {
+  return db.$transaction(async (tx) => {
+    const updates = items.map((item) =>
+      tx.lesson.update({
+        where: { id: item.id, sectionId },
+        data: { position: item.position },
+      })
+    );
+    return Promise.all(updates);
+  });
 }
 
 export async function getLessonWithContent(lessonId: string) {

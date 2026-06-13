@@ -15,10 +15,6 @@ export default async function WelcomePage() {
     redirect("/login");
   }
 
-  if (!session.user.isNewOAuthUser) {
-    redirect("/dashboard");
-  }
-
   return (
     <SessionProvider session={session}>
       <WelcomeForm />

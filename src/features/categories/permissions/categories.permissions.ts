@@ -1,6 +1,5 @@
-// Auto-generated permission map for the categories feature.
-// Override individual entries by exporting a const with the same name.
 import type { Role } from "@/core/entities";
+import { ForbiddenError } from "@/shared/lib/errors";
 
 export type AccessRule = Role[] | "PUBLIC";
 
@@ -15,6 +14,6 @@ export function assertCategoriesAccess(role: Role | null | undefined, action: ke
   const rule = canCategories[action];
   if (rule === "PUBLIC") return;
   if (!role || !rule.includes(role)) {
-    throw new Error(`Access denied: role '${role ?? "anonymous"}' cannot ${action} categories`);
+    throw new ForbiddenError(`Access denied: role '${role ?? "anonymous"}' cannot ${action} categories`);
   }
 }

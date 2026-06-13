@@ -9,10 +9,6 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  if (session.user.isNewOAuthUser) {
-    redirect("/welcome");
-  }
-
   if (isTeacherOrAdmin(session.user.role as any)) {
     redirect("/teacher/courses");
   } else {

@@ -1,9 +1,5 @@
 import * as courseRepo from "../../repositories/course.repository";
 import * as lessonRepo from "../../repositories/lesson.repository";
-import * as liveSessionRepo from "../../repositories/live-session.repository";
-import * as peerReviewRepo from "../../repositories/peer-review.repository";
-import * as quizRepo from "../../repositories/quiz.repository";
-import * as resourceRepo from "../../repositories/resource.repository";
 
 export const getCourseById = courseRepo.getCourseById;
 export const getCoursesByIds = courseRepo.getCoursesByIds;
@@ -28,14 +24,3 @@ export const getLessonWithContent = lessonRepo.getLessonWithContent;
 export const getLessonWithSection = lessonRepo.getLessonWithSection;
 export const getLessonWithCourse = lessonRepo.getLessonWithCourse;
 export const getLearningLesson = lessonRepo.getLearningLesson;
-
-export const getLiveSessions = liveSessionRepo.getLiveSessions;
-export const getLiveSessionById = liveSessionRepo.getLiveSessionById;
-
-export const getPeerReviewConfig = peerReviewRepo.getPeerReviewConfig;
-
-export const getQuizByLessonId = quizRepo.getQuizByLessonId;
-export const getQuizWithQuestions = quizRepo.getQuizWithQuestions;
-export const getQuizAttempts = quizRepo.getQuizAttempts;
-
-export const getCourseResources = resourceRepo.getCourseResources;

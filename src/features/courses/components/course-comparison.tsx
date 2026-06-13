@@ -1,16 +1,15 @@
 "use client";
 
-import { useCartStore } from "@/features/cart";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/components/ui/table";
-import { Button } from "@/shared/components/ui/button";
 import { Badge } from "@/shared/components/ui/badge";
-import { ShoppingCart, BookOpen } from "lucide-react";
-import { toast } from "sonner";
+import { BookOpen } from "lucide-react";
+import LinkButton from "@/shared/components/ui/link-button";
 
 interface Course {
   id: string;
   title: string;
+  slug: string;
   shortDescription: string | null;
   price: number | null;
   level: string;
@@ -27,19 +26,6 @@ interface CourseComparisonProps {
 }
 
 export function CourseComparison({ courses }: CourseComparisonProps) {
-  const { addItem, items } = useCartStore();
-
-  const handleAddToCart = (c: Course) => {
-    addItem({
-      id: c.id,
-      title: c.title,
-      price: c.price || 0,
-      thumbnail: c.thumbnail,
-      teacherName: c.teacher.name,
-    });
-    toast.success("Added to cart!");
-  };
-
   if (courses.length === 0) {
     return (
       <div className="text-center py-12 bg-white dark:bg-neutral-900 border border-neutral-200/50 dark:border-neutral-800/50 rounded-2xl">
@@ -129,18 +115,16 @@ export function CourseComparison({ courses }: CourseComparisonProps) {
             <TableRow className="border-0">
               <TableCell className="py-4 pl-6 text-xs font-bold text-neutral-500">Actions</TableCell>
               {courses.map((c) => {
-                const inCart = items.some((item) => item.id === c.id);
                 return (
                   <TableCell key={c.id} className="py-4 text-center">
-                    <Button
-                      disabled={inCart}
-                      onClick={() => handleAddToCart(c)}
+                    <LinkButton
+                      href={`/courses/${c.slug}`}
                       size="sm"
                       className="rounded-xl text-xs gap-1.5 font-bold"
                     >
-                      <ShoppingCart className="h-3.5 w-3.5" />
-                      {inCart ? "In Cart" : "Buy Now"}
-                    </Button>
+                      <BookOpen className="h-3.5 w-3.5" />
+                      View Details
+                    </LinkButton>
                   </TableCell>
                 );
               })}

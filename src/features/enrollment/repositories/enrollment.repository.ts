@@ -27,6 +27,9 @@ export async function getUserEnrollments(userId: string, params: { status?: "act
           teacher: { select: { name: true } },
         },
       },
+      certificate: {
+        select: { certificateId: true },
+      },
     },
     orderBy: { updatedAt: "desc" },
   });

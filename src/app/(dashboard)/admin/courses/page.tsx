@@ -1,7 +1,8 @@
 import { PageHeader } from "@/shared/components/shared/page-header";
 import { getCoursesForAdmin } from "@/features/courses/server";
-import { CourseModeration } from "@/features/admin/server";
 import { Pagination } from "@/shared/components/shared/pagination";
+import { CourseModeration } from "@/features/admin/components/course-moderation";
+import { requireAdmin } from "@/shared/lib/auth-helpers";
 
 interface AdminCoursesPageProps {
   searchParams: Promise<{
@@ -14,11 +15,11 @@ interface AdminCoursesPageProps {
 export default async function AdminCoursesPage({
   searchParams,
 }: AdminCoursesPageProps) {
+  await requireAdmin();
   const { page: pageParam, status, search } = await searchParams;
   const page = parseInt(pageParam || "1", 10);
   const limit = 10;
 
-  // Moderation tab: defaults to UNDER_REVIEW
   const activeStatus = status || "UNDER_REVIEW";
 
   const { courses, pages } = await getCoursesForAdmin({
@@ -41,4 +42,3 @@ export default async function AdminCoursesPage({
     </div>
   );
 }
-

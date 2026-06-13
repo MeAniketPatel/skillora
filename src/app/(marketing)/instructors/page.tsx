@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { GraduationCap, Search, UserSearch } from "lucide-react";
 import { getAllInstructors } from "@/features/auth/server";
 import { Card, CardContent } from "@/shared/components/ui/card";
-import { InstructorCard } from "@/features/marketing/server";
-import { Navbar } from "@/shared/components/layout/navbar";
-import { Footer } from "@/shared/components/layout/footer";
+import { InstructorCard } from "@/features/marketing";
 import { Input } from "@/shared/components/ui/input";
 import { APP } from "@/shared/constants/app";
 import { ROUTES } from "@/shared/constants/routes";
@@ -35,10 +33,8 @@ export default async function InstructorsPage({
   });
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <Navbar />
-
-      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-12 sm:px-6 lg:px-8">
+    <>
+      <main className="mx-auto w-full max-w-7xl flex-grow px-4 py-12 sm:px-6 lg:px-8">
         <header className="mb-10 space-y-4">
           <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-primary">
             <UserSearch className="h-3.5 w-3.5" /> Instructor Directory
@@ -114,9 +110,7 @@ export default async function InstructorsPage({
           </>
         )}
       </main>
-
-      <Footer />
-    </div>
+    </>
   );
 }
 

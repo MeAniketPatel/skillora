@@ -23,7 +23,7 @@ export default async function LearnCourseLayout({
 
   const [course, enrollment] = await Promise.all([
     getCourseWithPublishedCurriculum(courseId),
-    getEnrollmentWithProgress(session.user.id, courseId),
+    getEnrollmentWithProgress(session.user.id, courseId).catch(() => null),
   ]);
 
   if (!course) redirect("/student/courses");

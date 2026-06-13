@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache";
 import { actionHandler } from "@/shared/lib/action-utils";
 import { requireAuth } from "@/shared/lib/auth-helpers";
 import { ConflictError, NotFoundError, ValidationError } from "@/shared/lib/errors";
-import { triggerWebhook } from "@/lib/webhook-sender";
 import { service as coursesService } from "@/features/courses/server";
 import { service as enrollmentService } from "@/features/enrollment/server";
 import { service as studentsService } from "@/features/students/server";
@@ -27,20 +26,6 @@ export async function enrollInFreeCourse(courseId: string) {
     }
 
     const enrollment = await enrollmentService.createEnrollment(user.id, courseId);
-
-    try {
-      await triggerWebhook("enrollment.created", {
-        enrollmentId: enrollment.id,
-        userId: user.id,
-        userName: user.name,
-        userEmail: user.email,
-        courseId: course.id,
-        courseTitle: course.title,
-        enrolledAt: enrollment.createdAt,
-      });
-    } catch (whErr) {
-      console.error("Failed to trigger webhook on enrollment:", whErr);
-    }
 
     const lessons = course.sections.flatMap((s) => s.lessons);
     if (lessons.length > 0) {

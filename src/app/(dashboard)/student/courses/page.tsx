@@ -2,7 +2,7 @@ import { requireAuth } from "@/shared/lib/auth-helpers";
 import { getUserEnrollments, getResumeLessonId } from "@/features/enrollment/server";
 import { DataTable } from "@/shared/components/shared/data-table";
 import Link from "next/link";
-import { GraduationCap } from "lucide-react";
+import { GraduationCap, Play, Award } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 
 export default async function StudentCoursesPage() {
@@ -53,9 +53,40 @@ export default async function StudentCoursesPage() {
         return (
           <Link href={href}>
             <Button>
-              {item.progress === 0 ? "Start Course" : "Continue"}
+              <Play className="h-4 w-4 mr-1" />
+              {item.progress === 0 ? "Start Course" : "Continue Learning"}
             </Button>
           </Link>
+        );
+      },
+    },
+    {
+      header: "Certificate",
+      cell: (item: any) => {
+        if (item.progress === 100) {
+          const certId = item.certificate?.certificateId;
+          if (certId) {
+            return (
+              <Link href={`/certificates/${certId}`}>
+                <Button variant="default">
+                  <Award className="h-4 w-4 mr-1" />
+                  View Certificate
+                </Button>
+              </Link>
+            );
+          }
+          return (
+            <Button variant="outline" disabled className="text-xs">
+              <Award className="h-4 w-4 mr-1" />
+              Certificate Pending
+            </Button>
+          );
+        }
+        return (
+          <Button variant="outline" disabled className="text-xs opacity-50">
+            <Award className="h-4 w-4 mr-1" />
+            Complete Course
+          </Button>
         );
       },
     },
@@ -63,9 +94,14 @@ export default async function StudentCoursesPage() {
 
   return (
     <div className="p-6 space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">My Courses</h1>
-        <p className="text-muted-foreground">Continue learning your enrolled courses.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">My Courses</h1>
+          <p className="text-muted-foreground">Continue learning your enrolled courses.</p>
+        </div>
+        <Link href="/courses">
+          <Button variant="outline">Browse Courses</Button>
+        </Link>
       </div>
       <DataTable 
         data={enrollmentsWithResume} 
