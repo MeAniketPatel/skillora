@@ -396,7 +396,7 @@ model Purchase {
   enrollment      Enrollment    @relation(fields: [enrollmentId], references: [id])
   amount          Float
   currency        String        @default("USD")
-  stripePaymentId String?       @unique
+  mockPaymentId   String?       @unique
   status          PaymentStatus @default(PENDING)
   couponId        String?
   coupon          Coupon?       @relation(fields: [couponId], references: [id])

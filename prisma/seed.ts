@@ -23,11 +23,9 @@ async function main() {
   await db.quiz.deleteMany({});
   await db.attachment.deleteMany({});
   await db.assignmentSubmission.deleteMany({});
-  await db.note.deleteMany({});
   await db.answer.deleteMany({});
   await db.question.deleteMany({});
   await db.review.deleteMany({});
-  await db.wishlist.deleteMany({});
   await db.enrollment.deleteMany({});
   await db.coupon.deleteMany({});
   await db.lesson.deleteMany({});
@@ -42,7 +40,6 @@ async function main() {
   await db.passwordResetToken.deleteMany({});
   await db.authAuditLog.deleteMany({});
   await db.notification.deleteMany({});
-  await db.contactMessage.deleteMany({});
   await db.platformSetting.deleteMany({});
 
   await db.user.deleteMany({});
@@ -194,7 +191,7 @@ async function main() {
       position: 1,
       sectionId: sec1.id,
       type: "VIDEO",
-      videoUrl: "https://utfs.io/f/sample-video.mp4",
+      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
       content: "<p>Welcome to the Next.js 16 Masterclass. In this lesson, we will initialize our application structure.</p>",
       isPublished: true,
       isFree: true,
@@ -226,7 +223,7 @@ async function main() {
       position: 1,
       sectionId: sec2.id,
       type: "VIDEO",
-      videoUrl: "https://utfs.io/f/sample-database.mp4",
+      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
       content: "<p>Learn how to connect Prisma ORM to a secure local or hosted PostgreSQL instance.</p>",
       isPublished: true,
     },
@@ -268,7 +265,7 @@ async function main() {
       position: 1,
       sectionId: sec4.id,
       type: "VIDEO",
-      videoUrl: "https://utfs.io/f/sample-tailwind.mp4",
+      videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
       content: "<p>Build a clean glassmorphic navbar using Tailwind's layout and border opacity classes.</p>",
       isPublished: true,
       isFree: true,
@@ -343,7 +340,7 @@ async function main() {
       data: {
         amount: item.amount,
         status: PaymentStatus.COMPLETED,
-        stripePaymentId: `pi_mock_${Math.random().toString(36).substring(7)}`,
+        mockPaymentId: `pi_mock_${Math.random().toString(36).substring(7)}`,
         userId: item.student.id,
         enrollmentId: enrollment.id,
       },

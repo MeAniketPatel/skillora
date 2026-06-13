@@ -69,3 +69,8 @@ npm-debug.log*
 
 # Prisma generated
 /src/generated/prisma
+
+# Agent configurations
+/AGENTS.md
+/DESIGN_PREFERENCES.md
+
