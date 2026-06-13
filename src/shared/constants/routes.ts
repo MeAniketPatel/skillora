@@ -4,11 +4,11 @@ export const ROUTES = {
   COURSES: "/courses",
   COURSE_DETAIL: (slug: string) => `/courses/${slug}` as const,
   ABOUT: "/about",
-  CONTACT: "/contact",
-  PRICING: "/pricing",
+  CONTACT: "/contact", // Deprecated - feature removed
+  PRICING: "/pricing", // Deprecated - feature removed
   COMPARE: "/compare",
   SEARCH: "/search",
-  CAREERS: "/careers",
+  CAREERS: "/careers", // Deprecated - feature removed
   INSTRUCTORS: "/instructors",
   INSTRUCTOR_DETAIL: (id: string) => `/instructors/${id}` as const,
   CERTIFICATE_VIEW: (certId: string) => `/certificates/${certId}` as const,
@@ -28,7 +28,7 @@ export const ROUTES = {
   STUDENT_COURSES: "/student/courses",
   STUDENT_PURCHASES: "/student/purchases",
   STUDENT_CERTIFICATES: "/student/certificates",
-  STUDENT_WISHLIST: "/student/wishlist",
+  STUDENT_WISHLIST: "/student/wishlist", // Deprecated - feature removed
 
   // Learn
   LEARN_COURSE: (courseId: string) => `/learn/${courseId}` as const,
@@ -52,9 +52,9 @@ export const ROUTES = {
   TEACHER_STUDENTS: (courseId: string) =>
     `/teacher/courses/${courseId}/students` as const,
   TEACHER_REVIEWS: "/teacher/reviews",
-  TEACHER_QA: "/teacher/qa",
-  TEACHER_COUPONS: "/teacher/coupons",
-  TEACHER_PAYOUTS: "/teacher/payouts",
+  TEACHER_QA: "/teacher/qa", // Deprecated - feature removed
+  TEACHER_COUPONS: "/teacher/coupons", // Deprecated - feature removed
+  TEACHER_PAYOUTS: "/teacher/payouts", // Deprecated - feature removed
   TEACHER_ASSIGNMENTS: (courseId: string) =>
 
     `/teacher/courses/${courseId}/assignments` as const,
@@ -64,12 +64,11 @@ export const ROUTES = {
   ADMIN_USERS: "/admin/users",
   ADMIN_COURSES: "/admin/courses",
   ADMIN_CATEGORIES: "/admin/categories",
-  ADMIN_REVENUE: "/admin/revenue",
-  ADMIN_AUDIT: "/admin/audit",
-  ADMIN_COUPONS: "/admin/coupons",
-  ADMIN_REPORTS: "/admin/reports",
-  ADMIN_SETTINGS: "/admin/settings",
-  ADMIN_CONTACT_MESSAGES: "/admin/contact",
+  ADMIN_REVENUE: "/admin/revenue", // Deprecated - feature removed
+  ADMIN_AUDIT: "/admin/audit", // Deprecated - feature removed
+  ADMIN_COUPONS: "/admin/coupons", // Deprecated - feature removed
+  ADMIN_REPORTS: "/admin/reports", // Deprecated - feature removed
+  ADMIN_CONTACT_MESSAGES: "/admin/contact", // Deprecated - feature removed
 
   // Settings
   SETTINGS: "/settings",

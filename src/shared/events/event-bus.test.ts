@@ -2,9 +2,10 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { eventBus } from "./event-bus";
 import type { DomainEvent } from "./types";
 
-const makeEvent = (type: string, payload: Record<string, unknown> = {}): DomainEvent => ({
-  type,
-  occurredAt: new Date().toISOString(),
+const makeEvent = (name: string, payload: Record<string, unknown> = {}, feature = "test"): DomainEvent => ({
+  name,
+  feature,
+  occurredAt: new Date(),
   payload,
 });
 
@@ -14,25 +15,13 @@ describe("event-bus", () => {
   });
 
   describe("on / emit", () => {
-    it("delivers event to subscriber by type", async () => {
+    it("delivers event to subscriber by name", async () => {
       const received: DomainEvent[] = [];
       eventBus.on("test.event", "test", (e) => received.push(e));
       const ev = makeEvent("test.event");
       await eventBus.emit(ev);
       expect(received).toHaveLength(1);
       expect(received[0]).toBe(ev);
-    });
-
-    it("delivers event to subscriber by name (defensive)", async () => {
-      const received: DomainEvent[] = [];
-      eventBus.on("user.created", "test", (e) => received.push(e));
-      // Publish using only `name` (no `type`).
-      await eventBus.emit({
-        name: "user.created",
-        occurredAt: new Date().toISOString(),
-        payload: {},
-      } as unknown as DomainEvent);
-      expect(received).toHaveLength(1);
     });
 
     it("delivers to multiple subscribers", async () => {
@@ -45,18 +34,11 @@ describe("event-bus", () => {
       expect(b).toHaveLength(1);
     });
 
-    it("does not deliver to subscribers of other types", async () => {
+    it("does not deliver to subscribers of other names", async () => {
       const a: DomainEvent[] = [];
       eventBus.on("a", "test", () => a.push(makeEvent("a")));
       await eventBus.emit(makeEvent("b"));
       expect(a).toHaveLength(0);
-    });
-
-    it("warns and returns when emit has no resolvable name/type", async () => {
-      const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-      await eventBus.emit({ payload: {}, occurredAt: "" } as DomainEvent);
-      expect(warn).toHaveBeenCalled();
-      warn.mockRestore();
     });
   });
 

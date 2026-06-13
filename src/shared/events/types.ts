@@ -1,22 +1,14 @@
-export interface DomainEvent {
-  type: string;
-  occurredAt: string;
-  payload: Record<string, unknown>;
+export interface DomainEvent<TName extends string = string, TPayload = unknown> {
+  name: TName;
+  feature: string;
+  payload: TPayload;
+  occurredAt: Date;
 }
 
-export interface CoursePublishedEvent extends DomainEvent {
-  type: "course.published";
-  payload: { courseId: string; teacherId: string; title: string };
-}
+export type CoursePublishedEvent = DomainEvent<"course.published", { courseId: string; teacherId: string; title: string }>;
 
-export interface PaymentSucceededEvent extends DomainEvent {
-  type: "payment.succeeded";
-  payload: { paymentId: string; userId: string; courseId?: string; amount: number };
-}
+export type PaymentSucceededEvent = DomainEvent<"payment.succeeded", { paymentId: string; userId: string; courseId?: string; amount: number }>;
 
-export interface CertificateIssuedEvent extends DomainEvent {
-  type: "certificate.issued";
-  payload: { certificateId: string; userId: string; courseId: string };
-}
+export type CertificateIssuedEvent = DomainEvent<"certificate.issued", { certificateId: string; userId: string; courseId: string }>;
 
 export type AppDomainEvent = CoursePublishedEvent | PaymentSucceededEvent | CertificateIssuedEvent;

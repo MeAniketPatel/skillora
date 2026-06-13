@@ -10,12 +10,7 @@ import {
   Settings, 
   LogOut,
   User,
-  LayoutDashboard,
-  Coins,
-  MessageSquare,
-  Layers,
-  Compass,
-  Trophy
+  LayoutDashboard
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 import { ThemeToggle } from "@/shared/components/shared/theme-toggle";
@@ -47,21 +42,13 @@ export function Sidebar({ session }: SidebarProps) {
         { name: "Dashboard", href: ROUTES.DASHBOARD, icon: LayoutDashboard },
         { name: "My Courses", href: ROUTES.TEACHER_COURSES, icon: BookOpen },
         { name: "Analytics", href: ROUTES.TEACHER_ANALYTICS, icon: BarChart },
-        { name: "Payouts", href: ROUTES.TEACHER_PAYOUTS, icon: Coins },
         { name: "Profile", href: "/profile", icon: User },
-        { name: "Messages", href: "/messages", icon: Settings }, // Settings can be replaced with messaging or other icon
         { name: "Settings", href: ROUTES.SETTINGS, icon: Settings },
       ]
-    : [
+      : [
         { name: "Dashboard", href: ROUTES.DASHBOARD, icon: LayoutDashboard },
         { name: "My Learning", href: ROUTES.STUDENT_COURSES, icon: BookOpen },
-        { name: "Learning Paths", href: "/learning-paths", icon: Compass },
-        { name: "Flashcards", href: "/student/flashcards", icon: Layers },
-        { name: "Discussions", href: "/discussions", icon: MessageSquare },
-        { name: "Leaderboard", href: "/leaderboard", icon: Trophy },
-        { name: "Study Groups", href: "/student/study-groups", icon: GraduationCap },
         { name: "Profile", href: "/profile", icon: User },
-        { name: "Messages", href: "/messages", icon: Settings },
         { name: "Settings", href: ROUTES.SETTINGS, icon: Settings },
       ];
 

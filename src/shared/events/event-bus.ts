@@ -24,11 +24,7 @@ export const eventBus = {
     }
   },
   async emit<T extends DomainEvent>(event: T): Promise<void> {
-    const eventName = (event as { name?: string; type?: string }).name ?? event.type;
-    if (!eventName) {
-      console.warn("[event-bus] emit called without name/type field", event);
-      return;
-    }
+    const eventName = event.name as string;
     const arr = listeners.get(eventName) ?? [];
     if (arr.length === 0) return;
     const results = await Promise.allSettled(

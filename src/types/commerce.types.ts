@@ -1,11 +1,3 @@
-export interface CommerceCartItem {
-  id: string;
-  title: string;
-  price: number;
-  thumbnail?: string | null;
-  teacherName?: string | null;
-}
-
 export interface InvoiceData {
   id: string;
   orderNumber: string;

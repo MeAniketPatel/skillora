@@ -17,7 +17,6 @@ const NAV_LINKS = [
   { name: "Courses", href: ROUTES.COURSES },
   { name: "About", href: ROUTES.ABOUT },
   { name: "Teachers", href: "/teachers" },
-  { name: "Contact", href: ROUTES.CONTACT },
 ];
 
 export default function NavbarClient({ session }: { session: Session }) {

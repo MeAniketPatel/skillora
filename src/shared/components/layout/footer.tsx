@@ -31,11 +31,7 @@ export function Footer() {
                   Features
                 </Link>
               </li>
-              <li>
-                <Link href="/faq" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Pricing & FAQ
-                </Link>
-              </li>
+
             </ul>
           </div>
 
@@ -61,27 +57,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Links Col 3: Legal */}
-          <div>
-            <h3 className="font-heading text-sm font-semibold tracking-wider text-foreground uppercase">Legal</h3>
-            <ul className="mt-4 space-y-2 text-sm">
-              <li>
-                <Link href="/privacy" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Terms of Service
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Support Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
+
         </div>
 
         {/* Bottom */}
