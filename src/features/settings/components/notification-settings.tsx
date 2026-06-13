@@ -2,15 +2,13 @@
 
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { emailPreferenceSchema, type EmailPreferenceInput } from "@/features/email-preferences";
-import { updateEmailPreferencesAction } from "@/features/email-preferences";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Switch } from "@/shared/components/ui/switch";
 import { Label } from "@/shared/components/ui/label";
 import { toast } from "sonner";
-import { Mail, Bell, Calendar, Sparkles, MessageSquare, ShieldCheck } from "lucide-react";
+import { Mail, Bell, Calendar, Sparkles, ShieldCheck } from "lucide-react";
+import { updateUserNotificationSettings } from "@/features/settings/actions/settings.actions";
 
 interface NotificationSettingsProps {
   initialPreferences: {
@@ -18,33 +16,36 @@ interface NotificationSettingsProps {
     enrollment: boolean;
     certificates: boolean;
     promotions: boolean;
-    forumReplies: boolean;
   };
 }
 
 export function NotificationSettings({ initialPreferences }: NotificationSettingsProps) {
   const [isPending, startTransition] = useTransition();
 
-  const { register, handleSubmit, watch, setValue } = useForm<EmailPreferenceInput>({
-    resolver: zodResolver(emailPreferenceSchema),
+  const { watch, setValue } = useForm({
     defaultValues: {
       digestType: initialPreferences.digestType as "DAILY" | "WEEKLY" | "NEVER",
       enrollment: initialPreferences.enrollment,
       certificates: initialPreferences.certificates,
       promotions: initialPreferences.promotions,
-      forumReplies: initialPreferences.forumReplies,
     },
   });
 
   const digestType = watch("digestType");
 
-  const onSubmit = (values: EmailPreferenceInput) => {
+  const onSubmit = () => {
     startTransition(async () => {
-      const res = await updateEmailPreferencesAction(values);
-      if (res.success) {
+      const values = watch();
+      const result = await updateUserNotificationSettings({
+        digestType: values.digestType,
+        enrollment: values.enrollment,
+        certificates: values.certificates,
+        promotions: values.promotions,
+      });
+      if (result.success) {
         toast.success("Notification settings updated successfully.");
       } else {
-        toast.error(res.error || "Failed to update notification settings");
+        toast.error(result.error);
       }
     });
   };
@@ -56,8 +57,7 @@ export function NotificationSettings({ initialPreferences }: NotificationSetting
   ];
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {/* Digest Preference Selection */}
+    <form onSubmit={onSubmit} className="space-y-6">
       <Card className="bg-white dark:bg-neutral-900 border border-neutral-250/50 dark:border-neutral-800/60 shadow-sm rounded-2xl overflow-hidden">
         <CardHeader className="border-b border-neutral-100 dark:border-neutral-800/60 pb-4">
           <div className="flex items-center gap-3">
@@ -101,7 +101,6 @@ export function NotificationSettings({ initialPreferences }: NotificationSetting
         </CardContent>
       </Card>
 
-      {/* Email Preferences / Categories */}
       <Card className="bg-white dark:bg-neutral-900 border border-neutral-250/50 dark:border-neutral-800/60 shadow-sm rounded-2xl overflow-hidden">
         <CardHeader className="border-b border-neutral-100 dark:border-neutral-800/60 pb-4">
           <div className="flex items-center gap-3">
@@ -115,7 +114,6 @@ export function NotificationSettings({ initialPreferences }: NotificationSetting
           </div>
         </CardHeader>
         <CardContent className="p-6 divide-y divide-neutral-100 dark:divide-neutral-800/60">
-          {/* Topic 1: Course Enrollments */}
           <div className="flex items-center justify-between py-4 first:pt-0">
             <div className="space-y-0.5 max-w-[80%]">
               <div className="flex items-center gap-1.5">
@@ -132,7 +130,6 @@ export function NotificationSettings({ initialPreferences }: NotificationSetting
             />
           </div>
 
-          {/* Topic 2: Certificates */}
           <div className="flex items-center justify-between py-4">
             <div className="space-y-0.5 max-w-[80%]">
               <div className="flex items-center gap-1.5">
@@ -149,7 +146,6 @@ export function NotificationSettings({ initialPreferences }: NotificationSetting
             />
           </div>
 
-          {/* Topic 3: Promotions */}
           <div className="flex items-center justify-between py-4">
             <div className="space-y-0.5 max-w-[80%]">
               <div className="flex items-center gap-1.5">
@@ -166,22 +162,7 @@ export function NotificationSettings({ initialPreferences }: NotificationSetting
             />
           </div>
 
-          {/* Topic 4: Forum Replies */}
-          <div className="flex items-center justify-between py-4 last:pb-0">
-            <div className="space-y-0.5 max-w-[80%]">
-              <div className="flex items-center gap-1.5">
-                <MessageSquare className="h-3.5 w-3.5 text-blue-500" />
-                <Label className="text-xs font-bold text-neutral-800 dark:text-neutral-200">Discussion Forum & Blog Activity</Label>
-              </div>
-              <p className="text-[11px] text-neutral-450 leading-relaxed">
-                Receive updates when another student responds to your questions or replies to comments on your blog posts.
-              </p>
-            </div>
-            <Switch
-              checked={watch("forumReplies")}
-              onCheckedChange={(checked) => setValue("forumReplies", checked)}
-            />
-          </div>
+
         </CardContent>
       </Card>
 

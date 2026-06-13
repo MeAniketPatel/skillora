@@ -2,15 +2,13 @@
 
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { privacySettingsSchema, PrivacySettingsInput } from "@/features/privacy";
-import { updatePrivacySettingsAction } from "@/features/privacy";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
 import { Switch } from "@/shared/components/ui/switch";
 import { Label } from "@/shared/components/ui/label";
 import { toast } from "sonner";
 import { Shield, Eye, MessageSquare, Users, Ban } from "lucide-react";
+import { updateUserPrivacySettings } from "@/features/settings/actions/settings.actions";
 
 interface PrivacySettingsProps {
   initialSettings: {
@@ -23,8 +21,7 @@ interface PrivacySettingsProps {
 export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
   const [isPending, startTransition] = useTransition();
 
-  const { register, handleSubmit, watch, setValue } = useForm<PrivacySettingsInput>({
-    resolver: zodResolver(privacySettingsSchema),
+  const { watch, setValue } = useForm({
     defaultValues: {
       profileVisible: initialSettings.profileVisible,
       activityVisible: initialSettings.activityVisible,
@@ -34,13 +31,18 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
 
   const messagingPreference = watch("messagingPreference");
 
-  const onSubmit = (values: PrivacySettingsInput) => {
+  const onSubmit = () => {
     startTransition(async () => {
-      const res = await updatePrivacySettingsAction(values);
-      if (res.success) {
+      const values = watch();
+      const result = await updateUserPrivacySettings({
+        profileVisible: values.profileVisible,
+        activityVisible: values.activityVisible,
+        messagingPreference: values.messagingPreference,
+      });
+      if (result.success) {
         toast.success("Privacy settings updated successfully.");
       } else {
-        toast.error(res.error || "Failed to update privacy settings");
+        toast.error(result.error);
       }
     });
   };
@@ -52,8 +54,7 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
   ];
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      {/* Visibility Settings */}
+    <form onSubmit={onSubmit} className="space-y-6">
       <Card className="bg-white dark:bg-neutral-900 border border-neutral-250/50 dark:border-neutral-800/60 shadow-sm rounded-2xl overflow-hidden">
         <CardHeader className="border-b border-neutral-100 dark:border-neutral-800/60 pb-4">
           <div className="flex items-center gap-3">
@@ -67,7 +68,6 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
           </div>
         </CardHeader>
         <CardContent className="p-6 divide-y divide-neutral-100 dark:divide-neutral-800/60">
-          {/* Public Profile */}
           <div className="flex items-center justify-between py-4 first:pt-0">
             <div className="space-y-0.5 max-w-[80%]">
               <Label className="text-xs font-bold text-neutral-800 dark:text-neutral-200">Public Profile Discovery</Label>
@@ -81,7 +81,6 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
             />
           </div>
 
-          {/* Activity Logs */}
           <div className="flex items-center justify-between py-4 last:pb-0">
             <div className="space-y-0.5 max-w-[80%]">
               <Label className="text-xs font-bold text-neutral-800 dark:text-neutral-200">Public Activity Feed</Label>
@@ -97,7 +96,6 @@ export function PrivacySettings({ initialSettings }: PrivacySettingsProps) {
         </CardContent>
       </Card>
 
-      {/* Messaging Preferences */}
       <Card className="bg-white dark:bg-neutral-900 border border-neutral-250/50 dark:border-neutral-800/60 shadow-sm rounded-2xl overflow-hidden">
         <CardHeader className="border-b border-neutral-100 dark:border-neutral-800/60 pb-4">
           <div className="flex items-center gap-3">

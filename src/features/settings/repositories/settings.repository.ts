@@ -21,3 +21,33 @@ export async function getAllSettings() {
     return acc;
   }, {} as Record<string, string>);
 }
+
+export async function updateUserPrivacySettings(userId: string, data: { profileVisible: boolean; activityVisible: boolean; messagingPreference: string }) {
+  return db.user.update({
+    where: { id: userId },
+    data: {
+      profileVisible: data.profileVisible,
+      activityVisible: data.activityVisible,
+      messagingPreference: data.messagingPreference,
+    },
+  });
+}
+
+export async function updateUserNotificationSettings(userId: string, data: { digestType: string; enrollment: boolean; certificates: boolean; promotions: boolean }) {
+  return db.emailPreference.upsert({
+    where: { userId },
+    update: {
+      digestType: data.digestType,
+      enrollment: data.enrollment,
+      certificates: data.certificates,
+      promotions: data.promotions,
+    },
+    create: {
+      userId,
+      digestType: data.digestType,
+      enrollment: data.enrollment,
+      certificates: data.certificates,
+      promotions: data.promotions,
+    },
+  });
+}

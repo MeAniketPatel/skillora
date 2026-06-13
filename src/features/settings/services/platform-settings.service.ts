@@ -1,12 +1,12 @@
-import db from "@/shared/lib/prisma";
 import {
   PLATFORM_SETTINGS_DEFAULTS,
   PLATFORM_SETTINGS_KEYS,
   type PlatformSettingKey,
 } from "@/shared/constants/platform-settings";
+import * as settingsRepo from "../repositories/settings.repository";
 
 export async function getPlatformSetting(key: PlatformSettingKey): Promise<string> {
-  const row = await db.platformSetting.findUnique({ where: { key } });
+  const row = await settingsRepo.getSetting(key);
   return row?.value ?? PLATFORM_SETTINGS_DEFAULTS[key];
 }
 

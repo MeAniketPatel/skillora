@@ -8,7 +8,10 @@ export const profileUpdateSchema = z.object({
   twitter: z.string().url().or(z.literal("")).optional(),
   linkedin: z.string().url().or(z.literal("")).optional(),
   github: z.string().url().or(z.literal("")).optional(),
+  image: z.string().url().or(z.literal("")).optional(),
 });
+
+export type ProfileUpdateInput = z.infer<typeof profileUpdateSchema>;
 
 export const portfolioProjectSchema = z.object({
   title: z.string().min(2).max(100),
