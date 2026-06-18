@@ -56,6 +56,10 @@ prisma/*.db-journal
 *.swp
 *.swo
 
+# Agent configurations
+/AGENTS.md
+/DESIGN_PREFERENCES.md
+
 # OS
 .DS_Store
 Thumbs.db
@@ -69,8 +73,3 @@ npm-debug.log*
 
 # Prisma generated
 /src/generated/prisma
-
-# Agent configurations
-/AGENTS.md
-/DESIGN_PREFERENCES.md
-
